@@ -1,0 +1,21 @@
+development: &default
+  database: jewlercrm-dev
+  adapter: postgresql
+  pool: 10
+  host: localhost
+  username: postgres
+  password: postgres
+
+development:
+  <<: *default
+  database: jewlercrm-dev
+
+test:
+  database: jewlercrm-test
+
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
+  database: jewlercrm_production
+  username: vkaloidis
+  password: <%= ENV['JEWLERCRM_DATABASE_PASSWORD'] %>
