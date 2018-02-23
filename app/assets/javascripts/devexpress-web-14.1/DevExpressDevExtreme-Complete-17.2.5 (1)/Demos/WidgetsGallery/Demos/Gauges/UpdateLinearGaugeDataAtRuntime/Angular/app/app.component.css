@@ -1,0 +1,20 @@
+/deep/ #gauge-demo {
+    height: 440px;
+    width: 100%;
+}
+/deep/ #gauge-demo .gauge-element {
+    height: 100%;
+    width: 30%;
+    float: left;
+}
+/deep/ #gauge-demo .dx-selectbox {
+    float: right;
+}
+
+/deep/ .long-title h3 {
+    font-family: 'Segoe UI Light', 'Helvetica Neue Light', 'Segoe UI', 'Helvetica Neue', 'Trebuchet MS', Verdana;
+    font-weight: 200;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+}

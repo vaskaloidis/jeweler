@@ -1,0 +1,34 @@
+/deep/ .widget-container {
+    margin-right: 320px;
+}
+/deep/ .content h4 {
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 18px;
+}
+/deep/ .content {
+    margin-top: 50px;
+    margin-left: 10px;
+}
+/deep/ .selected-item {
+    margin-bottom: 20px;
+}
+/deep/ #selected-files {
+    display: none;
+}
+/deep/ .options {
+    padding: 20px;
+    background-color: rgba(191, 191, 191, 0.15);
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+}
+/deep/ .caption {
+    font-size: 18px;
+    font-weight: 500;
+}
+/deep/ .option {
+    margin-top: 10px;
+}

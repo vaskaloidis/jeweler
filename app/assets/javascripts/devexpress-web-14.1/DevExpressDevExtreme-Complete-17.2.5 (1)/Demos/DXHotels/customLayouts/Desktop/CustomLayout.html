@@ -1,0 +1,147 @@
+﻿<div class="desktop-layout" data-options="dxLayout : {name: 'desktop', platform: 'generic' } ">
+    <div class="page">
+        <!-- ko with: DXHotels.layoutModel -->
+        <div class="header">
+            <div class="main-menu content">
+                <div class="logo" data-bind="click: logoClick"></div>
+                <div class="header-text">
+                    <p class="powered-by">POWERED BY</p>
+                    <p>DEVEXTREME WIDGETS AND SPA FRAMEWORK</p>
+                </div>
+                <div class="buttons-header">
+                    <div class="button-header contact-us main-color white-text" data-bind="dxButton: {
+                        text: 'Contact Us',
+                        onClick: showContactPopup,
+                        width: 107,
+                        height: 33
+                    }"></div>
+                    <div class="welcom-user" data-bind="visible: userName()">
+                        Welcome, <span data-bind="text: userName"></span>
+                    </div>
+                    <div class="button-header login main-color white-text" data-bind="dxButton: {
+                        text: 'Login',
+                        onClick: showLoginPopup,
+                        visible: !userName(),
+                        width: 73,
+                        height: 33
+                    }"></div>
+                </div>
+                <div class="popup-contact" data-bind="dxPopup: {
+                    visible: contactPopupVisible,
+                    dragEnabled: false,
+                    width: 460,
+                    height: 290,
+                    position: {
+                        at: 'top',
+                        offset :'226 189',
+                        of: '.page'
+                    }, shading: false,
+                    closeOnOutsideClick: true
+                }">
+                    <div class="title" data-options="dxTemplate: { name: 'title' }">
+                        <span class="title-contact">Your Next Great Web App Starts Here</span>
+                    </div>
+                    <div class="content-contact-us" data-options="dxTemplate: {name: 'content'}">
+                        <div class="dx-fieldset">
+                            <p> To learn more about DevExpress Subscriptions and obtain pricing</p>
+                            <p> information, visit our <a href="http://js.devexpress.com/Buy/">Compare Features and Pricing</a> webpage </p>
+                            <p class="part-one">If you have any questions or require assistance, call us at +1 (818)</p>
+                            <p>844-3383 between 7:30am and 4:30pm Pacific Time</p>
+                            <p>or email info@devexpress.com.</p>
+                            <p class="part-three">Download your free <a href="https://js.devexpress.com/Download/">30-day trial</a> today</p>
+                        </div>
+                        <div class="gray-button button-on-contact" data-bind="dxButton: {
+                            text: 'Close',
+                            onClick: hideContactPopup,
+                            width: 420,
+                            height: 40
+                        }"></div>
+                    </div>
+                </div>
+                <div class="login-popup" data-bind="dxPopup: {
+                    visible: loginPopupVisible,
+                    dragEnabled: false,
+                    height: 244,
+                    width:610,
+                    closeOnOutsideClick: true
+                }">
+                    <div class="popup-title" data-options="dxTemplate:{name: 'title'}">
+                        <p>LOGIN FORM</p>
+                    </div>
+                    <div data-options="dxTemplate: {name: 'content'}">
+                        <div class="login-form" data-bind="css: { loginFormActive: loginPopupVisible() }, dxForm: {
+                            onEditorEnterKey: function() {$('.buttons-on-popup .login').click()},
+                            items: [{
+                                    name: 'login',
+                                    label: {
+                                        visible: false
+                                    },
+                                    editorType: 'dxTextBox',
+                                    editorOptions: {
+                                        mode: 'email',
+                                        placeholder: 'Email',
+                                        width: 330,
+                                        height: 30
+                                    },
+                                    validationRules: [{
+                                           type: 'required',
+                                           message: 'Email is required'
+                                       }, {
+                                           type: 'email'
+                                    }]
+                                }, {
+                                    name: 'password',
+                                    label: {
+                                        visible: false
+                                    },
+                                    editorType: 'dxTextBox',
+                                    editorOptions: {
+                                        mode: 'password',
+                                        placeholder: 'Password',
+                                        width: 330,
+                                        height: 30
+                                    },
+                                    validationRules: [{
+                                           type: 'required',
+                                           message: 'Password is required'
+                                    }]
+                            }]
+                        }"></div>
+                        <div class="buttons-on-popup">
+                            <div class="buttons">
+                                <div class="gray-button login" data-bind="dxButton: {
+                                    text: 'Login',
+                                    onClick: showWelcome,
+                                    width: 110,
+                                    height: 40
+                                }"></div>
+                                <div class="gray-button cancel" data-bind="dxButton: {
+                                    text: 'Cancel',
+                                    onClick: hideLoginPopup,
+                                    width: 110,
+                                    height: 40
+                                }"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wrapper">
+            <div class="content-wrapper">
+                <div data-options="dxContentPlaceholder: { name: 'content' } "></div>
+            </div>
+            <div class="footer-gap"></div>
+        </div>
+        <footer>
+            <div class="external-footer">
+                <div class="footer">
+                    <div class="powered">
+                    </div>
+                    <div class="wrapper copyright">Copyright&nbsp;&copy;&nbsp;<span data-bind="text: copyrightDate"></span> Developer Express Inc.</div>
+                </div>
+            </div>
+        </footer>
+        <!-- /ko -->
+    </div>
+</div>

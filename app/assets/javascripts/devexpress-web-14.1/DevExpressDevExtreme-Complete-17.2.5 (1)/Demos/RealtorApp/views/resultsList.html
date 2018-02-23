@@ -1,0 +1,7 @@
+<div data-options="dxView : { name: 'ResultsList' } " >
+    <div style="height: 100%" data-bind="dxDeferRendering: { renderWhen: $root.isReady, showLoadIndicator: true, staggerItemSelector: '.dx-list-item', animation: 'list-item-rendered' }">
+        <div data-bind="dxList: { dataSource: $root.listData }">
+            <div data-options="dxTemplate: { name:'item' }" data-bind="template: { name: 'list-template' }, dxAction: $root.resultsItemClick" class="list-item"></div>
+        </div>
+    </div>
+</div>

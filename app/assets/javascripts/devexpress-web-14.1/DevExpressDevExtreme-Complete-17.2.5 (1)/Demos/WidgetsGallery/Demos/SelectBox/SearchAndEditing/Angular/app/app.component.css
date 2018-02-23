@@ -1,0 +1,6 @@
+/deep/ .current-product {
+    padding-top: 11px;
+}
+/deep/ .current-value {
+    font-weight: bold;
+}

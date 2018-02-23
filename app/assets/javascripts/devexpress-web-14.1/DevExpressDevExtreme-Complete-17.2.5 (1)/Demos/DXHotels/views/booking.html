@@ -1,0 +1,516 @@
+﻿<div data-options="dxView: { name: 'booking', title: 'Booking' } ">
+    <div data-options="dxContent: { targetPlaceholder: 'content' } ">
+        <div class="external-hotel">
+            <div class="data-hotel content">
+                <div class="contact-us">
+                    <div class="external-img">
+                        <div id="img">
+                        </div>
+                    </div>
+                    <div class="text">We are here to help</div>
+                    <div class="contact-email">
+                        <h4>Contact us by email: </h4>
+                        <a href="mailto:info@devexpress.com"> info@devexpress.com</a>
+                    </div>
+                </div>
+                <div class="hotel-info">
+                    <h4 class="hotel-name" data-bind="text: hotelName"></h4>
+                    <div class="rating-container">
+                        <div class="rating-stars" data-bind="style: { width: 20 * customerRating() + '%' }"></div>
+                    </div>
+                    <p class="address" data-bind="text: fullAddress"></p>
+                </div>
+            </div>
+        </div>
+        <div class="popup-print-preview" data-bind="dxPopup: {
+            visible: printPreviewVisible,
+            width: 1000,
+            height: 950,
+            dragEnabled: false,
+            hoverStateEnabled: false,
+            position: {
+                my: 'center',
+                at: 'center',
+                of: '.page'
+            }, closeOnOutsideClick: true
+        }">
+            <div class="title" data-options="dxTemplate:{name: 'title'}">
+                <div class="header-popup">
+                    <div class="logo"></div>
+                    <div class="header-text">
+                        <p>POWERED BY</p>
+                        <p>DEVEXTREME WIDGETS AND SPA FRAMEWORK</p>
+                    </div>
+                </div>
+            </div>
+            <div class="preview" data-options="dxTemplate:{name: 'content'}">
+                <div class="dx-fieldset">
+                    <div class="hotel-info">
+                        <h4 class="hotel-name" data-bind="text: hotelName"></h4>
+                        <div class="rating-container">
+                            <div class="rating-stars" data-bind="style: { width: 20 * customerRating() + '%' }"></div>
+                        </div>
+                        <p class="address" data-bind="text: fullAddress"></p>
+                    </div>
+                    <div class="info-print">
+                        <img class="hotel-img" data-bind="attr: { src: hotelImgPrint }">
+                        <div class="external-reservation">
+                            <h4>Your Reservation Summary</h4>
+                            <div class="reservation-summary">
+                                <div class="hotel-description">
+                                    <div class="desc">
+                                        <h4 class="hotel-name" data-bind="text:hotelName"></h4>
+                                        <p class="address" data-bind="text: fullAddress"></p>
+                                    </div>
+                                    <div class="external-img">
+                                        <img class="img-on-booking" data-bind="attr: { src: hotelImg }" />
+                                    </div>
+                                    <div class="date">
+                                        <div class="dx-fieldset">
+                                            <div class="dx-field-label first-label">Check In</div>
+                                            <div class="dx-field-label">Check Out</div>
+                                        </div>
+                                        <div class="numbers">
+                                            <p class="check-in" data-bind="text:checkIn"></p>
+                                            <p class="check-out" data-bind="text:checkOut"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="total-result">
+                                    <div class="total-pay" data-bind="foreach:viewDays">
+                                        <div class="day" data-bind="text:day"></div>
+                                        <div class="price" data-bind="text: $parent.price"></div>
+                                    </div>
+                                    <div class="points" data-bind="visible: visiblePoints">...... </div>
+                                    <div class="sum">
+                                        <p class="text">TOTAL TO PAY NOW</p>
+                                        <p class="total-price" data-bind="text:totalPrice"></p>
+                                    </div>
+                                </div>
+                                <div class="deals-discounts" data-bind="visible: dealsDiscountsVisible">
+                                    <div class="check-offer"></div>
+                                    <p data-bind="text: valueRadioGroup"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <div class="caption">Description</div>
+                        <div class="text" data-bind="text:description"></div>
+                    </div>
+                    <div class="footer-popup">
+                        <div class="devexpress-img"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="warning content">
+            <p>Book now and remember...</p>
+            <p class="text">This is not real travel website and these are not real hotels</p>
+        </div>
+        <div class="billing content">
+            <div class="external-reservation">
+                <h4>Your Reservation Summary</h4>
+                <div class="reservation-summary">
+                    <div class="hotel-description">
+                        <div class="desc">
+                            <h4 class="hotel-name" data-bind="text: hotelName"></h4>
+                            <p class="address" data-bind="text: fullAddress"></p>
+                        </div>
+                        <div class="external-img">
+                            <img class="img-on-booking" data-bind="attr: { src: hotelImg }" />
+                        </div>
+                        <div class="date">
+                            <div class="dx-fieldset">
+                                <div class="dx-field-label first-label">Check In</div>
+                                <div class="dx-field-label">Check Out</div>
+                            </div>
+                            <div class="numbers">
+                                <p class="check-in" data-bind="text:checkIn"></p>
+                                <p class="check-out" data-bind="text:checkOut"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="short-description">
+                        <div class="desc" data-bind="text: shortDesc">
+                        </div>
+                        <div class="features" data-bind="foreach: featuresRoom">
+                            <div class="feature">
+                                <img class="icon" data-bind="attr: { src:icon }" />
+                                <div data-bind="text: feature"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="total-result">
+                        <div class="total-pay" data-bind="foreach:viewDays">
+                            <div class="day" data-bind="text:day"></div>
+                            <h4 class="price" data-bind="text: $parent.price"></h4>
+                        </div>
+                        <div class="points" data-bind="visible: visiblePoints">...... </div>
+                        <div class="sum">
+                            <p class="text">TOTAL TO PAY NOW</p>
+                            <h4 class="total-price" data-bind="text: totalPrice"></h4>
+                        </div>
+                    </div>
+                    <div class="deals-discounts">
+                        <div class="dx-field-label">Deals and Discounts</div>
+                        <div class="radio-button" data-bind="dxRadioGroup: {
+                            dataSource: offers,
+                            valueExpr: 'offer',
+                            value: valueRadioGroup
+                        }">
+                            <div data-options="dxTemplate: { name: 'item' }">
+                                <p data-bind="text: offer"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="button-print">
+                        <div class="print-invoice" data-bind="dxButton:{text:'Print Invoice', width: 150, height: 40, onClick: showPrintPreview }"></div>
+                    </div>-->
+                </div>
+            </div>
+            <div class="login-payment">
+                <h4>Already have a DX Hotels account? Login below.</h4>
+                <div class="login">
+                    <!-- ko with: DXHotels.layoutModel -->
+                    <div data-bind="dxValidationGroup: {}">
+                        <div class="login-visible" data-bind="visible: !userName()">
+                            <div class="login-form detail-form" data-bind="css: { loginFormActive: !loginPopupVisible() }, dxForm: {
+                                onEditorEnterKey: function() {$('.login-payment .login .button').click()},
+                                width: 330,
+                                items: [{
+                                        name: 'login',
+                                        label: {
+                                            visible: false
+                                        },
+                                        editorType: 'dxTextBox',
+                                        editorOptions: {
+                                            mode: 'email',
+                                            placeholder: 'Email',
+                                            width: 330,
+                                            height: 30
+                                        },
+                                        validationRules: [{
+                                               type: 'required',
+                                               message: 'Email is required'
+                                           }, {
+                                               type: 'email'
+                                        }]
+                                    }, {
+                                        name: 'password',
+                                        label: {
+                                            visible: false
+                                        },
+                                        editorType: 'dxTextBox',
+                                        editorOptions: {
+                                            mode: 'password',
+                                            placeholder: 'Password',
+                                            width: 330,
+                                            height: 30
+                                        },
+                                        validationRules: [{
+                                               type: 'required',
+                                               message: 'Password is required'
+                                        }]
+                                }]
+                            }"></div>
+                            <div class="button gray-button" data-bind="dxButton: {
+                                text: 'Login',
+                                onClick: showWelcome
+                            }"></div>
+                        </div>
+                    </div>
+                    <div class="welcom-user" data-bind="visible: userName()">
+                       Welcome,  <span data-bind="text: userName"></span>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <h4>Room Details</h4>
+                <div class="room-details">
+                    <div class="description">
+                        <p data-bind="text:roomDetails"></p>
+                    </div>
+                    <div class="info-people">
+                        <p>
+                            Please give us the name of one of the people staying in this room
+                        </p>
+                        <div class="form detail-form" data-bind="dxForm: {
+                            width: 330,
+                            height: 400,
+                            items: [{
+                                    name: 'firstName',
+                                    label: {
+                                        visible: false
+                                    },
+                                    editorType: 'dxTextBox',
+                                    editorOptions: {
+                                        placeholder: 'First Name',
+                                        width: 330,
+                                        height: 30
+                                    }
+                                }, {
+                                    name: 'lastName',
+                                    label: {
+                                        visible: false
+                                    },
+                                    editorType: 'dxTextBox',
+                                    editorOptions: {
+                                        placeholder: 'Last Name',
+                                        width: 330,
+                                        height: 30
+                                    }
+                                }, {
+                                    name: 'email',
+                                    label: {
+                                        visible: false
+                                    },
+                                    editorType: 'dxTextBox',
+                                    editorOptions: {
+                                        mode: 'email',
+                                        placeholder: 'Email',
+                                        width: 330,
+                                        height: 30
+                                    },
+                                    validationRules: [{
+                                        type: 'required',
+                                        message: 'Email is required'
+                                    }, {
+                                        type: 'email'
+                                    }]
+                            }]
+                        }"></div>
+                    </div>
+                    <div class="additional">
+                        <div class="dx-fieldset">
+                            <div class="dx-field">
+                                <div class="dx-field-value" data-bind="dxCheckBox: {
+                                    value: false,
+                                    text: 'Queen Bed'
+                                }"></div>
+                            </div>
+                            <div class="dx-field">
+                                <div class="dx-field-value" data-bind="dxCheckBox: {
+                                    value: false,
+                                    text : 'Smoking'
+                                }"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4>Payment Details</h4>
+                <div class="payment">
+                    <div data-bind="dxForm: {
+                        items: [{
+                            itemType: 'tabbed',
+                            tabs: [{
+                                    title: 'Credit Cart',
+                                    template: 'creditCart'
+                                }, {
+                                    title: 'Cash',
+                                    template: 'cash'
+                                }, {
+                                    title: 'PayPal',
+                                    template: 'paypal'
+                            }]
+                        }],
+                        height: '100%'
+                    }">
+                        <div data-options="dxTemplate : { name: 'creditCart' } ">
+                            <div class="credit-cart">
+                                <p>We accept the following payment methods</p>
+                                <div class="carts-img">
+                                    <div class="img visa"></div>
+                                    <div class="img maestro"></div>
+                                    <div class="img mastercart"></div>
+                                </div>
+                                <div class="card-form detail-form" data-bind="dxForm: {
+                                    showColonAfterLabel: false,
+                                    width: 330,
+                                    screenByWidth: function(){
+                                        return 'lg';
+                                    },
+                                    items: [{
+                                            name: 'name',
+                                            label: {
+                                                visible: false
+                                            },
+                                            editorType: 'dxTextBox',
+                                            editorOptions: {
+                                                placeholder: 'Name',
+                                                width:330,
+                                                height:30
+                                            }
+                                        }, {
+                                            name: 'email',
+                                            label: {
+                                                visible: false
+                                            },
+                                            editorType: 'dxTextBox',
+                                            editorOptions: {
+                                                mode: 'email',
+                                                placeholder: 'Email',
+                                                width:330,
+                                                height:30
+                                            },
+                                            validationRules: [{
+                                                    type: 'required',
+                                                    message: 'Email is required'
+                                                }, {
+                                                    type: 'email'
+                                            }]
+
+                                        }, {
+                                            name: 'password',
+                                            label: {
+                                                visible: false
+                                            },
+                                            editorType: 'dxTextBox',
+                                            editorOptions: {
+                                                mode: 'password',
+                                                placeholder: 'Password',
+                                                width:330,
+                                                height:30
+                                            }
+
+                                        }, {
+                                            itemType: 'group',
+                                            cssClass: 'card-padding',
+                                            items: [{
+                                                    name: 'card',
+                                                    label: {
+                                                        visible: false
+                                                    },
+                                                    editorType: 'dxTextBox',
+                                                    editorOptions: {
+                                                        placeholder: 'Card #',
+                                                        width:330,
+                                                        height:30
+                                                    }
+                                                }, {
+                                                    itemType: 'group',
+                                                    colCount: 3,
+                                                    cssClass: 'exp-date',
+                                                    items: [{
+                                                            dataField: 'ExpDate',
+                                                            editorType: 'dxSelectBox',
+                                                            colSpan: 2,
+                                                            cssClass: 'month',
+                                                            editorOptions: {
+                                                                placeholder: 'Month',
+                                                                dataSource: $root.selectMonthsAndYears,
+                                                                displayExpr: 'month',
+                                                                height:30
+                                                            }
+                                                        }, {
+                                                            name: 'year',
+                                                            label: {
+                                                                visible: false
+                                                            },
+                                                            editorType: 'dxSelectBox',
+                                                            editorOptions: {
+                                                                placeholder: 'Year',
+                                                                dataSource: $root.selectMonthsAndYears,
+                                                                displayExpr: 'year',
+                                                                height:30
+                                                            }
+                                                    }]
+                                            }]
+                                     }]
+                                }"></div>
+                            </div>
+                        </div>
+                        <div data-options="dxTemplate: { name: 'cash' }">
+                            <div class="cash">
+                                <p>Thank you for visiting our website. At present, we do not accept cash payments.</p>
+                            </div>
+                        </div>
+                        <div data-options="dxTemplate: { name: 'paypal' }">
+                            <div class="paypal">
+                                <p>Thank you for visiting our website. At present, we do not accept PayPal payments.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4>Billing Information</h4>
+                <div class="billing-information">
+                    <div class="detail-form" data-bind="dxForm: {
+                        width: 330,
+                        screenByWidth: function(){
+                            return 'lg';
+                        },
+                        items: [{
+                                name: 'address',
+                                label: {
+                                    visible: false
+                                },
+                                editorType: 'dxTextBox',
+                                editorOptions: {
+                                    placeholder: 'Address',
+                                    width: 330,
+                                    height: 30
+                                }
+                            }, {
+                                name: 'city',
+                                label: {
+                                    visible: false
+                                },
+                                editorType: 'dxTextBox',
+                                editorOptions: {
+                                    placeholder: 'City',
+                                    width: 330,
+                                    height: 30
+                                }
+                            }, {
+                                itemType: 'group',
+                                colCount: 3,
+                                items: [{
+                                        name: 'state',
+                                        label: {
+                                            visible: false
+                                        },
+                                        editorType: 'dxSelectBox',
+                                        editorOptions: {
+                                            dataSource: listState,
+                                            displayExpr: 'name',
+                                            placeholder: 'State',
+                                            height: 30
+                                        }
+                                    }, {
+                                        name: 'zipcode',
+                                        label: {
+                                            visible: false
+                                        },
+                                        colSpan: 2,
+                                        editorType: 'dxTextBox',
+                                        editorOptions: {
+                                            placeholder: 'Zipcode',
+                                            height: 30
+                                        }
+                                }]
+                            }, {
+                                editorType: 'dxCheckBox',
+                                editorOptions: {
+                                    text: 'Please create an account',
+                                    value: false,
+                                    width: 200
+                                }
+                         }]
+                    }"></div>
+                </div>
+            </div>
+            <div class="count-on-us">
+                <div class="tittle">YOU CAN COUNT ON US</div>
+                <div class="checks">
+                    <div class="check"></div>
+                    <div class="check"></div>
+                    <div class="check"></div>
+                </div>
+                <div class="captions">
+                    <div class="caption">We don't process credit cards </div>
+                    <div class="caption">We don't have any hotels</div>
+                    <div class="caption">We only offer great controls</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

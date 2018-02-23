@@ -1,0 +1,9 @@
+<div data-options="dxView : { name: 'Favorites', title: 'Favorites' } " >
+    <div  data-options="dxContent : { targetPlaceholder: 'content' } " >
+        <div style="height: 100%" data-bind="dxDeferRendering: { renderWhen: isLoaded, showLoadIndicator: true, staggerItemSelector: '.dx-list-item', animation: 'list-item-rendered' }">
+            <div class="favorites-list" data-bind="dxList: { dataSource: RealtorApp.faves, noDataText: noDataText }">
+                <div data-options="dxTemplate: { name: 'item' }" data-bind="template: { name: 'list-template' }, dxAction: $root.favoritesItemClick" class="list-item"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="list-container">
+    <dx-list height="100%">
+        <dxi-item *ngFor="let item of products">
+            <div class="product">
+                <img src="{{item.ImageSrc}}" />
+                <div>{{item.Name}}</div>
+                <div class="price">{{item.Price | currency: 'USD':true:'1.0'}}</div>
+            </div>
+        </dxi-item>
+    </dx-list>
+</div>

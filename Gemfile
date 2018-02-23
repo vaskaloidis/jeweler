@@ -14,19 +14,24 @@ gem 'cancancan', '~> 2.0'
 
 gem 'paper_trail'
 
-gem 'jquery-rails'
 # gem 'dotenv-rails', :groups => [:development, :test]
 gem 'yaml_db'
+
+# gem 'jquery-rails', '1.11.1'
+# gem 'jquery-ui-rails'
+# gem 'jquery-rails'
 
 gem 'sass-rails', '~> 5.0'
 gem 'less-rails', '~> 3.0.0'
 gem 'therubyracer' # Ruby
 # gem 'mini_racer', platforms: :ruby
-# gem 'coffee-rails', '~> 4.2'
+gem 'coffee-rails', '~> 4.2'
 gem 'uglifier', '>= 1.3.0'
 
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
+
+# gem 'audited', "~> 4.6" #TODO: Install and configure Audited Gem
 
 # gem 'redis', '~> 4.0'
 # gem 'bcrypt', '~> 3.1.7'

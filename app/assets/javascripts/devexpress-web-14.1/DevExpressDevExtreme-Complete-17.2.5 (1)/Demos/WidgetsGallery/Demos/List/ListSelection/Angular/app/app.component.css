@@ -1,0 +1,27 @@
+/deep/ .selected-data,
+/deep/ .options {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f5f5f5;
+}
+/deep/ .selected-data .caption {
+    font-weight: bold;
+    font-size: 115%;
+}
+/deep/ .options .caption {
+    font-size: 18px;
+    font-weight: 500;
+}
+/deep/ .option {
+    margin-top: 10px;
+}
+/deep/ .option > span {
+    width: 120px;
+    display: inline-block;
+}
+/deep/ .option > .dx-widget {    
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    max-width: 350px;
+}

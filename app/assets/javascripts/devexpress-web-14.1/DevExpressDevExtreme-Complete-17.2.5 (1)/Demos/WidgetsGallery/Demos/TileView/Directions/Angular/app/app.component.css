@@ -1,0 +1,35 @@
+/deep/ .dx-selectbox {
+    max-width: 400px;
+}
+/deep/ .dx-tile-content {
+    height: 100%;    
+}
+/deep/ .dx-tile-content .image {
+    height: 100%;
+    width: 100%;    
+    background-position: center;
+    background-size: cover;
+    display: block;
+}
+/deep/ .options {
+    padding: 20px;
+    background-color: rgba(191, 191, 191, 0.15);
+    margin-top: 20px;
+}
+/deep/ .caption {
+    font-size: 18px;
+    font-weight: 500;
+}
+/deep/ .option {
+    margin-top: 10px;
+}
+/deep/ .option > span {
+    width: 70px;
+    display: inline-block;
+}
+/deep/ .option > .dx-widget {    
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    max-width: 350px;
+}

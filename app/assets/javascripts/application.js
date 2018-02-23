@@ -10,7 +10,20 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require jquery-1.11.1.min.js
+// require jquery
+
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-//= require_tree .
+
+//= require bootstrap.min.js
+//= require TweenMax.min.js
+//= require resizeable.js
+//= require joinable.js
+//= require xenon-api.js
+//= require xenon-toggles.js
+//= require xenon-widgets.js
+//= require devexpress-web-14.1/js/dx.all.js
+//= require toastr/toastr.min.js
+//= require xenon-custom.js

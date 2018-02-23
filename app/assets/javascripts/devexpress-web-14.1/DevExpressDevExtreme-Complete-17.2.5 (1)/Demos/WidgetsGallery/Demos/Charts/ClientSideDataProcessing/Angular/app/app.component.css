@@ -1,0 +1,10 @@
+/deep/ #choose-temperature {
+    float: right;
+}
+/deep/ .action {
+    width: 320px;
+    margin-top: 20px;
+}
+/deep/ .label {
+    padding-top: 9px;
+}

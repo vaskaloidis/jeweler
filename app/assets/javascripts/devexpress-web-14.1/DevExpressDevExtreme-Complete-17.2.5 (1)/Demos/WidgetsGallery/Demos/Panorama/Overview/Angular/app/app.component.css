@@ -1,0 +1,23 @@
+/deep/ .image-container {
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+/deep/ .image-container .image {
+    width: 85px;
+    height: 80px;
+    background-size: 85px 80px;
+}
+/deep/ .image-container div:not(.image) {
+    text-align: center;
+}
+/deep/ .panorama-container {
+    height: auto;
+    position: absolute;
+    top: 0; 
+    bottom: 0;
+    width:100%;
+}
+/deep/ .dx-panorama {
+    color: #fff;
+}

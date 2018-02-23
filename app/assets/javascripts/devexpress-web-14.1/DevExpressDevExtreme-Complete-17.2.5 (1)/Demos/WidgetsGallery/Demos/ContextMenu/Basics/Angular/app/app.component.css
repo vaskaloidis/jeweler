@@ -1,0 +1,6 @@
+/deep/ #image {
+    height: 300px; 
+}
+/deep/ .label {
+    color: #767676;
+}

@@ -1,0 +1,35 @@
+/deep/ #gridContainer {
+    height: 450px;
+}
+/deep/ .dx-row img {
+    height: 100px;
+}
+/deep/ #gridContainer tr.main-row td:not(:first-child) {
+    height: 21px;
+}
+/deep/ #gridContainer tr.notes-row {
+    white-space: normal;
+    vertical-align: top;
+}
+/deep/ #gridContainer tr.notes-row td {
+    height: 70px;
+    color: #999;
+}
+/deep/ .dark #gridContainer tr.notes-row td {
+    color: #777;
+}
+/deep/ #gridContainer tbody.employee:hover {
+    background-color: #EBEBEB;
+}
+/deep/ .dark #gridContainer tbody.employee:hover {
+    background-color: #484848;
+}
+/deep/ #gridContainer tbody.employee:hover tr.main-row td {
+    color: #000;
+}
+/deep/ .dark #gridContainer tbody.employee:hover tr.main-row td {
+    color: #CCC;
+}
+/deep/ #gridContainer tbody.employee:hover tr.notes-row td {
+    color: #888;
+}

@@ -1,0 +1,22 @@
+/deep/ #popup {
+    padding: 10px;
+}
+/deep/ #popup ul {
+    list-style-type: none;
+    text-align: center;
+}
+/deep/ #popup ul li {
+    display: inline-block;
+    width: 160px;
+    margin: 10px;
+}
+/deep/ #popup ul li img{
+    width: 100px;
+}
+/deep/ .button-info {
+    margin: 10px;
+}
+/deep/ .popup p {
+    margin-bottom: 10px;
+    margin-top: 0;
+}

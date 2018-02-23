@@ -1,0 +1,10 @@
+/deep/ #selectbox {
+    float: right;
+}
+/deep/ .action {
+    width: 270px;
+    margin-top: 20px;
+}
+/deep/ .label {
+    padding-top: 9px;
+}

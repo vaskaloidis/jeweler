@@ -1,0 +1,1 @@
+This example demonstrates the **DataGrid** widget communicating with a&nbsp;Web API service. Most of&nbsp;the **DataGrid** features are enabled, including the master-detail interface, header filter, summary, editing, and many more.

@@ -1,0 +1,11 @@
+/deep/ #chart-demo {
+    height: 470px;
+    width: 100%;
+}
+/deep/ #zoomedChart {
+    height: 335px;
+    margin: 0 0 15px;
+}
+/deep/ #chart-demo > div:not(#zoomedChart) {
+    height: 120px;
+}

@@ -1,0 +1,24 @@
+/deep/ .form>h4 {
+    margin-bottom: 20px;
+}
+
+/deep/ .form>div,
+/deep/ #selection-treeview {
+    display: inline-block;
+    vertical-align: top;
+}
+
+/deep/ #checked-items {
+    margin-top: 20px;
+}
+
+/deep/ .selected-data {
+    padding: 20px;
+    background: #f5f5f5;
+    font-size: 115%;
+    font-weight: bold;
+}
+
+/deep/ .dx-list-item-content {
+    padding-left: 0;
+}

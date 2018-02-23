@@ -1,0 +1,83 @@
+/deep/ .settings {
+    text-align: center;
+    background-color: rgba(191, 191, 191, 0.15);
+}
+
+/deep/ .settings .column {
+    width: 26%;
+    display: inline-block;
+    margin: 15px 3%;
+    text-align: left;
+}
+
+/deep/ .settings .column .field {
+    height: 36px;
+    padding: 5px 0;
+}
+
+/deep/ .settings .column .field > div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/deep/ .settings .column .field .label {
+    width: 75px;
+}
+
+/deep/ .settings .column .field .value {
+    width: 60%;
+}
+
+/deep/ .settings .column .field .value .dx-switch {
+    height: 36px;
+}
+
+/deep/ .picture-container {
+    text-align: center;
+    margin: 20px 2px 5px 2px;
+    padding-top: 20px;
+    overflow: hidden;
+    outline-width: 2px;
+    outline-style: none;
+    outline-color: #f05b41;
+}
+
+/deep/ .picture {
+    transition: transform ease-in-out 400ms;
+    display: inline-block;
+    padding: 10px;
+}
+
+/deep/ .color {
+    fill: #f05b41;
+}
+
+/deep/ .text {
+    text-align: center;
+    color: #f05b41;
+    font-size: 30px;
+    padding: 30px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/deep/ .dx-color-scheme-light .base-color, .dx-color-scheme-carmine .base-color, .dx-color-scheme-softblue .base-color {
+    fill: #333;
+}
+
+/deep/ .dx-color-scheme-contrast .base-color, .dx-color-scheme-darkmoon .base-color {
+    fill: #fff;
+}
+
+/deep/ .dx-color-scheme-dark .base-color {
+    fill: #dedede;
+}
+
+/deep/ .dx-color-scheme-darkviolet .base-color {
+    fill: #f5f6f7;
+}
+
+/deep/ .dx-color-scheme-greenmist .base-color {
+    fill: #28484f;
+}

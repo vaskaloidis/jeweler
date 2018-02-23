@@ -1,0 +1,221 @@
+﻿<div data-options="dxView : { name: 'home', title: 'HomePage'} ">
+    <div data-options="dxContent : { targetPlaceholder: 'content' } ">
+        <div class="image">
+            <div class="internal-block-for-search content">
+                <div class="hotel-search">
+                    <div class="title-search">
+                        <p>HOTEL SEARCH</p>
+                    </div>
+                    <div class="search-form form" data-bind="dxForm: {
+                        formData: {
+                            location : searchData.location,
+                            checkIn: searchData.checkIn,
+                            checkOut: searchData.checkOut,
+                            rooms: searchData.rooms,
+                            adults: searchData.adults,
+                            children: searchData.children
+                        },
+                        onFieldDataChanged: function(e) {
+                            if(e.dataField === 'checkIn') {
+                                var editor = e.component.getEditor('checkOut'),
+                                    date = e.value;
+                                if(editor) {
+                                    editor.option('min', new Date(date.getTime() + 1000 * 60 * 60 * 24 * 1));
+                                    editor.option('max', new Date(date.getTime() + 1000 * 60 * 60 * 24 * 30));
+                                }
+                            }
+                        },
+                        showColonAfterLabel: false,
+                        showValidationSummary: true,
+                        labelLocation: 'top',
+                        showRequiredMark: false,
+                        width: 364,
+                        screenByWidth: function(){
+                            return 'lg';
+                        },
+                        items: [{
+                            itemType: 'group',
+                            colCount: 4,
+                            items: [{
+                                colSpan: 4,
+                                dataField: 'location',
+                                editorType: 'dxSelectBox',
+                                editorOptions: {
+                                    dataSource: selectBoxData,
+                                    noDataText: loading,
+                                    placeholder: '',
+                                    displayExpr: 'City',
+                                    valueExpr:'ID',
+                                    height: 30
+                                },
+                                validationRules: [{
+                                    type: 'required',
+                                    message: 'Location is required'
+                                }]
+                            }, {
+                                colSpan: 2,
+                                dataField: 'checkIn',
+                                editorType: 'dxDateBox',
+                                editorOptions: {
+                                    type: 'date',
+                                    min: minDateCheckIn(),
+                                    height: 29,
+                                    width: '100%'
+                                },
+                                validationRules: [{
+                                    type: 'required',
+                                    message: 'Check in is required'
+                                }] 
+                            }, {
+                                colSpan: 2,
+                                dataField: 'checkOut',
+                                editorType: 'dxDateBox',
+                                editorOptions: {
+                                    type: 'date',
+                                    min: minDateCheckOut(),
+                                    max: maxDateCheckOut(),
+                                    height: 29,
+                                    width: '100%'
+                                },
+                                validationRules: [{
+                                    type: 'required',
+                                    message: 'Check out is required'
+                                }]
+                            }, {
+                                colSpan: 2,
+                                dataField: 'rooms',
+                                editorType: 'dxSelectBox',
+                                editorOptions: {
+                                    dataSource: numberOfRooms,
+                                    placeholder: '',
+                                    height: 29
+                                },
+                                validationRules: [{
+                                    type: 'required',
+                                    message: 'Rooms is required'
+                                }]
+                            }, {
+                                itemType: 'group',
+                                colCount: 2,
+                                colSpan: 2,
+                                items: [{
+                                    dataField: 'adults',
+                                    editorType: 'dxSelectBox',
+                                    editorOptions: {
+                                        dataSource: numberOfAdults,
+                                        width: 75,
+                                        placeholder: '',
+                                        height: 29
+                                    },
+                                    validationRules: [{
+                                        type: 'required',
+                                        message: 'Adults is required'
+                                    }]
+                                }, {
+                                    dataField: 'children',
+                                    editorType: 'dxSelectBox',
+                                    editorOptions: {
+                                        dataSource: numberOfChildren,
+                                        placeholder: '',
+                                        height: 29,
+                                        width: 75
+                                    }
+                                }]
+                            }]
+                        }]
+                    }">
+                    </div>
+                    <div class="button-search">
+                        <div class="search main-color white-text" data-bind="dxButton: {
+                                    text:'SEARCH',
+                                    onClick: searchClick,
+                                    width: 360,
+                                    height: 52
+                                }"></div>
+                    </div>
+                </div>
+                <div class="hotel-powered">
+                    <div id="gross-text"></div>
+                    <p id="small-text">powered by DevExtreme</p>
+                </div>
+            </div>
+        </div>
+        <div class="external-block-offer" data-bind="visible: offers().length > 0">
+            <div class="content">
+                <div class="offers" data-bind="foreach: offers, css: { one: offers().length == 1, two: offers().length == 2 }">
+                    <div class="first-offer offer" data-bind="attr: { class: name + '-offer offer'}">
+                        <div class="label-offer">
+                            <div class="closeOffer" data-bind="click: $parent.closeOffer">
+                            </div>
+                            <div data-bind="attr: { class: name + '-label label' }"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gallery">
+            <div class="label-gallery">
+                SPECIAL OFFERS
+            </div>
+            <div class="gallery-container" data-bind="dxGallery: {
+                dataSource: galleryData,
+                selectedIndex: indexImg,
+                height: 440,
+                width: 920,
+                noDataText: searchData.loading,
+                showIndicator: false,
+                onItemClick: specialOffers 
+            }">
+                <div data-options="dxTemplate: { name: 'item' }">
+                    <div class="hotel">
+                        <div class="name" data-bind="text: name"></div>
+                        <div data-bind="text: location"></div>
+                        <div class="price" data-bind="text: price"></div>
+                    </div>
+                    <img data-bind="attr: { src: src }" /><br />
+                </div>
+            </div>
+        </div>
+        <div class="external-minigallary">
+            <div class="mini-gallery" data-bind="foreach: galleryData, css: { 'mini-gallery-to-left': transformSlider() }">
+                <div class="external-padding">
+                    <div data-bind=" css: { 'current-img': index === $parent.indexImg() }">
+                        <div data-bind=" css: { 'white-pading': index === $parent.indexImg() }">
+                        </div>
+                    </div>
+                    <img class="small-image" data-bind=" attr: { src: src }, click: $parent.changePicture">
+                </div>
+            </div>
+        </div>
+        <div class="external-for-low-parts">
+            <div class="parts">
+                <div class="first-part">
+                    <strong>Getting Started Today</strong>
+                    <p>
+                        DevExtreme Subscription includes
+                        Optimized HTML5 JavaScript SPA Framework
+                        and 30+ High Performance HTML5 JavaScript Widgets.
+                    </p>
+                    <a href="https://js.devexpress.com/Download/">Download your free 30-day trial</a>
+                </div>
+                <div class="second-part">
+                    <strong>We Are Here to Help</strong>
+                    <p>
+                        Tell us how we can help you build the next
+                        great JavaScript Mobile or Web App.
+                    </p>
+                    <a href="mailto:info@devexpress.com">info@devexpress.com</a>
+                </div>
+                <div>
+                    <strong>The following DevExtreme Widgets<br />were used on this page:</strong>
+                    <p>
+                        dxGallery<br />
+                        dxPopup<br />
+                        dxForm<br />
+                        dxAccordion<br />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

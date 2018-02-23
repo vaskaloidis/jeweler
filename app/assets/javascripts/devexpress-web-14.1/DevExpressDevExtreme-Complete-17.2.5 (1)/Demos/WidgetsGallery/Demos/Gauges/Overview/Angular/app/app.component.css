@@ -1,0 +1,73 @@
+/deep/ #gauge-demo {
+    height: 500px;
+}
+
+/deep/ #gauge-container  {
+    text-align: center;
+    margin: 20px auto;
+    background-image: url('../../../../images/mask.png');
+    background-repeat: no-repeat;
+    width: 786px;
+    height: 500px;
+}
+
+/deep/ #gauge-container  > div {
+    display: inline-block;
+    position: relative;
+}
+
+/deep/ .left-section {
+    top: -20px;
+    left: -40px;
+}
+
+/deep/ .center-section {
+    top: 25px;
+}
+
+/deep/ .right-section {
+    top: -20px;
+    right: -40px;
+}
+
+/deep/ .speed-value {
+    position: absolute;
+    border: 2px solid #f05b41;
+    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+    left: 28%;
+    top: 36%;
+    line-height: 100px;
+}
+
+/deep/ .speed-value > span {
+    font-size: 50px;
+    font-weight: lighter;
+    color: #f05b41;
+}
+
+/deep/ #fuel-gauge {
+    position: absolute;
+    left: 34%;
+    bottom: 5%;
+}
+
+/deep/ #slider {
+    position: relative;
+    top: -105px;
+    margin: 0 auto;	
+}
+
+/deep/ #slider .dx-slider-handle {
+    background-color: #f05b41;
+    border: none;
+    width: 10px;
+    height: 20px;
+    margin-top: -10px;
+}
+
+/deep/ #slider .dx-slider-range.dx-slider-range-visible {
+    border-color: #f05b41;
+    background-color: #f05b41;
+}

@@ -1,0 +1,47 @@
+/deep/ .form {
+    min-height: 690px;
+}
+/deep/ .form .dx-field-value {
+    text-align: right;
+}
+/deep/ .dx-fieldset-header {
+    padding: 10px 0;
+}
+/deep/ .color-block {
+    width: 360px;
+    height: 254px;
+    background-color: #f05b41;
+    position: relative;
+}
+/deep/ .hero-color-box{
+    position: absolute;
+    right: 0;
+    left: 400px;
+    top: 110px;
+}
+/deep/ .color-block .superhero{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+/deep/ .hero-block {
+    position: relative;
+}
+/deep/ .superhero {
+    background-image: url(../../../../images/hero_white.png);
+}
+/deep/ .dx-color-scheme-dark .superhero {
+    background-image: url(../../../../images/hero_black.png);
+}
+/deep/ .dx-color-scheme-darkmoon .superhero {
+    background-image: url(../../../../images/hero_darkmoon.png);
+}
+/deep/ .dx-color-scheme-darkviolet .superhero {
+    background-image: url(../../../../images/hero_darkviolet.png);
+}
+/deep/ .dx-color-scheme-greenmist .superhero {
+    background-image: url(../../../../images/hero_greenmist.png);
+}
+/deep/ .dx-color-scheme-contrast .superhero {
+    background-image: url(../../../../images/hero_contrast.png);
+}
