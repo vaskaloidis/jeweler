@@ -68,8 +68,6 @@
     <orderEntry type="library" scope="PROVIDED" name="i18n (v0.9.5, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="io-like (v0.3.0, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="jbuilder (v2.7.0, RVM: ruby-2.3.4) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="jquery-rails (v4.3.1, RVM: ruby-2.3.4) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="jquery-ui-rails (v6.0.1, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="json (v2.1.0, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="less (v2.6.0, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="less-rails (v3.0.0, RVM: ruby-2.3.4) [gem]" level="application" />
@@ -107,7 +105,6 @@
     <orderEntry type="library" scope="PROVIDED" name="responders (v2.4.0, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rolify (v5.2.0, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rollbar (v2.15.5, RVM: ruby-2.3.4) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rspec (v3.7.0, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-core (v3.7.1, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-expectations (v3.7.0, RVM: ruby-2.3.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-mocks (v3.7.0, RVM: ruby-2.3.4) [gem]" level="application" />

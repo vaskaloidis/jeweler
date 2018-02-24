@@ -33,6 +33,9 @@ Rails.application.config.assets.precompile += %w( xenon-forms.css.less )
 Rails.application.config.assets.precompile += %w( xenon-components.css.less )
 Rails.application.config.assets.precompile += %w( xenon-skins.css.less )
 
+# Controller Stylesheets
+Rails.application.config.assets.precompile += %w( main.css )
+
 # Javascript
 Rails.application.config.assets.precompile += %w( jquery-1.11.1.min.js )
 Rails.application.config.assets.precompile += %w( bootstrap.min.js )

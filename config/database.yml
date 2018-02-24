@@ -11,6 +11,7 @@ development:
   database: jewlercrm-dev
 
 test:
+  <<: *default
   database: jewlercrm-test
 
 production:

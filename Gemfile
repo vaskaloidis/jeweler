@@ -48,8 +48,12 @@ group :production do
 end
 
 group :development, :test do
+  gem 'rspec-rails', '~> 3.7'
+  gem 'capybara'
   gem 'awesome_print'
   gem 'better_errors'
+  gem 'launchy'
+  gem 'database_cleaner'
   # gem 'web-console' # Add to page: <%= console %>
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 end
@@ -62,10 +66,8 @@ group :development do
 end
 
 group :test do
-  gem 'rspec'
   gem 'shoulda-matchers', '~> 3.1'
   gem 'simplecov', require: false, group: :test
-  gem 'capybara', '~> 2.15'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
 end

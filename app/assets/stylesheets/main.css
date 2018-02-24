@@ -1,3 +1,17 @@
 // Place all the styles related to the main controller here.
 // They will automatically be included in application.css.
 // You can use Less here: http://lesscss.org/
+
+body {
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+
+.card {
+  height: 100%;
+}
