@@ -1,36 +1,94 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>JewlerCRM</title>
+<head>
+  <title>JewlerCRM</title>
 
-    <%= csrf_meta_tags %>
+  <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
-    <%  stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
-    <%= stylesheet_link_tag "fonts/linecons/css/linecons" %>
-    <%= stylesheet_link_tag "fonts/fontawesome/css/font-awesome.min" %>
-    <%= stylesheet_link_tag "bootstrap" %>
-    <%= stylesheet_link_tag "xenon-core" %>
-    <%= stylesheet_link_tag "xenon-forms" %>
-    <%= stylesheet_link_tag "xenon-components" %>
-    <%= stylesheet_link_tag "xenon-skins" %>
+  <% stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
+  <%= stylesheet_link_tag "fonts/linecons/css/linecons" %>
+  <%= stylesheet_link_tag "fonts/fontawesome/css/font-awesome.min" %>
+  <%= stylesheet_link_tag "bootstrap" %>
+  <%= stylesheet_link_tag "xenon-core" %>
+  <%= stylesheet_link_tag "xenon-forms" %>
+  <%= stylesheet_link_tag "xenon-components" %>
+  <%= stylesheet_link_tag "xenon-skins" %>
 
-    <%= stylesheet_link_tag params[:controller] %>
+  <%= stylesheet_link_tag params[:controller] %>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
     <%= stylesheet_link_tag "https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js" %>
     <%= stylesheet_link_tag "https://oss.maxcdn.com/respond/1.4.2/respond.min.js" %>
     <![endif]-->
 
 
-  </head>
+</head>
 
-  <body class="page-body">
+<body class="page-body">
+
+<%= render 'layouts/settings_pane' %>
+
+<%= render 'layouts/top_bar' %>
+
+<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+  <!-- Add "fixed" class to make the sidebar fixed always to the browser viewport. -->
+  <!-- Adding class "toggle-others" will keep only one menu item open at a time. -->
+  <!-- Adding class "collapsed" collapse sidebar root elements and show only icons. -->
+  <%= render 'layouts/sidebar' %>
+
+  <div class="main-content">
+
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
 
     <%= yield %>
 
-  </body>
+  </div>
+
+</div>
+
+  <!-- Main Footer -->
+  <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
+  <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
+  <!-- Or class "fixed" to  always fix the footer to the end of page -->
+  <footer class="main-footer sticky footer-type-1">
+
+    <div class="footer-inner">
+
+      <!-- Add your copyright text here -->
+      <div class="footer-text">
+        &copy; 2014
+        <strong>Xenon</strong>
+        theme by <a href="http://laborator.co" target="_blank">Laborator</a> -
+        <a href="http://themeforest.net/item/xenon-bootstrap-admin-theme/9059661?ref=Laborator" target="_blank">Purchase
+          for only <strong>23$</strong></a>
+      </div>
+
+
+      <!-- Go to Top Link, just add rel="go-top" to any link to add this functionality -->
+      <div class="go-up">
+
+        <a href="#" rel="go-top">
+          <i class="fa-angle-up"></i>
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+<%#= render 'layouts/chat_sidebar' %>
+
+
+</body>
 </html>

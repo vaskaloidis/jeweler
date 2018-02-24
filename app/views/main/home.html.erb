@@ -1,107 +1,423 @@
+<script>
+    jQuery(document).ready(function ($) {
+        $('a[href="#layout-variants"]').on('click', function (ev) {
+            ev.preventDefault();
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand" href="#">Start Bootstrap</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Services</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li>
-      </ul>
-    </div>
+            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
+
+            TweenLite.to(win, .3, {
+                top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function () {
+                    $(window).scrollTop(win.top);
+                }
+            });
+        });
+    });
+</script>
+
+<div class="jumbotron">
+  <h1>Layout API</h1>
+
+  <p>
+    Xenon Theme layout can be combined in many variants with sidebar and horizontal menu and offers a set of toggles
+    (links) to manipulate with the theme layout. These features are enabled if you import
+    <code>js/xenon-toggles.js</code> script in the document.
+  </p>
+
+  <br/>
+  <a class="btn btn-primary btn-lg" href="#layout-variants" role="button">See Layout Variants</a>
+</div>
+
+<h3 id="layout-toggles">
+  Layout Toggles
+  <br/>
+  <small>Links that will automatically collapse or expand side panels, chat or user settings pane.</small>
+</h3>
+<br/>
+
+
+<div class="row">
+
+  <div class="col-md-3 col-xs-4 text-muted">Link</div>
+  <div class="col-md-9 col-xs-8 text-muted">Code</div>
+
+  <div class="vspacer v3"></div>
+
+  <div class="col-md-3 col-xs-4">
+    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="sidebar">
+      <i class="fa-bars"></i>
+      <span>Toggle Sidebar</span>
+    </a>
   </div>
-</nav>
-
-<!-- Page Content -->
-<div class="container">
-
-  <!-- Jumbotron Header -->
-  <header class="jumbotron my-4">
-    <h1 class="display-3">A Warm Welcome!</h1>
-    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p>
-    <a href="#" class="btn btn-primary btn-lg">Call to action!</a>
-  </header>
-
-  <!-- Page Features -->
-  <div class="row text-center">
-
-    <div class="col-lg-3 col-md-6 mb-4">
-      <div class="card">
-        <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-        <div class="card-body">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Find Out More!</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6 mb-4">
-      <div class="card">
-        <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-        <div class="card-body">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Find Out More!</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6 mb-4">
-      <div class="card">
-        <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-        <div class="card-body">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Find Out More!</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6 mb-4">
-      <div class="card">
-        <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-        <div class="card-body">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Find Out More!</a>
-        </div>
-      </div>
-    </div>
-
+  <div class="col-md-9 col-xs-8">
+    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;sidebar&quot;&gt;Toggle Sidebar&lt;/a&gt;</pre>
   </div>
-  <!-- /.row -->
+
+  <div class="clearfix"></div>
+  <div class="vspacer v4"></div>
+
+  <div class="col-md-3 col-xs-4">
+    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="chat">
+      <i class="fa-comment-o"></i>
+      <span>Toggle Chat</span>
+    </a>
+  </div>
+  <div class="col-md-9 col-xs-8">
+    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;chat&quot;&gt;Toggle Chat&lt;/a&gt;</pre>
+  </div>
+
+  <div class="clearfix"></div>
+  <div class="vspacer v4"></div>
+
+  <div class="col-md-3 col-xs-4">
+    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="settings-pane">
+      <i class="linecons-user"></i>
+      <span>Toggle Settings Pane</span>
+    </a>
+  </div>
+  <div class="col-md-9 col-xs-8">
+    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;settings-pane&quot;&gt;Toggle Settings Pane&lt;/a&gt;</pre>
+  </div>
+
+
+  <div class="clearfix"></div>
+  <div class="vspacer v4"></div>
+
+  <div class="col-md-3 col-xs-4">
+    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="settings-pane" data-animate="true">
+      <i class="linecons-cog"></i>
+      <span>Settings Pane /w Animation</span>
+    </a>
+  </div>
+  <div class="col-md-9 col-xs-8">
+    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;settings-pane&quot; data-animate=&quot;true&quot;&gt;Toggle Settings Pane&lt;/a&gt;</pre>
+  </div>
+
+
+  <div class="clearfix"></div>
+  <div class="vspacer v4"></div>
+
+  <div class="col-md-3 col-xs-4">
+    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" rel="go-top">
+      <i class="fa-arrow-up"></i>
+      <span>Go to Top</span>
+    </a>
+  </div>
+  <div class="col-md-9 col-xs-8">
+    <pre>&lt;a href=&quot;#&quot; rel=&quot;go-top&quot;&gt;Go to Top&lt;/a&gt;</pre>
+  </div>
 
 </div>
-<!-- /.container -->
 
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-  <div class="container">
-    <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+
+<br/>
+<br/>
+
+<h3 id="layout-variants">
+  Layout Variants
+  <br/>
+  <small>9 different layout types with fixed or static scrolling panels</small>
+</h3>
+
+<div class="panel panel-default panel-headerless">
+
+  <div class="panel-body layout-variants">
+
+    <div class="row">
+      <div class="col-sm-4">
+
+        <div class="layout-variant">
+          <div class="layout-img">
+            <a href="layout-variants.html">
+              <img src="assets/images/layouts/layout-sidebar.png"/>
+            </a>
+          </div>
+          <div class="layout-name">
+            <a href="layout-variants.html">Left Sidebar</a>
+          </div>
+          <ul class="layout-links">
+            <li>
+              <a href="layout-variants.html" class="">Fixed Sidebar</a>
+            </li>
+            <li>
+              <a href="layout-static-sidebar.html" class="">Static Sidebar</a>
+            </li>
+            <li>
+              <a href="layout-without-submenu-toggle.html" class="">Other Submenus Toggle Off</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="col-sm-4">
+
+        <div class="layout-variant">
+          <div class="layout-img">
+            <a href="layout-right-sidebar.html">
+              <img src="assets/images/layouts/layout-sidebar-right.png"/>
+            </a>
+          </div>
+          <div class="layout-name">
+            <a href="layout-right-sidebar.html">Right Sidebar</a>
+          </div>
+          <ul class="layout-links">
+            <li>
+              <a href="layout-right-sidebar.html" class="">Fixed Sidebar</a>
+            </li>
+            <li>
+              <a href="layout-right-sidebar-static.html" class="">Static Sidebar</a>
+            </li>
+            <li>
+              <a href="layout-without-submenu-toggle-right.html" class="">Other Submenus Toggle Off</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="col-sm-4">
+
+        <div class="layout-variant">
+          <div class="layout-img">
+            <a href="layout-collapsed-sidebar.html">
+              <img src="assets/images/layouts/layout-sidebar-collapsed.png"/>
+            </a>
+          </div>
+          <div class="layout-name">
+            <a href="layout-collapsed-sidebar.html">Collapsed Sidebar</a>
+          </div>
+          <ul class="layout-links">
+            <li>
+              <a href="layout-collapsed-sidebar.html" class="disabled">
+                <del>Fixed Sidebar</del>
+              </a>
+            </li>
+            <li>
+              <a href="layout-collapsed-sidebar.html" class="">Static Sidebar</a>
+            </li>
+            <li>
+              <a href="layout-chat-open.html" class="">Static Sidebar &amp; Chat Open</a>
+            </li>
+            <li>
+              <a href="layout-sidebar-collapsed-with-userinfo-links.html" class="">Static Sidebar &amp; User Info
+                Links</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="col-sm-4">
+
+        <div class="layout-variant">
+          <div class="layout-img">
+            <a href="layout-right-collapsed-sidebar.html">
+              <img src="assets/images/layouts/layout-sidebar-right-collapsed.png"/>
+            </a>
+          </div>
+          <div class="layout-name">
+            <a href="layout-right-collapsed-sidebar.html">Collapsed Right Sidebar</a>
+          </div>
+          <ul class="layout-links">
+            <li>
+              <a href="layout-right-collapsed-sidebar.html" class="disabled">
+                <del>Fixed Sidebar</del>
+              </a>
+            </li>
+            <li>
+              <a href="layout-right-collapsed-sidebar.html" class="">Static Sidebar</a>
+            </li>
+            <li>
+              <a href="layout-right-collapsed-sidebar-chat-open.html" class="">Static Sidebar &amp; Chat Open</a>
+            </li>
+            <li>
+              <a href="layout-sidebar-collapsed-right-with-userinfo-links.html" class="">Static Sidebar &amp; User Info
+                Links</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="col-sm-4">
+
+        <div class="layout-variant">
+          <div class="layout-img">
+            <a href="layout-horizontal-menu.html">
+              <img src="assets/images/layouts/layout-horizontal.png"/>
+            </a>
+          </div>
+          <div class="layout-name">
+            <a href="layout-horizontal-menu.html">Horizontal Menu</a>
+          </div>
+          <ul class="layout-links">
+            <li>
+              <a href="layout-horizontal-menu.html" class="">Fixed to Top</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-menu-static.html" class="">Static on Top</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-menu-boxed.html" class="">Boxed Content with Horizontal Menu</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-menu-click-to-open-subs.html" class="">Click to Open Submenus</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-menu-min.html" class="">Minimal Horizontal Menu</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="col-sm-4">
+
+        <div class="layout-variant">
+          <div class="layout-img">
+            <a href="layout-horizontal-plus-sidebar.html">
+              <img src="assets/images/layouts/layout-sidebar-horizontal.png"/>
+            </a>
+          </div>
+          <div class="layout-name">
+            <a href="layout-horizontal-plus-sidebar.html">Sidebar &amp; Horizontal Menu</a>
+          </div>
+          <ul class="layout-links">
+            <li>
+              <a href="layout-horizontal-plus-sidebar.html" class="">Fixed Sidebar &amp; Horizontal Menu</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-sidebar-menu-static.html" class="">Static Sidebar &amp; Horizontal Menu</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-fixed-sidebar-menu-static.html" class="">Static Sidebar, Fixed Horizontal
+                Menu</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-plus-sidebar-userinfo-links.html" class="">Fixed Sidebar &amp; Horizontal Menu
+                with User Info</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="col-sm-4">
+
+        <div class="layout-variant">
+          <div class="layout-img">
+            <a href="layout-horizontal-right-sidebar-menu.html">
+              <img src="assets/images/layouts/layout-horizontal-right-sidebar.png"/>
+            </a>
+          </div>
+          <div class="layout-name">
+            <a href="layout-horizontal-right-sidebar-menu.html">Right Sidebar &amp; Horizontal Menu</a>
+          </div>
+          <ul class="layout-links">
+            <li>
+              <a href="layout-horizontal-right-sidebar-menu.html" class="">Fixed Sidebar &amp; Horizontal Menu</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-right-sidebar-menu-static.html" class="">Static Sidebar &amp; Horizontal
+                Menu</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-right-fixed-sidebar-menu-static.html" class="">Static Sidebar, Fixed Horizontal
+                Menu</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-plus-right-sidebar-userinfo-links.html" class="">Fixed Sidebar &amp; Horizontal
+                Menu with User Info</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="col-sm-4">
+
+        <div class="layout-variant layout-current">
+          <div class="layout-img">
+            <a href="layout-horizontal-sidebar-menu-collapsed.html">
+              <img src="assets/images/layouts/layout-sidebar-collapsed-horizontal.png"/>
+            </a>
+          </div>
+          <div class="layout-name">
+            <a href="layout-horizontal-sidebar-menu-collapsed.html">Collapsed Sidebar &amp; Horizontal Menu</a>
+          </div>
+          <ul class="layout-links">
+            <li>
+              <a href="layout-horizontal-sidebar-menu-collapsed.html" class="layout-mode-current">Static Sidebar &amp;
+                Fixed Horizontal Menu</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-static-sidebar-menu-collapsed.html" class="">Static Sidebar &amp; Horizontal
+                Menu</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+
+      <div class="col-sm-4">
+
+        <div class="layout-variant">
+          <div class="layout-img">
+            <a href="layout-horizontal-sidebar-menu-collapsed-right.html">
+              <img src="assets/images/layouts/layout-horizontal-right-sidebar-collapsed.png"/>
+            </a>
+          </div>
+          <div class="layout-name">
+            <a href="layout-horizontal-sidebar-menu-collapsed-right.html">Right Collapsed Sidebar &amp; Horizontal
+              Menu</a>
+          </div>
+          <ul class="layout-links">
+            <li>
+              <a href="layout-horizontal-sidebar-menu-collapsed-right.html" class="">Static Sidebar &amp; Fixed
+                Horizontal Menu</a>
+            </li>
+            <li>
+              <a href="layout-horizontal-static-sidebar-menu-collapsed-right.html" class="">Static Sidebar &amp;
+                Horizontal Menu</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
-  <!-- /.container -->
+
+</div>
+<!-- Main Footer -->
+<!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
+<!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
+<!-- Or class "fixed" to  always fix the footer to the end of page -->
+<footer class="main-footer sticky footer-type-1">
+
+  <div class="footer-inner">
+
+    <!-- Add your copyright text here -->
+    <div class="footer-text">
+      &copy; 2014
+      <strong>Xenon</strong>
+      theme by <a href="http://laborator.co" target="_blank">Laborator</a> -
+      <a href="http://themeforest.net/item/xenon-bootstrap-admin-theme/9059661?ref=Laborator" target="_blank">Purchase
+        for only <strong>23$</strong></a>
+    </div>
+
+
+    <!-- Go to Top Link, just add rel="go-top" to any link to add this functionality -->
+    <div class="go-up">
+
+      <a href="#" rel="go-top">
+        <i class="fa-angle-up"></i>
+      </a>
+
+    </div>
+
+  </div>
+
 </footer>
