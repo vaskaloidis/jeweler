@@ -2,6 +2,9 @@
 A CRM for Programmers
 
 
+## Development
+[Add Fields to Devise Models - https://jacopretorius.net/2014/03/adding-custom-fields-to-your-devise-user-model-in-rails-4.html](https://jacopretorius.net/2014/03/adding-custom-fields-to-your-devise-user-model-in-rails-4.html)
+
 ## Possible Frontend Template Purchases
 [Alba Bootstrap HTML Template - $10](https://themeforest.net/item/alba-startupsoftware-html-template/20570883?s_rank=1)
 
