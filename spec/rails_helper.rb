@@ -1,4 +1,11 @@
+ENV["RAILS_ENV"] ||= 'test'
+
 require 'spec_helper'
+require File.expand_path("../../config/environment", __FILE__)
+
+require 'rspec/rails'
+require 'support/factory_bot'
+require 'support/database_cleaner'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -23,7 +30,9 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
 
-  Capybara.use_default_driver
+  # Dir[Rails.root.join('apps/models/*.rb')].each { |f| require f }
+
+  config.use_transactional_fixtures = false
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -31,7 +40,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  # config.use_transactional_fixtures = true
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and

@@ -22,21 +22,20 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/rspec'
 
+require 'shoulda/matchers'
+
+Capybara.use_default_driver
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
-  config.use_transactional_fixtures = false
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-  end
 
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
