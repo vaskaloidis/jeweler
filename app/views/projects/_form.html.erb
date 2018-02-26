@@ -1,0 +1,112 @@
+<%= form_with(model: project, local: true) do |form| %>
+  <% if project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+      <ul>
+      <% project.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :language %>
+    <%= form.text_field :language %>
+  </div>
+
+  <div class="field">
+    <%= form.label :phase_total %>
+    <%= form.number_field :phase_total %>
+  </div>
+
+  <div class="field">
+    <%= form.label :phase_current %>
+    <%= form.number_field :phase_current %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :github_url %>
+    <%= form.text_field :github_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :github_secondary_url %>
+    <%= form.text_field :github_secondary_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :readme_file %>
+    <%= form.text_field :readme_file %>
+  </div>
+
+  <div class="field">
+    <%= form.label :readme_remote %>
+    <%= form.check_box :readme_remote %>
+  </div>
+
+  <div class="field">
+    <%= form.label :stage_website_url %>
+    <%= form.text_field :stage_website_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :demo_url %>
+    <%= form.text_field :demo_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :prod_url %>
+    <%= form.text_field :prod_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :complete %>
+    <%= form.check_box :complete %>
+  </div>
+
+  <div class="field">
+    <%= form.label :stage_travis_api_url %>
+    <%= form.text_field :stage_travis_api_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :stage_travis_api_token %>
+    <%= form.text_field :stage_travis_api_token %>
+  </div>
+
+  <div class="field">
+    <%= form.label :prod_travis_api_token %>
+    <%= form.text_field :prod_travis_api_token %>
+  </div>
+
+  <div class="field">
+    <%= form.label :prod_travis_api_url %>
+    <%= form.text_field :prod_travis_api_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :coveralls_api_url %>
+    <%= form.text_field :coveralls_api_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :customers_id %>
+    <%= form.text_field :customers_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,99 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @project.name %>
+</p>
+
+<p>
+  <strong>Language:</strong>
+  <%= @project.language %>
+</p>
+
+<p>
+  <strong>Phase total:</strong>
+  <%= @project.phase_total %>
+</p>
+
+<p>
+  <strong>Phase current:</strong>
+  <%= @project.phase_current %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @project.description %>
+</p>
+
+<p>
+  <strong>Github url:</strong>
+  <%= @project.github_url %>
+</p>
+
+<p>
+  <strong>Github secondary url:</strong>
+  <%= @project.github_secondary_url %>
+</p>
+
+<p>
+  <strong>Readme file:</strong>
+  <%= @project.readme_file %>
+</p>
+
+<p>
+  <strong>Readme remote:</strong>
+  <%= @project.readme_remote %>
+</p>
+
+<p>
+  <strong>Stage website url:</strong>
+  <%= @project.stage_website_url %>
+</p>
+
+<p>
+  <strong>Demo url:</strong>
+  <%= @project.demo_url %>
+</p>
+
+<p>
+  <strong>Prod url:</strong>
+  <%= @project.prod_url %>
+</p>
+
+<p>
+  <strong>Complete:</strong>
+  <%= @project.complete %>
+</p>
+
+<p>
+  <strong>Stage travis api url:</strong>
+  <%= @project.stage_travis_api_url %>
+</p>
+
+<p>
+  <strong>Stage travis api token:</strong>
+  <%= @project.stage_travis_api_token %>
+</p>
+
+<p>
+  <strong>Prod travis api token:</strong>
+  <%= @project.prod_travis_api_token %>
+</p>
+
+<p>
+  <strong>Prod travis api url:</strong>
+  <%= @project.prod_travis_api_url %>
+</p>
+
+<p>
+  <strong>Coveralls api url:</strong>
+  <%= @project.coveralls_api_url %>
+</p>
+
+<p>
+  <strong>Customers:</strong>
+  <%= @project.customers %>
+</p>
+
+<%= link_to 'Edit', edit_project_path(@project) %> |
+<%= link_to 'Back', projects_path %>

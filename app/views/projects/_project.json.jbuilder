@@ -1,0 +1,2 @@
+json.extract! project, :id, :name, :language, :phase_total, :phase_current, :description, :github_url, :github_secondary_url, :readme_file, :readme_remote, :stage_website_url, :demo_url, :prod_url, :complete, :stage_travis_api_url, :stage_travis_api_token, :prod_travis_api_token, :prod_travis_api_url, :coveralls_api_url, :customers_id, :created_at, :updated_at
+json.url project_url(project, format: :json)
