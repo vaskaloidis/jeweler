@@ -48,17 +48,22 @@ group :production do
 end
 
 group :development, :test do
+  gem 'faker'
+  gem 'rspec'
   gem 'rspec-rails', '~> 3.7'
   gem 'capybara'
   gem 'awesome_print'
   gem 'better_errors'
   gem 'launchy'
   gem 'database_cleaner'
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
   # gem 'web-console' # Add to page: <%= console %>
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 end
 
 group :development do
+  gem 'pry-rails'
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
