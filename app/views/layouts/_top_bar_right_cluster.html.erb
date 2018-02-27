@@ -162,7 +162,7 @@
 
     <li class="dropdown user-profile">
       <a href="#" data-toggle="dropdown">
-        <img src="assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28"/>
+        <img src="<%= image_path 'user-1.png' %>" alt="user-image" class="img-circle img-inline userpic-32" width="28"/>
         <span>
 							<%= current_user.email %>
           <i class="fa-angle-down"></i>
@@ -189,8 +189,10 @@
           </a>
         </li>
         <li class="last">
-          <i class="fa-lock"></i>
-          <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link' %>
+          <a href="<%= destroy_user_session_path %>">
+            <i class="fa-lock"></i>
+            Logout
+          </a>
         </li>
       </ul>
     </li>
