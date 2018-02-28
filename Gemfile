@@ -48,6 +48,7 @@ group :production do
 end
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'faker'
   gem 'rspec'
   gem 'rspec-rails', '~> 3.7'
