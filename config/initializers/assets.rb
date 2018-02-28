@@ -49,3 +49,6 @@ Rails.application.config.assets.precompile += %w( devexpress-web-14.1/js/dx.all.
 Rails.application.config.assets.precompile += %w( devexpress-web-14.1/js/dx.chartjs.j )
 Rails.application.config.assets.precompile += %w( toastr/toastr.min.js )
 Rails.application.config.assets.precompile += %w( xenon-custom.js );
+
+# Rails.application.config.assets.precompile += %w( jewler-logo-full-black.png );
+# Rails.application.config.assets.precompile += %w( jewler-logo-mini-small-black.png );
