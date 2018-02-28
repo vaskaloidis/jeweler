@@ -30,6 +30,8 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
 
+  config.include Devise::Test::ControllerHelpers, type: :controller
+
   # Dir[Rails.root.join('apps/models/*.rb')].each { |f| require f }
 
   config.use_transactional_fixtures = false

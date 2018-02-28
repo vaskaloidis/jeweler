@@ -21,11 +21,9 @@ require 'rspec/rails'
 
 require 'capybara/rails'
 require 'capybara/rspec'
-
-require 'shoulda/matchers'
-
 Capybara.use_default_driver
 
+require 'shoulda/matchers'
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
@@ -35,7 +33,6 @@ end
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
-
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

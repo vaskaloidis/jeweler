@@ -7,9 +7,14 @@ FactoryBot.define do
     website_url Faker::Internet.url
     bio Faker::ChuckNorris.fact
     location Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
-    factory :customer_projects, class: ProjectCustomer do
-      association :user, factory: :user
-      association :project, factory: :project
-    end
+  end
+  factory :project do
+    name Faker::Company.catch_phrase
+    language Faker::ProgrammingLanguage.name
+    demo_url Faker::Internet.url
+    prod_url Faker::Internet.url
+    github_url Faker::Internet.url('https://github.com/vaskaloidis/')
+    description Faker::ChuckNorris.fact
+    association :owner, factory: :user
   end
 end
