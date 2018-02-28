@@ -31,3 +31,7 @@
 
 .DS_Store
 .idea/
+.env
+.idea/workspace.xml
+.idea/jewlerCRM.iml
+.DS_Store
