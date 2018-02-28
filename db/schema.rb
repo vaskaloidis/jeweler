@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_02_26_173501) do
+ActiveRecord::Schema.define(version: 2018_02_27_231012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2018_02_26_173501) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "language"
     t.integer "phase_total"
     t.integer "phase_current"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 2018_02_26_173501) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["github_secondary_url"], name: "index_projects_on_github_secondary_url", unique: true
+    t.index ["github_url"], name: "index_projects_on_github_url", unique: true
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
@@ -65,14 +67,15 @@ ActiveRecord::Schema.define(version: 2018_02_26_173501) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
-    t.string "first_name"
-    t.string "last_name"
+    t.string "first_name", null: false
+    t.string "last_name", null: false
     t.string "location"
     t.string "website_url"
     t.string "bio"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
+    t.string "tagline"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

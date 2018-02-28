@@ -6,6 +6,10 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :customer_projects
   accepts_nested_attributes_for :owner_projects
 
+  validates :first_name, :presence => true
+  validates :last_name, :presence => true
+
+  # attr_accessor :first_name, :last_name
 
   # Include default devise modules. Others available are:
   #  :timeoutable and :omniauthable

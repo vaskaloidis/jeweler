@@ -1,5 +1,4 @@
 # Seeds
-
 require 'faker'
 
 # Clear Table Data
@@ -8,50 +7,56 @@ Project.delete_all
 ProjectCustomer.delete_all
 
 # Seed Tables
+
+# My User
 u = User.new
 u.email = 'vas.kaloidis@gmail.com'
 u.password = 'password123'
 u.password_confirmation = 'password123'
-u.first_name = Faker::Name.first_name
-u.last_name = Faker::Name.last_name
-u.website_url = Faker::Internet.url
-u.bio = Faker::ChuckNorris.fact
-u.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
+u.first_name = "Vas"
+u.last_name = "Kaloidis"
+u.website_url = 'http://vkaloidis.herokuapp.com'
+u.bio = 'A Java and Ruby on Rails developer, trying to rule the world.'
+u.tagline = 'Ruby on Rails Developer'
+u.location = 'Woodbury, CT'
 u.save
 
-# 3 Customers
+# 3 Generated Customers
 c1 = User.new
-c1.email = Faker::Internet.email
+c1.email = 'v.askaloidis@gmail.com'
 pass = Faker::Internet.password
 c1.password = pass
 c1.password_confirmation = pass
 c1.first_name = Faker::Name.first_name
 c1.last_name = Faker::Name.last_name
 c1.website_url = Faker::Internet.url
+c1.tagline = 'A Robot User'
 c1.bio = Faker::ChuckNorris.fact
 c1.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
 c1.save
 
 c2 = User.new
-c2.email = Faker::Internet.email
+c2.email = 'kaloidisv@gmail.com'
 pass = Faker::Internet.password
 c2.password = pass
 c2.password_confirmation = pass
 c2.first_name = Faker::Name.first_name
 c2.last_name = Faker::Name.last_name
 c2.website_url = Faker::Internet.url
+c2.tagline = 'Some User Tagline'
 c2.bio = Faker::ChuckNorris.fact
 c2.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
 c2.save
 
 c3 = User.new
-c3.email = Faker::Internet.email
+c3.email = 'v.a.skaloidis@gmail.com'
 pass = Faker::Internet.password
 c3.password = pass
 c3.password_confirmation = pass
 c3.first_name = Faker::Name.first_name
 c3.last_name = Faker::Name.last_name
 c3.website_url = Faker::Internet.url
+c3.tagline = 'I am Awesome'
 c3.bio = Faker::ChuckNorris.fact
 c3.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
 c3.save
@@ -65,7 +70,6 @@ p.demo_url = 'http://bluehelmet.herokuapp.com'
 p.prod_url = 'http://bluehelmet.herokuapp.com'
 p.github_url = 'https://github.com/vaskaloidis/jewlercrm'
 p.description = 'A website for the Blue Helmet Software Company, written in Ruby on Rails, hosted on Heroku'
-p.owner = u
 p.save
 
 # Project Customers
@@ -88,4 +92,5 @@ pc.save
 puts 'Test Customer 1 Project Name - '
 puts c1.customer_projects.first.name
 puts 'Test Project Customer 1 name - '
-puts p.customers.first.email
+puts p.customers.first.first_name
+puts p.customers.first.last_name
