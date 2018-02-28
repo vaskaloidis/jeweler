@@ -8,7 +8,7 @@
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
-  <% stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
+  <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
   <%= stylesheet_link_tag "fonts/linecons/css/linecons" %>
   <%= stylesheet_link_tag "fonts/fontawesome/css/font-awesome.min" %>
   <%= stylesheet_link_tag "bootstrap" %>
@@ -28,19 +28,19 @@
 
 <%= render 'layouts/settings_pane' %>
 
-<%= render 'layouts/top_bar' %>
-
 <div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
-
-  <!-- Add "fixed" class to make the sidebar fixed always to the browser viewport. -->
-  <!-- Adding class "toggle-others" will keep only one menu item open at a time. -->
-  <!-- Adding class "collapsed" collapse sidebar root elements and show only icons. -->
 
   <% if user_signed_in? %>
     <%= render 'layouts/sidebar' %>
   <% end %>
 
   <div class="main-content">
+
+    <% if user_signed_in? %>
+      <%= render 'layouts/top_bar_authenticated' %>
+    <% else %>
+      <%= render 'layouts/top_bar' %>
+    <% end %>
 
     <% if notice %>
       <p class="alert alert-success"><%= notice %></p>
@@ -65,11 +65,8 @@
 
     <!-- Add your copyright text here -->
     <div class="footer-text">
-      &copy; 2014
-      <strong>Xenon</strong>
-      theme by <a href="http://laborator.co" target="_blank">Laborator</a> -
-      <a href="http://themeforest.net/item/xenon-bootstrap-admin-theme/9059661?ref=Laborator" target="_blank">Purchase
-        for only <strong>23$</strong></a>
+      &copy; 2018
+      <strong>JewlerCRM</strong> - A <a href="http://vkaloidis.herokuapp.com">Vasilios Kaloidis Production</a>
     </div>
 
 
