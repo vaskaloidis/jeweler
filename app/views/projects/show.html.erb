@@ -1,9 +1,33 @@
-<p id="notice"><%= notice %></p>
+<% if notice != '' && notice != nil %>
+  <p class="alert alert-success"><%= notice %></p>
+<% end %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @project.name %>
-</p>
+<%#= render 'projects/breadcrumb' %>
+
+<section class="profile-env">
+
+  <div class="row">
+    <div class="col-sm-3">
+      <%= render 'projects/project_image' %>
+    </div>
+    <div class="col-sm-9">
+      <%= render 'projects/tabs' %>
+    </div>
+  </div>
+
+</section>
+
+
+<div class="row">
+  <div class="col-xs-12">
+    <%= render 'projects/create_note' %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <%= render 'projects/timeline' %>
+  </div>
+</div>
 
 <p>
   <strong>Language:</strong>

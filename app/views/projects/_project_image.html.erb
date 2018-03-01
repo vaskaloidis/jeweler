@@ -1,0 +1,51 @@
+<!-- User Info Sidebar -->
+<div class="user-info-sidebar">
+
+  <a href="#" class="user-img">
+    <img src="<%= image_path 'user-4.png' %>" alt="user-img" class="img-cirlce img-responsive img-thumbnail">
+  </a>
+
+  <a href="#" class="user-name">
+    <%= @project.name %>
+    <span class="user-status is-online"></span>
+  </a>
+
+  <span class="user-title">
+        <%= @project.language %>
+  </span>
+
+  <hr>
+
+  <ul class="list-unstyled user-info-list">
+    <li>
+      <i class="fa-home"></i>
+      Prishtina, Kosovo
+    </li>
+    <li>
+      <i class="fa-briefcase"></i>
+      <a href="#">Laborator</a>
+    </li>
+    <li>
+      <i class="fa-graduation-cap"></i>
+      University of Bologna
+    </li>
+  </ul>
+
+  <hr>
+
+  <ul class="list-unstyled user-friends-count">
+    <li>
+      <span>643</span>
+      followers
+    </li>
+    <li>
+      <span>108</span>
+      following
+    </li>
+  </ul>
+
+  <button type="button" class="btn btn-success btn-block text-left">
+    Following
+    <i class="fa-check pull-right"></i>
+  </button>
+</div>

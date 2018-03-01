@@ -77,45 +77,44 @@
 
 
     <ul id="main-menu" class="main-menu">
-      <!-- add class "multiple-expanded" to allow multiple submenus to open -->
-      <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-
-      <% if !@customer_projects.empty? %>
+      <% if !current_user.owner_projects.empty? %>
         <li class="opened active">
-          <i class="linecons-cog"></i>
-          <span class="title">Customer Projects</span>
+          <a href="<%= projects_url %>">
+            <i class="linecons-star"></i>
+            <span class="title">Owner Projects</span>
+          </a>
           <ul>
-            <% @customer_projects.each do |cp| %>
+            <% current_user.owner_projects.each do |cp| %>
               <li>
-                <a href="<%= project">
-                  <span class="title">Dashboard 1</span>
+                <div style=" white-space: nowrap;">
+                  <a href="<%= project_path cp %>">
+                    <i class="linecons-desktop"></i>
+                    <span class="title"><%= cp.name %></span>
+                  </a>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+      <% if !current_user.customer_projects.empty? %>
+        <li class="opened active">
+          <a href="<%= projects_url %>">
+            <i class="linecons-params"></i>
+            <span class="title">Customer Projects</span>
+          </a>
+          <ul>
+            <% current_user.customer_projects.each do |cp| %>
+              <li>
+                <a href="<%= project_path cp %>">
+                  <i class="linecons-desktop"></i>
+                  <span class="title"><%= cp.name %></span>
                 </a>
               </li>
             <% end %>
           </ul>
         </li>
       <% end %>
-      <li class="opened active">
-        <a href="dashboard-1.html">
-          <i class="linecons-cog"></i>
-          <span class="title">Customer Projects</span>
-        </a>
-        <ul>
-          <li>
-            <a href="dashboard-1.html">
-              <span class="title">Dashboard 1</span>
-            </a>
-          </li>
-          <li>
-            <a href="update-highlights.html">
-              <span class="title">
-                <i class="fa-edit"></i>
-                Create Project
-              </span>
-            </a>
-          </li>
-        </ul>
-      </li>
     </ul>
 
   </div>
