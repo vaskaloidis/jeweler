@@ -17,7 +17,8 @@
 //= require activestorage
 //= require turbolinks
 
-//= require bootstrap.min.js
+//= https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js
+// require bootstrap.min.js
 //= require TweenMax.min.js
 //= require resizeable.js
 //= require joinable.js
