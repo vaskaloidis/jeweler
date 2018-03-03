@@ -1,9 +1,24 @@
 #JewlerCRM
 A CRM for Programmers
 
+## Tasks
+- Implement GitHub Gem 
+  - Load issues, 
+  - Create issues
+  - Load existing commits and post them to notes based on date
+  - Setup webhooks for future commits (OR schedule a cron sidekiq script) 
+	- https://github.com/piotrmurach/github#2-configuration
+	- http://piotrmurach.github.io/github/
+- Git statistics gem
+- Code Climate - https://codeclimate.com
+- Travis CI - https://travis-ci.org/tomgi/git_stats
+- 
 
 ## Development
 [Add Fields to Devise Models - https://jacopretorius.net/2014/03/adding-custom-fields-to-your-devise-user-model-in-rails-4.html](https://jacopretorius.net/2014/03/adding-custom-fields-to-your-devise-user-model-in-rails-4.html)
+
+## Paperclip
+- Paperclip and Heroku + S3 -  https://gist.github.com/belgoros/b289a0b57b52d16b99d436ca9b80417f
 
 ## Possible Frontend Template Purchases
 [Alba Bootstrap HTML Template - $10](https://themeforest.net/item/alba-startupsoftware-html-template/20570883?s_rank=1)
