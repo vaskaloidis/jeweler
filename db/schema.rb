@@ -10,10 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_02_27_231012) do
+ActiveRecord::Schema.define(version: 2018_03_03_154458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "discussions", force: :cascade do |t|
+    t.bigint "note_id"
+    t.bigint "user_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["note_id"], name: "index_discussions_on_note_id"
+    t.index ["user_id"], name: "index_discussions_on_user_id"
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.text "content"
+    t.integer "note_type", default: 1
+    t.string "git_commit_id"
+    t.bigint "project_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_notes_on_project_id"
+    t.index ["user_id"], name: "index_notes_on_user_id"
+  end
 
   create_table "project_customers", force: :cascade do |t|
     t.bigint "project_id"
@@ -45,6 +67,8 @@ ActiveRecord::Schema.define(version: 2018_02_27_231012) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "github_branch", default: "master"
+    t.string "github_secondary_branch", default: "master"
     t.index ["github_secondary_url"], name: "index_projects_on_github_secondary_url", unique: true
     t.index ["github_url"], name: "index_projects_on_github_url", unique: true
     t.index ["user_id"], name: "index_projects_on_user_id"
@@ -82,4 +106,8 @@ ActiveRecord::Schema.define(version: 2018_02_27_231012) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "discussions", "notes"
+  add_foreign_key "discussions", "users"
+  add_foreign_key "notes", "projects"
+  add_foreign_key "notes", "users"
 end

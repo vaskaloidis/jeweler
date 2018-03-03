@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
-  resources :projects
+
+  resources :project_customers
+  resources :notes
+  resources :discussions
+
+  resources :projects do
+    resources :project_customers
+    resources :notes do
+      resources :discussions
+    end
+  end
 
   devise_for :users
 

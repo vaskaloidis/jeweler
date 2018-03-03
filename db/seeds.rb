@@ -5,6 +5,8 @@ require 'faker'
 User.delete_all
 Project.delete_all
 ProjectCustomer.delete_all
+Note.delete_all
+Discussion.delete_all
 
 # Seed Tables
 
@@ -24,7 +26,7 @@ u.save
 
 # 3 Generated Customers
 c1 = User.new
-c1.email = 'v.askaloidis@gmail.com'
+c1.email = Faker::Internet.email
 pass = Faker::Internet.password
 c1.password = pass
 c1.password_confirmation = pass
@@ -38,7 +40,7 @@ puts c1.confirm
 c1.save
 
 c2 = User.new
-c2.email = 'kaloidisv@gmail.com'
+c2.email = Faker::Internet.email
 pass = Faker::Internet.password
 c2.password = pass
 c2.password_confirmation = pass
@@ -52,7 +54,7 @@ puts c2.confirm
 c2.save
 
 c3 = User.new
-c3.email = 'v.a.skaloidis@gmail.com'
+c3.email = Faker::Internet.email
 pass = Faker::Internet.password
 c3.password = pass
 c3.password_confirmation = pass
@@ -74,6 +76,8 @@ p.demo_url = 'http://bluehelmet.herokuapp.com'
 p.prod_url = 'http://bluehelmet.herokuapp.com'
 p.github_url = 'https://github.com/vaskaloidis/jewlercrm'
 p.description = 'A website for the Blue Helmet Software Company, written in Ruby on Rails, hosted on Heroku'
+p.phase_total = 8
+p.phase_current = 1
 p.save
 
 # Project Customers
@@ -81,16 +85,34 @@ pc = ProjectCustomer.new
 pc.user = c1
 pc.project = p
 pc.save
-
 pc = ProjectCustomer.new
 pc.user = c2
 pc.project = p
 pc.save
-
 pc = ProjectCustomer.new
 pc.user = c3
 pc.project = p
 pc.save
+
+# Project Notes
+n = Note.new
+n.content = 'Project development is going well. The User interface portion of development has been started
+because the backend was completed successfully.'
+n.author = c1
+n.project = p
+n.save
+n = Note.new
+n.note_type = "note"
+n.content = 'We hd asome issues with the frontend UI so we are switching Javascript frameworks to VueJS'
+n.author = c1
+n.project = p
+n.save
+n = Note.new
+n.note_type = "demo"
+n.content = 'We have a demo available at http://bluehelmet.herokuapp.com'
+n.author = c1
+n.project = p
+n.save
 
 # Customer Projects
 p = Project.new
@@ -101,6 +123,8 @@ p.prod_url = Faker::Internet.url
 p.github_url = Faker::Internet.url('github.com')
 p.github_secondary_url = Faker::Internet.url('github.com')
 p.description = Faker::Company.catch_phrase
+p.phase_total = 8
+p.phase_current = 1
 p.owner = c1
 p.save
 
@@ -125,6 +149,8 @@ p.prod_url = Faker::Internet.url
 p.github_url = Faker::Internet.url('github.com')
 p.github_secondary_url = Faker::Internet.url('github.com')
 p.description = Faker::Company.catch_phrase
+p.phase_total = 8
+p.phase_current = 1
 p.owner = c1
 p.save
 
@@ -149,6 +175,8 @@ p.prod_url = Faker::Internet.url
 p.github_url = Faker::Internet.url('github.com')
 p.github_secondary_url = Faker::Internet.url('github.com')
 p.description = Faker::Company.catch_phrase
+p.phase_total = 8
+p.phase_current = 1
 p.owner = c2
 p.save
 

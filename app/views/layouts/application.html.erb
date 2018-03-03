@@ -5,15 +5,15 @@
 
   <%= csrf_meta_tags %>
 
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
 
   <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
   <%= stylesheet_link_tag "fonts/linecons/css/linecons" %>
   <%= stylesheet_link_tag "fonts/fontawesome/css/font-awesome.min" %>
-  <%#= stylesheet_link_tag "bootstrap" %>
+  <%= stylesheet_link_tag "bootstrap" %>
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
   <%= stylesheet_link_tag "xenon-core" %>
   <%= stylesheet_link_tag "xenon-forms" %>
   <%= stylesheet_link_tag "xenon-components" %>
@@ -28,9 +28,10 @@
 
 <body class="page-body">
 
-<%= render 'layouts/settings_pane' %>
+<%#= render 'layouts/settings_pane' %>
 
-<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+<div class="page-container">
+  <!-- add class "sidebar-collapsed" to close sidebar by default -->
 
   <% if user_signed_in? %>
     <%= render 'layouts/sidebar' %>
@@ -71,10 +72,7 @@
       <strong>JewlerCRM</strong> - A <a href="http://vkaloidis.herokuapp.com">Vasilios Kaloidis Production</a>
     </div>
 
-
-    <!-- Go to Top Link, just add rel="go-top" to any link to add this functionality -->
     <div class="go-up">
-
       <a href="#" rel="go-top">
         <i class="fa-angle-up"></i>
       </a>

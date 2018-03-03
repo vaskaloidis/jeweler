@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @note.content %>
+</p>
+
+<p>
+  <strong>Note type:</strong>
+  <%= @note.note_type %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @note.content %>
+</p>
+
+<p>
+  <strong>Git commit:</strong>
+  <%= @note.git_commit_id %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @note.project %>
+</p>
+
+<p>
+  <strong>Discussion:</strong>
+  <%= @note.discussion %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @note.author %>
+</p>
+
+<%= link_to 'Edit', edit_note_path(@note) %> |
+<%= link_to 'Back', notes_path %>

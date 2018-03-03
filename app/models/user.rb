@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :owner_projects, class_name: 'Project', inverse_of: 'owner'
+  has_many :notes, class_name: 'Note', inverse_of: 'author'
   has_many :project_customers
   has_many :customer_projects, :source => :project, :through => :project_customers
 
@@ -16,4 +17,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :lockable, :confirmable
+
+  def first_last_name_email
+    "#{first_name} #{last_name} - #{email}"
+  end
 end
