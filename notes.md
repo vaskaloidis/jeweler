@@ -12,22 +12,16 @@ A CRM for Programmers
 - Git statistics gem
 - Code Climate - https://codeclimate.com
 - Travis CI - https://travis-ci.org/tomgi/git_stats
-- 
-
-## Development
-[Add Fields to Devise Models - https://jacopretorius.net/2014/03/adding-custom-fields-to-your-devise-user-model-in-rails-4.html](https://jacopretorius.net/2014/03/adding-custom-fields-to-your-devise-user-model-in-rails-4.html)
-
-## Paperclip
-- Paperclip and Heroku + S3 -  https://gist.github.com/belgoros/b289a0b57b52d16b99d436ca9b80417f
-
-## Possible Frontend Template Purchases
-[Alba Bootstrap HTML Template - $10](https://themeforest.net/item/alba-startupsoftware-html-template/20570883?s_rank=1)
-
-[Apnew Multipurpose Landing Page Template - $17](https://themeforest.net/item/apnew-multipurpose-landing-page-template/16154013?s_rank=8)
-
-[Kodo - $16](https://themeforest.net/item/kodo-business-app-template/18156327?s_rank=7)
 
 
+
+## Development Links
+- https://launchschool.com/blog/handling-emails-in-rails
+- https://jacopretorius.net/2014/03/adding-custom-fields-to-your-devise-user-model-in-rails-4.html](https://jacopretorius.net/2014/03/adding-custom-fields-to-your-devise-user-model-in-rails-4.html
+
+
+## Carrierwave
+- https://github.com/carrierwaveuploader/carrierwave/wiki/How-to%3A-Make-Carrierwave-work-on-Heroku
 
 ## API Documentation
 
@@ -105,3 +99,10 @@ Respnse:
   "warnings": [ ]
 }
 ```
+
+## Possible Frontend Template Purchases
+[Alba Bootstrap HTML Template - $10](https://themeforest.net/item/alba-startupsoftware-html-template/20570883?s_rank=1)
+
+[Apnew Multipurpose Landing Page Template - $17](https://themeforest.net/item/apnew-multipurpose-landing-page-template/16154013?s_rank=8)
+
+[Kodo - $16](https://themeforest.net/item/kodo-business-app-template/18156327?s_rank=7)

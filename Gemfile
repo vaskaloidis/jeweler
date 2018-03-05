@@ -12,9 +12,14 @@ gem 'carrierwave', '~> 1.0'
 gem 'rolify'
 gem 'cancancan', '~> 2.0'
 
-gem 'paper_trail'
+gem 'screencap'
 
-# gem 'dotenv-rails', :groups => [:development, :test]
+# gem 'paper_trail'
+
+gem 'font-awesome-rails'
+gem 'redcarpet'
+gem 'carrierwave', '~> 1.0'
+
 gem 'yaml_db'
 
 # gem 'jquery-rails', '1.11.1'
@@ -28,7 +33,7 @@ gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'
 gem 'uglifier', '>= 1.3.0'
 
-gem 'turbolinks', '~> 5'
+# gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 
 # gem 'audited', "~> 4.6" #TODO: Install and configure Audited Gem
