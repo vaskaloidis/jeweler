@@ -1,0 +1,159 @@
+<div class="row">
+  <div class="col-xs-4">
+    <div style="display:none" id="new_note">
+      <h4>Create Note</h4>
+      <%= form_with(model: @note_note, as: :note, url: notes_path, html: {class: "form form-horizontal"}) do |form| %>
+        <div class="form-group">
+          <%= form.text_area :content, class: 'form-control col-xs-3' %>
+          <hr>
+          <%= form.submit "Create Note", :class => 'btn btn-success' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-xs-4">
+    <div style="display:none" id="new_update">
+      <h4>Create Update</h4>
+      <%= form_with(model: @new_update, as: :note, url: notes_path, html: {class: "form form-horizontal"}) do |form| %>
+        <div class="form-group">
+          <%= form.text_area :content, class: 'form-control col-xs-3' %>
+          <hr>
+          <%= form.submit "Create Update", :class => 'btn btn-success' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-xs-4">
+    <div style="display:none" id="new_demo">
+      <h4>Create Demo</h4>
+      <%= form_with(model: @new_demo, as: :note, url: notes_path, html: {class: "form form-horizontal"}) do |form| %>
+        <div class="form-group">
+          <%= form.text_field :content, class: 'form-control col-xs-3' %>
+          <hr>
+          <%= form.submit "Create Demo", :class => 'btn btn-success' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="btn-group btn-group-justified">
+
+    <a class="btn btn-success btn-xs" href="#" onclick="$('#new_note').fadeIn('slow'); return false;">New Note</a>
+    <a class="btn btn-blue btn-xs" href="#" onclick="$('#new_update').fadeIn('slow');return false;">New Update</a>
+    <a class="btn btn-purple btn-xs" href="#" onclick="$('#new_demo').fadeIn('slow'); return false;">New Demo</a>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="timeline-centered">
+
+      <% left = true %>
+
+      <% @project.notes.all.each do |note| %>
+
+        <% if left == true %>
+          <% align_left = 'left-aligned' %>
+          <% left = false %>
+        <% else %>
+          <% left = true %>
+          <% align_left = '' %>
+        <% end %>
+
+        <article class="timeline-entry <%= align_left %>">
+
+          <div class="timeline-entry-inner">
+            <time class="timeline-time"
+                  datetime="<%= note.created_at.strftime("%Y-%b-%d %H:%M") %>">
+              <!--datetime="2014-12-06T03:45"-->
+
+              <span><%= note.created_at.strftime("%H:%M") %></span>
+
+              <% if note.created_at == Date.today %>
+                <span>Today</span>
+              <% elsif note.created_at == Date.yesterday %>
+                <span>Yesterday</span>
+              <% else %>
+                <span><%= note.created_at.strftime("%d %b. %Y") %></span>
+              <% end %>
+            </time>
+
+
+            <% if note.note_type == 'note' %>
+              <div class="timeline-icon timeline-bg-success">
+                <i class="fas fa-sticky-note"></i>
+              </div>
+              <div class="timeline-label">
+                <h2><a href="#">
+                  <%= note.author.first_name %>
+                  <%= note.author.last_name %>
+                </a>
+                  <span>posted a Note</span>
+                </h2>
+                <p><%= note.content %></p>
+              </div>
+            <% elsif note.note_type == 'demo' %>
+              <div class="timeline-icon timeline-bg-red">
+                <i class="fa-binoculars"></i>
+              </div>
+              <div class="timeline-label">
+                <h2><a href="#">
+                  <%= note.author.first_name %>
+                  <%= note.author.last_name %>
+                </a>
+                  <span>posted a Demo</span>
+                </h2>
+                <img src="<%= note.image.url %>" class="img-responsive img-rounded full-width">
+              </div>
+            <% elsif note.note_type == 'project_update' %>
+              <div class="timeline-icon timeline-bg-warning">
+                <i class="fas fa-sticky-note"></i>
+              </div>
+              <div class="timeline-label">
+                <h2><a href="#">
+                  <%= note.author.first_name %>
+                  <%= note.author.last_name %>
+                </a>
+                  <span>posted a Project Update</span>
+                </h2>
+                <p><%= note.content %></p>
+              </div>
+            <% else %>
+              <div class="timeline-icon timeline-bg-success">
+                <i class="fas fa-sticky-note"></i>
+              </div>
+              <div class="timeline-label">
+                <h2><a href="#">
+                  <%= note.author.first_name %>
+                  <%= note.author.last_name %>
+                </a>
+                  <span>posted a note</span>
+                </h2>
+                <p><%= note.content %></p>
+              </div>
+            <% end %>
+          </div>
+
+        </article>
+
+      <% end %>
+
+
+
+      <article class="timeline-entry begin">
+        <div class="timeline-entry-inner">
+
+          <div class="timeline-icon">
+            <i class="fa-briefcase"></i>
+          </div>
+
+        </div>
+      </article>
+
+    </div>
+  </div>
+</div>

@@ -1,4 +1,3 @@
-<h3>Justified Tabs</h3>
 <br/>
 
 <div class="row">
@@ -36,21 +35,18 @@
           <span class="hidden-xs">Builds</span>
         </a>
       </li>
+      <li>
+        <a href="#readme" data-toggle="tab">
+          <span class="visible-xs"><i class="fa-cog"></i></span>
+          <span class="hidden-xs">Readme</span>
+        </a>
+      </li>
     </ul>
 
-    <div class="tab-content">
-      <div class="tab-pane active" id="home-3">
+    <div style="background-color:#eee"  class="tab-content">
+      <div class="tab-pane active" id="timeline">
         <div>
-          <div class="row">
-            <div class="col-xs-12">
-              <%= render 'projects/create_note' %>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <%= render 'projects/timeline' %>
-            </div>
-          </div>
+          <%= render 'projects/note_full_timeline' %>
         </div>
       </div>
 
@@ -92,8 +88,10 @@
           talking an. Active mutual nor father mother exeter change six did all. </p>
 
       </div>
+      <div class="tab-pane" id="readme">
+        <%= @github_readme_parsed.html_safe %>
+      </div>
     </div>
-
 
   </div>
 </div>

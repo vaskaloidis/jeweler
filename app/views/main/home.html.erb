@@ -6,424 +6,82 @@
   # end
 %>
 
-<script>
-    jQuery(document).ready(function ($) {
-        $('a[href="#layout-variants"]').on('click', function (ev) {
-            ev.preventDefault();
+<% if notice != '' && notice != nil %>
+  <p class="alert alert-success"><%= notice %></p>
+<% end %>
 
-            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
+<div class="container marketing">
 
-            TweenLite.to(win, .3, {
-                top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function () {
-                    $(window).scrollTop(win.top);
-                }
-            });
-        });
-    });
-</script>
-
-<div class="jumbotron">
-  <h2 class="muted">Jewler - A CRM for Programmers</h2>
-
-  <p>
-    Jewler is a CRM developed specifically for Software Developers. Jewler allows the developer to keep coding, while easily invoicing and billing the client, notifying him when development phases are complete while always keeping all stake-holders in-the-loop.
-  </p>
-
-  <br/>
-  <a class="btn btn-primary btn-lg" href="<%= new_user_registration_path %>" role="button">Get Started</a>
-</div>
-
-<h3 id="layout-toggles">
-  Layout Toggles
-  <br/>
-  <small>Links that will automatically collapse or expand side panels, chat or user settings pane.</small>
-</h3>
-<br/>
+  <!-- Three columns of text below the carousel -->
+  <div class="row">
+    <div class="col-lg-4">
+      <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+      <h2>Heading</h2>
+      <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+      <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+    </div><!-- /.col-lg-4 -->
+    <div class="col-lg-4">
+      <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+      <h2>Heading</h2>
+      <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+      <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+    </div><!-- /.col-lg-4 -->
+    <div class="col-lg-4">
+      <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+      <h2>Heading</h2>
+      <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+      <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+    </div><!-- /.col-lg-4 -->
+  </div><!-- /.row -->
 
 
-<div class="row">
+  <!-- START THE FEATURETTES -->
 
-  <div class="col-md-3 col-xs-4 text-muted">Link</div>
-  <div class="col-md-9 col-xs-8 text-muted">Code</div>
+  <hr class="featurette-divider">
 
-  <div class="vspacer v3"></div>
-
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="sidebar">
-      <i class="fa-bars"></i>
-      <span>Toggle Sidebar</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;sidebar&quot;&gt;Toggle Sidebar&lt;/a&gt;</pre>
+  <div class="row featurette">
+    <div class="col-md-7">
+      <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
+      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+    </div>
+    <div class="col-md-5">
+      <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="500x500" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzUwMHg1MDAvYXV0bwpDcmVhdGVkIHdpdGggSG9sZGVyLmpzIDIuNi4wLgpMZWFybiBtb3JlIGF0IGh0dHA6Ly9ob2xkZXJqcy5jb20KKGMpIDIwMTItMjAxNSBJdmFuIE1hbG9waW5za3kgLSBodHRwOi8vaW1za3kuY28KLS0+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48IVtDREFUQVsjaG9sZGVyXzE2MWY3MzUyMzFhIHRleHQgeyBmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MjVwdCB9IF1dPjwvc3R5bGU+PC9kZWZzPjxnIGlkPSJob2xkZXJfMTYxZjczNTIzMWEiPjxyZWN0IHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIiBmaWxsPSIjRUVFRUVFIi8+PGc+PHRleHQgeD0iMTg1LjEyNSIgeT0iMjYxLjEiPjUwMHg1MDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" data-holder-rendered="true">
+    </div>
   </div>
 
-  <div class="clearfix"></div>
-  <div class="vspacer v4"></div>
+  <hr class="featurette-divider">
 
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="chat">
-      <i class="fa-comment-o"></i>
-      <span>Toggle Chat</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;chat&quot;&gt;Toggle Chat&lt;/a&gt;</pre>
-  </div>
-
-  <div class="clearfix"></div>
-  <div class="vspacer v4"></div>
-
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="settings-pane">
-      <i class="linecons-user"></i>
-      <span>Toggle Settings Pane</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;settings-pane&quot;&gt;Toggle Settings Pane&lt;/a&gt;</pre>
+  <div class="row featurette">
+    <div class="col-md-7 col-md-push-5">
+      <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
+      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+    </div>
+    <div class="col-md-5 col-md-pull-7">
+      <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="500x500" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzUwMHg1MDAvYXV0bwpDcmVhdGVkIHdpdGggSG9sZGVyLmpzIDIuNi4wLgpMZWFybiBtb3JlIGF0IGh0dHA6Ly9ob2xkZXJqcy5jb20KKGMpIDIwMTItMjAxNSBJdmFuIE1hbG9waW5za3kgLSBodHRwOi8vaW1za3kuY28KLS0+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48IVtDREFUQVsjaG9sZGVyXzE2MWY3MzUxZWYzIHRleHQgeyBmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MjVwdCB9IF1dPjwvc3R5bGU+PC9kZWZzPjxnIGlkPSJob2xkZXJfMTYxZjczNTFlZjMiPjxyZWN0IHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIiBmaWxsPSIjRUVFRUVFIi8+PGc+PHRleHQgeD0iMTg1LjEyNSIgeT0iMjYxLjEiPjUwMHg1MDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" data-holder-rendered="true">
+    </div>
   </div>
 
+  <hr class="featurette-divider">
 
-  <div class="clearfix"></div>
-  <div class="vspacer v4"></div>
-
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="settings-pane" data-animate="true">
-      <i class="linecons-cog"></i>
-      <span>Settings Pane /w Animation</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;settings-pane&quot; data-animate=&quot;true&quot;&gt;Toggle Settings Pane&lt;/a&gt;</pre>
+  <div class="row featurette">
+    <div class="col-md-7">
+      <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
+      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+    </div>
+    <div class="col-md-5">
+      <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="500x500" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzUwMHg1MDAvYXV0bwpDcmVhdGVkIHdpdGggSG9sZGVyLmpzIDIuNi4wLgpMZWFybiBtb3JlIGF0IGh0dHA6Ly9ob2xkZXJqcy5jb20KKGMpIDIwMTItMjAxNSBJdmFuIE1hbG9waW5za3kgLSBodHRwOi8vaW1za3kuY28KLS0+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48IVtDREFUQVsjaG9sZGVyXzE2MWY3MzUyZjkzIHRleHQgeyBmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MjVwdCB9IF1dPjwvc3R5bGU+PC9kZWZzPjxnIGlkPSJob2xkZXJfMTYxZjczNTJmOTMiPjxyZWN0IHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIiBmaWxsPSIjRUVFRUVFIi8+PGc+PHRleHQgeD0iMTg1LjEyNSIgeT0iMjYxLjEiPjUwMHg1MDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" data-holder-rendered="true">
+    </div>
   </div>
 
+  <hr class="featurette-divider">
 
-  <div class="clearfix"></div>
-  <div class="vspacer v4"></div>
+  <!-- /END THE FEATURETTES -->
 
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" rel="go-top">
-      <i class="fa-arrow-up"></i>
-      <span>Go to Top</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; rel=&quot;go-top&quot;&gt;Go to Top&lt;/a&gt;</pre>
-  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="pull-right"><a href="#">Back to top</a></p>
+    <p>© 2016 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+  </footer>
 
 </div>
-
-
-<br/>
-<br/>
-
-<h3 id="layout-variants">
-  Layout Variants
-  <br/>
-  <small>9 different layout types with fixed or static scrolling panels</small>
-</h3>
-
-<div class="panel panel-default panel-headerless">
-
-  <div class="panel-body layout-variants">
-
-    <div class="row">
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-variants.html">
-              <img src="assets/images/layouts/layout-sidebar.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-variants.html">Left Sidebar</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-variants.html" class="">Fixed Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-static-sidebar.html" class="">Static Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-without-submenu-toggle.html" class="">Other Submenus Toggle Off</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-right-sidebar.html">
-              <img src="assets/images/layouts/layout-sidebar-right.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-right-sidebar.html">Right Sidebar</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-right-sidebar.html" class="">Fixed Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-right-sidebar-static.html" class="">Static Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-without-submenu-toggle-right.html" class="">Other Submenus Toggle Off</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-collapsed-sidebar.html">
-              <img src="assets/images/layouts/layout-sidebar-collapsed.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-collapsed-sidebar.html">Collapsed Sidebar</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-collapsed-sidebar.html" class="disabled">
-                <del>Fixed Sidebar</del>
-              </a>
-            </li>
-            <li>
-              <a href="layout-collapsed-sidebar.html" class="">Static Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-chat-open.html" class="">Static Sidebar &amp; Chat Open</a>
-            </li>
-            <li>
-              <a href="layout-sidebar-collapsed-with-userinfo-links.html" class="">Static Sidebar &amp; User Info
-                Links</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="clearfix"></div>
-
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-right-collapsed-sidebar.html">
-              <img src="assets/images/layouts/layout-sidebar-right-collapsed.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-right-collapsed-sidebar.html">Collapsed Right Sidebar</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-right-collapsed-sidebar.html" class="disabled">
-                <del>Fixed Sidebar</del>
-              </a>
-            </li>
-            <li>
-              <a href="layout-right-collapsed-sidebar.html" class="">Static Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-right-collapsed-sidebar-chat-open.html" class="">Static Sidebar &amp; Chat Open</a>
-            </li>
-            <li>
-              <a href="layout-sidebar-collapsed-right-with-userinfo-links.html" class="">Static Sidebar &amp; User Info
-                Links</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-horizontal-menu.html">
-              <img src="assets/images/layouts/layout-horizontal.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-menu.html">Horizontal Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-menu.html" class="">Fixed to Top</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-menu-static.html" class="">Static on Top</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-menu-boxed.html" class="">Boxed Content with Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-menu-click-to-open-subs.html" class="">Click to Open Submenus</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-menu-min.html" class="">Minimal Horizontal Menu</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-horizontal-plus-sidebar.html">
-              <img src="assets/images/layouts/layout-sidebar-horizontal.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-plus-sidebar.html">Sidebar &amp; Horizontal Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-plus-sidebar.html" class="">Fixed Sidebar &amp; Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-sidebar-menu-static.html" class="">Static Sidebar &amp; Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-fixed-sidebar-menu-static.html" class="">Static Sidebar, Fixed Horizontal
-                Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-plus-sidebar-userinfo-links.html" class="">Fixed Sidebar &amp; Horizontal Menu
-                with User Info</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="clearfix"></div>
-
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-horizontal-right-sidebar-menu.html">
-              <img src="assets/images/layouts/layout-horizontal-right-sidebar.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-right-sidebar-menu.html">Right Sidebar &amp; Horizontal Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-right-sidebar-menu.html" class="">Fixed Sidebar &amp; Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-right-sidebar-menu-static.html" class="">Static Sidebar &amp; Horizontal
-                Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-right-fixed-sidebar-menu-static.html" class="">Static Sidebar, Fixed Horizontal
-                Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-plus-right-sidebar-userinfo-links.html" class="">Fixed Sidebar &amp; Horizontal
-                Menu with User Info</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-      <div class="col-sm-4">
-
-        <div class="layout-variant layout-current">
-          <div class="layout-img">
-            <a href="layout-horizontal-sidebar-menu-collapsed.html">
-              <img src="assets/images/layouts/layout-sidebar-collapsed-horizontal.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-sidebar-menu-collapsed.html">Collapsed Sidebar &amp; Horizontal Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-sidebar-menu-collapsed.html" class="layout-mode-current">Static Sidebar &amp;
-                Fixed Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-static-sidebar-menu-collapsed.html" class="">Static Sidebar &amp; Horizontal
-                Menu</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-horizontal-sidebar-menu-collapsed-right.html">
-              <img src="assets/images/layouts/layout-horizontal-right-sidebar-collapsed.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-sidebar-menu-collapsed-right.html">Right Collapsed Sidebar &amp; Horizontal
-              Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-sidebar-menu-collapsed-right.html" class="">Static Sidebar &amp; Fixed
-                Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-static-sidebar-menu-collapsed-right.html" class="">Static Sidebar &amp;
-                Horizontal Menu</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-<!-- Main Footer -->
-<!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
-<!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
-<!-- Or class "fixed" to  always fix the footer to the end of page -->
-<footer class="main-footer sticky footer-type-1">
-
-  <div class="footer-inner">
-
-    <!-- Add your copyright text here -->
-    <div class="footer-text">
-      &copy; 2014
-      <strong>Xenon</strong>
-      theme by <a href="http://laborator.co" target="_blank">Laborator</a> -
-      <a href="http://themeforest.net/item/xenon-bootstrap-admin-theme/9059661?ref=Laborator" target="_blank">Purchase
-        for only <strong>23$</strong></a>
-    </div>
-
-
-    <!-- Go to Top Link, just add rel="go-top" to any link to add this functionality -->
-    <div class="go-up">
-
-      <a href="#" rel="go-top">
-        <i class="fa-angle-up"></i>
-      </a>
-
-    </div>
-
-  </div>
-
-</footer>

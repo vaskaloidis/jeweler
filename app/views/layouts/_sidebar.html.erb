@@ -44,7 +44,7 @@
     <!-- Sidebar User Info Bar - Added in 1.3 -->
     <section class="sidebar-user-info">
       <div class="sidebar-user-info-inner">
-        <a href="extra-profile.html" class="user-profile">
+        <a href="#" class="user-profile">
           <img src="<%= image_path 'user-4.png' %>" width="60" height="60" class="img-circle img-corona" alt="user-pic"/>
 
           <span>
@@ -100,7 +100,7 @@
       <% if !current_user.customer_projects.empty? %>
         <li class="opened active">
           <a href="<%= projects_url %>">
-            <i class="linecons-params"></i>
+            <i class="far fa-user"></i>
             <span class="title">Customer Projects</span>
           </a>
           <ul>

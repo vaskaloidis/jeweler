@@ -10,7 +10,7 @@
 
   <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
   <%= stylesheet_link_tag "fonts/linecons/css/linecons" %>
-  <%= stylesheet_link_tag "fonts/fontawesome/css/font-awesome.min" %>
+  <%= stylesheet_link_tag "main.css" %>
   <%= stylesheet_link_tag "bootstrap" %>
   <!-- Latest compiled and minified CSS -->
   <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
@@ -26,7 +26,18 @@
   <![endif]-->
 </head>
 
-<body class="page-body">
+<%# Add these classes for login page:  login-page login-light %>
+<body id="body" class="page-body">
+
+<% if request.original_url.include?("users/sign_in") %>
+  <script>
+      window.onload = function () {
+          var body = document.getElementsByTagName("BODY")[0];
+          body.classList.add('login-page');
+          body.classList.add('login-light');
+      };
+  </script>
+<% end %>
 
 <%#= render 'layouts/settings_pane' %>
 
@@ -39,10 +50,12 @@
 
   <div class="main-content">
 
-    <% if user_signed_in? %>
-      <%= render 'layouts/top_bar_authenticated' %>
-    <% else %>
-      <%= render 'layouts/top_bar' %>
+    <% if !request.original_url.include?("users/sign_in") %>
+      <% if user_signed_in? %>
+        <%= render 'layouts/top_bar_authenticated' %>
+      <% else %>
+        <%= render 'layouts/top_bar' %>
+      <% end %>
     <% end %>
 
     <% if notice %>
@@ -66,7 +79,6 @@
 
   <div class="footer-inner">
 
-    <!-- Add your copyright text here -->
     <div class="footer-text">
       &copy; 2018
       <strong>JewlerCRM</strong> - A <a href="http://vkaloidis.herokuapp.com">Vasilios Kaloidis Production</a>
@@ -76,11 +88,9 @@
       <a href="#" rel="go-top">
         <i class="fa-angle-up"></i>
       </a>
-
     </div>
 
   </div>
-
 </footer>
 
 <%#= render 'layouts/chat_sidebar' %>
@@ -88,3 +98,5 @@
 
 </body>
 </html>
+
+<%#= console %>

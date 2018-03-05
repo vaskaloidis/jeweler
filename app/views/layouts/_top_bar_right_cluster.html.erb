@@ -189,10 +189,7 @@
           </a>
         </li>
         <li class="last">
-          <a href="<%= destroy_user_session_path %>">
-            <i class="fa-lock"></i>
-            Logout
-          </a>
+          <%= link_to('<i class="fa-lock"></i>Logout'.html_safe, destroy_user_session_path, method: :delete) %>
         </li>
       </ul>
     </li>

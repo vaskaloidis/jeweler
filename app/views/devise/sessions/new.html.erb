@@ -1,26 +1,61 @@
-<h2>Log in</h2>
+<div class="login-container">
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+  <div class="row">
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+    <div class="col-sm-6">
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+      <!-- Errors container -->
+      <div class="errors-container">
+
+
+      </div>
+
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => 'login-form', :role => 'form'}) do |f| %>
+          <!--<form method="post" role="form" id="login" class="login-form fade-in-effect">-->
+
+            <div class="login-header">
+              <a href="<%= root_url %>" class="logo">
+                <img src="<%= image_path 'jewler-logo-mini-small-white.png' %>" alt="" width="80"/>
+              </a><br>
+              <h3 class="muted">Login</h3>
+            </div>
+
+              <div class="form-group">
+                <label class="control-label" for="username">Username</label>
+                <input type="text" class="form-control" name="user[email]" id="user_email" autocomplete="off"/>
+
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="passwd">Password</label>
+                <input type="password" class="form-control" name="user[password]" id="user_password" autocomplete="off"/>
+              </div>
+
+
+              <% if devise_mapping.rememberable? -%>
+                <div class="field">
+                  <%= f.check_box :remember_me %>
+                  <%= f.label :remember_me %>
+                </div>
+              <% end -%>
+
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-success  btn-block text-left">
+                  <i class="fa-lock"></i>
+                  Log In
+                </button>
+              </div>
+
+            <% end %>
+
+
+            <%= render "devise/shared/links" %>
+
+          </form>
+
+      </div>
+
     </div>
-  <% end -%>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>

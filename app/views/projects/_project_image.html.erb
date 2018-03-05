@@ -19,33 +19,41 @@
   <ul class="list-unstyled user-info-list">
     <li>
       <i class="fa-home"></i>
-      Prishtina, Kosovo
+      <%= @project.owner.first_name %>
+      <%= @project.owner.last_name %>
     </li>
-    <li>
-      <i class="fa-briefcase"></i>
-      <a href="#">Laborator</a>
-    </li>
-    <li>
-      <i class="fa-graduation-cap"></i>
-      University of Bologna
-    </li>
+    <% if !@project.owner.company.nil? %>
+      <li>
+        <i class="fa-briefcase"></i>
+        <%= @project.owner.company %>
+        <%= @project.owner.last_name %>
+      </li>
+    <% end %>
   </ul>
 
   <hr>
-
+  <h5>Development Phases</h5>
   <ul class="list-unstyled user-friends-count">
     <li>
-      <span>643</span>
-      followers
+      <span><%= @project.customers.count %></span>
+      Users
     </li>
     <li>
-      <span>108</span>
-      following
+      <span><%= @project.phase_total %></span>
+      Phases
     </li>
   </ul>
 
-  <button type="button" class="btn btn-success btn-block text-left">
-    Following
-    <i class="fa-check pull-right"></i>
-  </button>
+  <% if @project.is_owner(current_user) %>
+    <button type="button" class="btn btn-success btn-block text-left">
+      Project Owner
+      <i class="fa-check pull-right"></i>
+    </button>
+  <% elsif @project.is_customer(current_user) %>
+    <button type="button" class="btn btn-success btn-block text-left">
+      Project Member
+      <i class="fa-check pull-right"></i>
+    </button>
+  <% end %>
+
 </div>

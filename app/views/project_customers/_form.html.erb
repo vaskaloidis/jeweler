@@ -12,7 +12,7 @@
   <% end %>
 
   <div class="field">
-    <%= select("user", "user_id", User.all {|u| [ p.name, u.id ] }, { include_blank: true }) %>
+    <%= select("user", "user_id", @project.non_customers {|u| [ u.id ] }, { include_blank: false }) %>
 <!--
     <%#= form.collection_select(:user_id,
                                User.all,

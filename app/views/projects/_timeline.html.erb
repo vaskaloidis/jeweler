@@ -2,11 +2,11 @@
 
   <% if @project.notes.empty? %>
     <li>
-      <time class="cbp_tmtime" datetime="2014-12-06T18:30"><span class="hidden">06/12/2014</span>
+      <time class="cbp_tmtime" datetime="2014-12-06T18:30">
         <span class="large">Now</span></time>
 
       <div class="cbp_tmicon timeline-bg-gray">
-        <i class="fa-user"></i>
+        <i class="fas fa-sticky-note"></i>
       </div>
 
       <div class="cbp_tmlabel empty">
@@ -15,26 +15,71 @@
     </li>
   <% else %>
 
-    <% @project.notes do |note| %>
+    <% @project.notes.all.each do |note| %>
 
       <li>
         <time class="cbp_tmtime" datetime="2014-12-06T03:45">
           <span><%= note.created_at.strftime("%H:%M") %></span>
+
           <% if note.created_at == Date.today %>
             <span>Today</span>
-          <% else
-               if note.created_at == Date.yesterday %>
-              <span>Yesterday</span>
-            <% else %>
-              <span><<%= note.created_at.strftime("%d %b. %Y") %>/span>
-            <% end %>
-            </time>
+          <% elsif note.created_at == Date.yesterday %>
+            <span>Yesterday</span>
+          <% else %>
+            <span><%= note.created_at.strftime("%d %b. %Y") %></span>
           <% end %>
+        </time>
 
+
+        <% if note.note_type == 'note' %>
           <div class="cbp_tmicon timeline-bg-success">
-            <i class="fa-paper-plane-o"></i>
+            <i class="fas fa-sticky-note"></i>
           </div>
-
+          <div class="cbp_tmlabel">
+            <h2><a href="#">
+              <%= note.author.first_name %>
+              <%= note.author.last_name %>
+            </a>
+              <span>posted a Note</span>
+            </h2>
+            <p><%= note.content %></p>
+          </div>
+        <% elsif note.note_type == 'demo' %>
+          <div class="cbp_tmicon timeline-bg-red">
+            <i class="fa-binoculars"></i>
+          </div>
+          <div class="cbp_tmlabel">
+            <h2><a href="#">
+              <%= note.author.first_name %>
+              <%= note.author.last_name %>
+            </a>
+              <span>posted a Demo</span>
+            </h2>
+            <div class="row">
+              <div class="col-xs-5">
+                <a href="#">
+                  <img src="<%= note.image.url %>" class="img-responsive img-rounded full-width">
+                </a>
+              </div>
+            </div>
+          </div>
+        <% elsif note.note_type == 'project_update' %>
+          <div class="cbp_tmicon timeline-bg-warning">
+            <i class="fas fa-sticky-note"></i>
+          </div>
+          <div class="cbp_tmlabel">
+            <h2><a href="#">
+              <%= note.author.first_name %>
+              <%= note.author.last_name %>
+            </a>
+              <span>posted a Project Update</span>
+            </h2>
+            <p><%= note.content %></p>
+          </div>
+        <% else %>
+          <div class="cbp_tmicon timeline-bg-success">
+            <i class="fas fa-sticky-note"></i>
+          </div>
           <div class="cbp_tmlabel">
             <h2><a href="#">
               <%= note.author.first_name %>
@@ -44,7 +89,10 @@
             </h2>
             <p><%= note.content %></p>
           </div>
-          </li>
+        <% end %>
+
+
+      </li>
 
     <% end %>
   <% end %>

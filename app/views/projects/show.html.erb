@@ -11,104 +11,78 @@
       <%= render 'projects/project_image' %>
     </div>
     <div class="col-sm-9">
-      <%= render 'projects/accordion' %>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="list-group">
+              <div class="list-group-item">
+                <h4 class="list-group-item-heading">Description</h4>
+                <p class="list-group-item-text"><%= @project.description %> </p>
+              </div>
+              <div class="list-group-item">
+                <h4 class="list-group-item-heading">Services</h4>
+                <p class="list-group-item-text">
+                <p>
+                  <strong>Github url:</strong>
+                  <%= @project.github_url %>
+                </p>
+
+                <% if !@project.github_secondary_url.nil? %>
+                  <p>
+                    <strong>Github secondary url:</strong>
+                    <%= @project.github_secondary_url %>
+                  </p>
+                <% end %>
+                <% if !@project.demo_url.nil? %>
+                  <p>
+                    <strong>Demo url:</strong>
+                    <%= @project.demo_url %>
+                  </p>
+                <% end %>
+                <% if !@project.stage_website_url.nil? %>
+                  <p>
+                    <strong>Stage website url:</strong>
+                    <%= @project.stage_website_url %>
+                  </p>
+                <% end %>
+                <% if !@project.prod_url.nil? %>
+                  <p>
+                    <strong>Prod url:</strong>
+                    <%= @project.prod_url %>
+                  </p>
+                <% end %>
+                </p>
+              </div>
+              <div class="list-group-item">
+                <%= render 'projects/phase_gauge' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
 </section>
 
 
+<div style="text-align: center" class="row">
+  <div class="col-xs-12">
+    <h4>Sprint <%= @project.phase_current %> / <%= @project.phase_total %></h4>
+  </div>
+</div>
+<div class="well">
+  <div class="row">
+    <div class="col-xs-12">
+      <%= render 'projects/phase_meter' %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <%= render 'projects/timeline' %>
+  </div>
+</div>
+
 <%= render 'projects/tabs' %>
-
-<p>
-  <strong>Language:</strong>
-  <%= @project.language %>
-</p>
-
-<p>
-  <strong>Phase total:</strong>
-  <%= @project.phase_total %>
-</p>
-
-<p>
-  <strong>Phase current:</strong>
-  <%= @project.phase_current %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @project.description %>
-</p>
-
-<p>
-  <strong>Github url:</strong>
-  <%= @project.github_url %>
-</p>
-
-<p>
-  <strong>Github secondary url:</strong>
-  <%= @project.github_secondary_url %>
-</p>
-
-<p>
-  <strong>Readme file:</strong>
-  <%= @project.readme_file %>
-</p>
-
-<p>
-  <strong>Readme remote:</strong>
-  <%= @project.readme_remote %>
-</p>
-
-<p>
-  <strong>Stage website url:</strong>
-  <%= @project.stage_website_url %>
-</p>
-
-<p>
-  <strong>Demo url:</strong>
-  <%= @project.demo_url %>
-</p>
-
-<p>
-  <strong>Prod url:</strong>
-  <%= @project.prod_url %>
-</p>
-
-<p>
-  <strong>Complete:</strong>
-  <%= @project.complete %>
-</p>
-
-<p>
-  <strong>Stage travis api url:</strong>
-  <%= @project.stage_travis_api_url %>
-</p>
-
-<p>
-  <strong>Stage travis api token:</strong>
-  <%= @project.stage_travis_api_token %>
-</p>
-
-<p>
-  <strong>Prod travis api token:</strong>
-  <%= @project.prod_travis_api_token %>
-</p>
-
-<p>
-  <strong>Prod travis api url:</strong>
-  <%= @project.prod_travis_api_url %>
-</p>
-
-<p>
-  <strong>Coveralls api url:</strong>
-  <%= @project.coveralls_api_url %>
-</p>
-
-<p>
-  <strong>Customers:</strong>
-  <%= @project.customers %>
-</p>
-
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
