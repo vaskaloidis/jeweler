@@ -4,10 +4,12 @@ class Project < ApplicationRecord
   has_many :customers, :through => :project_customers, :source => :user
   has_many :notes
 
+  mount_uploader :image, AvatarUploader
+
   accepts_nested_attributes_for :customers
   accepts_nested_attributes_for :owner
 
-  def has_owner(user)
+  def is_owner(user)
     if self.owner == user
       return true
     else
@@ -15,8 +17,9 @@ class Project < ApplicationRecord
     end
   end
 
-  def has_customer(user)
-    if self.customer_projects.include?(user)
+
+  def is_customer(user)
+    if self.customers.include?(user)
       return true
     else
       return false
@@ -24,11 +27,13 @@ class Project < ApplicationRecord
   end
 
   def non_customers
-    # User.all do |u|
-
-    unless @project.has_owner(current_user)
-
+    nc = Array.new
+    User.all do |u|
+      unless self.is_customer(current_user)
+        nc << u
+      end
     end
+    return nc
   end
 
 

@@ -2,6 +2,8 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
+  before_action :verify_owner, only: [:owner]
+
 
   # GET /projects
   # GET /projects.json
@@ -38,9 +40,21 @@ class ProjectsController < ApplicationController
     @project_customer = ProjectCustomer.new
     @project_customer.project = @project
 
-  end
+    @note_note = Note.new
+    @note_note.project = @project
+    @note_note.note_type = 'note'
+    @note_note.author = current_user
 
-  def select_project
+    @note_update = Note.new
+    @note_update.project = @project
+    @note_update.note_type = 'project_update'
+    @note_update.author = current_user
+
+    @note_demo = Note.new
+    @note_demo.project = @project
+    @note_demo.note_type = 'demo'
+    @note_demo.author = current_user
+
   end
 
   # GET /projects/new
@@ -94,8 +108,15 @@ class ProjectsController < ApplicationController
 
   private
   def verify_owner
-    unless @project.has_owner(current_user)
+    unless @project.is_owner(current_user)
       flash[:error] = "You must be the owner to modify project"
+      redirect_to projects_url # halts request cycle
+    end
+  end
+
+  def verify_customer
+    unless @project.is_customer(current_user) or @project.is_owner(current_user)
+      flash[:error] = "You must be a member of this project to view it"
       redirect_to projects_url # halts request cycle
     end
   end

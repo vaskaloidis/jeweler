@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_03_154458) do
+ActiveRecord::Schema.define(version: 2018_03_05_021340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2018_03_03_154458) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image"
     t.index ["project_id"], name: "index_notes_on_project_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
@@ -69,6 +70,7 @@ ActiveRecord::Schema.define(version: 2018_03_03_154458) do
     t.datetime "updated_at", null: false
     t.string "github_branch", default: "master"
     t.string "github_secondary_branch", default: "master"
+    t.string "image"
     t.index ["github_secondary_url"], name: "index_projects_on_github_secondary_url", unique: true
     t.index ["github_url"], name: "index_projects_on_github_url", unique: true
     t.index ["user_id"], name: "index_projects_on_user_id"
@@ -100,6 +102,8 @@ ActiveRecord::Schema.define(version: 2018_03_03_154458) do
     t.string "unlock_token"
     t.datetime "locked_at"
     t.string "tagline"
+    t.string "image"
+    t.string "company"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

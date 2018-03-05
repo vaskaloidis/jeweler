@@ -4,6 +4,8 @@ class User < ApplicationRecord
   has_many :project_customers
   has_many :customer_projects, :source => :project, :through => :project_customers
 
+  mount_uploader :image, AvatarUploader
+
   accepts_nested_attributes_for :customer_projects
   accepts_nested_attributes_for :owner_projects
 

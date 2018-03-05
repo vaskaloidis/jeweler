@@ -15,6 +15,7 @@ class NotesController < ApplicationController
   # GET /notes/new
   def new
     @note = Note.new
+
   end
 
   # GET /notes/1/edit
@@ -25,6 +26,23 @@ class NotesController < ApplicationController
   # POST /notes.json
   def create
     @note = Note.new(note_params)
+
+    if @note.note_type == 'demo'
+      uploader = AvatarUploader.new
+
+      require 'screencap'
+
+      f = Screencap::Fetcher.new(@note.content)
+
+      screenshot = f.fetch
+
+      # r = Random.new
+      # r.rand(1...1000)
+      # f = Screencap::Fetcher.new('http://google.com')
+      # screenshot = f.fetch( :output => Rails.root.join('/screenshots/' + r + '.png' ) )
+      # note.image = Rails.root.join('/screenshots/' + r + '.png').open
+    end
+
 
     respond_to do |format|
       if @note.save
