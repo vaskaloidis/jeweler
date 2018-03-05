@@ -13,14 +13,6 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  # get 'users/sign_out' => "devise/sessions#destroy"
-  # devise_for :users, controllers: {
-  #     sessions: 'users/sessions'
-  # }
-
-  # get 'main/home'
-  #
-
   unauthenticated do
     root to: 'main#home'
   end

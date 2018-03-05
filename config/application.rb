@@ -5,6 +5,8 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 Dotenv::Railtie.load
 
+require 'carrierwave'
+require 'carrierwave/orm/activerecord'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
