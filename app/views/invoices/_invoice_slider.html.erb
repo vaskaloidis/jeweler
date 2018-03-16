@@ -1,0 +1,161 @@
+<%
+  if @project.phase_current == invoice.sprint
+    if invoice.open == false
+      invoice.open = true
+      invoice.save
+    end
+  end
+
+  # Totals
+  hour_total = 0
+  price_total = 0
+  projected_hours = 0
+  invoice.invoice_items.each do |task|
+    hour_total = hour_total + task.hours
+    price_total = price_total + (task.hours * task.rate)
+    projected_hours = projected_hours + task.planned_hours
+  end
+
+  payment_total = 0
+  invoice.payments.each do |payment|
+    payment_total = payment_total + payment.amount
+  end
+%>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <h4>
+        Sprint <%= sprint %>
+      </h4>
+      <div>
+        <% if invoice.open? %>
+          <% if @project.phase_current == invoice.sprint %>
+            <div class="label label-success">Current Sprint</div>
+          <% else %>
+            <div class="label label-success">Sprint Open</div>
+          <% end %>
+        <% else %>
+          <div class="label label-danger">Sprint Closed</div>
+        <% end %>
+        <% if payment_total != 0 %>
+          <div class="label label-success"><strong>Payment: </strong> $<%= payment_total %></div>
+        <% end %>
+        <div class="label label-info"><Strong>Cost: </Strong> $<%= price_total %></div>
+        <div class="label label-default"><Strong>Projected: </Strong> <%= projected_hours %> hrs.</div>
+        <div class="label label-default"><Strong>Completed: </Strong> <%= hour_total %> hrs.</div>
+      </div>
+    </div>
+    <div class="panel-options">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="#sprint_<%= sprint %>_tab-1" data-toggle="tab" aria-expanded="false">Overview</a>
+        </li>
+        <li class="">
+          <a href="#sprint_<%= sprint %>_tab-2" data-toggle="tab" aria-expanded="false">Commits</a>
+        </li>
+        <% if @project.is_owner(current_user) %>
+          <div class="btn-group">
+            <button type="button" class="btn btn-gray dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <i class="fa-wrench"></i> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-white" role="menu">
+              <li>
+                <a href="#">Action</a>
+              </li>
+              <li>
+                <a href="#">Another action</a>
+              </li>
+              <li>
+                <a href="#">Something else here</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a href="#">Separated link</a>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="tab-content">
+
+      <div class="tab-pane active" id="sprint_<%= sprint %>_tab-1">
+        <strong>Description: </strong> <%= invoice.description %><br>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Task</th>
+            <th>Rate</th>
+            <% if invoice.sprint_hours == 0 %>
+              <th>Estimated Hours</th>
+            <% else %>
+              <th>Estimated Hours</th>
+              <th>Actual Hours</th>
+            <% end %>
+            <th>Cost</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% invoice.invoice_items.each do |task| %>
+            <tr>
+              <td><%= task.description %></td>
+              <td>$<%= task.rate %>/hr</td>
+              <% if invoice.sprint_hours == 0 %>
+                <td><%= task.planned_hours %></td>
+              <% else %>
+                <td><%= task.planned_hours %></td>
+                <td><%= task.hours %></td>
+              <% end %>
+              <td>$<%= task.rate * task.hours %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <th></th>
+            <th><strong>Total:</strong></th>
+            <% if invoice.sprint_hours == 0 %>
+              <th><%= projected_hours %> hrs.</th>
+            <% else %>
+              <th><%= projected_hours %> hrs.</th>
+              <th><%= hour_total %> hrs.</th>
+            <% end %>
+            <th>$<%= price_total %></th>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <% if invoice.payments.count != 0 %>
+        <table class="table table-condensed">
+          <tbody>
+          <% invoice.payments.each do |payment| %>
+            <tr>
+              <td><%= payment.amount %></td>
+              <td><%= payment.payment_type %></td>
+              <td><%= payment.user.first_name %> <%= payment.user.last_name %></td>
+              <td><%= payment.created_at.strftime("%d %b. %Y") %> </td>
+            </tr>
+          <% end %>
+          <tr>
+            <td></td>
+            <td></td>
+            <td><strong>Payment Total:</strong></td>
+            <td><%= payment_total %></td>
+          </tr>
+          </tbody>
+        </table>
+      <% end %>
+
+      <div class="tab-pane" id="sprint_<%= sprint %>_tab-2">
+      </div>
+
+      <% if @project.is_owner(current_user) %>
+        <div class="tab-pane" id="sprint_<%= sprint %>_tab-3">
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>

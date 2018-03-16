@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Phase:</strong>
+  <%= @invoice.phase %>
+</p>
+
+<p>
+  <strong>Payment due date:</strong>
+  <%= @invoice.payment_due_date %>
+</p>
+
+<p>
+  <strong>Payment due:</strong>
+  <%= @invoice.payment_due %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @invoice.description %>
+</p>
+
+<p>
+  <strong>Belongs to:</strong>
+  <%= @invoice.belongs_to %>
+</p>
+
+<%= link_to 'Edit', edit_invoice_path(@invoice) %> |
+<%= link_to 'Back', invoices_path %>

@@ -1,88 +1,66 @@
-<% if notice != '' && notice != nil %>
-  <p class="alert alert-success"><%= notice %></p>
-<% end %>
-
-<%#= render 'projects/breadcrumb' %>
-
-<section class="profile-env">
-
-  <div class="row">
-    <div class="col-sm-3">
-      <%= render 'projects/project_image' %>
-    </div>
-    <div class="col-sm-9">
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="list-group">
-              <div class="list-group-item">
-                <h4 class="list-group-item-heading">Description</h4>
-                <p class="list-group-item-text"><%= @project.description %> </p>
-              </div>
-              <div class="list-group-item">
-                <h4 class="list-group-item-heading">Services</h4>
-                <p class="list-group-item-text">
-                <p>
-                  <strong>Github url:</strong>
-                  <%= @project.github_url %>
-                </p>
-
-                <% if !@project.github_secondary_url.nil? %>
-                  <p>
-                    <strong>Github secondary url:</strong>
-                    <%= @project.github_secondary_url %>
-                  </p>
-                <% end %>
-                <% if !@project.demo_url.nil? %>
-                  <p>
-                    <strong>Demo url:</strong>
-                    <%= @project.demo_url %>
-                  </p>
-                <% end %>
-                <% if !@project.stage_website_url.nil? %>
-                  <p>
-                    <strong>Stage website url:</strong>
-                    <%= @project.stage_website_url %>
-                  </p>
-                <% end %>
-                <% if !@project.prod_url.nil? %>
-                  <p>
-                    <strong>Prod url:</strong>
-                    <%= @project.prod_url %>
-                  </p>
-                <% end %>
-                </p>
-              </div>
-              <div class="list-group-item">
-                <%= render 'projects/phase_gauge' %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</section>
-
-
-<div style="text-align: center" class="row">
-  <div class="col-xs-12">
-    <h4>Sprint <%= @project.phase_current %> / <%= @project.phase_total %></h4>
-  </div>
-</div>
-<div class="well">
-  <div class="row">
-    <div class="col-xs-12">
-      <%= render 'projects/phase_meter' %>
-    </div>
-  </div>
-</div>
+<br/>
 
 <div class="row">
-  <div class="col-xs-12">
-    <%= render 'projects/timeline' %>
+
+  <div class="col-md-12">
+
+    <div style="background-color:#eee" class="tab-content">
+      <div class="tab-pane active" id="summary">
+        <div>
+          <section class="profile-env">
+
+            <div class="row">
+              <div class="col-sm-3">
+                <%= render 'projects/project_image' %>
+              </div>
+              <div class="col-sm-9">
+                <%= render 'projects/phase_meter' %>
+              </div>
+            </div>
+
+          </section>
+
+          <div class="row">
+            <div class="col-md-12">
+              <%= render 'projects/timeline' %>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="tab-pane" id="timeline">
+        <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-single btn-sm">
+          Create Note / Demo
+        </a>
+        <div id="timeline_notes">
+          <%= render 'projects/note_full_timeline', local_note: @project.notes  %>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="invoices">
+        <%= render 'projects/invoices' %>
+      </div>
+
+      <div class="tab-pane" id="customers">
+        <%= render 'projects/customers' %>
+      </div>
+
+      <div class="tab-pane" id="commits">
+      </div>
+
+      <div class="tab-pane" id="builds">
+
+      </div>
+      <div class="tab-pane" id="readme">
+        <%= @github_readme_parsed.html_safe %>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<%= render 'projects/tabs' %>
+
+
+
+<%#= render 'projects/tabs' %>

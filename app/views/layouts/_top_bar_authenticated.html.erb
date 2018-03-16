@@ -1,4 +1,4 @@
-<nav class="navbar user-info-navbar" role="navigation">
+<nav class="hidden-sm hidden-xs navbar user-info-navbar" role="navigation">
 
   <ul class="user-info-menu left-links list-inline list-unstyled">
 
@@ -8,12 +8,40 @@
       </a>
     </li>
 
-    <li>
-      <a href="<%= root_url %>">
-        <i class="fas fa-home"></i>
-        <span class="title">Home</span>
-      </a>
-    </li>
+    <% if controller_name == 'projects' %>
+      <li>
+        <a href="#summary" data-toggle="tab">
+          <i class="fas fa-home"></i>
+          <span class="title">Home</span>
+        </a>
+      </li>
+      <li>
+        <a href="#timeline" data-toggle="tab">
+          <i class="fas fa-sticky-note"></i>
+          <span class="title">Notes</span>
+        </a>
+      </li>
+      <li>
+        <a href="#invoices" data-toggle="tab">
+          <i class="fas fa-paper-plane"></i>
+          <span class="title">Sprints & Invoices</span>
+        </a>
+      </li>
+      <li>
+        <a href="#customers" data-toggle="tab">
+          <i class="fas fa-user"></i>
+          <span class="title">Customers</span>
+        </a>
+      </li>
+    <% else %>
+      <li>
+        <a href="
+          <% root_path %>">
+          <i class="fas fa-bookmark"></i>
+          <span class="title">Home</span>
+        </a>
+      </li>
+    <% end %>
 
   </ul>
 
@@ -32,7 +60,11 @@
 
     <li class="dropdown user-profile">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <img src="<%= image_path 'user-4.png' %>" alt="user-image" class="img-circle img-inline userpic-32" width="28"/>
+        <% if current_user.image.url.nil? %>
+          <img src="<%= image_path 'user-4.png' %>" alt="user-image" class="img-circle img-inline userpic-32" width="28"/>
+        <% else %>
+          <img src="<%= image_path current_user.image.url %>" alt="user-image" class="img-circle img-inline userpic-32" width="28"/>
+        <% end %>
         <span>
           <%= current_user.first_name %> <%= current_user.last_name %>
           <i class="fa-angle-down"></i>
@@ -41,15 +73,9 @@
 
       <ul class="dropdown-menu user-profile-menu list-unstyled">
         <li>
-          <a href="#edit-profile">
+          <a href="<%= new_project_path %>">
             <i class="fa-edit"></i>
             New Project
-          </a>
-        </li>
-        <li>
-          <a href="#settings">
-            <i class="fa-wrench"></i>
-            Settings
           </a>
         </li>
         <li>

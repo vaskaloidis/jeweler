@@ -1,56 +1,72 @@
+<%
+
+  # Sprint Progress Meter
+
+  progress_percent = (@project.phase_current.to_f / @project.phase_total.to_f) * 100.to_f
+%>
+
 <div id="rootwizard" class="form-wizard">
 
+  <!-- Sprint Numbers -->
   <ul class="tabs">
-    <li class="completed">
-      <a href="#tab1" data-toggle="tab">One</a>
-    </li>
-    <li class="completed ms-hover">
-      <a href="#tab2" data-toggle="tab">Two</a>
-    </li>
-    <li class="active">
-      <a href="#tab3" data-toggle="tab">Three</a>
-    </li>
-    <li>
-      <a href="#tab4" data-toggle="tab">Four</a>
-    </li>
-    <li class="ms-hover">
-      <a href="#tab5" data-toggle="tab">Five</a>
-    </li>
-    <li>
-      <a href="#tab6" data-toggle="tab">Six</a>
-    </li>
-    <li>
-      <a href="#tab7" data-toggle="tab">Seventh</a>
-    </li>
+    <% count = 1 %>
+    <% @project.phase_total.times do |sprint| %>
+      <% if count == @project.phase_current %>
+        <li class="completed ms-hover">
+          <a href="#tab<%= count %>" data-toggle="tab"><%= count %></a>
+        </li>
+      <% elsif count < @project.phase_current %>
+        <li class="completed">
+          <a href="#tab<%= count %>" data-toggle="tab"><%= count %></a>
+        </li>
+      <% else %>
+        <li>
+          <a href="#tab<%= count %>" data-toggle="tab"><%= count %></a>
+        </li>
+      <% end %>
+      <% count = count + 1 %>
+    <% end %>
   </ul>
 
-  <div class="progress-indicator" style="width: 29.3666%;">
-    <span></span>
-  </div>
-
-  <div class="tab-content">
-
-    <!-- Tabs Content -->
-    <div class="tab-pane" id="tab1">
+  <!-- Green Bar -->
+  <% if @project.phase_current != @project.phase_total %>
+    <div class="progress-indicator"
+         style="width: <%= progress_percent %>%;">
+      <span></span>
     </div>
-
-    <div class="tab-pane" id="tab2">
+  <% else %>
+    <div class="progress-indicator"
+         style="width: 100%;">
+      <span></span>
     </div>
+  <% end %>
 
-    <div class="tab-pane active" id="tab3">
-    </div>
+  <!-- Tab Content -->
+  <div style="margin-top:0px;" class="tab-content">
+    <% count = 1 %>
 
-    <div class="tab-pane" id="tab4">
-    </div>
+    <% @project.phase_total.times do |sprint| %>
 
-    <div class="tab-pane" id="tab5">
-    </div>
+      <% if count == @project.phase_current %>
 
-    <div class="tab-pane" id="tab6">
-    </div>
+        <div class="tab-pane active" id="tab<%= count %>">
+          <% if !Invoice.where(project: @project, sprint: count).empty? %>
+            <%= render 'invoices/invoice_panel', invoice: Invoice.where(project: @project, sprint: count).first, sprint: count %>
+          <% end %>
+        </div>
 
-    <div class="tab-pane" id="tab7">
-    </div>
+      <% else %>
+
+        <div class="tab-pane" id="tab<%= count %>">
+          <% if !Invoice.where(project: @project, sprint: count).empty? %>
+            <%= render 'invoices/invoice_panel', invoice: Invoice.where(project: @project, sprint: count).first, sprint: count %>
+          <% end %>
+        </div>
+
+      <% end %>
+
+      <% count = count + 1 %>
+    <% end %>
 
   </div>
 

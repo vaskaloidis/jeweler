@@ -43,6 +43,9 @@
               <span>posted a Note</span>
             </h2>
             <p><%= note.content %></p>
+            <small>
+              <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
+            </small>
           </div>
         <% elsif note.note_type == 'demo' %>
           <div class="cbp_tmicon timeline-bg-red">
@@ -53,13 +56,16 @@
               <%= note.author.first_name %>
               <%= note.author.last_name %>
             </a>
-              <span>posted a Demo</span>
+              <span>posted a Demo of <%= note.content %></span>
             </h2>
             <div class="row">
               <div class="col-xs-5">
                 <a href="#">
                   <img src="<%= note.image.url %>" class="img-responsive img-rounded full-width">
-                </a>
+                </a><br>
+                <small>
+                  <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
+                </small>
               </div>
             </div>
           </div>
@@ -75,6 +81,9 @@
               <span>posted a Project Update</span>
             </h2>
             <p><%= note.content %></p>
+            <small>
+              <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
+            </small>
           </div>
         <% else %>
           <div class="cbp_tmicon timeline-bg-success">
@@ -88,12 +97,16 @@
               <span>posted a note</span>
             </h2>
             <p><%= note.content %></p>
+            <small>
+              <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
+            </small>
           </div>
         <% end %>
-
 
       </li>
 
     <% end %>
   <% end %>
 </ul>
+
+<%#= render 'discussions/conversation_modal' %>

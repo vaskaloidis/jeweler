@@ -14,25 +14,13 @@
       <li>
         <a href="#invoices" data-toggle="tab">
           <span class="visible-xs"><i class="fa-user"></i></span>
-          <span class="hidden-xs">Invoices</span>
+          <span class="hidden-xs">Sprints & Invoices</span>
         </a>
       </li>
       <li>
         <a href="#customers" data-toggle="tab">
           <span class="visible-xs"><i class="fa-user"></i></span>
           <span class="hidden-xs">Customers</span>
-        </a>
-      </li>
-      <li>
-        <a href="#commits" data-toggle="tab">
-          <span class="visible-xs"><i class="fa-cog"></i></span>
-          <span class="hidden-xs">Commits</span>
-        </a>
-      </li>
-      <li>
-        <a href="#builds" data-toggle="tab">
-          <span class="visible-xs"><i class="fa-cog"></i></span>
-          <span class="hidden-xs">Builds</span>
         </a>
       </li>
       <li>
@@ -46,48 +34,15 @@
     <div style="background-color:#eee"  class="tab-content">
       <div class="tab-pane active" id="timeline">
         <div>
-          <%= render 'projects/note_full_timeline' %>
         </div>
       </div>
 
       <div class="tab-pane" id="invoices">
-        <p>Fulfilled direction use continual set him propriety continued. Saw met applauded favourite deficient
-          engrossed concealed and her. Concluded boy perpetual old supposing. Farther related bed and passage comfort
-          civilly. Dashwoods see frankness objection abilities the. As hastened oh produced prospect formerly up am.
-          Placing forming nay looking old married few has. Margaret disposed add screened rendered six say his striking
-          confined. </p>
-        <p>When be draw drew ye. Defective in do recommend suffering. House it seven in spoil tiled court. Sister others
-          marked fat missed did out use. Alteration possession dispatched collecting instrument travelling he or on.
-          Snug give made at spot or late that mr. </p>
       </div>
 
       <div class="tab-pane" id="customers">
-        <%= render 'projects/customers' %>
       </div>
 
-      <div class="tab-pane" id="commits">
-
-        <p>Luckily friends do ashamed to do suppose. Tried meant mr smile so. Exquisite behaviour as to middleton
-          perfectly. Chicken no wishing waiting am. Say concerns dwelling graceful six humoured. Whether mr up savings
-          talking an. Active mutual nor father mother exeter change six did all. </p>
-
-        <p>Carriage quitting securing be appetite it declared. High eyes kept so busy feel call in. Would day nor ask
-          walls known. But preserved advantage are but and certainty earnestly enjoyment. Passage weather as up am
-          exposed. And natural related man subject. Eagerness get situation his was delighted. </p>
-
-      </div>
-
-      <div class="tab-pane" id="builds">
-
-        <p>Carriage quitting securing be appetite it declared. High eyes kept so busy feel call in. Would day nor ask
-          walls known. But preserved advantage are but and certainty earnestly enjoyment. Passage weather as up am
-          exposed. And natural related man subject. Eagerness get situation his was delighted. </p>
-
-        <p>Luckily friends do ashamed to do suppose. Tried meant mr smile so. Exquisite behaviour as to middleton
-          perfectly. Chicken no wishing waiting am. Say concerns dwelling graceful six humoured. Whether mr up savings
-          talking an. Active mutual nor father mother exeter change six did all. </p>
-
-      </div>
       <div class="tab-pane" id="readme">
         <%= @github_readme_parsed.html_safe %>
       </div>

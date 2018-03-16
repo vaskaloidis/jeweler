@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Payment type:</strong>
+  <%= @payment.payment_type %>
+</p>
+
+<p>
+  <strong>Payment identifier:</strong>
+  <%= @payment.payment_identifier %>
+</p>
+
+<p>
+  <strong>Payment note:</strong>
+  <%= @payment.payment_note %>
+</p>
+
+<p>
+  <strong>Ammount:</strong>
+  <%= @payment.ammount %>
+</p>
+
+<p>
+  <strong>Belongs to:</strong>
+  <%= @payment.belongs_to %>
+</p>
+
+<p>
+  <strong>Belongs to:</strong>
+  <%= @payment.belongs_to %>
+</p>
+
+<%= link_to 'Edit', edit_payment_path(@payment) %> |
+<%= link_to 'Back', payments_path %>

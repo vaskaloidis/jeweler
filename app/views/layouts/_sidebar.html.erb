@@ -9,11 +9,11 @@
 
       <!-- logo -->
       <div class="logo">
-        <a href="dashboard-1.html" class="logo-expanded">
+        <a href="#" class="logo-expanded">
           <img src="<%= image_path 'jewler-logo-full-black-alternate.png' %>" width="200" alt=""/>
         </a>
 
-        <a href="dashboard-1.html" class="logo-collapsed">
+        <a href="#" class="logo-collapsed">
           <img src="<%= image_path 'jewler-logo-mini-small-black.png' %>" width="40" alt=""/>
         </a>
       </div>
@@ -32,7 +32,7 @@
 
       <!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
       <div class="settings-icon">
-        <a href="#" data-toggle="settings-pane" data-animate="true">
+        <a href="<%= edit_user_registration_path %>" data-toggle="settings-pane" data-animate="true">
           <i class="linecons-cog"></i>
         </a>
       </div>
@@ -40,36 +40,31 @@
 
     </header>
 
-
-    <!-- Sidebar User Info Bar - Added in 1.3 -->
     <section class="sidebar-user-info">
       <div class="sidebar-user-info-inner">
         <a href="#" class="user-profile">
-          <img src="<%= image_path 'user-4.png' %>" width="60" height="60" class="img-circle img-corona" alt="user-pic"/>
-
+          <img src="<%= image_path current_user.image.url %>" width="60" height="60" class="img-circle img-corona" alt="user-pic"/>
           <span>
-								<strong><%= current_user.first_name %> <%= current_user.last_name %></strong>
-								Page admin
-							</span>
+              <strong><%= current_user.first_name %> <%= current_user.last_name %></strong>
+            <%= current_user.tagline %>
+            </span>
         </a>
 
         <ul class="user-links list-unstyled">
           <li>
-            <a href="extra-profile.html" title="Edit profile">
+            <a href="<%= edit_user_registration_path %>" title="Edit profile">
               <i class="linecons-user"></i>
               Edit profile
             </a>
           </li>
           <li>
-            <a href="mailbox-main.html" title="Mailbox">
-              <i class="linecons-mail"></i>
-              Mailbox
+            <a href="<%= new_project_url %>" title="Mailbox">
+              <i class="fa-edit"></i>
+              New Project
             </a>
           </li>
           <li class="logout-link">
-            <a href="extra-login.html" title="Log out">
-              <i class="fa-power-off"></i>
-            </a>
+            <%= link_to('<i class="fa-power-off"></i>'.html_safe, destroy_user_session_path, method: :delete) %>
           </li>
         </ul>
       </div>
@@ -77,6 +72,43 @@
 
 
     <ul id="main-menu" class="main-menu">
+
+      <% if controller_name == 'projects' %>
+        <li class="opened active">
+          <a href="<%= projects_url %>">
+            <i class="linecons-diamond"></i>
+            <span class="title"><%= @project.name %></span>
+          </a>
+          <ul>
+            <li>
+              <a href="#summary" data-toggle="tab">
+                <i class="fas fa-home"></i>
+                <span class="title">Home</span>
+              </a>
+            </li>
+            <li>
+              <a href="#timeline" data-toggle="tab">
+                <i class="fas fa-sticky-note"></i>
+                <span class="title">Notes</span>
+              </a>
+            </li>
+            <li>
+              <a href="#invoices" data-toggle="tab">
+                <i class="fas fa-paper-plane"></i>
+                <span class="title">Sprints & Invoices</span>
+              </a>
+            </li>
+            <li>
+              <a href="#customers" data-toggle="tab">
+                <i class="fas fa-user"></i>
+                <span class="title">Customers</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+
+
       <% if !current_user.owner_projects.empty? %>
         <li class="opened active">
           <a href="<%= projects_url %>">

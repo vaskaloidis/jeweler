@@ -1,0 +1,19 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Development Sprints
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+
+          <% count = 1 %>
+          <% @invoices.each do |i| %>
+            <%= render 'invoices/invoice_slider', invoice: i, sprint: count %>
+            <% count = count + 1 %>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
