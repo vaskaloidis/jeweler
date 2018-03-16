@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_05_021340) do
+ActiveRecord::Schema.define(version: 2018_03_08_183635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,32 @@ ActiveRecord::Schema.define(version: 2018_03_05_021340) do
     t.index ["user_id"], name: "index_discussions_on_user_id"
   end
 
+  create_table "invoice_items", force: :cascade do |t|
+    t.text "description"
+    t.decimal "hours", default: "0.0"
+    t.decimal "rate", default: "0.0"
+    t.string "item_type"
+    t.boolean "complete"
+    t.bigint "invoice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "planned_hours", default: "0.0"
+    t.index ["invoice_id"], name: "index_invoice_items_on_invoice_id"
+  end
+
+  create_table "invoices", force: :cascade do |t|
+    t.integer "phase"
+    t.date "payment_due_date"
+    t.boolean "payment_due", default: false
+    t.text "description"
+    t.bigint "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "open", default: false
+    t.integer "sprint"
+    t.index ["project_id"], name: "index_invoices_on_project_id"
+  end
+
   create_table "notes", force: :cascade do |t|
     t.text "content"
     t.integer "note_type", default: 1
@@ -36,6 +62,19 @@ ActiveRecord::Schema.define(version: 2018_03_05_021340) do
     t.string "image"
     t.index ["project_id"], name: "index_notes_on_project_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "payment_type"
+    t.string "payment_identifier"
+    t.string "payment_note"
+    t.decimal "amount"
+    t.bigint "invoice_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_payments_on_invoice_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "project_customers", force: :cascade do |t|

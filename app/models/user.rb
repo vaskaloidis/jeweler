@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   mount_uploader :image, AvatarUploader
 
+  has_many :payments
+
   accepts_nested_attributes_for :customer_projects
   accepts_nested_attributes_for :owner_projects
 
@@ -14,8 +16,7 @@ class User < ApplicationRecord
 
   # attr_accessor :first_name, :last_name
 
-  # Include default devise modules. Others available are:
-  #  :timeoutable and :omniauthable
+  # Include default devise modules. Others available are: :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :lockable, :confirmable

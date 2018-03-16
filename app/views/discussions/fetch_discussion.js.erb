@@ -1,0 +1,3 @@
+$("#discussion_modal_target").html("<%= escape_javascript(render partial: 'discussion',
+                            locals: { discussion: @discussion } ) %>");
+$('#discussion_modal').modal('show');

@@ -40,7 +40,7 @@ Discussion.delete_all
   c1.tagline = 'A Robot User'
   c1.bio = Faker::ChuckNorris.fact
   c1.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
-  puts c1.confirm
+  c1.confirm
   c1.save
 
   c2 = User.new
@@ -55,7 +55,7 @@ Discussion.delete_all
   c2.tagline = 'Some User Tagline'
   c2.bio = Faker::ChuckNorris.fact
   c2.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
-  puts c2.confirm
+  c2.confirm
   c2.save
 
   c3 = User.new
@@ -70,7 +70,7 @@ Discussion.delete_all
   c3.tagline = 'I am Awesome'
   c3.bio = Faker::ChuckNorris.fact
   c3.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
-  puts c3.confirm
+  c3.confirm
   c3.save
 
 # pi = ProductImage.create!(:product => product)
@@ -92,6 +92,7 @@ Discussion.delete_all
   p.image = Rails.root.join('app/assets/images/seeds/bluehelmet.png').open
   p.save
 
+
 # Project Customers
   pc = ProjectCustomer.new
   pc.user = c1
@@ -105,6 +106,35 @@ Discussion.delete_all
   pc.user = c3
   pc.project = p
   pc.save
+
+# Invoice
+  sprint1 = Invoice.create(sprint: 1, description: 'Get the template purchased. Plan the web application design. Build the relational database.
+    Setup the code plumbing.', project: p)
+    InvoiceItem.create(invoice: sprint1, description: 'Research and Purchase the template.', planned_hours: rand(0..8), hours: 8, rate: 35)
+    InvoiceItem.create(invoice: sprint1, description: 'Design the web application.', planned_hours: rand(0..4), hours: 4, rate: 35)
+    InvoiceItem.create(invoice: sprint1, description: 'Design the relational database.', planned_hours: rand(0..5), hours: 5, rate: 35)
+    InvoiceItem.create(invoice: sprint1, description: 'Setup the plumbing for the rails project, after generating it.', planned_hours: rand(0..10), hours: 10, rate: 35)
+    Payment.create(invoice: sprint1, amount: (sprint1.sprint_cost.to_d / 2.0), payment_type: 'venmo', user: c1)
+    Payment.create(invoice: sprint1, amount: (sprint1.sprint_cost.to_d / 2.0), payment_type: 'venmo', user: c1)
+
+  sprint2 = Invoice.create(sprint: 2, description: 'Build the SASS system, and implement the Bootstrap template into Rails. Design the Gem configuration and
+  build Gemfile..', project: p)
+    InvoiceItem.create(invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate:  35)
+    InvoiceItem.create(invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
+    InvoiceItem.create(invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
+    InvoiceItem.create(invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
+
+  sprint3 = Invoice.create(sprint: 3, description: 'Scaffold the database and build the relational data structure.', project: p)
+    InvoiceItem.create(invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate:  35)
+    InvoiceItem.create(invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
+    InvoiceItem.create(invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
+    InvoiceItem.create(invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
+
+  sprint4 = Invoice.create(sprint: 4, description: 'Implement the design into the project scaffold system.', project: p)
+    InvoiceItem.create(invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate:  35)
+    InvoiceItem.create(invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..5), rate: 35)
+    InvoiceItem.create(invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..5), rate: 35)
+    InvoiceItem.create(invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..5), rate: 35)
 
 # Project Notes + Discussion
   n = Note.new
@@ -222,3 +252,5 @@ pc = ProjectCustomer.new
 pc.user = c3
 pc.project = p
 pc.save
+
+puts 'Jewler Seeded Succesfully'

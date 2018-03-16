@@ -1,0 +1,27 @@
+<div style="padding:0px" class="xe-widget xe-conversations">
+  <div class="xe-body">
+    <ul class="list-unstyled">
+      <% @conversation.each do |c| %>
+        <li>
+          <div class="xe-comment-entry">
+            <a href="#" class="xe-user-img">
+              <% if c.user.image.nil? %>
+                <img src="<%= image_path 'user-2.png' %>" class="img-circle" width="40">
+              <% else %>
+                <img src="<%= c.user.image.url %>" class="img-circle" width="40">
+              <% end %>
+            </a>
+
+            <div class="xe-comment">
+              <a href="#" class="xe-user-name">
+                <strong><%= c.user.first_name %> <%= c.user.last_name %></strong>
+              </a>
+
+              <p><%= c.content %></p>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
