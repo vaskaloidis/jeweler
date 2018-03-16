@@ -13,6 +13,11 @@ A CRM for Programmers
 - Code Climate - https://codeclimate.com
 - Travis CI - https://travis-ci.org/tomgi/git_stats
 
+## Ajax Development
+- https://launchschool.com/blog/the-detailed-guide-on-how-ajax-works-with-ruby-on-rails
+- Update a partial with AJAX: https://stackoverflow.com/questions/11144391/using-ajax-to-update-a-partial-in-rails
+- Update checkbox with AJAX - https://stackoverflow.com/questions/15572371/rails-change-boolean-value-with-checkbox-and-jquery-ajax
+
 
 
 ## Development Links
@@ -22,6 +27,7 @@ A CRM for Programmers
 
 ## Carrierwave
 - https://github.com/carrierwaveuploader/carrierwave/wiki/How-to%3A-Make-Carrierwave-work-on-Heroku
+- https://github.com/carrierwaveuploader/carrierwave/wiki/How-to:-%22Upload%22-from-a-local-file
 
 ## API Documentation
 

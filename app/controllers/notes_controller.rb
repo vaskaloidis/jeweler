@@ -15,7 +15,6 @@ class NotesController < ApplicationController
   # GET /notes/new
   def new
     @note = Note.new
-
   end
 
   # GET /notes/1/edit
@@ -43,14 +42,17 @@ class NotesController < ApplicationController
       # note.image = Rails.root.join('/screenshots/' + r + '.png').open
     end
 
-
     respond_to do |format|
       if @note.save
+        @notes = Note.all
+
         format.html { redirect_to @note, notice: 'Note was successfully created.' }
         format.json { render :show, status: :created, location: @note }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @note.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end

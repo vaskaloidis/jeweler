@@ -1,6 +1,14 @@
 class DiscussionsController < ApplicationController
   before_action :set_discussion, only: [:show, :edit, :update, :destroy]
 
+  def fetch_discussion
+    @discussion = Note.find(params[:id]).discussions
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # GET /discussions
   # GET /discussions.json
   def index

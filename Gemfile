@@ -13,7 +13,7 @@ gem 'rolify'
 gem 'cancancan', '~> 2.0'
 
 gem 'screencap'
-
+gem 'simple_form'
 # gem 'paper_trail'
 
 gem 'font-awesome-rails'
@@ -21,6 +21,8 @@ gem 'redcarpet'
 gem 'carrierwave', '~> 1.0'
 
 gem 'yaml_db'
+
+gem 'rollbar'
 
 # gem 'jquery-rails', '1.11.1'
 # gem 'jquery-ui-rails'

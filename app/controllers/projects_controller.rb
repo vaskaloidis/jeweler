@@ -2,8 +2,18 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
-  before_action :verify_owner, only: [:owner]
+  respond_to :html, :js, only: [ :request_payment ]
 
+
+  def request_payment
+    invoice = Invoice.find(params[:id])
+    invoice.payment_due = true
+    invoice.save
+
+    respond_to do |format|
+      format.js
+    end
+  end
 
   # GET /projects
   # GET /projects.json
@@ -40,20 +50,17 @@ class ProjectsController < ApplicationController
     @project_customer = ProjectCustomer.new
     @project_customer.project = @project
 
-    @note_note = Note.new
-    @note_note.project = @project
-    @note_note.note_type = 'note'
-    @note_note.author = current_user
+    @new_note = Note.new
+    @new_note.project = @project
+    @new_note.note_type = 'note'
+    @new_note.author = current_user
 
-    @note_update = Note.new
-    @note_update.project = @project
-    @note_update.note_type = 'project_update'
-    @note_update.author = current_user
+    @new_demo = Note.new
+    @new_demo.project = @project
+    @new_demo.note_type = 'demo'
+    @new_demo.author = current_user
 
-    @note_demo = Note.new
-    @note_demo.project = @project
-    @note_demo.note_type = 'demo'
-    @note_demo.author = current_user
+    @invoices = @project.invoices
 
   end
 

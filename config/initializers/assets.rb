@@ -50,5 +50,24 @@ Rails.application.config.assets.precompile += %w( devexpress-web-14.1/js/dx.char
 Rails.application.config.assets.precompile += %w( toastr/toastr.min.js )
 Rails.application.config.assets.precompile += %w( xenon-custom.js );
 
+Rails.application.config.assets.precompile += %w( home.css )
+
 # Rails.application.config.assets.precompile += %w( jewler-logo-full-black.png );
 # Rails.application.config.assets.precompile += %w( jewler-logo-mini-small-black.png );
+
+Rails.application.config.assets.precompile += %w( fontawesome-all.min.css );
+Rails.application.config.assets.precompile += %w( home/bootstrap.css )
+Rails.application.config.assets.precompile += %w( home/style.css )
+Rails.application.config.assets.precompile += %w( home/dark.css )
+Rails.application.config.assets.precompile += %w( home/font-icons.css.erb )
+Rails.application.config.assets.precompile += %w( home/animate.css )
+Rails.application.config.assets.precompile += %w( home/magnific-popup.css )
+Rails.application.config.assets.precompile += %w( home/responsive.css )
+
+Rails.application.config.assets.precompile += %w( home/jquery.js )
+Rails.application.config.assets.precompile += %w( home/plugins.js )
+Rails.application.config.assets.precompile += %w( home/functions.js )
+
+Rails.application.config.assets.precompile += %w( parallax/7.jpg )
+
+
