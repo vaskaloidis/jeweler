@@ -14,8 +14,8 @@ Discussion.delete_all
 # My User
   u = User.new
   u.email = 'vas.kaloidis@gmail.com'
-  u.password = 'password123'
-  u.password_confirmation = 'password123'
+  u.password = 'password'
+  u.password_confirmation = 'password'
   u.company = 'Blue Helmet Software'
   u.first_name = 'Vas'
   u.last_name = 'Kaloidis'
@@ -87,8 +87,8 @@ Discussion.delete_all
   p.prod_url = 'http://bluehelmet.herokuapp.com'
   p.github_url = 'https://github.com/vaskaloidis/jewlercrm'
   p.description = 'A website for the Blue Helmet Software Company, written in Ruby on Rails, hosted on Heroku'
-  p.phase_total = 8
-  p.phase_current = 1
+  p.sprint_total = 8
+  p.sprint_current = 1
   p.image = Rails.root.join('app/assets/images/seeds/bluehelmet.png').open
   p.save
 
@@ -183,8 +183,8 @@ p.prod_url = Faker::Internet.url
 p.github_url = Faker::Internet.url('github.com')
 p.github_secondary_url = Faker::Internet.url('github.com')
 p.description = Faker::Company.catch_phrase
-p.phase_total = 8
-p.phase_current = 1
+p.sprint_total = 8
+p.sprint_current = 1
 p.owner = c1
 p.save
 
@@ -209,8 +209,8 @@ p.prod_url = Faker::Internet.url
 p.github_url = Faker::Internet.url('github.com')
 p.github_secondary_url = Faker::Internet.url('github.com')
 p.description = Faker::Company.catch_phrase
-p.phase_total = 8
-p.phase_current = 1
+p.sprint_total = 8
+p.sprint_current = 1
 p.owner = c1
 p.save
 
@@ -235,8 +235,8 @@ p.prod_url = Faker::Internet.url
 p.github_url = Faker::Internet.url('github.com')
 p.github_secondary_url = Faker::Internet.url('github.com')
 p.description = Faker::Company.catch_phrase
-p.phase_total = 8
-p.phase_current = 1
+p.sprint_total = 8
+p.sprint_current = 1
 p.owner = c2
 p.save
 

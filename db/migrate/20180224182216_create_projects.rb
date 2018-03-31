@@ -3,8 +3,8 @@ class CreateProjects < ActiveRecord::Migration[5.2]
     create_table :projects do |t|
       t.string :name
       t.string :language
-      t.integer :phase_total
-      t.integer :phase_current
+      t.integer :sprint_total
+      t.integer :sprint_current
       t.text :description
       t.string :github_url
       t.string :github_secondary_url

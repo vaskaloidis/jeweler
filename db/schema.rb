@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_08_183635) do
+ActiveRecord::Schema.define(version: 2018_03_31_083612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +39,6 @@ ActiveRecord::Schema.define(version: 2018_03_08_183635) do
   end
 
   create_table "invoices", force: :cascade do |t|
-    t.integer "phase"
     t.date "payment_due_date"
     t.boolean "payment_due", default: false
     t.text "description"
@@ -110,8 +109,12 @@ ActiveRecord::Schema.define(version: 2018_03_08_183635) do
     t.string "github_branch", default: "master"
     t.string "github_secondary_branch", default: "master"
     t.string "image"
+    t.bigint "invoice_item_id"
+    t.integer "sprint_total"
+    t.integer "sprint_current"
     t.index ["github_secondary_url"], name: "index_projects_on_github_secondary_url", unique: true
     t.index ["github_url"], name: "index_projects_on_github_url", unique: true
+    t.index ["invoice_item_id"], name: "index_projects_on_invoice_item_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 

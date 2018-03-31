@@ -4,6 +4,8 @@ class Project < ApplicationRecord
   has_many :customers, :through => :project_customers, :source => :user
   has_many :notes
 
+  belongs_to :current_task, :class_name => 'InvoiceItem', :foreign_key => 'invoice_item_id', optional: true
+
   has_many :invoices
   has_many :invoice_items
   has_many :tasks, :through => :invoices, :source => :invoice_items
@@ -14,18 +16,36 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :customers
   accepts_nested_attributes_for :owner
   accepts_nested_attributes_for :invoices
+  accepts_nested_attributes_for :current_task
+
+
+  validates :sprint_total, presence: true
+  validates :sprint_current, presence: true
+  validates :name, presence: true
+
+
+
 
   def get_sprint(number)
-    self.invoices.where(sprint: number).first
+    invoices = self.invoices.where(sprint: number)
+    if invoices.empty?
+      return nil
+      else return invoices.first
+    end
   end
 
   def current_sprint
-    return self.invoices.where(sprint: self.phase_current).first
+    this_sprint_invoice = self.invoices.where(sprint: self.sprint_current)
+    if this_sprint_invoice.empty?
+      return nil
+    else
+      return this_sprint_invoice.first
+    end
   end
 
   def payment_requested?
-    self.invoices.each do |i|
-      if i.payment_due == true
+    self.invoices.each do |x|
+      if x.payment_due == true
         return true
       end
     end

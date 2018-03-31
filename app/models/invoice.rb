@@ -5,6 +5,8 @@ class Invoice < ApplicationRecord
 
   accepts_nested_attributes_for :project
 
+  validates :sprint, presence: true
+
   def sprint_payments
     total_payments = 0
     self.payments.each do |p|
