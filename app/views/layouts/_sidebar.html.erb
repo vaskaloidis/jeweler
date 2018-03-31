@@ -73,11 +73,11 @@
 
     <ul id="main-menu" class="main-menu">
 
-      <% if controller_name == 'projects' %>
+      <% if controller_name == 'projects' && action_name != 'index' %>
         <li class="opened active">
           <a href="<%= projects_url %>">
             <i class="linecons-diamond"></i>
-            <span class="title"><%= @project.name %></span>
+            <span class="title"><%= truncate(@project.name, :length => 28) %></span>
           </a>
           <ul>
             <li>

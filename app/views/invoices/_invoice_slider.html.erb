@@ -1,5 +1,5 @@
 <%
-  if @project.phase_current == invoice.sprint
+  if @project.sprint_current == invoice.sprint
     if invoice.open == false
       invoice.open = true
       invoice.save
@@ -29,7 +29,7 @@
       </h4>
       <div>
         <% if invoice.open? %>
-          <% if @project.phase_current == invoice.sprint %>
+          <% if @project.sprint_current == invoice.sprint %>
             <div class="label label-success">Current Sprint</div>
           <% else %>
             <div class="label label-success">Sprint Open</div>

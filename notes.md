@@ -13,6 +13,12 @@ A CRM for Programmers
 - Code Climate - https://codeclimate.com
 - Travis CI - https://travis-ci.org/tomgi/git_stats
 
+### App Software Website Insporation
+Mostly TODO Apps
+1. https://www.taskade.com/?ref=producthunt
+2. 
+
+
 ## Ajax Development
 - https://launchschool.com/blog/the-detailed-guide-on-how-ajax-works-with-ruby-on-rails
 - Update a partial with AJAX: https://stackoverflow.com/questions/11144391/using-ajax-to-update-a-partial-in-rails

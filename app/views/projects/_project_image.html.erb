@@ -47,52 +47,15 @@
   <hr>
   <ul class="list-unstyled user-friends-count">
     <li>
-      <span><%= @project.phase_current %></span>
+      <span><%= @project.sprint_current %></span>
       Sprint
     </li>
     <li>
-      <span><%= @project.phase_total %></span>
+      <span><%= @project.sprint_total %></span>
       Total
     </li>
   </ul>
 
-  <% if @project.is_owner(current_user) %>
-    <button type="button" class="btn btn-success btn-block text-left">
-      Project Owner
-      <i class="fa-check pull-right"></i>
-    </button>
-
-    <% if @project.payment_requested? %>
-      <div id="request_payment" class="alert alert-danger">
-        <strong>Payment Requested.</strong> Should arrive shortly!
-      </div>
-    <% else %>
-      <div style="display:none" id="request_payment" class="alert alert-danger">
-        <strong>Payment Requested.</strong> Should arrive shortly!
-      </div>
-      <div id="request_payment_button">
-        <%= link_to 'Request Sprint Payment<i class="fas fa-dollar-sign fa-2x pull-right"></i>'.html_safe,
-                    request_payment_path(@project.current_sprint.id),
-                    remote: true,
-                    :class => 'btn btn-success btn-block text-left' %>
-      </div>
-      </a>
-    <% end %>
-  <% elsif @project.is_customer(current_user) %>
-    <button type="button" class="btn btn-success btn-block text-left">
-      Project Member
-      <i class="fa-check pull-right"></i>
-    </button>
-    <% if @project.payment_requested? %>
-      <div class="alert alert-danger">
-        <strong>Payment Requested.</strong> Click here to keep the dev happy!
-      </div>
-    <% end %>
-    <a href="#" class="btn btn-success btn-block text-left">
-      Request Sprint
-      <% @project.phase_current.to_s %> Payment
-      <i class="fas fa-dollar-sign fa-2x pull-right"></i>
-    </a>
-  <% end %>
+  <%= render 'layouts/notifications' %>
 
 </div>

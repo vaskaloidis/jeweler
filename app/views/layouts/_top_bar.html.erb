@@ -6,7 +6,7 @@
     <!-- Navbar Brand -->
     <div class="navbar-brand">
       <a href="<%= root_url %>" class="logo">
-        <img src="<%= path_to_image 'jewler-logo-full-white-alternate.png' %>" width="200" alt="" class="hidden-xs"/>
+        <img src="<%= path_to_image 'jewler-logo-full-white.png' %>" width="200" alt="" class="hidden-xs"/>
         <img src="<%= path_to_image 'jewler-logo-mini-small-white.png' %>" width="80" alt="" class="visible-xs"/>
       </a>
       <a href="#" data-toggle="settings-pane" data-animate="true">
@@ -47,20 +47,20 @@
       <li>
         <a href="<%= root_url %>">
           <i class="fas fa-home"></i>
-          <span class="title">Home</span>
+          <span style="color:#9987c3" class="title">Home</span>
         </a>
       </li>
     </ul>
 
     <ul class="nav nav-userinfo navbar-right">
       <li class="xs-left">
-        <a href="<%= new_user_registration_path %>">
+        <a style="color:#9987c3" href="<%= new_user_registration_path %>">
           <i class="fa-user"></i>
           Register
         </a>
       </li>
       <li class="xs-left">
-        <a href="<%= new_user_session_path %>">
+        <a style="color:#9987c3" href="<%= new_user_session_path %>">
           <i class="fa-lock"></i>
           Login
         </a>

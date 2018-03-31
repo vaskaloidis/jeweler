@@ -1,12 +1,23 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy]
+  before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy, :set_current_task]
+  before_action :verify_invoices_exist, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
-  respond_to :html, :js, only: [ :request_payment ]
+  respond_to :html, :js, only: [:request_payment]
 
+  def set_current_task
+    task = InvoiceItem.find(params[:invoice_item_id])
+    invoice = task.invoice
+    @project.current_task = task
+    @project.save
+
+    respond_to do |format|
+      format.js
+    end
+  end
 
   def request_payment
-    invoice = Invoice.find(params[:id])
+    invoice = Invoice.find(params[:invoice_id])
     invoice.payment_due = true
     invoice.save
 
@@ -37,14 +48,21 @@ class ProjectsController < ApplicationController
 
     gh_url.sub! 'github.com', 'raw.githubusercontent.com'
 
-    readme_raw = Net::HTTP.get(URI.parse(gh_url))
+    begin
+      readme_raw = Net::HTTP.get(URI.parse(gh_url))
 
-    if readme_raw == 'Not Found'
+      if readme_raw == 'Not Found'
+        @github_readme_parsed = 'README file could not be loaded.<br>
+                               GitHub README file: ' + gh_url
+      else
+        redcarpet = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
+        @github_readme_parsed = redcarpet.render(readme_raw)
+      end
+
+    rescue => ex
+      logger.error ex.message
       @github_readme_parsed = 'README file could not be loaded.<br>
                                GitHub README file: ' + gh_url
-    else
-      redcarpet = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
-      @github_readme_parsed = redcarpet.render(readme_raw)
     end
 
     @project_customer = ProjectCustomer.new
@@ -77,6 +95,7 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
     @project = Project.new(project_params)
+    @project.owner = current_user
 
     respond_to do |format|
       if @project.save
@@ -133,8 +152,27 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
+  def verify_invoices_exist
+    # Require Each Sprint_Total Invoice Exists
+    @project.sprint_total.times do |sprint_|
+      if @project.get_sprint(sprint_).nil?
+        invoice = Invoice.new
+        invoice.project = @project
+        invoice.sprint = sprint_
+
+        if @project.sprint_current == sprint_
+          invoice.open = true
+        else
+          invoice.open = false
+        end
+
+        invoice.save
+      end
+    end
+  end
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
-    params.require(:project).permit(:name, :language, :phase_total, :phase_current, :description, :github_url, :github_secondary_url, :github_branch, :github_secondary_branch, :readme_file, :readme_remote, :stage_website_url, :demo_url, :prod_url, :complete, :stage_travis_api_url, :stage_travis_api_token, :prod_travis_api_token, :prod_travis_api_url, :coveralls_api_url,:customers_id)
+    params.require(:project).permit(:name, :language, :sprint_total, :sprint_current, :description, :github_url, :github_secondary_url, :github_branch, :github_secondary_branch, :readme_file, :readme_remote, :stage_website_url, :demo_url, :prod_url, :complete, :stage_travis_api_url, :stage_travis_api_token, :prod_travis_api_token, :prod_travis_api_url, :coveralls_api_url, :customers_id, :invoice_item_id)
   end
 end

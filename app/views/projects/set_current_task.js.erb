@@ -1,0 +1,2 @@
+$("#current_invoice_panel").html("<%= escape_javascript( render 'invoices/invoice_panel', invoice: @project.current_sprint, sprint: @project.sprint_current ) %>");
+// Invoice.where(project: @project, sprint: count).first, sprint: count

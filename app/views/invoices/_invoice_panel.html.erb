@@ -1,6 +1,6 @@
 <%
 
-  if @project.phase_current == invoice.sprint
+  if @project.sprint_current == invoice.sprint
     if invoice.open == false
       invoice.open = true
       invoice.save
@@ -27,7 +27,7 @@
     </h4>
     <div style="color:white !important;font-size: 18px;" class="panel-options">
       <% if invoice.open? %>
-        <% if @project.phase_current == invoice.sprint %>
+        <% if @project.sprint_current == invoice.sprint %>
           <div class="label label-success">Current Sprint</div>
         <% else %>
           <div class="label label-success">Sprint Open</div>
@@ -53,14 +53,37 @@
         <th>Cost</th>
       </tr>
       </thead>
-      <tbody>
+
+      <tbody class="task_list"
+             <% if @project.current_task == invoice.id %>
+             id="current_sprint">
+      <% else %>
+      >
+      <% end %>
+
       <% invoice.invoice_items.each do |task| %>
-        <tr>
-          <td><%= task.description %></td>
-          <td>$<%= task.rate %>/hr</td>
-          <td><%= task.hours %></td>
-          <td>$<%= task.rate * task.hours %></td>
-        </tr>
+      <tr onmouseover="document.getElementById('task_<%= task.id.to_s %>').style.display = 'inline';" onmouseout="document.getElementById('task_<%= task.id.to_s %>').style.display = 'none';">
+        <td>
+          <% if @project.current_task.nil? %>
+              <span id="task_<%= task.id.to_s %>" style="display:none">
+
+                <%= link_to 'Set Current Tasks',
+                    set_current_task_path(@project.id, task.id),  remote: true,
+                    class: 'btn btn-sm btn-success', style: 'display:inline;font-size:.8em; padding-right:25px;' %>
+                %>
+              </span>
+          <% elsif @project.current_task == task %>
+            <span style="font-size:.8em; padding-right:25px;">Current Task</span>
+          <% end %>
+          <% if @project.current_task == task %>
+            <i class="fas fa-gem"></i>
+          <% end %>
+          <%= task.description %>
+        </td>
+        <td>$<%= task.rate %>/hr</td>
+        <td><%= task.hours %></td>
+        <td>$<%= task.rate * task.hours %></td>
+      </tr>
       <% end %>
       <tr>
         <th></th>

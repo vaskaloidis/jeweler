@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
 
   # Ajax
-  get "/request_payment/:id"  => 'projects#request_payment', as: 'request_payment'
+  get "/request_payment/:invoice_id"  => 'projects#request_payment', as: 'request_payment'
   get "/fetch_discussion/:id" => 'discussions#fetch_discussion', as: 'fetch_discussion'
+  get "/set_project/:id/current_task/:invoice_item_id" => 'projects#set_current_task', as: 'set_current_task'
 
   resources :payments
   resources :invoice_items
