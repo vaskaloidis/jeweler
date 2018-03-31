@@ -11,8 +11,8 @@ RSpec.describe "projects/index", type: :view do
       Project.create!(
         :name => "Name",
         :language => "Language",
-        :phase_total => 2,
-        :phase_current => 3,
+        :sprint_total => 2,
+        :sprint_current => 3,
         :description => "MyText",
         :github_url => "Github Url",
         :github_secondary_url => "Github Secondary Url",
@@ -32,8 +32,8 @@ RSpec.describe "projects/index", type: :view do
       Project.create!(
         :name => "Name",
         :language => "Language",
-        :phase_total => 2,
-        :phase_current => 3,
+        :sprint_total => 2,
+        :sprint_current => 3,
         :description => "MyText",
         :github_url => "Github Url",
         :github_secondary_url => "Github Secondary Url",

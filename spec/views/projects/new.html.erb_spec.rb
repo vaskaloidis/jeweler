@@ -9,8 +9,8 @@ RSpec.describe "projects/new", type: :view do
     assign(:project, Project.new(
       :name => "MyString",
       :language => "MyString",
-      :phase_total => 1,
-      :phase_current => 1,
+      :sprint_total => 1,
+      :sprint_current => 1,
       :description => "MyText",
       :github_url => "MyString",
       :github_secondary_url => "MyString",
@@ -38,9 +38,9 @@ RSpec.describe "projects/new", type: :view do
 
       assert_select "input[name=?]", "project[language]"
 
-      assert_select "input[name=?]", "project[phase_total]"
+      assert_select "input[name=?]", "project[sprint_total]"
 
-      assert_select "input[name=?]", "project[phase_current]"
+      assert_select "input[name=?]", "project[sprint_current]"
 
       assert_select "textarea[name=?]", "project[description]"
 

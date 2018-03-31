@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "invoices/new", type: :view do
   before(:each) do
     assign(:invoice, Invoice.new(
-      :phase => 1,
+      :sprint_ => 1,
       :payment_due => false,
       :description => "MyText",
       :belongs_to => ""
@@ -15,7 +15,7 @@ RSpec.describe "invoices/new", type: :view do
 
     assert_select "form[action=?][method=?]", invoices_path, "post" do
 
-      assert_select "input[name=?]", "invoice[phase]"
+      assert_select "input[name=?]", "invoice[sprint_]"
 
       assert_select "input[name=?]", "invoice[payment_due]"
 

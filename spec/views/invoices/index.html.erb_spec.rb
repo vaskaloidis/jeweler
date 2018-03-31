@@ -4,13 +4,13 @@ RSpec.describe "invoices/index", type: :view do
   before(:each) do
     assign(:invoices, [
       Invoice.create!(
-        :phase => 2,
+        :sprint_ => 2,
         :payment_due => false,
         :description => "MyText",
         :belongs_to => ""
       ),
       Invoice.create!(
-        :phase => 2,
+        :sprint_ => 2,
         :payment_due => false,
         :description => "MyText",
         :belongs_to => ""

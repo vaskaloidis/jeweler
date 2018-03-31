@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "invoices/show", type: :view do
   before(:each) do
     @invoice = assign(:invoice, Invoice.create!(
-      :phase => 2,
+      :sprint_ => 2,
       :payment_due => false,
       :description => "MyText",
       :belongs_to => ""
