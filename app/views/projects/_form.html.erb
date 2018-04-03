@@ -1,107 +1,104 @@
 <%= form_with(model: project, local: true) do |form| %>
-  <% if project.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
+  <!--<form role="form" class="form-horizontal" role="form">-->
 
-      <ul>
-      <% project.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  <div class="col-xs-12 col-md-8">
+    <% if project.errors.any? %>
+      <div class="row">
+
+        <div class="alert alert-error">
+          <div id="error_explanation">
+            <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+            <ul>
+              <% project.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="row">
+      <div class="form-group">
+        <%= form.label :name, class: 'control-label' %>
+        <%= form.text_field :name, class: 'form-control' %>
+      </div>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
+    <div class="row">
+      <div class="form-group">
+        <%= form.label :language, class: 'control-label' %>
+        <%= form.text_field :language, class: 'form-control' %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= form.label :language %>
-    <%= form.text_field :language %>
-  </div>
+    <div class="row">
+      <div class="">
+        <div class="row form-group">
+          <%= form.label :sprint_current, class: 'col-sm-4 control-label' %>
+          <%= form.text_field :sprint_current, class: 'col-sm-2 form-control' %>
+        </div>
+      </div>
+      <div class="">
+        <div class="row form-group">
+          <%= form.label :sprint_total, class: 'col-sm-4 control-label' %>
+          <%= form.text_field :sprint_total, class: 'col-sm-2 form-control' %>
+        </div>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= form.label :sprint_total %>
-    <%= form.number_field :sprint_total %>
-  </div>
+    <div class="row">
+      <div class="form-group">
+        <%= form.label :description, class: 'control-label' %>
+        <%= form.text_area :description, class: 'form-control' %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= form.label :sprint_current %>
-    <%= form.number_field :sprint_current %>
-  </div>
+    <div class="row">
+      <div class="form-group">
+        <%= form.label :github_url, class: 'control-label' %>
+        <%= form.text_field :github_url, class: 'form-control' %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
+    <div class="row">
+      <div class="form-group">
+        <%= form.label :readme_file, class: 'control-label' %>
+        <%= form.text_field :readme_file, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= form.label :readme_remote, class: 'control-label' %>
+        <%= form.text_field :readme_remote, class: 'form-control' %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= form.label :github_url %>
-    <%= form.text_field :github_url %>
-  </div>
+    <div class="row">
+      <div class="form-group">
+        <%= form.label :stage_website_url, class: 'control-label' %>
+        <%= form.text_area :stage_website_url, class: 'form-control' %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= form.label :github_secondary_url %>
-    <%= form.text_field :github_secondary_url %>
-  </div>
+    <div class="row">
+      <div class="form-group">
+        <%= form.label :demo_url, class: 'control-label' %>
+        <%= form.text_area :demo_url, class: 'form-control' %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= form.label :readme_file %>
-    <%= form.text_field :readme_file %>
-  </div>
+    <div class="row">
+      <div class="form-group">
+        <%= form.label :prod_url, class: 'control-label' %>
+        <%= form.text_area :prod_url, class: 'form-control' %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= form.label :readme_remote %>
-    <%= form.check_box :readme_remote %>
-  </div>
+    <div class="row">
+      <%= form.submit 'Submit', :class => 'btn-btn-success' %>
+      <%= link_to 'Back', @project, class: 'btn btn-primary' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :stage_website_url %>
-    <%= form.text_field :stage_website_url %>
-  </div>
 
-  <div class="field">
-    <%= form.label :demo_url %>
-    <%= form.text_field :demo_url %>
-  </div>
-
-  <div class="field">
-    <%= form.label :prod_url %>
-    <%= form.text_field :prod_url %>
-  </div>
-
-  <div class="field">
-    <%= form.label :complete %>
-    <%= form.check_box :complete %>
-  </div>
-
-  <div class="field">
-    <%= form.label :stage_travis_api_url %>
-    <%= form.text_field :stage_travis_api_url %>
-  </div>
-
-  <div class="field">
-    <%= form.label :stage_travis_api_token %>
-    <%= form.text_field :stage_travis_api_token %>
-  </div>
-
-  <div class="field">
-    <%= form.label :prod_travis_api_token %>
-    <%= form.text_field :prod_travis_api_token %>
-  </div>
-
-  <div class="field">
-    <%= form.label :prod_travis_api_url %>
-    <%= form.text_field :prod_travis_api_url %>
-  </div>
-
-  <div class="field">
-    <%= form.label :coveralls_api_url %>
-    <%= form.text_field :coveralls_api_url %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
   </div>
 <% end %>

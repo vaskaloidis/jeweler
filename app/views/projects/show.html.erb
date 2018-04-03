@@ -30,10 +30,10 @@
       </div>
 
       <div class="tab-pane" id="timeline">
-        <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-single btn-sm">
-          Create Note / Demo
-        </a>
         <div id="timeline_notes">
+          <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-single btn-sm">
+            Create Note / Demo
+          </a>
           <%= render 'projects/note_full_timeline', local_note: @project.notes %>
         </div>
       </div>

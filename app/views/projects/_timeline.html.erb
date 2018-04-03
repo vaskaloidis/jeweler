@@ -85,6 +85,22 @@
               <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
             </small>
           </div>
+        <% elsif note.note_type == 'commit' %>
+          <div class="cbp_tmicon timeline-bg-warning">
+            <i class="fas fa-code-branch"></i>
+          </div>
+          <div class="cbp_tmlabel">
+            <h2><a href="#">
+              <%= note.author.first_name %>
+              <%= note.author.last_name %>
+            </a>
+              <span>Committed Code</span>
+            </h2>
+            <p><%= note.content.html_safe %></p>
+            <small>
+              <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
+            </small>
+          </div>
         <% else %>
           <div class="cbp_tmicon timeline-bg-success">
             <i class="fas fa-sticky-note"></i>
@@ -108,5 +124,3 @@
     <% end %>
   <% end %>
 </ul>
-
-<%#= render 'discussions/conversation_modal' %>

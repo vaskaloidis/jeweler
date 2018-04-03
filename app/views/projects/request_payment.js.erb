@@ -1,2 +1,5 @@
-$("#request_payment_button").hide();
-$('#request_payment').show();
+$("#request_payment_button_sprint_<%= @invoice.sprint.to_s %>").hide();
+$('#request_payment_sprint_<%= @invoice.sprint.to_s %>').show();
+
+$("#request_payment_button_2_sprint_<%= @invoice.sprint.to_s %>").hide();
+$('#request_payment_2_sprint_<%= @invoice.sprint.to_s %>').show();

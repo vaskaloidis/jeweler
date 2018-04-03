@@ -81,6 +81,38 @@
                   <%= link_to 'Discussion (' + note.discussions.count.to_s + ')', fetch_discussion_path(note.id), :class => "btn btn-sm btn-success", remote: true %>
                 </small>
               </div>
+            <% elsif note.note_type == 'commit' %>
+              <div class="timeline-icon timeline-bg-warning">
+                <i class="fas fa-code-branch"></i>
+              </div>
+              <div class="timeline-label">
+                <h2><a href="#">
+                  <%= note.author.first_name %>
+                  <%= note.author.last_name %>
+                </a>
+                  <span>Committed Code<</span>
+                </h2>
+                <p><%= note.content.html_safe %></p>
+                <small>
+                  <%= link_to 'Discussion (' + note.discussions.count.to_s + ')', fetch_discussion_path(note.id), :class => "btn btn-sm btn-success", remote: true %>
+                </small>
+              </div>
+              <% else %>
+                <div class="timeline-icon timeline-bg-success">
+                  <i class="fas fa-sticky-note"></i>
+                </div>
+                <div class="timeline-label">
+                  <h2><a href="#">
+                    <%= note.author.first_name %>
+                    <%= note.author.last_name %>
+                  </a>
+                    <span>posted a Note</span>
+                  </h2>
+                  <p><%= note.content %></p>
+                  <small>
+                    <%= link_to 'Discussion (' + note.discussions.count.to_s + ')', fetch_discussion_path(note.id), :class => "btn btn-sm btn-success", remote: true %>
+                  </small>
+                </div>
             <% end %>
           </div>
 
@@ -101,6 +133,3 @@
     </div>
   </div>
 </div>
-
-<%= render 'notes/create_note_modal' %>
-<%= render 'discussions/discussion_modal' %>

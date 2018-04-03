@@ -38,7 +38,7 @@ class WebhookController < ApplicationController
         end
         unless commit["modified"]
           message = message + '<br> <strong>Modified:</strong><br>'
-          commit["added"].each do |file|
+          commit["modified"].each do |file|
             message = message + file + '<br>'
           end
         end
