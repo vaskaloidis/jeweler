@@ -17,9 +17,19 @@ class ProjectsController < ApplicationController
   end
 
   def request_payment
-    invoice = Invoice.find(params[:invoice_id])
-    invoice.payment_due = true
-    invoice.save
+    @invoice = Invoice.find(params[:invoice_id])
+    @invoice.payment_due = true
+    @invoice.save
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def cancel_request_payment
+    @invoice = Invoice.find(params[:invoice_id])
+    @invoice.payment_due = false
+    @invoice.save
 
     respond_to do |format|
       format.js
@@ -91,6 +101,36 @@ class ProjectsController < ApplicationController
   def edit
   end
 
+  def sync_github(project)
+
+    unless project.owner.oauth.nil?
+      github = Github.new oauth: project.owner.oauth
+
+      logger.info('GitHub User: ' + ApplicationHelper.github_user(project))
+      logger.info('GitHub Repo: ' + ApplicationHelper.github_repo(project))
+
+      repos = github.repos.commits.all ApplicationHelper.github_user(project),
+                                       ApplicationHelper.github_repo(project)
+
+      repos.each do |commit|
+        sha = commit.sha
+        if Note.where(project: project, git_commit_id: sha).empty?
+          note = Note.new
+          note.author = project.owner
+          note.note_type = 'commit'
+          note.git_commit_id = sha
+          note.sync = true
+          note.project = project
+          note.content = commit.commit.message.to_s + ' - ' + commit.commit.author.name.to_s
+          note.created_at = commit.commit.committer.date
+          note.save
+          puts 'Note Create - Commit Sync SHA: ' + commit.sha
+        end
+      end
+
+    end
+  end
+
   # POST /projects
   # POST /projects.json
   def create
@@ -99,6 +139,11 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+
+        if @project.valid?
+          sync_github(@project)
+        end
+
         format.html {redirect_to @project, notice: 'Project was successfully created.'}
         format.json {render :show, status: :created, location: @project}
       else
@@ -111,8 +156,14 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update
+
     respond_to do |format|
       if @project.update(project_params)
+
+        if @project.valid?
+          sync_github(@project)
+        end
+
         format.html {redirect_to @project, notice: 'Project was successfully updated.'}
         format.json {render :show, status: :ok, location: @project}
       else
