@@ -23,20 +23,20 @@ class WebhookController < ApplicationController
         logger.info("Commit SHA: " + sha.to_s)
 
         message = commit["message"]
-
-        unless commit["added"]
+        message = message + '<br><a href="' + payload["compare"] + '">View Commit</a>'
+        unless commit["added"].empty?
           message = message + '<br> <strong>Added:</strong><br>'
           commit["added"].each do |file|
             message = message + file + '<br>'
           end
         end
-        unless commit["removed"]
+        unless commit["removed"].empty?
           message = message + '<br> <strong>Removed:</strong><br>'
           commit["removed"].each do |file|
             message = message + file + '<br>'
           end
         end
-        unless commit["modified"]
+        unless commit["modified"].empty?
           message = message + '<br> <strong>Modified:</strong><br>'
           commit["modified"].each do |file|
             message = message + file + '<br>'

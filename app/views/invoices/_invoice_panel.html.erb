@@ -35,6 +35,27 @@
       <% else %>
         <div class="label label-danger">Sprint Closed</div>
       <% end %>
+
+      <% if !invoice.payment_due? %>
+        <div style="display:none;margin-right:10px" id="request_payment_2_sprint_<%= invoice.sprint.to_s %>" class="label label-warning">
+          Payment Requested
+        </div>
+        <div style="display:inline" id="request_payment_button_2_sprint_<%= invoice.sprint.to_s %>">
+          <%= link_to '<div class="label label-success">Request Payment</div>'.html_safe,
+                      request_payment_path(invoice.id),
+                      remote: true %>
+        </div>
+      <% else %>
+        <div style="display:none;margin-right:10px" id="request_payment_cancelled_sprint_<%= invoice.sprint.to_s %>" class="label label-warning">
+          Payment Request Cancelled
+        </div>
+        <div style="display:inline" id="request_payment_cancel_button_sprint_<%= invoice.sprint.to_s %>">
+          <%= link_to '<div class="label label-warning">Payment Requested <small>(Cancel)</small></div>'.html_safe,
+                      cancel_request_payment_path(invoice.id),
+                      remote: true %>
+        </div>
+      <% end %>
+
       <div class="label label-success">Payment: $<%= payment_total %></div>
       <div class="label label-info">Cost: $<%= price_total %></div>
       <div class="label label-default">Hours: <%= invoice.sprint_hours %> hrs</div>
@@ -64,19 +85,16 @@
       <% invoice.invoice_items.each do |task| %>
       <tr onmouseover="document.getElementById('task_<%= task.id.to_s %>').style.display = 'inline';" onmouseout="document.getElementById('task_<%= task.id.to_s %>').style.display = 'none';">
         <td>
-          <% if @project.current_task.nil? %>
-              <span id="task_<%= task.id.to_s %>" style="display:none">
-
-                <%= link_to 'Set Current Tasks',
-                    set_current_task_path(@project.id, task.id),  remote: true,
-                    class: 'btn btn-sm btn-success', style: 'display:inline;font-size:.8em; padding-right:25px;' %>
-                %>
-              </span>
-          <% elsif @project.current_task == task %>
-            <span style="font-size:.8em; padding-right:25px;">Current Task</span>
-          <% end %>
           <% if @project.current_task == task %>
-            <i class="fas fa-gem"></i>
+            <span style="font-size:1.2em; padding-right:25px;"><span class="label label-info">Current Task</span></span>
+          <% else
+               @project.current_task.nil? %>
+              <span id="task_<%= task.id.to_s %>" style="display:none">
+                <%= link_to 'Set Current Tasks',
+                            set_current_task_path(@project.id, task.id), remote: true,
+                            class: 'btn btn-sm btn-success', style: 'display:inline;font-size:.8em; padding-right:25px;' %>
+              </span>
+
           <% end %>
           <%= task.description %>
         </td>
@@ -85,8 +103,13 @@
         <td>$<%= task.rate * task.hours %></td>
       </tr>
       <% end %>
+      <div id="invoice_items_<%= invoice.id.to_s %>"></div>
       <tr>
-        <th></th>
+        <th>
+          <%= link_to 'Create Task',
+                      create_task_inline_path(invoice.id), remote: true,
+                      class: 'btn btn-sm btn-success', style: 'display:inline;font-size:.8em; padding-right:25px;' %>
+        </th>
         <th><strong>Total:</strong></th>
         <th><%= hour_total %> hrs.</th>
         <th>$<%= price_total %></th>
