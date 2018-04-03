@@ -14,39 +14,51 @@
 
   <% else %>
 
-    <% if @project.payment_requested? %>
-      <div id="request_payment" class="alert alert-danger">
-        <strong>Payment Requested.</strong> Should arrive shortly!
-      </div>
+    <% if !@project.payment_requests.empty? %>
+
+      <% unless @project.payment_requests.empty? %>
+        <% @project.payment_requests.each do |invoice| %>
+          <div id="request_payment_notification_sprint_<%= invoice.id.to_s %>" class="alert alert-danger">
+            <strong>Payment Requested For Sprint <%= invoice.sprint.to_s %>.</strong>
+            <%= link_to '<small>(Cancel)</small>'.html_safe,
+                        cancel_request_payment_path(invoice.id),
+                        remote: true %>
+          </div>
+        <% end %>
+      <% end %>
+
     <% else %>
-      <div style="display:none" id="request_payment" class="alert alert-danger">
-        <strong>Payment Requested.</strong> Should arrive shortly!
-      </div>
-      <div id="request_payment_button">
-        <%= link_to 'Request Sprint Payment<i class="fas fa-dollar-sign fa-2x pull-right"></i>'.html_safe,
-                    request_payment_path(@project.current_sprint.id),
-                    remote: true,
-                    :class => 'btn btn-success btn-block text-left' %>
-      </div>
-      </a>
+
+      <% @project.payment_requests.each do |invoice| %>
+        <div style="display:none" id="request_payment_sprint_<%= invoice.sprint.to_s %>" class="alert alert-danger">
+          <strong>Payment Requested.</strong> Should arrive shortly.
+        </div>
+        <div id="request_payment_button_sprint_<%= invoice.sprint.to_s %>">
+          <%= link_to 'Request Sprint Payment<i class="fas fa-dollar-sign fa-2x pull-right"></i>'.html_safe,
+                      request_payment_path(@project.current_sprint.id),
+                      remote: true,
+                      :class => 'btn btn-success btn-block text-left' %>
+        </div>
+      <% end %>
+
     <% end %>
 
   <% end %>
 
 
 <% elsif @project.is_customer(current_user) %>
+
   <button type="button" class="btn btn-success btn-block text-left">
     Project Member
     <i class="fa-check pull-right"></i>
   </button>
-  <% if @project.payment_requested? %>
-    <div class="alert alert-danger">
-      <strong>Payment Requested.</strong> Click here to keep the dev happy!
-    </div>
+
+  <% unless @project.payment_requests.empty? %>
+    <% @project.payment_requests.each do |invoice| %>
+      <div class="alert alert-danger">
+        <strong>Payment Requested For Sprint <%= invoice.sprint.to_s %>.</strong> Click here to pay your dev!
+      </div>
+    <% end %>
   <% end %>
-  <a href="#" class="btn btn-success btn-block text-left">
-    Request Sprint
-    <% @project.sprint_current.to_s %> Payment
-    <i class="fas fa-dollar-sign fa-2x pull-right"></i>
-  </a>
+
 <% end %>

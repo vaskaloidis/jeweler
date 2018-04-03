@@ -73,7 +73,7 @@
 
     <ul id="main-menu" class="main-menu">
 
-      <% if controller_name == 'projects' && action_name != 'index' %>
+      <% if controller_name == 'projects' and action_name != 'index' and action_name != 'new' %>
         <li class="opened active">
           <a href="<%= projects_url %>">
             <i class="linecons-diamond"></i>

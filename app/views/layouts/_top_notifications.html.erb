@@ -1,0 +1,15 @@
+<% if notice %>
+  <p class="alert alert-success"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="alert alert-danger"><%= alert %></p>
+<% end %>
+
+<% if signed_in? %>
+  <% if current_user.oauth.nil? or current_user.oauth == '' %>
+    <% gh_url = 'https://github.com/login/oauth/authorize?client_id=' + ENV['GITHUB_CLIENT_ID'] %>
+    <p class="alert alert-danger">
+      Please Register Jewler on GitHub, <%= link_to 'Here', gh_url %>
+    </p>
+  <% end %>
+<% end %>

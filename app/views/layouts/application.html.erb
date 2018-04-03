@@ -62,23 +62,23 @@
 
   <script>
 
-    function on_page_load() {
-      $('#current_sprint').popover({
-        title: "Current Task",
-        content: "Set Current Task Here",
-        html: true,
-        placement: 'left',
-        trigger: 'manual'
-      });
+      function on_page_load() {
+          $('#current_sprint').popover({
+              title: "Current Task",
+              content: "Set Current Task Here",
+              html: true,
+              placement: 'left',
+              trigger: 'manual'
+          });
 
-      $('#task_list').popover({
-        title: "Set Current Task",
-        content: "Choose a Current Task Here",
-        html: true,
-        placement: 'bottom',
-        trigger: 'manual'
-        });
-    }
+          $('#task_list').popover({
+              title: "Set Current Task",
+              content: "Choose a Current Task Here",
+              html: true,
+              placement: 'bottom',
+              trigger: 'manual'
+          });
+      }
 
   </script>
 </head>
@@ -148,16 +148,14 @@
         <% end %>
       <% end %>
 
-      <% if notice %>
-        <p class="alert alert-success"><%= notice %></p>
-      <% end %>
-      <% if alert %>
-        <p class="alert alert-danger"><%= alert %></p>
-      <% end %>
+      <%= render 'layouts/top_notifications' %>
 
       <%= yield %>
 
     </div>
+
+    <%= render 'notes/create_note_modal' %>
+    <%= render 'discussions/discussion_modal' %>
 
   </div>
 
