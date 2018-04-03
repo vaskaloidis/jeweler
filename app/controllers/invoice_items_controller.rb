@@ -1,6 +1,33 @@
 class InvoiceItemsController < ApplicationController
   before_action :set_invoice_item, only: [:show, :edit, :update, :destroy]
 
+  def create_task_inline
+
+    @invoice_id = params[:invoice_id]
+
+
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
+  def save_task_inline
+    @invoice_id = params[:invoice_id]
+
+    @task = InvoiceItem.new
+    @task.description = params[:description]
+    @task.hours = params[:hours]
+    @task.rate = params[:rate]
+    @task.invoice = Invoice.find(params[:invoice_id])
+    @task.save
+
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
   # GET /invoice_items
   # GET /invoice_items.json
   def index
