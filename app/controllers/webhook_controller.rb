@@ -24,6 +24,25 @@ class WebhookController < ApplicationController
 
         message = commit["message"]
 
+        unless commit["added"]
+          message = message + '<br> <strong>Added:</strong><br>'
+          commit["added"].each do |file|
+            message = message + file + '<br>'
+          end
+        end
+        unless commit["removed"]
+          message = message + '<br> <strong>Removed:</strong><br>'
+          commit["removed"].each do |file|
+            message = message + file + '<br>'
+          end
+        end
+        unless commit["modified"]
+          message = message + '<br> <strong>Modified:</strong><br>'
+          commit["added"].each do |file|
+            message = message + file + '<br>'
+          end
+        end
+
         # Head_Commit for Author Name
         # head_commit = payload["head_commit"]
         # author = head_commit["author"]
