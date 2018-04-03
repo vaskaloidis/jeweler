@@ -1,0 +1,9 @@
+
+<% if @task.valid? %>
+$("#invoice_items_<%= @invoice_id.to_s %>").append('<%= j render('invoice_items/inline_item', invoice: @invoice)%></tr>');
+$("#success_message").append('Task Created Succesfully');
+
+<% else %>
+<% #TODO: Log this error %>
+$("#error_message").append('Your Task Could Not Be Created');
+<% end %>

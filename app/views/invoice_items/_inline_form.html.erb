@@ -1,0 +1,9 @@
+<% form_with url: save_task_inline_path do |f| %>
+  <tr>
+    <td><%= f.text_field :description %></td>
+    <td><%= f.text_field :rate %></td>
+    <td><%= f.text_field :hours %></td>
+    <td></td>
+  </tr>
+  <%= f.hidden_field :invoice_id, :value => @post_id %>
+<% end %>
