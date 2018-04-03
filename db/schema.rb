@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_31_083612) do
+ActiveRecord::Schema.define(version: 2018_04_03_023900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,11 @@ ActiveRecord::Schema.define(version: 2018_03_31_083612) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image"
+    t.boolean "sync", default: false
+    t.bigint "invoice_id"
+    t.bigint "invoice_item_id"
+    t.index ["invoice_id"], name: "index_notes_on_invoice_id"
+    t.index ["invoice_item_id"], name: "index_notes_on_invoice_item_id"
     t.index ["project_id"], name: "index_notes_on_project_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
@@ -91,7 +96,6 @@ ActiveRecord::Schema.define(version: 2018_03_31_083612) do
     t.integer "phase_current"
     t.text "description"
     t.string "github_url"
-    t.string "github_secondary_url"
     t.string "readme_file", default: "README.md"
     t.boolean "readme_remote", default: false
     t.string "stage_website_url"
@@ -112,7 +116,6 @@ ActiveRecord::Schema.define(version: 2018_03_31_083612) do
     t.bigint "invoice_item_id"
     t.integer "sprint_total"
     t.integer "sprint_current"
-    t.index ["github_secondary_url"], name: "index_projects_on_github_secondary_url", unique: true
     t.index ["github_url"], name: "index_projects_on_github_url", unique: true
     t.index ["invoice_item_id"], name: "index_projects_on_invoice_item_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
@@ -146,6 +149,7 @@ ActiveRecord::Schema.define(version: 2018_03_31_083612) do
     t.string "tagline"
     t.string "image"
     t.string "company"
+    t.string "oauth"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -154,6 +158,8 @@ ActiveRecord::Schema.define(version: 2018_03_31_083612) do
 
   add_foreign_key "discussions", "notes"
   add_foreign_key "discussions", "users"
+  add_foreign_key "notes", "invoice_items"
+  add_foreign_key "notes", "invoices"
   add_foreign_key "notes", "projects"
   add_foreign_key "notes", "users"
 end
