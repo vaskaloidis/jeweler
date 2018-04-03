@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+git_source(:github) { |repo| 'https://github.com/#{repo}.git' }
 
 ruby '2.5.0'
 gem 'rails', '~> 5.2.0.rc1'
@@ -7,11 +7,15 @@ gem 'rails', '~> 5.2.0.rc1'
 gem 'pg'
 gem 'puma', '~> 3.11'
 
+gem 'github_api'
+# gem 'github_api'
+# gem 'octokit', '~> 4.0'
+
 gem 'devise'
 gem 'carrierwave', '~> 1.0'
 gem 'rolify'
 gem 'cancancan', '~> 2.0'
-
+gem 'json'
 gem 'screencap'
 gem 'simple_form'
 # gem 'paper_trail'
@@ -38,7 +42,7 @@ gem 'uglifier', '>= 1.3.0'
 # gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 
-# gem 'audited', "~> 4.6" #TODO: Install and configure Audited Gem
+# gem 'audited', '~> 4.6' #TODO: Install and configure Audited Gem
 
 # gem 'redis', '~> 4.0'
 # gem 'bcrypt', '~> 3.1.7'
@@ -49,7 +53,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :production do
-  # gem "memcache", "~> 1.5", ">= 1.5.1"
+  # gem 'memcache', '~> 1.5', '>= 1.5.1'
   gem 'rollbar'
   gem 'foreman'
 end
