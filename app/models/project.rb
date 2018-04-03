@@ -22,6 +22,7 @@ class Project < ApplicationRecord
   validates :sprint_total, presence: true
   validates :sprint_current, presence: true
   validates :name, presence: true
+  validates :github_url, presence: true, uniqueness: true
 
 
 
@@ -41,6 +42,16 @@ class Project < ApplicationRecord
     else
       return this_sprint_invoice.first
     end
+  end
+
+  def payment_requests
+    invoices = Array.new
+    self.invoices.each do |invoice|
+      if invoice.payment_due == true
+        invoices << invoice
+      end
+    end
+    return invoices
   end
 
   def payment_requested?
