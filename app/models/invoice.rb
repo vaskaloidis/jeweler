@@ -3,7 +3,11 @@ class Invoice < ApplicationRecord
   has_many :invoice_items
   has_many :payments
 
+  has_one :note
+
   accepts_nested_attributes_for :project
+  accepts_nested_attributes_for :note
+
 
   validates :sprint, presence: true
 
