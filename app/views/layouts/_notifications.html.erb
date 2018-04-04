@@ -18,8 +18,14 @@
       <% unless @project.payment_requests.empty? %>
         <% @project.payment_requests.each do |invoice| %>
           <div id="request_payment_notification_sprint_<%= invoice.id.to_s %>" class="alert alert-danger">
-            <strong>Payment Requested For Sprint <%= invoice.sprint.to_s %>.</strong>
-            <%= link_to '<small>(Cancel)</small>'.html_safe,
+            <strong>Payment Requested For Sprint <%= invoice.sprint.to_s %>.  <i class="fas fa-dollar-sign pull-right"></i>
+              <%= link_to '<i class="fas fa-ban pull-right"></i>'.html_safe,
+                          cancel_request_payment_path(invoice.id),
+                          remote: true %>
+
+            </strong>
+
+            <%#= link_to '<small>(Cancel)</small>'.html_safe,
                         cancel_request_payment_path(invoice.id),
                         remote: true %>
           </div>
@@ -30,7 +36,7 @@
 
       <% @project.payment_requests.each do |invoice| %>
         <div style="display:none" id="request_payment_sprint_<%= invoice.sprint.to_s %>" class="alert alert-danger">
-          <strong>Payment Requested.</strong> Should arrive shortly.
+          <strong>Payment Requested. <i class="fas fa-dollar-sign pull-right"></i></strong> Should arrive shortly.
         </div>
         <div id="request_payment_button_sprint_<%= invoice.sprint.to_s %>">
           <%= link_to 'Request Sprint Payment<i class="fas fa-dollar-sign fa-2x pull-right"></i>'.html_safe,

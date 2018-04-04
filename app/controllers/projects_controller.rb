@@ -33,6 +33,8 @@ class ProjectsController < ApplicationController
     @invoice.payment_due = true
     @invoice.save
 
+    @project = @invoice.project
+
     if @invoice.valid?
       Note.create_project_update(@invoice.project, current_user, 'Payment Requested')
     end

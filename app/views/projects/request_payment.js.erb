@@ -8,6 +8,8 @@ if ($("#error_message").is(':visible')) {
     $("#error_message").hide('slide');
 }
 
+$('#notifications_container').html('<%= j render 'layouts/notifications' %>');
+
 $("#request_payment_button_sprint_<%= @invoice.sprint.to_s %>").hide();
 $('#request_payment_sprint_<%= @invoice.sprint.to_s %>').show();
 

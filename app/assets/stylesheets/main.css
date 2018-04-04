@@ -1,3 +1,21 @@
 /*
  *= require font-awesome
  */
+
+
+#timeline_alert {
+    padding:1px;
+}
+
+#notifications_container > .fas {
+    color: white;
+}
+
+#notifications_container > .alert {
+    color: white;
+}
+
+i.fas.fa-ban.pull-right {
+    color: white;
+    margin: 2px;
+}

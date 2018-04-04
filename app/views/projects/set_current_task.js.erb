@@ -8,5 +8,5 @@ if ($("#error_message").is(':visible')) {
     $("#error_message").hide('slide');
 }
 
-$("#invoice_panel_<%= @invoice_id.to_s %>_container").html('<%= escape_javascript( render 'invoices/invoice_panel', invoice: @invoice, sprint: @sprint_current ) %></tr>');
+$("#invoice_panel_<%= @invoice_id.to_s %>_container").html('<%= j( render 'invoices/invoice_panel', invoice: @invoice, sprint: @sprint_current ) %></tr>');
 // Invoice.where(project: @project, sprint: count).first, sprint: count
