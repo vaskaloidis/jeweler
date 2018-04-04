@@ -1,0 +1,11 @@
+<small>
+  <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
+  <% if note.user_id == current_user.id %>
+    <%# if note.note_type != 'commit' and note.note_type != 'project_update' %>
+    <% if note.note_type != 'commit' %>
+
+      <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                  delete_note_inline_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
+    <% end %>
+  <% end %>
+</small>
