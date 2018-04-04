@@ -1,9 +1,10 @@
-<% form_with url: save_task_inline_path do |f| %>
-  <tr>
-    <td><%= f.text_field :description %></td>
-    <td><%= f.text_field :rate %></td>
-    <td><%= f.text_field :hours %></td>
-    <td></td>
-  </tr>
-  <%= f.hidden_field :invoice_id, :value => @post_id %>
+<%= form_with url: save_task_inline_path do |f| %>
+  <td><%= f.text_field :description %></td>
+  <td><%= f.text_field :rate %></td>
+  <td><%= f.text_field :hours %></td>
+  <td>
+    <%= f.submit 'Save', :class => 'btn-sm btn-success', style: 'display:inline' %>
+    <%= f.hidden_field :invoice_id, :value => invoice_id %>
+  </td>
 <% end %>
+

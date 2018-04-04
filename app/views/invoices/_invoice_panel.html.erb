@@ -1,6 +1,6 @@
 <%
 
-  if @project.sprint_current == invoice.sprint
+  if invoice.project.sprint_current == invoice.sprint
     if invoice.open == false
       invoice.open = true
       invoice.save
@@ -27,7 +27,7 @@
     </h4>
     <div style="color:white !important;font-size: 18px;" class="panel-options">
       <% if invoice.open? %>
-        <% if @project.sprint_current == invoice.sprint %>
+        <% if invoice.project.sprint_current == invoice.sprint %>
           <div class="label label-success">Current Sprint</div>
         <% else %>
           <div class="label label-success">Sprint Open</div>
@@ -75,27 +75,38 @@
       </tr>
       </thead>
 
-      <tbody class="task_list"
-             <% if @project.current_task == invoice.id %>
-             id="current_sprint">
+      <tbody
+      <% if invoice.project.current_task == invoice.id %>
+      class="current_sprint task_list">
       <% else %>
       >
       <% end %>
 
       <% invoice.invoice_items.each do |task| %>
-      <tr onmouseover="document.getElementById('task_<%= task.id.to_s %>').style.display = 'inline';" onmouseout="document.getElementById('task_<%= task.id.to_s %>').style.display = 'none';">
+      <tr onclick="$('#task_<%= task.id.to_s %>').toggle('slide'); return false;">
+          <!--onmouseout="document.getElementById('task_<%#= task.id.to_s %>').style.display = 'none';">-->
         <td>
-          <% if @project.current_task == task %>
-            <span style="font-size:1.2em; padding-right:25px;"><span class="label label-info">Current Task</span></span>
-          <% else
-               @project.current_task.nil? %>
-              <span id="task_<%= task.id.to_s %>" style="display:none">
-                <%= link_to 'Set Current Tasks',
-                            set_current_task_path(@project.id, task.id), remote: true,
-                            class: 'btn btn-sm btn-success', style: 'display:inline;font-size:.8em; padding-right:25px;' %>
-              </span>
+          <% if invoice.project.current_task == task %>
+            <span class="label label-default">Current Task</span>
+            <span id="task_<%= task.id.to_s %>" style="display:none;font-size:.8em; padding-right:20px;">
+              <%#= '<span id="task_' + task.id.to_s + '" style="display:none;font-size:.8em; padding-right:20px;">'.html_safe %>
+              <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                          delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
+                          class: 'btn btn-sm btn-default', style: 'padding:10px;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
 
+          </span>
+          <% else %>
+              <span id="task_<%= task.id.to_s %>" style="display:none;font-size:.8em; padding-right:20px;">
+                <%= link_to 'Set Current Tasks',
+                            set_current_task_path(invoice.project.id, task.id), remote: true,
+                            class: 'btn btn-sm btn-success', style: 'display:inline;font-size:1em; padding:5px; padding-right:10px;' %>
+                <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                            delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
+                            class: 'btn btn-sm btn-default', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
+
+            </span>
           <% end %>
+
           <%= task.description %>
         </td>
         <td>$<%= task.rate %>/hr</td>
@@ -103,12 +114,16 @@
         <td>$<%= task.rate * task.hours %></td>
       </tr>
       <% end %>
-      <div id="invoice_items_<%= invoice.id.to_s %>"></div>
+
+      <tr style="display:none" id="invoice_items_<%= invoice.id.to_s %>_hidden_row"></tr>
       <tr>
-        <th>
+        <th id="create_task_container_invoice_<%= invoice.id.to_s %>">
           <%= link_to 'Create Task',
-                      create_task_inline_path(invoice.id), remote: true,
-                      class: 'btn btn-sm btn-success', style: 'display:inline;font-size:.8em; padding-right:25px;' %>
+                      create_task_inline_path(invoice.id),
+                      remote: true,
+                      id: 'create_task_inline_button',
+                      class: 'btn btn-sm btn-primary',
+                      style: 'display:inline;font-size:1em; padding-right:10px;' %>
         </th>
         <th><strong>Total:</strong></th>
         <th><%= hour_total %> hrs.</th>

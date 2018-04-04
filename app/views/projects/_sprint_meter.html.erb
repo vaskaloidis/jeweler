@@ -51,8 +51,9 @@
 
         <div class="tab-pane active" id="tab<%= count %>">
           <% if !Invoice.where(project: @project, sprint: count).empty? %>
-            <div id="current_invoice_panel">
-              <%= render 'invoices/invoice_panel', invoice: Invoice.where(project: @project, sprint: count).first, sprint: count %>
+            <% invoice = Invoice.where(project: @project, sprint: count).first %>
+            <div class="current_invoice_panel" id="invoice_panel_<%= invoice.id.to_s %>_container">
+              <%= render 'invoices/invoice_panel', invoice: invoice, sprint: count %>
             </div>
           <% else %>
             <div class="panel panel-default">
@@ -70,7 +71,10 @@
 
         <div class="tab-pane" id="tab<%= count %>">
           <% if !Invoice.where(project: @project, sprint: count).empty? %>
-            <%= render 'invoices/invoice_panel', invoice: Invoice.where(project: @project, sprint: count).first, sprint: count %>
+            <% invoice = Invoice.where(project: @project, sprint: count).first %>
+            <div id="invoice_panel_<%= invoice.id.to_s %>_container">
+              <%= render 'invoices/invoice_panel', invoice: invoice, sprint: count %>
+            </div>
           <% else %>
             <div class="panel panel-default">
               <div class="panel-heading">

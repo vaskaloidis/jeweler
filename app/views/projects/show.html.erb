@@ -21,8 +21,8 @@
           </section>
 
           <div class="row">
-            <div class="col-md-12">
-              <%= render 'projects/timeline' %>
+            <div id="home_timeline_container" class="col-md-12">
+              <%= render 'projects/timeline', notes: @notes %>
             </div>
           </div>
 
@@ -31,10 +31,12 @@
 
       <div class="tab-pane" id="timeline">
         <div id="timeline_notes">
+
           <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-single btn-sm">
             Create Note / Demo
           </a>
-          <%= render 'projects/note_full_timeline', local_note: @project.notes %>
+
+          <%= render 'projects/note_full_timeline', local_note: @project.notes.order('created_at DESC') %>
         </div>
       </div>
 

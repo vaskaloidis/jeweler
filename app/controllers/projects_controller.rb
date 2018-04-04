@@ -6,11 +6,23 @@ class ProjectsController < ApplicationController
   respond_to :html, :js, only: [:request_payment]
 
   def set_current_task
-    task = InvoiceItem.find(params[:invoice_item_id])
-    invoice = task.invoice
-    @project.current_task = task
+    @task = InvoiceItem.find(params[:invoice_item_id])
+    @invoice = @task.invoice
+
+    logger.info("Task ID: " + @task.id.to_s)
+    logger.info("Invoice ID: " + @invoice.id.to_s)
+    logger.info("Project ID: " + @invoice.project.id.to_s)
+
+    @project = Project.find(@invoice.project.id)
+    @project.current_task = @task
     @project.save
 
+    if @project.valid?
+      Note.create_project_update(@invoice.project, current_user, 'Current Task Changed')
+    end
+
+    @current_sprint = @project.sprint_current
+    @invoice_id = @invoice.id
     respond_to do |format|
       format.js
     end
@@ -21,6 +33,10 @@ class ProjectsController < ApplicationController
     @invoice.payment_due = true
     @invoice.save
 
+    if @invoice.valid?
+      Note.create_project_update(@invoice.project, current_user, 'Payment Requested')
+    end
+
     respond_to do |format|
       format.js
     end
@@ -30,6 +46,8 @@ class ProjectsController < ApplicationController
     @invoice = Invoice.find(params[:invoice_id])
     @invoice.payment_due = false
     @invoice.save
+
+    Note.create_project_update(@invoice.project, current_user, 'Payment Request Canceled')
 
     respond_to do |format|
       format.js
@@ -78,6 +96,8 @@ class ProjectsController < ApplicationController
     @project_customer = ProjectCustomer.new
     @project_customer.project = @project
 
+    @notes = @project.notes.order('created_at DESC').all
+
     @new_note = Note.new
     @new_note.project = @project
     @new_note.note_type = 'note'
@@ -87,6 +107,8 @@ class ProjectsController < ApplicationController
     @new_demo.project = @project
     @new_demo.note_type = 'demo'
     @new_demo.author = current_user
+
+    @new_invoice_item = InvoiceItem.new
 
     @invoices = @project.invoices
 
@@ -99,36 +121,6 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
-  end
-
-  def sync_github(project)
-
-    unless project.owner.oauth.nil?
-      github = Github.new oauth: project.owner.oauth
-
-      logger.info('GitHub User: ' + ApplicationHelper.github_user(project))
-      logger.info('GitHub Repo: ' + ApplicationHelper.github_repo(project))
-
-      repos = github.repos.commits.all ApplicationHelper.github_user(project),
-                                       ApplicationHelper.github_repo(project)
-
-      repos.each do |commit|
-        sha = commit.sha
-        if Note.where(project: project, git_commit_id: sha).empty?
-          note = Note.new
-          note.author = project.owner
-          note.note_type = 'commit'
-          note.git_commit_id = sha
-          note.sync = true
-          note.project = project
-          note.content = commit.commit.message.to_s + ' - ' + commit.commit.author.name.to_s
-          note.created_at = commit.commit.committer.date
-          note.save
-          puts 'Note Create - Commit Sync SHA: ' + commit.sha
-        end
-      end
-
-    end
   end
 
   # POST /projects
@@ -203,15 +195,51 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
+
+  def sync_github(project)
+
+    unless project.owner.oauth.nil?
+      github = Github.new oauth: project.owner.oauth
+      logger.info('GitHub User: ' + ApplicationHelper.github_user(project))
+      logger.info('GitHub Repo: ' + ApplicationHelper.github_repo(project))
+      repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
+      repos.each do |commit|
+        sha = commit.sha
+        if Note.where(project: project, git_commit_id: sha).empty?
+          note = Note.new
+          note.author = project.owner
+          note.note_type = 'commit'
+          note.git_commit_id = sha
+          note.sync = true
+          note.project = project
+          note.content = commit.commit.message.to_s + ' - ' + commit.commit.author.name.to_s
+
+          unless project.current_sprint.nil?
+            note.invoice = project.current_sprint
+          end
+          unless project.current_task.nil?
+            note.invoice_item = project.current_task
+          end
+
+          note.created_at = commit.commit.committer.date
+          note.save
+          puts 'Note Created for Commit Sync, SHA: ' + commit.sha
+        end
+      end
+
+    end
+  end
+
   def verify_invoices_exist
     # Require Each Sprint_Total Invoice Exists
-    @project.sprint_total.times do |sprint_|
-      if @project.get_sprint(sprint_).nil?
+    total_sprint_count = @project.sprint_total + 1
+    total_sprint_count.times do |sprint|
+      if @project.get_sprint(sprint).nil? and sprint!=0
         invoice = Invoice.new
         invoice.project = @project
-        invoice.sprint = sprint_
+        invoice.sprint = sprint
 
-        if @project.sprint_current == sprint_
+        if @project.sprint_current == sprint
           invoice.open = true
         else
           invoice.open = false

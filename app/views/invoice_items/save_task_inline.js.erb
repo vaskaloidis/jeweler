@@ -1,9 +1,21 @@
+console.log("Saving Task Inline JS ERB")
+
+$("#invoice_items_<%= @invoice.id.to_s %>_hidden_row").hide();
 
 <% if @task.valid? %>
-$("#invoice_items_<%= @invoice_id.to_s %>").append('<%= j render('invoice_items/inline_item', invoice: @invoice)%></tr>');
-$("#success_message").append('Task Created Succesfully');
+
+  $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= escape_javascript( render 'invoices/invoice_panel', invoice: @invoice, sprint: @current_sprint ) %>');
+  $("#success_message").show();
+  $("#success_message").html('Task Created Successfully');
 
 <% else %>
-<% #TODO: Log this error %>
-$("#error_message").append('Your Task Could Not Be Created');
+
+  <% #TODO: Log this error also %>
+  $("#error_message").show()
+  $("#error_message").html('Your Task Could Not Be Created');
+
 <% end %>
+
+<%# NEW: render 'invoices/invoice_panel', invoice: invoice, sprint: count %>
+<%# OLD: render('invoice_items/inline_item', invoice: @invoice) %>
+<%# DOCS: $("#items_grid").html("<%= escape_javascript(render partial: 'items_list', locals: { items: @selected } ) %>

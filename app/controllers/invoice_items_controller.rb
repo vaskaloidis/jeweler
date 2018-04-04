@@ -1,19 +1,37 @@
 class InvoiceItemsController < ApplicationController
   before_action :set_invoice_item, only: [:show, :edit, :update, :destroy]
 
-  def create_task_inline
+  def delete_task_inline
+    @invoice_item = InvoiceItem.find(params[:invoice_item_id])
 
-    @invoice_id = params[:invoice_id]
+    logger.debug("Delete Task AJAX Task ID: " + @invoice_item.to_s)
 
+
+    @invoice = @invoice_item.invoice
+
+    Note.create_project_update(@invoice.project, current_user, 'Task Deleted: ' + @invoice_item.description)
+
+    @current_sprint = @invoice.project.sprint_current
+    @invoice_item.destroy
 
     respond_to do |format|
       format.js
     end
+  end
 
+  def create_task_inline
+    @invoice_id = params[:invoice_id]
+    logger.debug("Create Task Invoice ID: " + @invoice_id.to_s)
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def save_task_inline
-    @invoice_id = params[:invoice_id]
+    @invoice = Invoice.find(params[:invoice_id])
+
+    @current_sprint = @invoice.project.sprint_current
 
     @task = InvoiceItem.new
     @task.description = params[:description]
@@ -21,6 +39,15 @@ class InvoiceItemsController < ApplicationController
     @task.rate = params[:rate]
     @task.invoice = Invoice.find(params[:invoice_id])
     @task.save
+
+    if @task.invoice.invoice_items.empty? && @task.invoice.project.current_task.nil?
+
+      Note.create_project_update(@invoice.project, current_user, 'Task Created: ' + task.description)
+
+      project = @task.invoice.project
+      project.current_task = @task
+      project.save
+    end
 
     respond_to do |format|
       format.js

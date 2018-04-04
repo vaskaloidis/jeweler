@@ -154,9 +154,13 @@
 
     </div>
 
-    <%= render 'notes/create_note_modal' %>
-    <%= render 'discussions/discussion_modal' %>
-
+    <% unless @timeline_modals.nil? %>
+      <% if @timeline_modals %>
+        <%= render 'notes/create_project_update_modal' %>
+        <%= render 'notes/create_note_modal' %>
+        <%= render 'discussions/discussion_modal' %>
+      <% end %>
+    <% end %>
   </div>
 
   <!-- Main Footer -->

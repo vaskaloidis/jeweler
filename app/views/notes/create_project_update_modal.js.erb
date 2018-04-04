@@ -1,0 +1,10 @@
+$('#create_project_update_modal').modal('hide');
+
+<% if @note.valid? %>
+$('#success_message').toggle('fade');
+$('#success_message').html('Note Created Succesfully')
+$('#home_timeline_container').html('<%= escape_javascript( render 'projects/timeline', notes: @notes ) %>');
+<% else %>
+$('#error_message').toggle('fade');
+$('#error_message').html(<%= @note.errors.to_s %>)
+<% end %>

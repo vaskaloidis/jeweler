@@ -37,10 +37,6 @@ class InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(invoice_params)
 
-    if @invoice.sprint.nil?
-      @invoice.sprint = @invoice.project.invoices.count + 1
-    end
-
     respond_to do |format|
       if @invoice.save
 

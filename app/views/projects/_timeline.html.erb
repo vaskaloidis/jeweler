@@ -1,6 +1,7 @@
+<% @timeline_modals = true %>
 <ul class="cbp_tmtimeline">
 
-  <% if @project.notes.empty? %>
+  <% if notes.empty? %>
     <li>
       <time class="cbp_tmtime" datetime="2014-12-06T18:30">
         <span class="large">Now</span></time>
@@ -15,7 +16,7 @@
     </li>
   <% else %>
 
-    <% @project.notes.all.each do |note| %>
+    <% notes.each do |note| %>
 
       <li>
         <time class="cbp_tmtime" datetime="2014-12-06T03:45">
@@ -40,12 +41,16 @@
               <%= note.author.first_name %>
               <%= note.author.last_name %>
             </a>
-              <span>posted a Note</span>
+              <span>posted a Note
+                <% unless note.invoice.nil? %>
+                <span id="timeline_alert" class="alert alert-success">
+                  Sprint <%= note.invoice.sprint.to_s%>
+                </span>
+              <% end %>
+              </span>
             </h2>
             <p><%= note.content %></p>
-            <small>
-              <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
-            </small>
+            <%= render 'notes/note_meta', note: note, current_user: current_user %>
           </div>
         <% elsif note.note_type == 'demo' %>
           <div class="cbp_tmicon timeline-bg-red">
@@ -56,16 +61,20 @@
               <%= note.author.first_name %>
               <%= note.author.last_name %>
             </a>
-              <span>posted a Demo of <%= note.content %></span>
+              <span>posted a Demo of <%= note.content %>
+                <% unless note.invoice.nil? %>
+                <span id="timeline_alert" class="alert alert-success">
+                  Sprint <%= note.invoice.sprint.to_s%>
+                </span>
+              <% end %>
+              </span>
             </h2>
             <div class="row">
               <div class="col-xs-5">
                 <a href="#">
                   <img src="<%= note.image.url %>" class="img-responsive img-rounded full-width">
                 </a><br>
-                <small>
-                  <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
-                </small>
+                <%= render 'notes/note_meta', note: note, current_user: current_user %>
               </div>
             </div>
           </div>
@@ -78,15 +87,19 @@
               <%= note.author.first_name %>
               <%= note.author.last_name %>
             </a>
-              <span>posted a Project Update</span>
+              <span>posted a Project Update
+                <% unless note.invoice.nil? %>
+                <span id="timeline_alert" class="alert alert-success">
+                  Sprint <%= note.invoice.sprint.to_s%>
+                </span>
+              <% end %>
+              </span>
             </h2>
             <p><%= note.content %></p>
-            <small>
-              <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
-            </small>
+            <%= render 'notes/note_meta', note: note, current_user: current_user %>
           </div>
         <% elsif note.note_type == 'commit' %>
-          <div class="cbp_tmicon timeline-bg-warning">
+          <div class="cbp_tmicon timeline-bg-danger">
             <i class="fas fa-code-branch"></i>
           </div>
           <div class="cbp_tmlabel">
@@ -94,12 +107,16 @@
               <%= note.author.first_name %>
               <%= note.author.last_name %>
             </a>
-              <span>Committed Code</span>
+              <span>Committed Code
+                <% unless note.invoice.nil? %>
+                <span id="timeline_alert" class="alert alert-success">
+                  Sprint <%= note.invoice.sprint.to_s%>
+                </span>
+              <% end %>
+              </span>
             </h2>
             <p><%= note.content.html_safe %></p>
-            <small>
-              <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
-            </small>
+            <%= render 'notes/note_meta', note: note, current_user: current_user %>
           </div>
         <% else %>
           <div class="cbp_tmicon timeline-bg-success">
@@ -110,12 +127,16 @@
               <%= note.author.first_name %>
               <%= note.author.last_name %>
             </a>
-              <span>posted a note</span>
+              <span>posted a note
+                <% unless note.invoice.nil? %>
+                <span id="timeline_alert" class="alert alert-success">
+                  Sprint <%= note.invoice.sprint.to_s%>
+                </span>
+              <% end %>
+              </span>
             </h2>
             <p><%= note.content %></p>
-            <small>
-              <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true %>
-            </small>
+            <%= render 'notes/note_meta', note: note, current_user: current_user %>
           </div>
         <% end %>
 

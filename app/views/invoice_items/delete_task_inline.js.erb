@@ -1,0 +1,4 @@
+$("#success_message").show()
+$("#success_message").html('Task Deleted');
+
+$("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= escape_javascript( render 'invoices/invoice_panel', invoice: @invoice, sprint: @current_sprint ) %>');

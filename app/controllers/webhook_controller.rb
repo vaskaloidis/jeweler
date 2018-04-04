@@ -62,6 +62,14 @@ class WebhookController < ApplicationController
         note.sync = true
         note.project = @project
         note.content = message.to_s
+
+        unless @project.current_sprint.nil?
+          note.invoice = @project.current_sprint
+        end
+        unless @project.current_task.nil?
+          note.invoice_item = @project.current_task
+        end
+
         note.save
         notes << note
       end
