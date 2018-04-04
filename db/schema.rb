@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_03_023900) do
+ActiveRecord::Schema.define(version: 2018_04_04_145727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2018_04_03_023900) do
     t.boolean "sync", default: false
     t.bigint "invoice_id"
     t.bigint "invoice_item_id"
+    t.string "commit_diff_path"
     t.index ["invoice_id"], name: "index_notes_on_invoice_id"
     t.index ["invoice_item_id"], name: "index_notes_on_invoice_item_id"
     t.index ["project_id"], name: "index_notes_on_project_id"

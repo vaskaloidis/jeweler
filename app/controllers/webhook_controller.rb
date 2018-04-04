@@ -63,6 +63,9 @@ class WebhookController < ApplicationController
         note.project = @project
         note.content = message.to_s
 
+        unless repo_url.nil?
+          note.commit_diff_path = repo_url.to_s
+        end
         unless @project.current_sprint.nil?
           note.invoice = @project.current_sprint
         end
