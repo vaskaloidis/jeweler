@@ -1,1 +1,11 @@
+if ($("#success_message").is(':visible')) {
+    $("#success_message").html('');
+    $("#success_message").hide('slide');
+}
+
+if ($("#error_message").is(':visible')) {
+    $("#error_message").html('');
+    $("#error_message").hide('slide');
+}
+
 $('#home_timeline_container').html('<%= escape_javascript( render 'projects/timeline', notes: @notes ) %>');

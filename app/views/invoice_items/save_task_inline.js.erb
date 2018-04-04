@@ -1,5 +1,15 @@
 console.log("Saving Task Inline JS ERB")
 
+if ($("#success_message").is(':visible')) {
+    $("#success_message").html('');
+    $("#success_message").hide('slide');
+}
+
+if ($("#error_message").is(':visible')) {
+    $("#error_message").html('');
+    $("#error_message").hide('slide');
+}
+
 $("#invoice_items_<%= @invoice.id.to_s %>_hidden_row").hide();
 
 <% if @task.valid? %>

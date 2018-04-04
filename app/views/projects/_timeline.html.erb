@@ -44,7 +44,7 @@
               <span>posted a Note
                 <% unless note.invoice.nil? %>
                 <span id="timeline_alert" class="alert alert-success">
-                  Sprint <%= note.invoice.sprint.to_s%>
+                  Sprint <%= note.invoice.sprint.to_s %>
                 </span>
               <% end %>
               </span>
@@ -64,7 +64,7 @@
               <span>posted a Demo of <%= note.content %>
                 <% unless note.invoice.nil? %>
                 <span id="timeline_alert" class="alert alert-success">
-                  Sprint <%= note.invoice.sprint.to_s%>
+                  Sprint <%= note.invoice.sprint.to_s %>
                 </span>
               <% end %>
               </span>
@@ -79,9 +79,17 @@
             </div>
           </div>
         <% elsif note.note_type == 'project_update' %>
-          <div class="cbp_tmicon timeline-bg-warning">
-            <i class="fas fa-sticky-note"></i>
-          </div>
+
+          <% if note.content == 'Payment Requested' %>
+            <div class="cbp_tmicon timeline-bg-success">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+          <% else %>
+            <div class="cbp_tmicon timeline-bg-warning">
+              <i class="fas fa-sticky-note"></i>
+            </div>
+          <% end %>
+
           <div class="cbp_tmlabel">
             <h2><a href="#">
               <%= note.author.first_name %>
@@ -90,7 +98,7 @@
               <span>posted a Project Update
                 <% unless note.invoice.nil? %>
                 <span id="timeline_alert" class="alert alert-success">
-                  Sprint <%= note.invoice.sprint.to_s%>
+                  Sprint <%= note.invoice.sprint.to_s %>
                 </span>
               <% end %>
               </span>
@@ -99,6 +107,7 @@
             <%= render 'notes/note_meta', note: note, current_user: current_user %>
           </div>
         <% elsif note.note_type == 'commit' %>
+
           <div class="cbp_tmicon timeline-bg-danger">
             <i class="fas fa-code-branch"></i>
           </div>
@@ -110,7 +119,7 @@
               <span>Committed Code
                 <% unless note.invoice.nil? %>
                 <span id="timeline_alert" class="alert alert-success">
-                  Sprint <%= note.invoice.sprint.to_s%>
+                  Sprint <%= note.invoice.sprint.to_s %>
                 </span>
               <% end %>
               </span>
@@ -130,7 +139,7 @@
               <span>posted a note
                 <% unless note.invoice.nil? %>
                 <span id="timeline_alert" class="alert alert-success">
-                  Sprint <%= note.invoice.sprint.to_s%>
+                  Sprint <%= note.invoice.sprint.to_s %>
                 </span>
               <% end %>
               </span>

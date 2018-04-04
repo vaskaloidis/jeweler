@@ -20,7 +20,6 @@ Rails.application.routes.draw do
   get '/oath', to: 'webhook#save_oath', as: 'oath_save'
   post '/hook', to: 'webhook#hook', as: 'webhook_execute'
 
-
   resources :payments
   resources :invoice_items
   resources :invoices
