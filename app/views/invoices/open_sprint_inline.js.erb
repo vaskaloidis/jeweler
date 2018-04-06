@@ -1,0 +1,22 @@
+if ($("#success_message").is(':visible')) {
+    $("#success_message").html('');
+    $("#success_message").hide('slide');
+}
+
+if ($("#error_message").is(':visible')) {
+    $("#error_message").html('');
+    $("#error_message").hide('slide');
+}
+
+<% if @sprint.valid? %>
+
+  $("#invoice_panel_<%= @sprint.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @sprint %>');
+  $("#success_message").show();
+  $("#success_message").html('Sprint <%= @sprint.sprint.to_s %>  Open');
+
+<% else %>
+
+  $("#error_message").show()
+  $("#error_message").html('Sprint <%= @sprint.sprint.to_s %> Could Not Be Opened');
+
+<% end %>

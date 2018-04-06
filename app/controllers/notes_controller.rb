@@ -1,6 +1,29 @@
 class NotesController < ApplicationController
   before_action :set_note, only: [:show, :edit, :update, :destroy]
 
+  def edit_note_modal
+    @note = Note.find(params[:note_id])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_note_modal
+
+    @note = Note.update(params)
+    @note.save
+
+    if @note.invalid?
+      logger.error("Note not updated succesfully")
+      log.error(@note.errors)
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def delete_note_inline
     id = params[:note_id]
     @note = Note.find(id)
@@ -16,7 +39,7 @@ class NotesController < ApplicationController
 
   def create_note_modal
 
-    logger.info("Executing Note Modal")
+    logger.debug("Executing Note Modal")
 
     @project = Project.find(params[:project_id])
 
@@ -29,7 +52,7 @@ class NotesController < ApplicationController
       redirect_to root_path, notice: 'Note was NOT created.'
     end
 
-    @notes = @project.notes.order('created_at DESC').all
+    @notes = @project.notes.where(note_type: [:note, :commit, :project_update]).order('created_at DESC').all
 
     respond_to do |format|
       format.js
@@ -38,11 +61,11 @@ class NotesController < ApplicationController
 
   def create_project_update_modal
 
-    logger.info("Executing Project Update Modal")
+    logger.debug("Executing Project Update Modal")
 
     @project = Project.find(params[:project_id])
 
-    @note = Note.create_project_update(@project, current_user, params[:content])
+    @note = Note.create_event(@project, current_user, params[:content])
 
     if @note.invalid?
       @note.errors.each do |e|
@@ -51,7 +74,7 @@ class NotesController < ApplicationController
       redirect_to root_path, notice: 'Note was NOT created.'
     end
 
-    @notes = @project.notes.order('created_at DESC').all
+    @notes = @project.notes.where(note_type: [:note, :commit, :project_update]).order('created_at DESC').all
 
     respond_to do |format|
       format.js

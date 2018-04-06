@@ -9,16 +9,18 @@ class ProjectsController < ApplicationController
     @task = InvoiceItem.find(params[:invoice_item_id])
     @invoice = @task.invoice
 
-    logger.info("Task ID: " + @task.id.to_s)
-    logger.info("Invoice ID: " + @invoice.id.to_s)
-    logger.info("Project ID: " + @invoice.project.id.to_s)
+    logger.debug("Setting Task " + @task.id.to_s + " for Invoice " + @invoice.id.to_s)
 
     @project = Project.find(@invoice.project.id)
     @project.current_task = @task
     @project.save
 
+    @project.reload
+    @task.reload
+    @invoice = @task.invoice
+
     if @project.valid?
-      Note.create_project_update(@invoice.project, current_user, 'Current Task Changed')
+      Note.create_event(@invoice.project, current_user, 'Current Task Changed')
     end
 
     @current_sprint = @project.sprint_current
@@ -49,7 +51,7 @@ class ProjectsController < ApplicationController
     @invoice.payment_due = false
     @invoice.save
 
-    Note.create_project_update(@invoice.project, current_user, 'Payment Request Canceled')
+    Note.create_event(@invoice.project, current_user, 'Payment Request Canceled')
 
     respond_to do |format|
       format.js
@@ -98,7 +100,7 @@ class ProjectsController < ApplicationController
     @project_customer = ProjectCustomer.new
     @project_customer.project = @project
 
-    @notes = @project.notes.order('created_at DESC').all
+    @notes = @project.notes.where(note_type: [:note, :commit, :project_update]).order('created_at DESC').all
 
     @new_note = Note.new
     @new_note.project = @project
@@ -202,8 +204,8 @@ class ProjectsController < ApplicationController
 
     unless project.owner.oauth.nil?
       github = Github.new oauth: project.owner.oauth
-      logger.info('GitHub User: ' + ApplicationHelper.github_user(project))
-      logger.info('GitHub Repo: ' + ApplicationHelper.github_repo(project))
+      logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
+      logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
       repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
       repos.each do |commit|
         sha = commit.sha
@@ -254,6 +256,6 @@ class ProjectsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
-    params.require(:project).permit(:name, :language, :sprint_total, :sprint_current, :description, :github_url, :github_secondary_url, :github_branch, :github_secondary_branch, :readme_file, :readme_remote, :stage_website_url, :demo_url, :prod_url, :complete, :stage_travis_api_url, :stage_travis_api_token, :prod_travis_api_token, :prod_travis_api_url, :coveralls_api_url, :customers_id, :invoice_item_id)
+    params.require(:project).permit(:name, :language, :image, :sprint_total, :sprint_current, :description, :github_url, :github_secondary_url, :github_branch, :github_secondary_branch, :readme_file, :readme_remote, :stage_website_url, :demo_url, :prod_url, :complete, :stage_travis_api_url, :stage_travis_api_token, :prod_travis_api_token, :prod_travis_api_url, :coveralls_api_url, :customers_id, :invoice_item_id)
   end
 end

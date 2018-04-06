@@ -1,6 +1,44 @@
 class InvoicesController < ApplicationController
   before_action :set_invoice, only: [:show, :edit, :update, :destroy]
 
+  def open_sprint_inline
+    @sprint = Invoice.find(params[:invoice_id])
+    @sprint.open = true
+    @sprint.save
+
+    Note.create_event(@sprint.project, current_user, 'Sprint ' + @sprint.sprint.to_s + ' Opened ')
+
+    if @sprint.invalid?
+      logger.error("Sprint " + @sprint.sprint.to_s + " could not be opened. ID: " + @sprint.id.to_s)
+      logger.error(@sprint.errors)
+    end
+
+    @sprint.reload
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def close_sprint_inline
+    @sprint = Invoice.find(params[:invoice_id])
+    @sprint.open = false
+    @sprint.save
+
+    Note.create_event(@sprint.project, current_user, 'Sprint ' + @sprint.sprint.to_s + ' Closed ')
+
+    if @sprint.invalid?
+      logger.error("Sprint " + @sprint.sprint.to_s + " could not be closed. ID: " + @sprint.id.to_s)
+      logger.error(@sprint.errors)
+    end
+
+    @sprint.reload
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # GET /invoices
   # GET /invoices.json
   def index

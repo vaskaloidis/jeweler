@@ -6,7 +6,7 @@ class WebhookController < ApplicationController
   respond_to :json, :html
 
   def hook
-    logger.info "GitHub Webhook Executed!"
+    logger.debug "GitHub Webhook Executed!"
     payload = JSON.parse(request.body.read)
     # payload = ActiveSupport::JSON.decode(response.body)
 
@@ -16,11 +16,11 @@ class WebhookController < ApplicationController
     unless commits.nil?
       commits.each do |commit|
 
-        logger.info("Iterating over commit")
+        logger.debug("Iterating over commit")
 
         sha = commit["id"]
 
-        logger.info("Commit SHA: " + sha.to_s)
+        logger.debug("Commit SHA: " + sha.to_s)
 
         message = commit["message"]
         message = message + '<br><a href="' + payload["compare"] + '">View Commit</a>'
@@ -50,10 +50,10 @@ class WebhookController < ApplicationController
 
         repository = payload["repository"]
         repo_url = repository["html_url"]
-        logger.info("Repository URL: " + repo_url)
+        logger.debug("Repository URL: " + repo_url)
 
         @project = Project.where(github_url: repo_url).first
-        logger.info("Project Name: " + @project.name)
+        logger.debug("Project Name: " + @project.name)
 
         note = Note.new
         note.author = @project.owner

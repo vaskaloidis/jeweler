@@ -5,7 +5,7 @@ class DiscussionsController < ApplicationController
     @discussion = Note.find(params[:id]).discussions
 
     logger.debug("Note Discussion Param: " + params[:id].to_s)
-    # logger.info("Discussion Modal Opened. Note ID: " + @discussion.id.to_s)
+    # logger.debug("Discussion Modal Opened. Note ID: " + @discussion.id.to_s)
 
     respond_to do |format|
       format.js

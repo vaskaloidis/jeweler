@@ -6,7 +6,7 @@
     <% if @project.image.url.nil? %>
       <img src="<%= image_path 'user-4.png' %>" alt="user-img" class="img-cirlce img-responsive img-thumbnail">
     <% else %>
-      <img src="<%= image_path @project.image.url %>" alt="user-img" class="img-circleimg-responsive img-thumbnail">
+      <img style="max-width: 150px;" src="<%= image_path @project.image.url %>" alt="user-img" class="img-circleimg-responsive img-thumbnail">
     <% end %>
   </a>
 

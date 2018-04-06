@@ -8,7 +8,7 @@
                 Sprint <%= @project.current_sprint.sprint.to_s %>
               </span>
         <% end %>
-        <button type="button" class="close" data-dismiss="create_note_modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" onclick="$('#create_note_modal').modal('hide'); return false;" aria-hidden="true">&times;</button>
       </div>
       <%= form_with url: create_note_modal_path do |f| %>
         <div class="modal-body" style="padding-bottom:0px; height:125%">
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div style="border:0px solid white" class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="create_note_modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="$('#create_note_modal').modal('hide'); return false;">Close</button>
           <%= f.submit "Create Note", :class => 'btn btn-success' %>
         </div>
       <% end %>

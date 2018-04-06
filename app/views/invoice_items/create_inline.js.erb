@@ -11,4 +11,4 @@ if ($("#error_message").is(':visible')) {
 console.log("Create Task Inline JS ERB")
 $("#create_task_container_invoice_<%= @invoice_id.to_s %> > #create_task_inline_button").hide();
 $("#invoice_items_<%= @invoice_id.to_s %>_hidden_row").show();
-$("#invoice_items_<%= @invoice_id.to_s %>_hidden_row").append('<%= j render('invoice_items/inline_form', invoice_id: @invoice_id) %>');
+$("#invoice_items_<%= @invoice_id.to_s %>_hidden_row").append('<%= j render('invoice_items/inline_form', invoice: @invoice) %>');

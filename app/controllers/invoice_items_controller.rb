@@ -1,17 +1,47 @@
 class InvoiceItemsController < ApplicationController
   before_action :set_invoice_item, only: [:show, :edit, :update, :destroy]
 
-  def delete_task_inline
-    @invoice_item = InvoiceItem.find(params[:invoice_item_id])
+  def cancel_update
+    @invoice = Invoice.find(params[:invoice_id])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def edit_inline
+    @task = InvoiceItem.find(params[:task_id])
+    @invoice = @task.invoice
+
+    if @task.nil?
+      logger.error('Error getting Task ' + params[:task_id].to_s)
+    else
+      logger.debug('Task Fetched OK: ' + @task.id.to_s)
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def delete_inline
+    @invoice_item = InvoiceItem.find(params[:task_id])
 
     logger.debug("Delete Task AJAX Task ID: " + @invoice_item.to_s)
 
-
     @invoice = @invoice_item.invoice
 
-    Note.create_project_update(@invoice.project, current_user, 'Task Deleted: ' + @invoice_item.description)
+    Note.create_event(@invoice.project, current_user, 'Task Deleted: ' + @invoice_item.description)
 
     @current_sprint = @invoice.project.sprint_current
+
+    @project = Project.find(@invoice.project.id)
+
+    if @invoice.project.current_task == @invoice_item
+      # @invoice.project.current_task.clear
+    end
+
+    # @invoice_item.notes.clear
     @invoice_item.destroy
 
     respond_to do |format|
@@ -19,8 +49,10 @@ class InvoiceItemsController < ApplicationController
     end
   end
 
-  def create_task_inline
+  def create_inline
     @invoice_id = params[:invoice_id]
+    @invoice = Invoice.find(@invoice_id)
+
     logger.debug("Create Task Invoice ID: " + @invoice_id.to_s)
 
     respond_to do |format|
@@ -28,21 +60,33 @@ class InvoiceItemsController < ApplicationController
     end
   end
 
-  def save_task_inline
+  def save_inline
     @invoice = Invoice.find(params[:invoice_id])
 
     @current_sprint = @invoice.project.sprint_current
 
     @task = InvoiceItem.new
     @task.description = params[:description]
-    @task.hours = params[:hours]
+
+    if ApplicationHelper.is_number?(params[:hours])
+      @task.hours = params[:hours]
+    else
+      # @task.hours = nil
+    end
+
+    if ApplicationHelper.is_number?(params[:planned_hours])
+      @task.planned_hours = params[:planned_hours]
+    else
+      # @task.planned_hours = nil
+    end
+
     @task.rate = params[:rate]
     @task.invoice = Invoice.find(params[:invoice_id])
     @task.save
 
     if @task.invoice.invoice_items.empty? && @task.invoice.project.current_task.nil?
 
-      Note.create_project_update(@invoice.project, current_user, 'Task Created: ' + task.description)
+      Note.create_event(@invoice.project, current_user, 'Task Created: ' + task.description)
 
       project = @task.invoice.project
       project.current_task = @task
@@ -85,25 +129,55 @@ class InvoiceItemsController < ApplicationController
       @invoice_item.invoice.project.create_note('project_update', 'Created Task for Sprint ' + @invoice_item.invoice.sprint.to_s)
 
       if @invoice_item.save
-        format.html { redirect_to @invoice_item, notice: 'Invoice item was successfully created.' }
-        format.json { render :show, status: :created, location: @invoice_item }
+        format.html {redirect_to @invoice_item, notice: 'Invoice item was successfully created.'}
+        format.json {render :show, status: :created, location: @invoice_item}
       else
-        format.html { render :new }
-        format.json { render json: @invoice_item.errors, status: :unprocessable_entity }
+        format.html {render :new}
+        format.json {render json: @invoice_item.errors, status: :unprocessable_entity}
       end
+    end
+  end
+
+  def update_inline
+
+    logger.debug("Updating Inline Task")
+
+    @task = InvoiceItem.update(params)
+    @task.save
+
+    if @task.invalid?
+      logger.error("Task not updated succesfully")
+      logger.error(@task.errors)
+    end
+
+    Note.create_event(@project, current_user, 'Task Updated: ' + @task.description)
+
+    respond_to do |format|
+      format.js
     end
   end
 
   # PATCH/PUT /invoice_items/1
   # PATCH/PUT /invoice_items/1.json
   def update
+    logger.info("Updating Task")
     respond_to do |format|
       if @invoice_item.update(invoice_item_params)
-        format.html { redirect_to @invoice_item, notice: 'Invoice item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @invoice_item }
+        @task = @invoice_item
+        if @invoice_item.invalid?
+          logger.error("Task not updated succesfully")
+          logger.error(@task.errors)
+        end
+
+        Note.create_event(@project, current_user, 'Task Updated: ' + @task.description)
+
+        format.html {redirect_to @invoice_item, notice: 'Invoice item was successfully updated.'}
+        format.json {render :show, status: :ok, location: @invoice_item}
+        format.js
       else
-        format.html { render :edit }
-        format.json { render json: @invoice_item.errors, status: :unprocessable_entity }
+        format.js
+        format.html {render :edit}
+        format.json {render json: @invoice_item.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -113,19 +187,19 @@ class InvoiceItemsController < ApplicationController
   def destroy
     @invoice_item.destroy
     respond_to do |format|
-      format.html { redirect_to invoice_items_url, notice: 'Invoice item was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html {redirect_to invoice_items_url, notice: 'Invoice item was successfully destroyed.'}
+      format.json {head :no_content}
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_invoice_item
-      @invoice_item = InvoiceItem.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_invoice_item
+    @invoice_item = InvoiceItem.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def invoice_item_params
-      params.require(:invoice_item).permit(:description, :hours, :rate, :item_type, :complete, :belongs_to)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def invoice_item_params
+    params.require(:invoice_item).permit(:description, :hours, :planned_hours, :rate, :complete,)
+  end
 end

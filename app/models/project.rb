@@ -17,6 +17,8 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :owner
   accepts_nested_attributes_for :invoices
   accepts_nested_attributes_for :current_task
+  accepts_nested_attributes_for :invoice_items
+  accepts_nested_attributes_for :notes
 
 
   validates :sprint_total, presence: true

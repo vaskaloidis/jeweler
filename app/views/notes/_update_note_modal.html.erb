@@ -1,0 +1,27 @@
+<div class="modal fade" id="update_note_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        Create Note
+        <% unless @project.current_sprint.nil? %>
+              <span style="padding:2px" class="alert alert-success">
+                Sprint <%= @project.current_sprint.sprint.to_s %>
+              </span>
+        <% end %>
+        <button type="button" class="close" onclick="$('#create_note_modal').modal('hide'); return false;" aria-hidden="true">&times;</button>
+      </div>
+      <%= form_with model: @note, url: create_note_modal_path do |f| %>
+        <div class="modal-body" style="padding-bottom:0px; height:125%">
+          <div class="form-group">
+            <%= f.text_area :content, class: 'form-control' %>
+            <%= f.hidden_field :project_id, :value => @project.id %>
+          </div>
+        </div>
+        <div style="border:0px solid white" class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="$('#create_note_modal').modal('hide'); return false;">Close</button>
+          <%= f.submit "Create Note", :class => 'btn btn-success' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

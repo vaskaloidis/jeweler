@@ -14,7 +14,7 @@ $("#invoice_items_<%= @invoice.id.to_s %>_hidden_row").hide();
 
 <% if @task.valid? %>
 
-  $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= escape_javascript( render 'invoices/invoice_panel', invoice: @invoice, sprint: @current_sprint ) %>');
+  $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice %>');
   $("#success_message").show();
   $("#success_message").html('Task Created Successfully');
 

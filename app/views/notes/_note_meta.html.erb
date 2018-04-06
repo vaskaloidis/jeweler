@@ -5,6 +5,8 @@
     <% if note.note_type != 'commit' and note.note_type != 'project_update' %>
     <%# Debugging Helper: if note.note_type != 'commit' %>
 
+      <%= link_to '<i style="padding-right: 1px; margin-right:0px" class="far fa-edit"></i>'.html_safe,
+                  edit_note_modal_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
       <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
                   delete_note_inline_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
 

@@ -6,16 +6,6 @@
     end
   end
 
-  # Totals
-  hour_total = 0
-  price_total = 0
-  projected_hours = 0
-  invoice.invoice_items.each do |task|
-    hour_total = hour_total + task.hours
-    price_total = price_total + (task.hours * task.rate)
-    projected_hours = projected_hours + task.planned_hours
-  end
-
   payment_total = 0
   invoice.payments.each do |payment|
     payment_total = payment_total + payment.amount
@@ -40,9 +30,9 @@
         <% if payment_total != 0 %>
           <div class="label label-success"><strong>Payment: </strong> $<%= payment_total %></div>
         <% end %>
-        <div class="label label-info"><Strong>Cost: </Strong> $<%= price_total %></div>
-        <div class="label label-default"><Strong>Projected: </Strong> <%= projected_hours %> hrs.</div>
-        <div class="label label-default"><Strong>Completed: </Strong> <%= hour_total %> hrs.</div>
+        <div class="label label-info"><Strong>Cost: </Strong> $<%= invoice.sprint_cost %></div>
+        <div class="label label-default"><Strong>Projected: </Strong> <%= invoice.sprint_planned_hours %> hrs.</div>
+        <div class="label label-default"><Strong>Completed: </Strong> <%= invoice.sprint_hours %> hrs.</div>
       </div>
     </div>
     <div class="panel-options">
@@ -86,42 +76,42 @@
         <strong>Description: </strong> <%= invoice.description %><br>
         <table class="table table-striped">
           <thead>
-          <tr>
-            <th>Task</th>
-            <th>Rate</th>
-            <% if invoice.sprint_hours == 0 %>
+            <tr>
+              <th>Task</th>
+              <th>Rate</th>
               <th>Estimated Hours</th>
-            <% else %>
-              <th>Estimated Hours</th>
-              <th>Actual Hours</th>
-            <% end %>
-            <th>Cost</th>
-          </tr>
+              <% unless invoice.only_planned? %>
+                <td>Hours</td>
+                <td>Cost</td>
+              <% else %>
+                <td>Projected Cost</td>
+              <% end %>
+            </tr>
           </thead>
           <tbody>
           <% invoice.invoice_items.each do |task| %>
             <tr>
               <td><%= task.description %></td>
               <td>$<%= task.rate %>/hr</td>
-              <% if invoice.sprint_hours == 0 %>
-                <td><%= task.planned_hours %></td>
-              <% else %>
-                <td><%= task.planned_hours %></td>
+              <td><%= task.planned_hours %></td>
+              <% unless invoice.only_planned? %>
                 <td><%= task.hours %></td>
+                <td>$<%= task.total_cost %></td>
+              <% else %>
+                <td><%= task.planned_cost %></td>
               <% end %>
-              <td>$<%= task.rate * task.hours %></td>
             </tr>
           <% end %>
           <tr>
             <th></th>
             <th><strong>Total:</strong></th>
-            <% if invoice.sprint_hours == 0 %>
-              <th><%= projected_hours %> hrs.</th>
-            <% else %>
-              <th><%= projected_hours %> hrs.</th>
-              <th><%= hour_total %> hrs.</th>
-            <% end %>
-            <th>$<%= price_total %></th>
+            <th><%= invoice.sprint_planned_hours %> hrs.</th>
+            <% unless invoice.only_planned? %>
+              <th><%= invoice.sprint_hours %> hrs.</th>
+              <th>$<%= invoice.sprint_cost %></th>
+          <% else %>
+              <th>$<%= invoice.sprint_planned_cost %></th>
+          <% end %>
           </tr>
           </tbody>
         </table>

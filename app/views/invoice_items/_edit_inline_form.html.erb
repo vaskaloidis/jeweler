@@ -1,0 +1,48 @@
+<%= form_with model: task, url: update_task_inline_path do |f| %>
+  <td>
+    <%= f.text_field :description, style: 'width:100%' %>
+  </td>
+  <td>
+    <%= f.text_field :rate %>
+  </td>
+
+  <% if task.invoice.only_planned? %>
+    <td>
+      <% if task.planned_hours.nil? %>
+        <%= f.text_field :planned_hours, :value => 'Estimated Hours' %>
+      <% else %>
+        <%= f.text_field :planned_hours %>
+      <% end %>
+
+      <% if task.hours.nil? %>
+        <%= f.text_field :hours, :value => 'Reported Hours' %>
+      <% else %>
+        <%= f.text_field :hours %>
+      <% end %>
+    </td>
+  <% else %>
+    <td>
+      <% if task.planned_hours.nil? %>
+        <%= f.text_field :planned_hours, :value => 'Estimated Hours' %>
+      <% else %>
+        <%= f.text_field :planned_hours %>
+      <% end %>
+    </td>
+    <td>
+      <% if task.hours.nil? %>
+        <%= f.text_field :hours, :value => 'Reported Hours' %>
+      <% else %>
+        <%= f.text_field :hours %>
+      <% end %>
+    </td>
+  <% end %>
+
+  <td>
+    <%= f.submit 'Save', :class => 'btn-sm btn-success', style: 'display:inline' %>
+    <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
+                class: 'btn btn-sm btn-success', style: 'padding:10x;color:white;font-size:1.2em;display:inline;' %>
+    <%= f.hidden_field :invoice_id, :value => task.invoice.id %>
+  </td>
+<% end %>
+

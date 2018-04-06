@@ -27,13 +27,19 @@
     </div>
 
     <div class="row">
-      <%= form.file_field :image, multiple: false %>
+      <div class="form-group">
+        <%= form.label :image, 'Project Logo', class: 'control-label' %>
+        <%= form.file_field :image, multiple: false %>
+      </div>
     </div>
 
     <div class="row">
       <div class="form-group">
-        <%= form.label :language, class: 'control-label' %>
-        <%= form.text_field :language, class: 'form-control' %>
+        <%#= form.label :language, class: 'control-label' %>
+        <%#= form.text_field :language, class: 'form-control' %>
+        <label class="control-label" for="project_language">Language</label>
+        <%= ApplicationHelper.build_languages_dropdown.html_safe %>
+
       </div>
     </div>
 
@@ -80,26 +86,26 @@
     <div class="row">
       <div class="form-group">
         <%= form.label :stage_website_url, class: 'control-label' %>
-        <%= form.text_area :stage_website_url, class: 'form-control' %>
+        <%= form.text_field :stage_website_url, class: 'form-control' %>
       </div>
     </div>
 
     <div class="row">
       <div class="form-group">
         <%= form.label :demo_url, class: 'control-label' %>
-        <%= form.text_area :demo_url, class: 'form-control' %>
+        <%= form.text_field :demo_url, class: 'form-control' %>
       </div>
     </div>
 
     <div class="row">
       <div class="form-group">
         <%= form.label :prod_url, class: 'control-label' %>
-        <%= form.text_area :prod_url, class: 'form-control' %>
+        <%= form.text_field :prod_url, class: 'form-control' %>
       </div>
     </div>
 
     <div class="row">
-      <%= form.submit 'Submit', :class => 'btn-btn-success' %>
+      <%= form.submit 'Submit', :class => 'btn btn-success' %>
       <%= link_to 'Back', @project, class: 'btn btn-primary' %>
     </div>
 

@@ -191,6 +191,12 @@
 
     <!--</li>-->
 
+    <li>
+      <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');"_c>
+        <i class="fas fa-sticky-note"></i>
+      </a>
+    </li>
+
     <li class="dropdown user-profile">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <% if current_user.image.url.nil? %>
@@ -209,6 +215,12 @@
           <a href="<%= new_project_path %>">
             <i class="fa-edit"></i>
             New Project
+          </a>
+        </li>
+        <li>
+          <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');">
+            <i class="fas fa-sticky-note"></i>
+            New Note
           </a>
         </li>
         <li>

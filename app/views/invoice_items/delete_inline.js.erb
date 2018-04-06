@@ -11,4 +11,6 @@ if ($("#error_message").is(':visible')) {
 $("#success_message").show()
 $("#success_message").html('Task Deleted');
 
-$("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= escape_javascript( render 'invoices/invoice_panel', invoice: @invoice, sprint: @current_sprint ) %>');
+$('#task_row_<%= @invoice_item.id.to_s %>').hide('slide');
+
+// $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<#%= j render 'invoices/invoice_panel', invoice: @invoice %>');

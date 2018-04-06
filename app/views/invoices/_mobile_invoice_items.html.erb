@@ -1,0 +1,65 @@
+<p
+<% if invoice.project.current_task == invoice.id %>
+class="current_sprint task_list">
+<% else %>
+>
+<% end %>
+
+<div>
+  <ul class="list-group list-group-minimal">
+
+    <% invoice.invoice_items.each do |task| %>
+
+      <li class="list-group-item" onclick="$('#task_mobile_<%= task.id.to_s %>').toggle('slide'); return false;">
+        <!--onmouseout="document.getElementById('task_<%#= task.id.to_s %>').style.display = 'none';">-->
+
+        <div style="display: block" class="">
+          <span style="font-size: 1em" class="badge badge-roundless badge-default">$<%= task.rate %>/hr</span>
+          <span style="font-size: 1em" class="badge badge-roundless badge-info"><%= task.hours %> hours</span>
+          <span style="font-size: 1em" class="badge badge-roundless badge-success">$<%= task.rate * task.hours %></span>
+        </div>
+        <span>
+          <% if invoice.project.current_task == task %>
+            <span class="label label-default">Current Task</span>
+            <span id="task_mobile_<%= task.id.to_s %>" style="display:none;font-size:.8em; padding-right:20px;">
+                  <%#= '<span id="task_' + task.id.to_s + '" style="display:none;font-size:.8em; padding-right:20px;">'.html_safe %>
+              <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                          delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
+                          class: 'btn btn-sm btn-default', style: 'padding:10px;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
+
+              </span>
+          <% else %>
+            <span id="task_<%= task.id.to_s %>" style="display:none;font-size:.8em; padding-right:20px;">
+              <%= link_to 'Set Current Tasks',
+                            set_current_task_path(invoice.project.id, task.id), remote: true,
+                            class: 'btn btn-sm btn-success', style: 'display:inline;font-size:1em; padding:5px; padding-right:10px;' %>
+              <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                          delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
+                          class: 'btn btn-sm btn-default', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
+            </span>
+          <% end %>
+          <%= task.description %>
+        </span>
+
+      </li>
+    <% end %>
+
+  </ul>
+</div>
+
+<p style="display:none" id="invoice_items_<%= invoice.id.to_s %>_hidden_row"></p>
+<p id="create_task_container_invoice_<%= invoice.id.to_s %>">
+<p>
+  <%= link_to 'Create Task',
+              create_task_inline_path(invoice.id),
+              remote: true,
+              id: 'create_task_inline_button',
+              class: 'btn btn-sm btn-primary',
+              style: 'display:inline;font-size:1em; padding-right:10px;' %>
+</p>
+<p>
+  <span><strong>Total:</strong></span>
+  <span><%= hour_total %> hrs.</span>
+  <span>$<%= price_total %></span>
+</p>
+</p>
