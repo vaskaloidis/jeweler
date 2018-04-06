@@ -1,16 +1,21 @@
 source 'https://rubygems.org'
-git_source(:github) { |repo| 'https://github.com/#{repo}.git' }
-
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+# Jewler Gems
 ruby '2.5.0'
-gem 'rails', '~> 5.2.0.rc1'
+
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+# Jewler: gem 'rails', '~> 5.2.0.rc1'
+# gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 5.1.4'
 
 gem 'pg'
 gem 'puma', '~> 3.11'
-
 gem 'github_api'
 # gem 'github_api'
 # gem 'octokit', '~> 4.0'
-
 gem 'devise'
 gem 'carrierwave', '~> 1.0'
 gem 'rolify'
@@ -18,46 +23,30 @@ gem 'cancancan', '~> 2.0'
 gem 'json'
 gem 'screencap'
 gem 'simple_form'
-# gem 'paper_trail'
-
 gem 'font-awesome-rails'
 gem 'redcarpet'
-gem 'carrierwave', '~> 1.0'
-
 gem 'yaml_db'
-
-gem 'rollbar'
-
 # gem 'jquery-rails', '1.11.1'
 # gem 'jquery-ui-rails'
 # gem 'jquery-rails'
-
 gem 'sass-rails', '~> 5.0'
 gem 'less-rails', '~> 3.0.0'
 gem 'therubyracer' # Ruby
 # gem 'mini_racer', platforms: :ruby
 gem 'coffee-rails', '~> 4.2'
 gem 'uglifier', '>= 1.3.0'
-
-# gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
-
-# gem 'audited', '~> 4.6' #TODO: Install and configure Audited Gem
-
 # gem 'redis', '~> 4.0'
 # gem 'bcrypt', '~> 3.1.7'
-
-# gem 'mini_magick', '~> 4.8'
-# gem 'capistrano-rails', group: :development
-
+# TODO: Install and configure Audited Gem
+# gem 'audited', '~> 4.6'
+# gem 'paper_trail'
 gem 'bootsnap', '>= 1.1.0', require: false
-
 group :production do
-  # gem 'memcache', '~> 1.5', '>= 1.5.1'
+  # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? Do we want this?
   gem 'rollbar'
   gem 'foreman'
 end
-
 group :development, :test do
   gem 'dotenv-rails'
   gem 'faker'
@@ -70,25 +59,20 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'factory_bot'
   gem 'factory_bot_rails'
-  # gem 'web-console' # Add to page: <%= console %>
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 end
-
 group :development do
   gem 'pry-rails'
-  gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'web-console', '>= 3.3.0'  # Add to page: <%= console %>
+  # gem 'listen', '>= 3.0.5', '< 3.2' # TODO: Why was that here? Its depracated
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  # gem 'binding_of_caller'
   gem 'binding_of_caller'
 end
-
 group :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'simplecov', require: false, group: :test
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
 end
-
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
