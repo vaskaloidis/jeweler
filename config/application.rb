@@ -11,13 +11,16 @@ end
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
 
+# require 'lib/Float'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 
 module JewlerCRM
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 5.1
+    # TODO: Update this with Rails version once we update: config.load_defaults 5.2
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

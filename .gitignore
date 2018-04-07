@@ -29,18 +29,27 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-.DS_Store
 .idea/
 .env
 .idea/workspace.xml
 .idea/jewlerCRM.iml
-.DS_Store
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/misc.xml
 /.idea/vcs.xml
 /.idea/workspace.xml
 /.DS_Store
 /.idea/jewlerCRM.iml
-/app/assets/.DS_Store
 /.idea/modules.xml
+
+/app/assets/.DS_Store
 /app/assets/stylesheets/.DS_Store
+
+.DS_Store
+/.DS_Store
+
+*.DS_Store
+/*.DS_Store
+/*/.DS_Store
+/*/*/.DS_Store
+/*/*/*/.DS_Store
+/*/*/*/*/.DS_Store
