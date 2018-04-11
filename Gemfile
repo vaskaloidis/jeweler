@@ -3,14 +3,17 @@ git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
-# Jewler Gems
+# Jeweler Gems
 ruby '2.5.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # Jewler: gem 'rails', '~> 5.2.0.rc1'
 # gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
+# gem 'activestorage', github: 'rails/activestorage'
 
+
+gem 'stripe'
 gem 'pg'
 gem 'puma', '~> 3.11'
 gem 'github_api'
@@ -42,6 +45,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'audited', '~> 4.6'
 # gem 'paper_trail'
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'rollbar'
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? Do we want this?
   gem 'rollbar'

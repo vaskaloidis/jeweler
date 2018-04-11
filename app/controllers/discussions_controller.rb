@@ -1,11 +1,30 @@
 class DiscussionsController < ApplicationController
   before_action :set_discussion, only: [:show, :edit, :update, :destroy]
 
-  def fetch_discussion
-    @discussion = Note.find(params[:id]).discussions
+  def create_chat_message_inline
+    @note = Note.find(params[:note_id])
+    @user = User.find(params[:user_id])
 
-    logger.debug("Note Discussion Param: " + params[:id].to_s)
-    # logger.debug("Discussion Modal Opened. Note ID: " + @discussion.id.to_s)
+    chat = Discussion.new
+    chat.note = @note
+    chat.user = @user
+    chat.content = params[:content]
+    chat.save
+    @note.reload
+    @discussions = @note.discussions
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def fetch_discussion
+    @note = Note.find(params[:note_id])
+    @discussions = @note.discussions
+    @user = current_user
+
+    logger.debug("Note ID Discussion " + params[:note_id].to_s)
+    logger.debug("Conversation Count: " + @discussions.count.to_s)
 
     respond_to do |format|
       format.js

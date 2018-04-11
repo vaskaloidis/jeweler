@@ -23,7 +23,10 @@ class WebhookController < ApplicationController
         logger.debug("Commit SHA: " + sha.to_s)
 
         message = commit["message"]
-        message = message + '<br><a href="' + payload["compare"] + '">View Commit</a>'
+
+        diff_url = payload["compare"]
+        # message = message + '<br><a href="' + payload["compare"] + '">View Commit</a>'
+
         unless commit["added"].empty?
           message = message + '<br> <strong>Added:</strong><br>'
           commit["added"].each do |file|
@@ -63,8 +66,8 @@ class WebhookController < ApplicationController
         note.project = @project
         note.content = message.to_s
 
-        unless repo_url.nil?
-          note.commit_diff_path = repo_url.to_s
+        unless diff_url.nil? or diff_url == ''
+          note.commit_diff_path = diff_url.to_s
         end
         unless @project.current_sprint.nil?
           note.invoice = @project.current_sprint

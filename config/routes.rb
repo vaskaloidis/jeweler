@@ -1,10 +1,22 @@
 Rails.application.routes.draw do
 
+  resources :invitations
   # Ajax
+  match '/create_chat_message', to: 'discussions#create_chat_message_inline', via: [:post], as: 'create_chat_message_inline'
+
+  get '/open_payment/:project_id', to: 'invoices#open_payment', as: 'open_payment'
+  get '/open_sprint_payment/:invoice_id', to: 'invoices#open_sprint_payment', as: 'open_sprint_payment'
+  match '/make_payment', to: 'invoices#make_payment', via: [:post], as: 'make_payment'
+
+  match '/create_customer_inline', to: 'project_customers#create_customer_inline', via: [:post], as: 'create_customer_inline'
+  get '/remove_customer/:project_id/:user_id', to: 'project_customers#remove_customer_inline', as: 'remove_customer_inline'
+  get '/remove_invitation/:invitation_id', to: 'invitations#remove_invitation_inline', as: 'remove_invitation_inline'
+
   get "/request_payment/:invoice_id"  => 'projects#request_payment', as: 'request_payment'
   get "/cancel_request_payment/:invoice_id"  => 'projects#cancel_request_payment', as: 'cancel_request_payment'
 
-  get "/set_project/:id/current_task/:invoice_item_id" => 'projects#set_current_task', as: 'set_current_task'
+  get "/set_current_sprint/:invoice_id" => 'invoices#set_current_sprint', as: 'set_current_sprint'
+  get "/set_current_task/:invoice_item_id" => 'invoices#set_current_task', as: 'set_current_task'
 
   get "/open_sprint/:invoice_id" => 'invoices#open_sprint_inline', as: 'open_sprint'
   get "/close_sprint/:invoice_id" => 'invoices#close_sprint_inline', as: 'close_sprint'
@@ -16,6 +28,9 @@ Rails.application.routes.draw do
   match '/create_project_update_modal', to: 'notes#create_project_update_modal', via: [:post], as: 'create_project_update_modal'
 
   get "/fetch_discussion/:note_id" => 'discussions#fetch_discussion', as: 'fetch_discussion'
+
+  get "/complete_task/:invoice_item_id" => 'invoice_items#complete_task', as: 'complete_task'
+  get "/uncomplete_task/:invoice_item_id" => 'invoice_items#uncomplete_task', as: 'uncomplete_task'
 
   get "/cancel_task_update/:invoice_id" => 'invoice_items#cancel_update', as: 'cancel_task_update'
   get "/edit_task_inline/:task_id" => 'invoice_items#edit_inline', as: 'edit_task_inline'

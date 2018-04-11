@@ -3,6 +3,48 @@ class ProjectCustomersController < ApplicationController
                 only: [:verify_owner, :show, :edit, :update, :destroy]
   before_action :verify_owner,
                 only: [:create, :edit, :update, :destroy]
+
+  def create_customer_inline
+    email = params[:email]
+    project = Project.find(params[:project_id])
+
+
+    if User.where(email: email).empty?
+      @save = project.invitations.create(email: email)
+    else
+      user = User.where(email: email).first
+
+      logger.debug("Adding Customer to Project ID: " + project.id.to_s + ". Customer ID: " + user.id.to_s + " / EMAIL: " + email)
+
+      pc = ProjectCustomer.new
+      pc.project = project
+      pc.user = user
+      pc.save
+      @save = pc
+    end
+
+    project.reload
+    @project = project
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def remove_customer_inline
+    user = User.find(params[:user_id])
+    project = Project.find(params[:project_id])
+
+    project.customers.delete(user)
+
+    project.reload
+    @project = project
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # GET /project_customers
   # GET /project_customers.json
   def index

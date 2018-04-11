@@ -250,4 +250,4 @@ pc.user = c3
 pc.project = p
 pc.save
 
-puts 'Jewler Seeded Succesfully'
+puts 'Jeweler Seeded Succesfully'

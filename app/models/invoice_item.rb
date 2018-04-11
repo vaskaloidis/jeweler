@@ -13,11 +13,21 @@ class InvoiceItem < ApplicationRecord
   # validates :rate, presence: true
 
 
+  # def hours
+  #   h = self.hours
+  #   return ApplicationHelper.prettify(h)
+  # end
+  #
+  # def planned_hours
+  #   ph = self.planned_hours
+  #   return ApplicationHelper.prettify(ph)
+  # end
+
   def total_cost
     if self.hours.nil?
       return 0.0
     else
-      return self.rate * self.hours
+      return ApplicationHelper.prettify(self.rate * self.hours)
     end
   end
 
@@ -25,7 +35,15 @@ class InvoiceItem < ApplicationRecord
     if self.planned_hours.nil?
       return 0.0
     else
-      return self.rate * self.planned_hours
+      return ApplicationHelper.prettify(self.rate * self.planned_hours)
+    end
+  end
+
+  def is_current?
+    if self.invoice.project.current_task == self
+      return true
+    else
+      return false
     end
   end
 

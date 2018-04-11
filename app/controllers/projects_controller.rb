@@ -1,34 +1,9 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy, :set_current_task]
+  before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy]
   before_action :verify_invoices_exist, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
   respond_to :html, :js, only: [:request_payment]
-
-  def set_current_task
-    @task = InvoiceItem.find(params[:invoice_item_id])
-    @invoice = @task.invoice
-
-    logger.debug("Setting Task " + @task.id.to_s + " for Invoice " + @invoice.id.to_s)
-
-    @project = Project.find(@invoice.project.id)
-    @project.current_task = @task
-    @project.save
-
-    @project.reload
-    @task.reload
-    @invoice = @task.invoice
-
-    if @project.valid?
-      Note.create_event(@invoice.project, current_user, 'Current Task Changed')
-    end
-
-    @current_sprint = @project.sprint_current
-    @invoice_id = @invoice.id
-    respond_to do |format|
-      format.js
-    end
-  end
 
   def request_payment
     @invoice = Invoice.find(params[:invoice_id])
@@ -181,14 +156,14 @@ class ProjectsController < ApplicationController
 
   private
   def verify_owner
-    unless @project.is_owner(current_user)
+    unless @project.is_owner?(current_user)
       flash[:error] = "You must be the owner to modify project"
       redirect_to projects_url # halts request cycle
     end
   end
 
   def verify_customer
-    unless @project.is_customer(current_user) or @project.is_owner(current_user)
+    unless @project.is_customer(current_user) or @project.is_owner?(current_user)
       flash[:error] = "You must be a member of this project to view it"
       redirect_to projects_url # halts request cycle
     end

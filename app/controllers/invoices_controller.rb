@@ -1,6 +1,80 @@
 class InvoicesController < ApplicationController
   before_action :set_invoice, only: [:show, :edit, :update, :destroy]
 
+  def open_sprint_payment
+    @invoice = Invoice.find(params[:invoice_id])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def open_payment
+    @project = Project.find(params[:project_id])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def make_payment
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def set_current_task
+    @task = InvoiceItem.find(params[:invoice_item_id])
+    @invoice = @task.invoice
+
+    logger.debug("Setting Task " + @task.id.to_s + " for Invoice " + @invoice.id.to_s)
+
+    @project = @invoice.project
+    @project.current_task = @task
+    @project.save
+
+    @project.reload
+    @task.reload
+    @invoice = @task.invoice
+
+    if @project.valid?
+      Note.create_event(@project, current_user, 'Current Task Changed')
+    else
+      logger.error("Error Changing Current Task From to ID: " + @task.id.to_s)
+    end
+
+    @current_sprint = @project.sprint_current
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
+  def set_current_sprint
+    @invoice = Invoice.find(params[:invoice_id])
+
+    logger.debug("Setting Current Invoice " + @invoice.id.to_s)
+
+    @project = Project.find(@invoice.project.id)
+    @old_invoice = @project.current_sprint
+    @project.current_sprint(@invoice)
+
+    @project.reload
+    @invoice.reload
+
+    if @project.valid?
+      Note.create_event(@project, current_user, 'Current Sprint Changed')
+    else
+      logger.error("Error Changing Current Sprint From " + @old_invoice.sprint.to_s + " to " + @invoice.sprint.to_s)
+    end
+
+    @current_sprint = @project.sprint_current
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def open_sprint_inline
     @sprint = Invoice.find(params[:invoice_id])
     @sprint.open = true

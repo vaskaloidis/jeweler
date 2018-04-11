@@ -16,7 +16,7 @@ class Invoice < ApplicationRecord
     self.payments.each do |p|
       total_payments = total_payments + p.amount
     end
-    return total_payments
+    return ApplicationHelper.prettify(total_payments)
   end
 
   def sprint_cost
@@ -26,7 +26,7 @@ class Invoice < ApplicationRecord
         total_cost = total_cost + (item.rate * item.hours)
       end
     end
-    return total_cost
+    return ApplicationHelper.prettify(total_cost)
   end
 
   def sprint_planned_cost
@@ -36,7 +36,7 @@ class Invoice < ApplicationRecord
         total = total + (item.planned_hours * item.rate)
       end
     end
-    return total
+    return ApplicationHelper.prettify(total)
   end
 
   def sprint_hours
@@ -46,7 +46,7 @@ class Invoice < ApplicationRecord
         total_cost = total_cost + item.hours
       end
     end
-    return total_cost
+    return ApplicationHelper.prettify(total_cost)
   end
 
   def sprint_planned_hours
@@ -56,7 +56,7 @@ class Invoice < ApplicationRecord
         total = total + item.planned_hours
       end
     end
-    return total
+    return ApplicationHelper.prettify(total)
   end
 
   def only_planned?

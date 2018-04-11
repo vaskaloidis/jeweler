@@ -1,5 +1,15 @@
 module ApplicationHelper
 
+  def self.prettify(number)
+    # to_i == number ? to_i : number
+
+    if number == number.to_i
+      return number.to_i
+    else
+      return number
+    end
+
+  end
 
   def self.build_languages_dropdown
     cat = self.categories
@@ -110,7 +120,7 @@ module ApplicationHelper
     end
 
     if !devicon.empty?
-      return '<i class="devicon ' + devicon + '"></i>'
+      return '<i class="devicon ' + devicon + '"></i>'.html_safe
     else
       return ''
     end

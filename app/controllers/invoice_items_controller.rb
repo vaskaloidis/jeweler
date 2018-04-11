@@ -1,6 +1,52 @@
 class InvoiceItemsController < ApplicationController
   before_action :set_invoice_item, only: [:show, :edit, :update, :destroy]
 
+  def complete_task
+    @task = InvoiceItem.find(params[:invoice_item_id])
+
+    logger.debug("Setting Task Complete, ID: " + @task.id.to_s)
+
+    if @task.is_current?
+      next_task = false
+      @task.invoice.invoice_items.each do |t|
+        if next_task
+          if t.complete == false
+            project = @task.invoice.project
+            project.current_task = t
+            project.save
+            break
+          end
+        end
+        if @task == t
+          next_task = true
+        end
+      end
+    end
+
+    @task.complete = true
+    @task.save
+    @task.reload
+    @invoice = @task.invoice
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def uncomplete_task
+    @task = InvoiceItem.find(params[:invoice_item_id])
+    @task.complete = false
+    @task.save
+    @task.reload
+    @invoice = @task.invoice
+
+    logger.debug("Setting Task Un-Complete, ID: " + @task.id.to_s)
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def cancel_update
     @invoice = Invoice.find(params[:invoice_id])
 
@@ -82,7 +128,13 @@ class InvoiceItemsController < ApplicationController
 
     @task.rate = params[:rate]
     @task.invoice = Invoice.find(params[:invoice_id])
+
+    if @task.invoice.project.current_task.nil?
+      @task.invoice.project.current_task = @task
+    end
+
     @task.save
+    @task.reload
 
     if @task.invoice.invoice_items.empty? && @task.invoice.project.current_task.nil?
 

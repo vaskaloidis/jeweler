@@ -24,4 +24,9 @@ class User < ApplicationRecord
   def first_last_name_email
     "#{first_name} #{last_name} - #{email}"
   end
+
+  def invitations
+    return Invitation.where(email: self.email).all
+  end
+
 end

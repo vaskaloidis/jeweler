@@ -10,6 +10,7 @@ class Project < ApplicationRecord
   has_many :invoice_items
   has_many :tasks, :through => :invoices, :source => :invoice_items
   has_many :payments, :through => :invoices
+  has_many :invitations
 
   mount_uploader :image, AvatarUploader
 
@@ -19,6 +20,8 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :current_task
   accepts_nested_attributes_for :invoice_items
   accepts_nested_attributes_for :notes
+  accepts_nested_attributes_for :invitations
+
 
 
   validates :sprint_total, presence: true
@@ -26,23 +29,85 @@ class Project < ApplicationRecord
   validates :name, presence: true
   validates :github_url, presence: true, uniqueness: true
 
+  def total_balance
+    unless self.total_cost.nil? or self.total_payment.nil?
+      return (self.total_cost - self.total_payment)
+    else
+      return 0
+    end
+  end
 
+  def total_hours
+    total = 0.0
+    self.invoices.each do |invoice|
+      total = total + invoice.sprint_hours
+    end
+    return total
+  end
 
+  def total_cost
+    total = 0.0
+    self.invoices.each do |invoice|
+      total = total + invoice.sprint_cost
+    end
+    return total
+  end
+
+  def total_payment
+    total = 0.0
+    self.invoices.each do |invoice|
+      invoice.payments.each do |payment|
+        total = total + payment.amount
+      end
+    end
+    return total
+  end
+
+  def total_planned_hours
+    total = 0.0
+    self.invoices.each do |invoice|
+      total = total + invoice.sprint_planned_hours
+    end
+    return total
+  end
+
+  def total_planned_cost
+    total = 0.0
+    self.invoices.each do |invoice|
+      total = total + invoice.sprint_planned_cost
+    end
+    return total
+  end
 
   def get_sprint(number)
     invoices = self.invoices.where(sprint: number)
     if invoices.empty?
       return nil
-      else return invoices.first
+    else
+      return invoices.first
     end
   end
 
-  def current_sprint
-    this_sprint_invoice = self.invoices.where(sprint: self.sprint_current)
-    if this_sprint_invoice.empty?
-      return nil
+  def current_sprint(sprint = nil)
+
+    if sprint.nil?
+      this_sprint_invoice = self.invoices.where(sprint: self.sprint_current)
+      if this_sprint_invoice.empty?
+        return nil
+      else
+        return this_sprint_invoice.first
+      end
     else
-      return this_sprint_invoice.first
+      self.sprint_current = sprint.sprint
+
+      unless sprint.open?
+        sprint.open = true
+        sprint.save
+        sprint.reload
+      end
+
+      self.save
+      return self
     end
   end
 
@@ -74,11 +139,20 @@ class Project < ApplicationRecord
     note.save
   end
 
-  def is_owner(user)
-    if self.owner == user
-      return true
+  def is_owner?(user = nil)
+
+    if user.nil?
+      if self.owner == current_user
+        return true
+      else
+        return false
+      end
     else
-      return false
+      if self.owner == user
+        return true
+      else
+        return false
+      end
     end
   end
 
