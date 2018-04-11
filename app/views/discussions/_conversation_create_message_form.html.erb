@@ -1,0 +1,6 @@
+<%= form_with url: create_chat_message_inline_path, class: 'form-inline' do |f| %>
+  <%= f.text_field :content, style: 'width:75%' %>
+  <%= f.submit 'Send', :class => 'btn-sm btn-success', style: 'display:inline' %>
+  <%= f.hidden_field :user_id, :value => user.id %>
+  <%= f.hidden_field :note_id, :value => note.id %>
+<% end %>

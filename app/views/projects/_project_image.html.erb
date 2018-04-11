@@ -15,8 +15,9 @@
     <span class="user-status is-online"></span>
   </a>
 
+  <!--<span class="user-title"><%#= @project.language %> </span>-->
   <span class="user-title">
-        <%= @project.language %>
+        <%= ApplicationHelper.build_language_icon(@project.language).html_safe %>
   </span>
 
   <hr>
@@ -27,14 +28,37 @@
       <%= @project.owner.first_name %>
       <%= @project.owner.last_name %>
     </li>
-    <% if !@project.owner.company.nil? %>
+    <% unless @project.owner.company.nil? %>
       <li>
         <i class="fa-briefcase"></i>
         <%= @project.owner.company %>
         <%= @project.owner.last_name %>
       </li>
     <% end %>
-    <% if @project.is_owner(current_user) %>
+
+    <li>
+      <a href="<%= @project.github_url %>">
+        <i class="fab fa-github"></i>
+        <%= @project.github_url %>
+      </a>
+    </li>
+    <li>
+      <a href="#" data-toggle="settings-pane" data-animate="true">
+        <i class="fas fa-money-bill-alt"></i>
+        Payment Requests
+        <% payment_requests = @project.payment_requests %>
+        <% unless payment_requests.empty? %>
+          <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
+        <% end %>
+      </a>
+    </li>
+    <% if @project.is_customer(current_user) %>
+      <li>
+        <%= link_to '<i class="fas fa-money-bill-alt"></i> Make Payment'.html_safe, open_payment_path(@project.id), remote: true %>
+      </li>
+    <% end %>
+
+    <% if @project.is_owner?(current_user) %>
       <li>
         <a href="<%= edit_project_path(@project) %>">
           <i class="fas fa-cogs"></i>
@@ -60,12 +84,14 @@
     <%= render 'layouts/notifications' %>
   </div>
 
-  <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-block text-left">
-    Create Note<i class="fas fa-sticky-note pull-right"></i>
-  </a>
+  <% if @project.is_owner?(current_user) %>
+    <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-block text-left">
+      Create Note<i class="fas fa-sticky-note pull-right"></i>
+    </a>
 
-  <a href="javascript:;" onclick="jQuery('#create_project_update_modal').modal('show');" class="btn btn-success btn-block text-left">
-    Create Project Update<i class="far fa-clock pull-right"></i>
-  </a>
+    <a href="javascript:;" onclick="jQuery('#create_project_update_modal').modal('show');" class="btn btn-success btn-block text-left">
+      Create Project Update<i class="far fa-clock pull-right"></i>
+    </a>
+  <% end %>
 
 </div>

@@ -1,9 +1,15 @@
 <small>
-  <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
+  <% if note.discussions.empty? %>
+    <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
+  <% else %>
+    <%= link_to ('Comments <span style="margin-top:0px;font-size:.6em" class="badge badge-white pull-right">' + note.discussions.count.to_s + '</span>').html_safe, fetch_discussion_path(note.id), remote: true, class: 'btn btn-sm btn-success', style: 'padding-top:7px; padding-bottom:7px;' %>
+  <% end %>
+
+  <!-- Note Owner -->
   <% if note.user_id == current_user.id %>
 
     <% if note.note_type != 'commit' and note.note_type != 'project_update' %>
-    <%# Debugging Helper: if note.note_type != 'commit' %>
+      <%# Debugging Helper: if note.note_type != 'commit' %>
 
       <%= link_to '<i style="padding-right: 1px; margin-right:0px" class="far fa-edit"></i>'.html_safe,
                   edit_note_modal_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>

@@ -51,6 +51,7 @@
     <%= stylesheet_link_tag "xenon-skins" %>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -128,7 +129,11 @@
     </script>
   <% end %>
 
-  <%#= render 'layouts/settings_pane' %>
+  <% if signed_in? %>
+    <% if controller_name == 'projects' %>
+      <%= render 'layouts/settings_pane' %>
+    <% end %>
+  <% end %>
 
   <div class="page-container">
     <!-- add class "sidebar-collapsed" to close sidebar by default -->
@@ -154,6 +159,8 @@
 
     </div>
 
+    <%= render 'layouts/modal' %>
+
     <% unless @timeline_modals.nil? %>
       <% if @timeline_modals %>
         <%= render 'notes/create_project_update_modal' %>
@@ -174,7 +181,7 @@
 
       <div class="footer-text">
         &copy; 2018
-        <strong>JewlerCRM</strong> - A <a href="http://vkaloidis.herokuapp.com">Vasilios Kaloidis Production</a>
+        <strong>JewelerCRM</strong> - <a href="http://bluehelmet.software">Blue Helmet Software</a>
       </div>
 
       <div class="go-up">

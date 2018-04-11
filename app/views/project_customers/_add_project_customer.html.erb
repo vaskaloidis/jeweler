@@ -1,0 +1,10 @@
+<%= form_with url: create_customer_inline_path do |form| %>
+  <div class="field">
+    <%= form.text_field :email %>
+    <%= hidden_field_tag :project_id, project.id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Submit', class: 'btn btn-success', style: 'display:inline' %>
+  </div>
+<% end %>

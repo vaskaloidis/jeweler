@@ -1,445 +1,147 @@
-<div class="panel panel-default">
-  <div class="panel-body">
+<h1>Welcome <%= current_user.first_name %> <%= current_user.last_name %>.</h1>
 
-    <blockquote class="pull-right">
-      <p>A Programmer's best friend - Jewler CRM helps us in the best part of development: Getting Paid!</p>
-      <small>
-        <cite title="Source Title">Java Developer</cite>
-      </small>
-    </blockquote>
+<% unless current_user.customer_projects.empty? %>
+  <% total_payment = 0.0 %>
+  <% total_cost = 0.0 %>
+  <% total_hours = 0.0 %>
+  <% total_balance = 0.0 %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Owner Projects
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="list-group">
+            <% current_user.owner_projects.each do |project| %>
+              <a href="<%= project_path(project) %>" class="list-group-item">
+                <h4 class="list-group-item-heading"><%= project.name %></h4>
+                <p class="list-group-item-text">
+                <p><%= project.description %></p><br>
+
+                <div id="project_description_home">
+                  <% if project.total_planned_hours > 0 %>
+                    <span class="alert alert-success">Planned Cost: <%= project.total_planned_cost %></span>
+                    <span class="alert alert-success">planned Hours: <%= project.total_planned_hours %></span>
+                  <% end %>
+                  <% if project.total_hours > 0 %>
+                    <span class="alert alert-success">Total Billed: <%= project.total_cost %></span>
+                    <span class="alert alert-success">Billed Hours: <%= project.total_hours %></span>
+                    <span class="alert alert-warning">Total Payment: <%= project.total_payment %></span>
+                    <% if project.total_balance > 0 %>
+                      <% total_balance = total_balance + project.total_balance %>
+                      <span class="alert alert-danger">Total Payment: <%= project.total_balance %></span>
+                    <% end %>
+                    <% total_payment = total_payment + project.total_payment %>
+                    <% total_cost = total_cost + project.total_cost %>
+                    <% total_hours = total_hours + project.total_hours %>
+                  <% end %>
+                </div>
+                </p>
+              </a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="home_widgets" class="row hidden-xs hidden-sm">
+
+      <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-3">
+        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_cost.to_s %>" data-suffix=" $" data-duration="2">
+          <div class="xe-icon">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="xe-label">
+            <strong class="num">$<%= total_cost.to_s %></strong>
+            <span>Overall Billed Revenue</span>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="$('#sprint_hours_message').toggle('slide'); return false;" class="col-sm-3">
+        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_hours.to_s %>" data-suffix=" Hours" data-duration="2">
+          <div class="xe-icon">
+            <i class="far fa-clock"></i>
+          </div>
+          <div class="xe-label">
+            <strong class="num"><%= total_hours.to_s %> Hours</strong>
+            <span>Billed Hours</span>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-3">
+        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_payment.to_s %>" data-suffix=" $" data-duration="2">
+          <div class="xe-icon">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="xe-label">
+            <strong class="num">$<%= total_payment.to_s %></strong>
+            <span>Total Payment</span>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-3">
+        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_balance.to_s %>" data-suffix=" $" data-duration="2">
+          <div class="xe-icon">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="xe-label">
+            <strong class="num">$<%= total_balance.to_s %></strong>
+            <span>Overall Unpaid Balance</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-</div>
+  <hr>
+<% end %>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    List Groups
-  </div>
 
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-sm-12">
-        <h5>List Group with Description</h5>
 
-        <div class="list-group">
-          <a href="#" class="list-group-item active">
-            <h4 class="list-group-item-heading">Domestic confined any but son</h4>
-            <p class="list-group-item-text">Consider speaking me prospect whatever if. Ten nearer rather hunted six
-              parish
-              indeed number. Allowance repulsive sex may contained can set suspected abilities cordially. Do part am he
-              high rest that. So fruit to ready it being views match. </p>
-          </a>
-
-          <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Why painful the sixteen how minuter</h4>
-            <p class="list-group-item-text">Started his hearted any civilly. So me by marianne admitted speaking. Men
-              bred
-              fine call ask. Cease one miles truth day above seven. Suspicion sportsmen provision suffering mrs saw
-              engrossed something. Snug soon he on plan in be dine some. </p>
-          </a>
-
-          <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Barton waited twenty always repair</h4>
-            <p class="list-group-item-text">Talking chamber as shewing an it minutes. Trees fully of blind do. Exquisite
-              favourite at do extensive listening. Improve up musical welcome he. Gay attended vicinity prepared now
-              diverted. Esteems it ye sending reached as. Longer lively her design settle tastes advice mrs off
-              who. </p>
-          </a>
-
+<% unless current_user.invitations.empty? %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Invitations
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="list-group">
+            <% current_user.invitations.each do |invitation| %>
+              <a href="#" class="list-group-item">
+                <h4 class="list-group-item-heading"><%= invitation.project.name %></h4>
+                <p class="list-group-item-text"><%= invitation.project.description %></p>
+              </a>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 
-
-<script>
-    jQuery(document).ready(function ($) {
-        $('a[href="#layout-variants"]').on('click', function (ev) {
-            ev.preventDefault();
-
-            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
-
-            TweenLite.to(win, .3, {
-                top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function () {
-                    $(window).scrollTop(win.top);
-                }
-            });
-        });
-    });
-</script>
-
-<div class="jumbotron">
-  <h2 class="muted">Jewler - A CRM for Programmers</h2>
-
-  <p>
-    Jewler is a CRM developed specifically for Software Developers. Jewler allows the developer to keep coding, while easily invoicing and billing the client, notifying him when development phases are complete while always keeping all stake-holders in-the-loop.
-  </p>
-
-  <br/>
-  <a class="btn btn-primary btn-lg" href="<%= new_user_registration_path %>" role="button">Get Started</a>
-</div>
-
-<h3 id="layout-toggles">
-  Layout Toggles
-  <br/>
-  <small>Links that will automatically collapse or expand side panels, chat or user settings pane.</small>
-</h3>
-<br/>
-
-
-<div class="row">
-
-  <div class="col-md-3 col-xs-4 text-muted">Link</div>
-  <div class="col-md-9 col-xs-8 text-muted">Code</div>
-
-  <div class="vspacer v3"></div>
-
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="sidebar">
-      <i class="fa-bars"></i>
-      <span>Toggle Sidebar</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;sidebar&quot;&gt;Toggle Sidebar&lt;/a&gt;</pre>
-  </div>
-
-  <div class="clearfix"></div>
-  <div class="vspacer v4"></div>
-
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="chat">
-      <i class="fa-comment-o"></i>
-      <span>Toggle Chat</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;chat&quot;&gt;Toggle Chat&lt;/a&gt;</pre>
-  </div>
-
-  <div class="clearfix"></div>
-  <div class="vspacer v4"></div>
-
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="settings-pane">
-      <i class="linecons-user"></i>
-      <span>Toggle Settings Pane</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;settings-pane&quot;&gt;Toggle Settings Pane&lt;/a&gt;</pre>
-  </div>
-
-
-  <div class="clearfix"></div>
-  <div class="vspacer v4"></div>
-
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" data-toggle="settings-pane" data-animate="true">
-      <i class="linecons-cog"></i>
-      <span>Settings Pane /w Animation</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; data-toggle=&quot;settings-pane&quot; data-animate=&quot;true&quot;&gt;Toggle Settings Pane&lt;/a&gt;</pre>
-  </div>
-
-
-  <div class="clearfix"></div>
-  <div class="vspacer v4"></div>
-
-  <div class="col-md-3 col-xs-4">
-    <a href="#" class="btn btn-secondary btn-block btn-icon btn-icon-standalone text-left" rel="go-top">
-      <i class="fa-arrow-up"></i>
-      <span>Go to Top</span>
-    </a>
-  </div>
-  <div class="col-md-9 col-xs-8">
-    <pre>&lt;a href=&quot;#&quot; rel=&quot;go-top&quot;&gt;Go to Top&lt;/a&gt;</pre>
-  </div>
-
-</div>
-
-
-<br/>
-<br/>
-
-<h3 id="layout-variants">
-  Layout Variants
-  <br/>
-  <small>9 different layout types with fixed or static scrolling panels</small>
-</h3>
-
-<div class="panel panel-default panel-headerless">
-
-  <div class="panel-body layout-variants">
-
-    <div class="row">
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-variants.html">
-              <img src="assets/images/layouts/layout-sidebar.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-variants.html">Left Sidebar</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-variants.html" class="">Fixed Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-static-sidebar.html" class="">Static Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-without-submenu-toggle.html" class="">Other Submenus Toggle Off</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-right-sidebar.html">
-              <img src="assets/images/layouts/layout-sidebar-right.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-right-sidebar.html">Right Sidebar</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-right-sidebar.html" class="">Fixed Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-right-sidebar-static.html" class="">Static Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-without-submenu-toggle-right.html" class="">Other Submenus Toggle Off</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-collapsed-sidebar.html">
-              <img src="assets/images/layouts/layout-sidebar-collapsed.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-collapsed-sidebar.html">Collapsed Sidebar</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-collapsed-sidebar.html" class="disabled">
-                <del>Fixed Sidebar</del>
-              </a>
-            </li>
-            <li>
-              <a href="layout-collapsed-sidebar.html" class="">Static Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-chat-open.html" class="">Static Sidebar &amp; Chat Open</a>
-            </li>
-            <li>
-              <a href="layout-sidebar-collapsed-with-userinfo-links.html" class="">Static Sidebar &amp; User Info
-                Links</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="clearfix"></div>
-
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-right-collapsed-sidebar.html">
-              <img src="assets/images/layouts/layout-sidebar-right-collapsed.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-right-collapsed-sidebar.html">Collapsed Right Sidebar</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-right-collapsed-sidebar.html" class="disabled">
-                <del>Fixed Sidebar</del>
-              </a>
-            </li>
-            <li>
-              <a href="layout-right-collapsed-sidebar.html" class="">Static Sidebar</a>
-            </li>
-            <li>
-              <a href="layout-right-collapsed-sidebar-chat-open.html" class="">Static Sidebar &amp; Chat Open</a>
-            </li>
-            <li>
-              <a href="layout-sidebar-collapsed-right-with-userinfo-links.html" class="">Static Sidebar &amp; User Info
-                Links</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-horizontal-menu.html">
-              <img src="assets/images/layouts/layout-horizontal.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-menu.html">Horizontal Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-menu.html" class="">Fixed to Top</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-menu-static.html" class="">Static on Top</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-menu-boxed.html" class="">Boxed Content with Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-menu-click-to-open-subs.html" class="">Click to Open Submenus</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-menu-min.html" class="">Minimal Horizontal Menu</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-horizontal-plus-sidebar.html">
-              <img src="assets/images/layouts/layout-sidebar-horizontal.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-plus-sidebar.html">Sidebar &amp; Horizontal Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-plus-sidebar.html" class="">Fixed Sidebar &amp; Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-sidebar-menu-static.html" class="">Static Sidebar &amp; Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-fixed-sidebar-menu-static.html" class="">Static Sidebar, Fixed Horizontal
-                Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-plus-sidebar-userinfo-links.html" class="">Fixed Sidebar &amp; Horizontal Menu
-                with User Info</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="clearfix"></div>
-
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-horizontal-right-sidebar-menu.html">
-              <img src="assets/images/layouts/layout-horizontal-right-sidebar.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-right-sidebar-menu.html">Right Sidebar &amp; Horizontal Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-right-sidebar-menu.html" class="">Fixed Sidebar &amp; Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-right-sidebar-menu-static.html" class="">Static Sidebar &amp; Horizontal
-                Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-right-fixed-sidebar-menu-static.html" class="">Static Sidebar, Fixed Horizontal
-                Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-plus-right-sidebar-userinfo-links.html" class="">Fixed Sidebar &amp; Horizontal
-                Menu with User Info</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-      <div class="col-sm-4">
-
-        <div class="layout-variant layout-current">
-          <div class="layout-img">
-            <a href="layout-horizontal-sidebar-menu-collapsed.html">
-              <img src="assets/images/layouts/layout-sidebar-collapsed-horizontal.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-sidebar-menu-collapsed.html">Collapsed Sidebar &amp; Horizontal Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-sidebar-menu-collapsed.html" class="layout-mode-current">Static Sidebar &amp;
-                Fixed Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-static-sidebar-menu-collapsed.html" class="">Static Sidebar &amp; Horizontal
-                Menu</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-
-      <div class="col-sm-4">
-
-        <div class="layout-variant">
-          <div class="layout-img">
-            <a href="layout-horizontal-sidebar-menu-collapsed-right.html">
-              <img src="assets/images/layouts/layout-horizontal-right-sidebar-collapsed.png"/>
-            </a>
-          </div>
-          <div class="layout-name">
-            <a href="layout-horizontal-sidebar-menu-collapsed-right.html">Right Collapsed Sidebar &amp; Horizontal
-              Menu</a>
-          </div>
-          <ul class="layout-links">
-            <li>
-              <a href="layout-horizontal-sidebar-menu-collapsed-right.html" class="">Static Sidebar &amp; Fixed
-                Horizontal Menu</a>
-            </li>
-            <li>
-              <a href="layout-horizontal-static-sidebar-menu-collapsed-right.html" class="">Static Sidebar &amp;
-                Horizontal Menu</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
+<% unless current_user.customer_projects.empty? %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Customer Projects
     </div>
-
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="list-group">
+            <% current_user.customer_projects.each do |project| %>
+              <a href="<%= project_path(project) %>" class="list-group-item">
+                <h4 class="list-group-item-heading"><%= project.name %></h4>
+                <p class="list-group-item-text"><%= project.description %></p>
+              </a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+<% end %>
 
-</div>

@@ -11,12 +11,12 @@ if ($("#error_message").is(':visible')) {
 <% if @sprint.valid? %>
 
   $("#invoice_panel_<%= @sprint.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @sprint %>');
-  $("#success_message").show();
+  $("#success_message").show('slide');
   $("#success_message").html('Sprint <%= @sprint.sprint.to_s %> Closed');
 
 <% else %>
 
-  $("#error_message").show()
+  $("#error_message").show('slide')
   $("#error_message").html('Sprint <%= @sprint.sprint.to_s %> Could Not Be Closed');
 
 <% end %>

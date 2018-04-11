@@ -1,0 +1,12 @@
+<%= form_with url: make_payment_path do |f| %>
+
+  <h4>Sprint <%= invoice.sprint.to_s %> Payment</h4>
+  <div style="font-size: 1.2em; margin:10px" class="label label-warning">Balance:
+    $<%= invoice.sprint_cost - invoice.sprint_payments %></div><br>
+  <%= f.hidden_field :invoice_id, :value => invoice.id %>
+
+  <%= f.text_field :amount, :value => 'Payment Amount' %>
+
+  <%= f.submit 'Pay', :class => 'btn-sm btn-success' %>
+<% end %>
+

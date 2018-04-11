@@ -11,12 +11,12 @@ if ($("#error_message").is(':visible')) {
 <% if @task.valid? %>
 
   $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= render 'invoices/invoice_panel', invoice: @invoice %>');
-  $("#success_message").show();
+  $("#success_message").show('slide');
   $("#success_message").html('Task Created Successfully');
 
 <% else %>
 
-  $("#error_message").show()
+  $("#error_message").show('slide')
   $("#error_message").html('Your Task Could Not Be Created');
 
 <% end %>

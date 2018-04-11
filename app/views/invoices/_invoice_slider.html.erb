@@ -43,7 +43,7 @@
         <li class="">
           <a href="#sprint_<%= sprint %>_tab-2" data-toggle="tab" aria-expanded="false">Commits</a>
         </li>
-        <% if @project.is_owner(current_user) %>
+        <% if @project.is_owner?(current_user) %>
           <div class="btn-group">
             <button type="button" class="btn btn-gray dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
               <i class="fa-wrench"></i> <span class="caret"></span>
@@ -141,7 +141,7 @@
       <div class="tab-pane" id="sprint_<%= sprint %>_tab-2">
       </div>
 
-      <% if @project.is_owner(current_user) %>
+      <% if @project.is_owner?(current_user) %>
         <div class="tab-pane" id="sprint_<%= sprint %>_tab-3">
         </div>
       <% end %>

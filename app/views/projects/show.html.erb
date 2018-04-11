@@ -14,17 +14,17 @@
                 <%= render 'projects/project_image' %>
               </div>
               <div class="col-sm-9">
+                <%= render 'projects/widgets' %>
                 <%= render 'projects/sprint_meter' %>
+
+                <div id="home_timeline_container">
+                  <%= render 'projects/timeline', notes: @notes %>
+                </div>
+
               </div>
             </div>
 
           </section>
-
-          <div class="row">
-            <div id="home_timeline_container" class="col-md-12">
-              <%= render 'projects/timeline', notes: @notes %>
-            </div>
-          </div>
 
         </div>
       </div>
@@ -32,10 +32,12 @@
       <div class="tab-pane" id="timeline">
         <div id="timeline_notes">
 
-          <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-single btn-sm">
-            Create Note
-          </a>
-          <hr>
+          <% if @project.is_owner?(current_user) %>
+            <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-single btn-sm">
+              Create Note
+            </a>
+            <hr>
+          <% end %>
 
           <%= render 'projects/note_full_timeline', local_note: @project.notes.order('created_at DESC') %>
         </div>
@@ -46,7 +48,9 @@
       </div>
 
       <div class="tab-pane" id="customers">
-        <%= render 'projects/customers' %>
+        <div id="customers_container">
+          <%= render 'projects/customers', project: @project %>
+        </div>
       </div>
 
       <div class="tab-pane" id="current_sprint">
@@ -62,6 +66,20 @@
       <div class="tab-pane" id="readme">
         <%= @github_readme_parsed.html_safe %>
       </div>
+
+      <div class="tab-pane" id="settings">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Project Settings
+          </div>
+          <div class="panel-body">
+            <% unless @project.is_owner?(current_user) %>
+              <%= link_to '<i class="linecons-trash"></i> Leave Project'.html_safe, remove_customer_inline_path(@project.id, current_user), remote: true %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>

@@ -1,55 +1,84 @@
-<table class="table table-hover members-table middle-align">
-  <thead>
-  <tr>
-    <th></th>
-    <th>Name </th>
-    <th>E-Mail</th>
-    <th>ID</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @project.customers.each do |u| %>
-  <tr>
-    <td class="user-image hidden-xs hidden-sm">
-      <a href="#">
-        <%# TODO: Add user image %>
-        <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
-      </a>
-    </td>
-    <td class="user-name">
-      <a href="#" class="name"><%= u.first_name %> <%= u.last_name %></a>
-      <span><%= u.tagline %></span>
-    </td>
-    <td class="hidden-xs hidden-sm">
-      <span class="email"><%= u.email %></span>
-    </td>
-    <td class="user-id">
-      <%= u.id %>
-    </td>
-    <td class="action-links">
-      <%= link_to '<i class="linecons-trash"></i> Remove Customer'.html_safe,
-                  ProjectCustomer.where(user_id: u.id,
-                                        project_id: @project.id).first,
-                                        method: :delete,
-                                        data: {
-                                            confirm: 'Are you sure you want to remove
-                                            this customer from the project?' } %>
-    </td>
-  </tr>
-  <% end %>
-  </tbody>
-</table>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Project Customers
+  </div>
+  <div class="panel-body">
 
-<div class="row">
-  <div class="col-med-6 col-sm-12">
-    <h1>New Project Customer</h1>
+    <table class="table table-hover members-table middle-align">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>E-Mail</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% project.customers.each do |u| %>
+        <tr>
+          <td class="user-image hidden-xs hidden-sm">
+            <a href="#">
+              <% if u.image.nil? %>
+                <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
+              <% else %>
+                <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
+                <!--<img src="<%#= image_path u.image.url %>" class="img-circle" alt="user-pic"/>-->
+              <% end %>
+            </a>
+          </td>
+          <td class="user-name">
+            <a href="#" class="name"><%= u.first_name %> <%= u.last_name %></a>
+            <span><%= u.tagline %></span>
+          </td>
+          <td class="hidden-xs hidden-sm">
+            <span class="email"><%= u.email %></span>
+          </td>
+          <td class="action-links">
+            <% if project.is_owner?(current_user) %>
+              <%= link_to '<i class="linecons-trash"></i> Remove Customer'.html_safe, remove_customer_inline_path(project.id, u.id), remote: true %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <h2>Invitations <br>
+      <small class="mute">(A JewlerAccount Does Not Exist Yet)</small>
+    </h2>
 
-    <%= render 'project_customers/form', project_customer: @project_customer %>
+    <table class="table table-hover members-table middle-align">
+      <thead>
+      <tr>
+        <th>E-Mail</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% project.invitations.each do |invitation| %>
+        <tr>
+          <td class="user-id">
+            <%= invitation.email %>
+          </td>
+          <td class="action-links">
+            <% if project.is_owner?(current_user) %>
+              <%= link_to '<i class="linecons-trash"></i> Remove Invitation'.html_safe, remove_invitation_inline_path(invitation.id), remote: true %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
 
-    <%= link_to 'Back', project_customers_path %>
+    <div class="row">
+      <div class="col-med-6 col-sm-12">
+        <% if project.is_owner?(current_user) %>
+          <h1>New Project Customer</h1>
+          <%= render 'project_customers/add_project_customer', project: project %>
+        <% end %>
+
+      </div>
+
+    </div>
 
   </div>
-
 </div>
-

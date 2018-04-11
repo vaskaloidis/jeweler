@@ -1,5 +1,8 @@
 <%= form_with model: task, url: update_task_inline_path do |f| %>
   <td>
+    <%= f.check_box :complete %>
+  </td>
+  <td>
     <%= f.text_field :description, style: 'width:100%' %>
   </td>
   <td>
@@ -42,6 +45,7 @@
     <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
                 delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
                 class: 'btn btn-sm btn-success', style: 'padding:10x;color:white;font-size:1.2em;display:inline;' %>
+    <%= link_to 'Cancel', cancel_task_update_path(task.invoice.id), :class => 'btn-sm btn-primary', style: '' %>
     <%= f.hidden_field :invoice_id, :value => task.invoice.id %>
   </td>
 <% end %>

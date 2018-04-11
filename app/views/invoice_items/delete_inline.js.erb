@@ -8,7 +8,7 @@ if ($("#error_message").is(':visible')) {
     $("#error_message").hide('slide');
 }
 
-$("#success_message").show()
+$("#success_message").show('slide')
 $("#success_message").html('Task Deleted');
 
 $('#task_row_<%= @invoice_item.id.to_s %>').hide('slide');

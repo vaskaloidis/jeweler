@@ -27,3 +27,40 @@ i.fas.fa-ban.pull-right {
 .panel-options > div.label {
     margin-right: 5px;
 }
+
+.timeline_title > h2 {
+    display:inline;
+}
+
+.timeline_title > span.alert {
+    margin-right: 5px;
+    padding:2px !important;
+    display: inline !important;
+    font-size: .8em;
+}
+
+.user-profile > .user-title {
+    font-size: 3.0em !important;
+    margin-top: 10px;
+}
+
+.user-profile > .profile-env {
+    margin-bottom:5px !important;
+}
+#payment_nav_button {
+    /*padding:3px;*/
+}
+
+#project_description_home > span.alert {
+    padding:2px;
+    margin: 4px;
+}
+
+#project_totals_home > span.alert {
+    padding:2px;
+    margin: 4px;
+}
+
+#home_widgets {
+    margin-top: 10px;
+}

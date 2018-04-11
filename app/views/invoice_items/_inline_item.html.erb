@@ -1,5 +1,10 @@
 <div id="new_task_inline">
   <tr>
+    <td>
+      <% if @task.complete %>
+        <i class="far fa-check-square"></i>
+      <% end %>
+    </td>
     <td><%= @task.description %></td>
     <td>$<%= @task.rate %></td>
     <td><%= @task.hours %></td>

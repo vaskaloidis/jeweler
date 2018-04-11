@@ -7,19 +7,17 @@
 
     <header class="logo-env">
 
-      <!-- logo -->
       <div class="logo">
-        <a href="#" class="logo-expanded">
-          <img src="<%= image_path 'jewler-logo-full-black-alternate.png' %>" width="200" alt=""/>
+        <a href="<%= root_url %>" class="logo-expanded">
+          <img src="<%= image_path 'jeweler-logo-full-black.png' %>" width="200" alt=""/>
         </a>
-
-        <a href="#" class="logo-collapsed">
-          <img src="<%= image_path 'jewler-logo-mini-small-black.png' %>" width="40" alt=""/>
+        <a href="<%= root_url %>" class="logo-collapsed">
+          <img src="<%= image_path 'jeweler-logo-mini-small-black.png' %>" width="40" alt=""/>
         </a>
       </div>
 
       <!-- This will toggle the mobile menu and will be visible only on mobile devices -->
-      <div class="mobile-menu-toggle visible-xs">
+      <div class="mobile-menu-toggle visible-xs visible-sm">
         <a href="#" data-toggle="user-info-menu">
           <i class="fa-bell-o"></i>
           <span class="badge badge-success">7</span>
@@ -42,8 +40,12 @@
 
     <section class="sidebar-user-info">
       <div class="sidebar-user-info-inner">
-        <a href="#" class="user-profile">
-          <img src="<%= image_path current_user.image.url %>" width="60" height="60" class="img-circle img-corona" alt="user-pic"/>
+        <a href="<%= root_path %>" class="user-profile">
+          <% unless current_user.image.url.nil? %>
+            <img src="<%= image_path current_user.image.url %>" width="60" height="60" class="img-circle img-corona" alt="user-pic"/>
+          <% else %>
+            <img src="<%= image_path 'user-2.png' %>" width="60" height="60" class="img-circle img-corona" alt="user-pic"/>
+          <% end %>
           <span>
               <strong><%= current_user.first_name %> <%= current_user.last_name %></strong>
             <%= current_user.tagline %>

@@ -1,5 +1,8 @@
 <%= form_with url: save_task_inline_path do |f| %>
   <%= '<td>'.html_safe %>
+  <%= f.check_box :complete, :value => 'Complete' %>
+  <%= '</td>'.html_safe %>
+  <%= '<td>'.html_safe %>
     <%= f.text_field :description, :value => 'Description' %>
   <%= '</td>'.html_safe %>
   <%= '<td>'.html_safe %>
@@ -22,7 +25,7 @@
 
   <%= '<td>'.html_safe %>
     <%= f.submit 'Save', :class => 'btn-sm btn-success', style: 'display:inline' %>
-    <%#= link_to 'Cancel', cancel_task_update_path(task.invoice.id), :class => 'btn-sm btn-primary', style: '' %>
+    <%= link_to 'Cancel', cancel_task_update_path(invoice.id), :class => 'btn-sm btn-primary', style: '' %>
     <%= f.hidden_field :invoice_id, :value => invoice.id %>
   <%= '</td>'.html_safe %>
 <% end %>
