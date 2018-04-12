@@ -1,8 +1,40 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    Project Customers
+    Project Users
   </div>
   <div class="panel-body">
+    <h2>Project Owner</h2>
+    <table class="table table-hover members-table middle-align">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>E-Mail</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="user-image hidden-xs hidden-sm">
+          <% if project.owner.image.url.nil? %>
+            <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
+          <% else %>
+            <img src="<%= image_path project.owner.image.url %>" class="img-circle" alt="user-pic"/>
+          <% end %>
+        </td>
+        <td class="user-name">
+          <span class="name"><%= project.owner.first_name %> <%= project.owner.last_name %></span>
+          <span><%= project.owner.tagline %></span>
+        </td>
+        <td class="">
+          <span class="email"><%= project.owner.email %></span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <br>
+
+    <h2>Project Customers</h2>
 
     <table class="table table-hover members-table middle-align">
       <thead>
@@ -17,17 +49,14 @@
       <% project.customers.each do |u| %>
         <tr>
           <td class="user-image hidden-xs hidden-sm">
-            <a href="#">
-              <% if u.image.nil? %>
-                <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
-              <% else %>
-                <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
-                <!--<img src="<%#= image_path u.image.url %>" class="img-circle" alt="user-pic"/>-->
-              <% end %>
-            </a>
+            <% if u.image.url.nil? %>
+              <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
+            <% else %>
+              <img src="<%= image_path u.image.url %>" class="img-circle" alt="user-pic"/>
+            <% end %>
           </td>
           <td class="user-name">
-            <a href="#" class="name"><%= u.first_name %> <%= u.last_name %></a>
+            <span class="name"><%= u.first_name %> <%= u.last_name %></span>
             <span><%= u.tagline %></span>
           </td>
           <td class="hidden-xs hidden-sm">
@@ -42,8 +71,10 @@
       <% end %>
       </tbody>
     </table>
-    <h2>Invitations <br>
-      <small class="mute">(A JewlerAccount Does Not Exist Yet)</small>
+
+    <br>
+
+    <h2>Invitations
     </h2>
 
     <table class="table table-hover members-table middle-align">
@@ -72,7 +103,7 @@
     <div class="row">
       <div class="col-med-6 col-sm-12">
         <% if project.is_owner?(current_user) %>
-          <h1>New Project Customer</h1>
+          <h2>Invite User</h2>
           <%= render 'project_customers/add_project_customer', project: project %>
         <% end %>
 

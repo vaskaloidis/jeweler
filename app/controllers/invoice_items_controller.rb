@@ -27,6 +27,7 @@ class InvoiceItemsController < ApplicationController
     @task.save
     @task.reload
     @invoice = @task.invoice
+    @invoice.reload
 
     respond_to do |format|
       format.js
@@ -39,6 +40,7 @@ class InvoiceItemsController < ApplicationController
     @task.save
     @task.reload
     @invoice = @task.invoice
+    @invoice.reload
 
     logger.debug("Setting Task Un-Complete, ID: " + @task.id.to_s)
 

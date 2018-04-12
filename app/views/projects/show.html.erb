@@ -74,7 +74,7 @@
           </div>
           <div class="panel-body">
             <% unless @project.is_owner?(current_user) %>
-              <%= link_to '<i class="linecons-trash"></i> Leave Project'.html_safe, remove_customer_inline_path(@project.id, current_user), remote: true %>
+              <%= link_to '<i class="linecons-trash"></i> Leave Project'.html_safe, leave_project_path(@project.id, current_user) %>
             <% end %>
           </div>
         </div>

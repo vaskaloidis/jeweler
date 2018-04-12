@@ -7,12 +7,12 @@ end
 ruby '2.5.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-# Jewler: gem 'rails', '~> 5.2.0.rc1'
+# Jeweler: gem 'rails', '~> 5.2.0.rc1'
 # gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # gem 'activestorage', github: 'rails/activestorage'
 
-
+gem 'platform-api'
 gem 'stripe'
 gem 'pg'
 gem 'puma', '~> 3.11'

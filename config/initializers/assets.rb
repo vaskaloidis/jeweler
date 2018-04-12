@@ -52,8 +52,8 @@ Rails.application.config.assets.precompile += %w( xenon-custom.js );
 
 Rails.application.config.assets.precompile += %w( home.css )
 
-# Rails.application.config.assets.precompile += %w( jewler-logo-full-black.png );
-# Rails.application.config.assets.precompile += %w( jewler-logo-mini-small-black.png );
+# Rails.application.config.assets.precompile += %w( jeweler-logo-full-black.png );
+# Rails.application.config.assets.precompile += %w( jeweler-logo-mini-small-black.png );
 
 Rails.application.config.assets.precompile += %w( fontawesome-all.min.css );
 Rails.application.config.assets.precompile += %w( home/bootstrap.css )

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180409150825) do
+ActiveRecord::Schema.define(version: 20180412051700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 20180409150825) do
     t.bigint "invoice_item_id"
     t.integer "sprint_total"
     t.integer "sprint_current"
+    t.string "heroku_token"
     t.index ["github_url"], name: "index_projects_on_github_url", unique: true
     t.index ["invoice_item_id"], name: "index_projects_on_invoice_item_id"
     t.index ["user_id"], name: "index_projects_on_user_id"

@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
 
-  resources :invitations
   # Ajax
+
+  get '/leave_project/:project_id/:user_id', to: 'project_customers#leave_project', as: 'leave_project'
+
+  get '/accept_invitation/:invitation_id', to: 'invitations#accept_invitation', as: 'accept_invitation'
+  get '/decline_invitation/:invitation_id', to: 'invitations#decline_invitation', as: 'decline_invitation'
+
   match '/create_chat_message', to: 'discussions#create_chat_message_inline', via: [:post], as: 'create_chat_message_inline'
 
   get '/open_payment/:project_id', to: 'invoices#open_payment', as: 'open_payment'
@@ -43,6 +48,8 @@ Rails.application.routes.draw do
   get '/oath', to: 'webhook#save_oath', as: 'oath_save'
   post '/hook', to: 'webhook#hook', as: 'webhook_execute'
 
+  # Scaffolds
+  resources :invitations
   resources :payments
   resources :invoice_items
   resources :invoices
@@ -57,12 +64,13 @@ Rails.application.routes.draw do
     end
   end
 
+  # Devise
   devise_for :users
 
+  # Home Pages
   unauthenticated do
     root to: 'main#home'
   end
-
   authenticated do
     root :to => 'main#authenticated_home'
   end

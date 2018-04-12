@@ -3,11 +3,35 @@ class InvitationsController < ApplicationController
 
   def accept_invitation
     invitation = Invitation.find(params[:invitation_id])
-    if invitation.accept.invalid?
+
+    @project = invitation.project
+    @user = User.where(email: invitation.email).first
+
+    pc = ProjectCustomer.new
+    pc.project = @project
+    pc.user = @user
+    pc.save
+
+    if pc.valid?
+      invitation.destroy
+    else
       logger.error("Error accepting invitation")
     end
 
-    redirect_to invitation, notice: 'Invitation was successfully created.'
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: 'You have joined the project ' + @project.name }
+    end
+  end
+
+
+  def decline_invitation
+    invitation = Invitation.find(params[:invitation_id])
+
+    invitation.destroy
+
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: 'You have declined the project invitation.' }
+    end
   end
 
   def remove_invitation_inline

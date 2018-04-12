@@ -111,10 +111,17 @@
         <div class="col-sm-12">
           <div class="list-group">
             <% current_user.invitations.each do |invitation| %>
-              <a href="#" class="list-group-item">
+              <div class="list-group-item">
                 <h4 class="list-group-item-heading"><%= invitation.project.name %></h4>
-                <p class="list-group-item-text"><%= invitation.project.description %></p>
-              </a>
+                <p class="list-group-item-text">
+                <p><%= invitation.project.description %></p>
+
+                  <p>
+                    <%= link_to 'Accept', accept_invitation_path(invitation.id), class: 'btn btn-success' %>
+                    <%= link_to 'Decline', decline_invitation_path(invitation.id), class: 'btn btn-danger' %>
+                  </p>
+                </p>
+              </div>
             <% end %>
           </div>
         </div>
@@ -135,7 +142,9 @@
             <% current_user.customer_projects.each do |project| %>
               <a href="<%= project_path(project) %>" class="list-group-item">
                 <h4 class="list-group-item-heading"><%= project.name %></h4>
-                <p class="list-group-item-text"><%= project.description %></p>
+                <p class="list-group-item-text">
+                  <p><%= project.description %></p>
+                </p>
               </a>
             <% end %>
           </div>
