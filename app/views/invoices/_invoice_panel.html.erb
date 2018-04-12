@@ -8,6 +8,9 @@
 
 %>
 <div class="panel panel-default">
+  <% if invoice.sprint_complete? %>
+    <div class="alert alert-success">Sprint Complete<i class="fas fa-fire pull-right"></i></div>
+  <% end %>
   <div class="panel-heading">
     <h4 class="panel-title">
       Sprint <%= invoice.sprint.to_s %>
@@ -20,7 +23,7 @@
           <div class="label label-success">
             <%= link_to 'Set Current Sprint',
                         set_current_sprint_path(invoice.id), remote: true,
-                        class: '', style: 'display:inline;font-size:1em; padding:5px; padding-right:10px;' %>
+                        class: '', style: 'display:inline;font-size:1em; padding:5px; padding-right:5px;' %>
           </div>
         <% end %>
 
@@ -69,18 +72,13 @@
       <div class="label label-success">Projected Cost: $<%= invoice.sprint_planned_cost %></div>
       <div class="label label-default">Estimate: <%= invoice.sprint_planned_hours %> hrs</div>
       <% unless invoice.only_planned? %>
-        <div class="label label-default">Reported Hours: <%= invoice.sprint_hours %> hrs</div>
+        <div class="label label-default">Reported: <%= invoice.sprint_hours %> hrs</div>
         <div class="label label-info">Cost: $<%= invoice.sprint_cost %></div>
       <% end %>
 
     </div>
   </div>
   <div class="panel-body">
-    <% if invoice.only_planned? %>
-      <h5><strong>Estimated Cost: </strong><%= invoice.description %></h5>
-    <% else %>
-      <h5><strong>Tasks: </strong><%= invoice.description %></h5>
-    <% end %>
 
     <!-- visible-xs visible-sm -->
     <div style="display:none" class="text-center">
@@ -112,7 +110,7 @@
       >
       <% end %>
 
-      <% invoice.invoice_items.each do |task| %>
+      <% invoice.invoice_items.sort_by(&:created_at).each do |task| %>
       <tr id="task_row_<%= task.id.to_s %>" onclick="$('#task_<%= task.id.to_s %>').toggle('slide'); return false;">
         <td width="10">
           <% if invoice.project.current_task == task %>
@@ -162,56 +160,57 @@
       </tbody>
     </table>
 
-    <table class="hidden-xs table table-condensed">
-      <tbody>
-      <% invoice.payments.each do |payment| %>
-        <tr>
-          <td><%= payment.amount %></td>
-          <td><%= payment.payment_type %></td>
-          <td><%= payment.user.first_name %> <%= payment.user.last_name %></td>
-          <td><%= payment.created_at.strftime("%d %b. %Y") %> </td>
-        </tr>
-      <% end %>
-      <tr>
-        <td></td>
-        <td></td>
-        <td><strong>Payment Total:</strong></td>
-        <td><%= invoice.sprint_payments %></td>
-      </tr>
-      </tbody>
-    </table>
-    <div class="visible-xs text-center">
-      <% invoice.payments.each do |payment| %>
-        <p>
-          <% unless payment.user.first_name.nil? or payment.user.last_name.nil? %>
-            <%= payment.user.first_name %> <%= payment.user.last_name %> Paid
-          <% end %>
-
-          <%= payment.amount %>
-
-          <% unless payment.payment_type.nil? %>
-            <%= payment.payment_type %>
-          <% end %>
-
-          <%= payment.created_at.strftime("%d %b. %Y") %>
-        </p>
-      <% end %>
-      <hr>
-      <strong>Total: </strong>$<%= invoice.sprint_payments %>
-    </div>
-
-    <div style="font-size:1.3em" class="pull-right">
-      <% if invoice.sprint_cost > invoice.sprint_payments %>
-        <div class="label label-danger">Balance: $<%= invoice.sprint_cost - invoice.sprint_payments %></div>
-
-        <% if invoice.sprint_cost > invoice.sprint_payments %>
-          <div class="label label-warning">
-            <%= link_to 'Make Payment', remote: true %>
-          </div>
-        <% else %>
-          <div class="label label-success"><%= link_to 'Make Payment', open_payment_path(invoice.id), remote: true %></div>
+    <% unless invoice.payments.empty? %>
+      <table class="hidden-xs table table-condensed">
+        <tbody>
+        <% invoice.payments.each do |payment| %>
+          <tr>
+            <td><%= payment.amount %></td>
+            <td><%= payment.payment_type %></td>
+            <td><%= payment.user.first_name %> <%= payment.user.last_name %></td>
+            <td><%= payment.created_at.strftime("%d %b. %Y") %> </td>
+          </tr>
         <% end %>
-      <% end %>
-    </div>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><strong>Payment Total:</strong></td>
+          <td><%= invoice.sprint_payments %></td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="visible-xs text-center">
+        <% invoice.payments.each do |payment| %>
+          <p>
+            <% unless payment.user.first_name.nil? or payment.user.last_name.nil? %>
+              <%= payment.user.first_name %> <%= payment.user.last_name %> Paid
+            <% end %>
+
+            <%= payment.amount %>
+
+            <% unless payment.payment_type.nil? %>
+              <%= payment.payment_type %>
+            <% end %>
+
+            <%= payment.created_at.strftime("%d %b. %Y") %>
+          </p>
+        <% end %>
+        <hr>
+        <strong>Total: </strong>$<%= invoice.sprint_payments %>
+      </div>
+    <% end %>
+
+    <% if invoice.project.is_customer(current_user) %>
+      <div>
+        <%= link_to 'Make Payment', open_sprint_payment_path(invoice.id), class: 'btn btn-primary btn-sm', remote: true %>
+      </div>
+    <% end %>
+
+    <% if invoice.sprint_cost > invoice.sprint_payments %>
+      <div style="font-size:1.3em" class="pull-right">
+        <div class="label label-danger">Balance: $<%= invoice.sprint_cost - invoice.sprint_payments %></div>
+      </div>
+    <% end %>
   </div>
 </div>

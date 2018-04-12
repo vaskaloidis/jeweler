@@ -10,10 +10,10 @@ if ($("#error_message").is(':visible')) {
 
 <% if @task.valid? %>
 
-$("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= render 'invoices/invoice_panel', invoice: @invoice %>');
+$("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice %>');
   $("#success_message").show('slide');
   $("#success_message").html('Task Un-Completed');
 <% else %>
-  $("#error_message").show('slide')
+  $("#error_message").show('slide');
   $("#error_message").html('Your Task Could Not Be Completed');
 <% end %>

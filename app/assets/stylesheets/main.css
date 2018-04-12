@@ -1,50 +1,40 @@
+/* JewelerC - Main.CSS */
+
 /*
  *= require font-awesome
  */
 
-
 #timeline_alert {
     padding:1px;
 }
-
 #notifications_container > .fas {
     color: white;
 }
-
 #notifications_container > .alert {
     color: white;
 }
-
 i.fas.fa-ban.pull-right {
     color: white;
     margin: 2px;
 }
-
 .label > a {
     color: white !important;
 }
-
 .panel-options > div.label {
     margin-right: 5px;
 }
-
 .timeline_title > h2 {
     display:inline;
 }
-
 .timeline_title > span.alert {
     margin-right: 5px;
     padding:2px !important;
     display: inline !important;
     font-size: .8em;
 }
-
-.user-profile > .user-title {
+#language_icon {
     font-size: 3.0em !important;
     margin-top: 10px;
-}
-
-.user-profile > .profile-env {
     margin-bottom:5px !important;
 }
 #payment_nav_button {

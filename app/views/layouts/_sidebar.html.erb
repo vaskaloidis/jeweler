@@ -17,7 +17,7 @@
       </div>
 
       <!-- This will toggle the mobile menu and will be visible only on mobile devices -->
-      <div class="mobile-menu-toggle visible-xs visible-sm">
+      <div class="mobile-menu-toggle visible-xs visible-sm visible-md">
         <a href="#" data-toggle="user-info-menu">
           <i class="fa-bell-o"></i>
           <span class="badge badge-success">7</span>
@@ -89,18 +89,6 @@
               </a>
             </li>
             <li>
-              <a href="#current_sprint" data-toggle="tab">
-                <i class="fas fa-fighter-jet"></i>
-                <span class="title">Current Sprint</span>
-              </a>
-            </li>
-            <li>
-              <a href="#timeline" data-toggle="tab">
-                <i class="fas fa-sticky-note"></i>
-                <span class="title">Notes</span>
-              </a>
-            </li>
-            <li>
               <a href="#invoices" data-toggle="tab">
                 <i class="fas fa-paper-plane"></i>
                 <span class="title">Sprints & Invoices</span>
@@ -110,6 +98,22 @@
               <a href="#customers" data-toggle="tab">
                 <i class="fas fa-user"></i>
                 <span class="title">Customers</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">
+                <i class="fas fa-money-bill-alt"></i>
+                Payments
+                <% payment_requests = @project.payment_requests %>
+                <% unless payment_requests.empty? %>
+                  <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
+                <% end %>
+              </a>
+            </li>
+            <li>
+              <a href="#settings" data-toggle="tab">
+                <i class="fas fa-cogs"></i>
+                <span class="title">Settings</span>
               </a>
             </li>
           </ul>

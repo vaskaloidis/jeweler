@@ -3,45 +3,43 @@
     <span id="task_<%= task.id.to_s %>" style="display:none;font-size:.8em; padding-right:20px;">
                 <%#= '<span id="task_' + task.id.to_s + '" style="display:none;font-size:.8em; padding-right:20px;">'.html_safe %>
 
+      <% if task.complete %>
+        <%= link_to 'Incomplete',
+                    uncomplete_task_path(task.id), remote: true,
+                    class: 'btn btn-sm btn-success', style: 'display:inline;font-size:1em; padding:5px;' %>
+      <% else %>
+        <%= link_to 'Complete',
+                    complete_task_path(task.id), remote: true,
+                    class: 'btn btn-sm btn-success', style: 'display:inline;font-size:1em; padding:5px;' %>
+      <% end %>
       <%= link_to '<i class="far fa-edit"></i>'.html_safe,
                   edit_task_inline_path(task.id), remote: true,
                   class: 'btn btn-sm btn-default', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
-
-      <% if task.complete %>
-    <%= link_to '<i class="fas fa-undo-alt"></i>'.html_safe,
-                uncomplete_task_path(task.id), remote: true,
-                class: 'btn btn-sm btn-default', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
-  <% else %>
-    <%= link_to '<i class="far fa-check-square"></i>'.html_safe,
-                complete_task_path(task.id), remote: true,
-                class: 'btn btn-sm btn-default', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
-  <% end %>
-
       <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
                   delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
-                  class: 'btn btn-sm btn-default', style: 'padding:10px;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
+                  class: 'btn btn-sm btn-default', style: 'color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
     </span>
   <% end %>
 <% else %>
   <% if task.invoice.project.is_owner?(user) %>
 
     <span id="task_<%= task.id.to_s %>" style="display:none;font-size:.8em; padding-right:20px;">
-                <%= link_to 'Set Current Tasks',
-                            set_current_task_path(task.id), remote: true,
-                            class: 'btn btn-sm btn-success', style: 'display:inline;font-size:1em; padding:5px; padding-right:10px;' %>
+        <%= link_to 'Current Task',
+                    set_current_task_path(task.id), remote: true,
+                    class: 'btn btn-sm btn-success', style: 'display:inline;font-size:1em; padding:5px; padding-right:10px;' %>
       <% if task.complete %>
-                  <%= link_to '<i class="fas fa-undo-alt"></i>'.html_safe,
-                              uncomplete_task_path(task.id), remote: true,
-                              class: 'btn btn-sm btn-default', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
-                <% else %>
-                  <%= link_to '<i class="far fa-check-square"></i>'.html_safe,
-                              complete_task_path(task.id), remote: true,
-                              class: 'btn btn-sm btn-default', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
-                <% end %>
+        <%= link_to 'Incomplete',
+                    uncomplete_task_path(task.id), remote: true,
+                    class: 'btn btn-sm btn-success', style: 'display:inline;font-size:1em; padding:5px; ' %>
+      <% else %>
+        <%= link_to 'Complete',
+                    complete_task_path(task.id), remote: true,
+                    class: 'btn btn-sm btn-success', style: 'display:inline;font-size:1em; padding:5px;' %>
+      <% end %>
 
       <%= link_to '<i class="far fa-edit"></i>'.html_safe,
                   edit_task_inline_path(task.id), remote: true,
-                  class: 'btn btn-sm btn-default', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
+                  class: 'btn btn-sm btn-default', style: 'color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
 
       <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
                   delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,

@@ -11,6 +11,18 @@ class Invoice < ApplicationRecord
 
   validates :sprint, presence: true
 
+  def sprint_complete?
+    if self.invoice_items.empty?
+      return false
+    end
+    self.invoice_items.each do |invoice|
+      if !invoice.complete?
+        return false
+      end
+    end
+    return true
+  end
+
   def sprint_payments
     total_payments = 0
     self.payments.each do |p|

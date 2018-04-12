@@ -27,12 +27,23 @@ class InvoicesController < ApplicationController
   def set_current_task
     @task = InvoiceItem.find(params[:invoice_item_id])
     @invoice = @task.invoice
-
-    logger.debug("Setting Task " + @task.id.to_s + " for Invoice " + @invoice.id.to_s)
-
     @project = @invoice.project
+    @old_task = @project.current_task
+
+    unless @old_task.nil?
+      unless @old_task.complete
+        @old_task.complete = true
+        @old_task.save
+      end
+    end
+
     @project.current_task = @task
     @project.save
+
+    if @task.complete? != false
+      @task.complete = false
+      @task.save
+    end
 
     @project.reload
     @task.reload
@@ -45,6 +56,9 @@ class InvoicesController < ApplicationController
     end
 
     @current_sprint = @project.sprint_current
+
+    logger.debug("Setting Task " + @task.id.to_s + " for Invoice " + @invoice.id.to_s)
+
     respond_to do |format|
       format.js
     end

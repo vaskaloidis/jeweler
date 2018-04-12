@@ -6,19 +6,26 @@ class InvoiceItemsController < ApplicationController
 
     logger.debug("Setting Task Complete, ID: " + @task.id.to_s)
 
+    project = @task.invoice.project
+
     if @task.is_current?
+      project.current_task = nil
+      count = 1
       next_task = false
-      @task.invoice.invoice_items.each do |t|
-        if next_task
-          if t.complete == false
-            project = @task.invoice.project
-            project.current_task = t
-            project.save
-            break
+      until !project.current_task.nil? or (count >= @task.invoice.invoice_items.count)
+        @task.invoice.invoice_items.sort_by(&:created_at).each do |t|
+          if next_task
+            if t.complete == false
+              project.current_task = t
+              project.save
+              break
+            end
           end
-        end
-        if @task == t
-          next_task = true
+          if @task == t
+            next_task = true
+            count = 1
+          end
+          count = count + 1
         end
       end
     end
@@ -26,8 +33,9 @@ class InvoiceItemsController < ApplicationController
     @task.complete = true
     @task.save
     @task.reload
+    @task.invoice.reload
     @invoice = @task.invoice
-    @invoice.reload
+
 
     respond_to do |format|
       format.js
@@ -39,10 +47,9 @@ class InvoiceItemsController < ApplicationController
     @task.complete = false
     @task.save
     @task.reload
+    @task.invoice.reload
     @invoice = @task.invoice
     @invoice.reload
-
-    logger.debug("Setting Task Un-Complete, ID: " + @task.id.to_s)
 
     respond_to do |format|
       format.js

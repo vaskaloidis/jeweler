@@ -40,8 +40,13 @@ class InvoiceItem < ApplicationRecord
   end
 
   def is_current?
-    if self.invoice.project.current_task == self
-      return true
+    task = self.invoice.project.current_task
+    unless task.nil?
+      if task == self
+        return true
+      else
+        return false
+      end
     else
       return false
     end
