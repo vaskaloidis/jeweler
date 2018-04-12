@@ -1,5 +1,6 @@
 {
   "name": "jewlerCRM",
   "private": true,
-  "dependencies": {}
+  "dependencies": {},
+  "engines" : { "node": "8.9.4" }
 }
