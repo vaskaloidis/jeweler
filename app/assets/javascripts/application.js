@@ -14,7 +14,7 @@
 // require jquery
 
 //= require rails-ujs
-//= require activestorage
+//  require activestorage
 
 // https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js
 //= require bootstrap.min.js
