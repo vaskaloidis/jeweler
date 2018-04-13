@@ -135,7 +135,6 @@
       </tr>
       <% end %>
 
-      <tr style="display:none" id="invoice_items_<%= invoice.id.to_s %>_hidden_row"></tr>
       <tr>
         <th></th>
         <th id="create_task_container_invoice_<%= invoice.id.to_s %>">
@@ -159,6 +158,7 @@
       </tr>
       </tbody>
     </table>
+    <div style="display:none" id="invoice_items_<%= invoice.id.to_s %>_hidden_row"></div>
 
     <% unless invoice.payments.empty? %>
       <table class="hidden-xs table table-condensed">

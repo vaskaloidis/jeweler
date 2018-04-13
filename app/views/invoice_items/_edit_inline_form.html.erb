@@ -1,52 +1,61 @@
-<%= form_with model: task, url: update_task_inline_path do |f| %>
-  <td>
+<%= form_with model: task, url: update_task_inline_path, class: 'form-inline', remote: true do |f| %>
+  <div class="form-group">
+    <%= f.submit 'Save', :class => 'btn-sm btn-success', style: 'display:inline' %>
+
     <%= f.check_box :complete %>
-  </td>
-  <td>
+  </div>
+
+  <div class="form-group">
     <%= f.text_field :description, style: 'width:100%' %>
-  </td>
-  <td>
+  </div>
+
+  <div class="form-group">
     <%= f.text_field :rate %>
-  </td>
+  </div>
 
   <% if task.invoice.only_planned? %>
-    <td>
+    <div class="form-group">
       <% if task.planned_hours.nil? %>
         <%= f.text_field :planned_hours, :value => 'Estimated Hours' %>
       <% else %>
         <%= f.text_field :planned_hours %>
+
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <% if task.hours.nil? %>
+        <%= f.text_field :hours, :value => 'Reported Hours' %>
+      <% else %>
+        <%= f.text_field :hours %>
+      <% end %>
+    </div>
+
+  <% else %>
+    <div class="form-group">
+      <% if task.planned_hours.nil? %>
+        <%= f.text_field :planned_hours, :value => 'Estimated Hours' %>
+      <% else %>
+        <%= f.text_field :planned_hours %>
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <% if task.hours.nil? %>
+        <%= f.text_field :hours, :value => 'Reported Hours' %>
+      <% else %>
+        <%= f.text_field :hours %>
       <% end %>
 
-      <% if task.hours.nil? %>
-        <%= f.text_field :hours, :value => 'Reported Hours' %>
-      <% else %>
-        <%= f.text_field :hours %>
-      <% end %>
-    </td>
-  <% else %>
-    <td>
-      <% if task.planned_hours.nil? %>
-        <%= f.text_field :planned_hours, :value => 'Estimated Hours' %>
-      <% else %>
-        <%= f.text_field :planned_hours %>
-      <% end %>
-    </td>
-    <td>
-      <% if task.hours.nil? %>
-        <%= f.text_field :hours, :value => 'Reported Hours' %>
-      <% else %>
-        <%= f.text_field :hours %>
-      <% end %>
-    </td>
+      <%= f.hidden_field :invoice_id, :value => task.invoice.id %>
+    </div>
   <% end %>
 
-  <td>
-    <%= f.submit 'Save', :class => 'btn-sm btn-success', style: 'display:inline' %>
-    <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+
+
+  <%#= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
                 delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
                 class: 'btn btn-sm btn-success', style: 'padding:10x;color:white;font-size:1.2em;display:inline;' %>
-    <%= link_to 'Cancel', cancel_task_update_path(task.invoice.id), :class => 'btn-sm btn-primary', style: '' %>
-    <%= f.hidden_field :invoice_id, :value => task.invoice.id %>
-  </td>
+  <%#= link_to 'Cancel', cancel_task_update_path(task.invoice.id), :class => 'btn-sm btn-primary', style: '' %>
 <% end %>
 

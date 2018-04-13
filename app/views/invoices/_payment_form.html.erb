@@ -1,24 +1,26 @@
 <%= form_with url: make_payment_path do |f| %>
-
-  <h4>Project Payment</h4>
-
   <p>
-    <div style="font-size: 1.2em; margin:10px" class="label label-warning">Project Overall Balance:
-      $<%= (project.total_cost - project.total_payment).to_s %></div><br>
+    <div style="font-size: 1.2em; margin:10px" class="label label-success">
+      Total Project Balance:
+      $<%= (project.total_cost - project.total_payment).to_s %>
+    </div>
+  <br>
+
     <%= f.hidden_field :project_id, :value => project.id %>
   </p>
 
   <div class="form-field">
     <%= f.label :invoice_id, "Sprint" %>
-    <%= f.select(:invoice_id, project.invoices.collect {|invoice| [invoice.sprint.to_s, invoice.id]}) %>
+    <%= f.select(:invoice_id, project.invoices.order('sprint::integer DESC').collect {|invoice| [invoice.sprint.to_s, invoice.id]}, class: 'form-control') %>
   </div>
 
   <div class="form-field">
     <%= f.label :amount, "Payment Amount" %>
-    <%= f.text_field :amount, :value => 'Payment Amount' %>
+    <%= f.text_field :amount, :value => 'Payment Amount', class: 'form-control' %>
   </div>
 
   <div class="form-field">
+    <%= hidden_field :user_id, current_user.id %>
     <%= f.submit 'Pay', :class => 'btn-sm btn-success' %>
   </div>
 <% end %>

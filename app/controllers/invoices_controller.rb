@@ -19,6 +19,11 @@ class InvoicesController < ApplicationController
 
   def make_payment
 
+    payment = Payment.new
+    payment.amount = params[:amount]
+    payment.invoice = params[:invoice_id].to_d
+    payment.user = params[:user_id]
+
     respond_to do |format|
       format.js
     end

@@ -13,13 +13,11 @@
         <div class="user-info">
 
           <div class="user-image">
-            <a href="<%= root_path %>">
               <% if @project.owner.image.url.nil? %>
                 <img src="<%= image_path 'user-2.png' %>" class="img-responsive img-circle"/>
               <% else %>
                 <img src="<%= image_path @project.owner.image.url %>" class="img-responsive img-circle"/>
               <% end %>
-            </a>
           </div>
 
           <div class="user-details">
@@ -28,7 +26,6 @@
               <a href="<%= root_url %>"><%= @project.owner.first_name %>
                 <% @project.owner.last_name %></a>
 
-              <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
               <span class="user-status is-online"></span>
             </h3>
 
@@ -42,6 +39,9 @@
 
           </div>
 
+        </div>
+        <div class="row">
+          <%= render 'invoices/payment_form', project: @project %>
         </div>
 
       </div>

@@ -1,32 +1,34 @@
-<%= form_with url: save_task_inline_path do |f| %>
-  <%= '<td>'.html_safe %>
-  <%= f.check_box :complete, :value => 'Complete' %>
-  <%= '</td>'.html_safe %>
-  <%= '<td>'.html_safe %>
-    <%= f.text_field :description, :value => 'Description' %>
-  <%= '</td>'.html_safe %>
-  <%= '<td>'.html_safe %>
-    <%= f.text_field :rate, :value => 'Rate' %>
-  <%= '</td>'.html_safe %>
+<%= form_with url: save_task_inline_path, class: 'form-inline' do |f| %>
+  <div class="form-group">
+    <%= f.check_box :complete, :value => 'Complete', class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.text_field :description, :value => 'Description', class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.text_field :rate, :value => 'Rate', class: 'form-control' %>
+  </div>
 
   <% if invoice.only_planned? %>
-    <%= '<td>'.html_safe %>
-      <%= f.text_field :planned_hours, :value => 'Estimated Hours' %>
-      <%= f.text_field :hours, :value => 'Hours' %>
-    <%= '</td>'.html_safe %>
+    <div class="form-group">
+      <%= f.text_field :planned_hours, :value => 'Estimated Hours', class: 'form-control' %>
+      <%= f.text_field :hours, :value => 'Hours', class: 'form-control' %>
+    </div>
   <% else %>
-    <%= '<td>'.html_safe %>
-      <%= f.text_field :planned_hours, :value => 'Estimated Hours' %>
-    <%= '</td>'.html_safe %>
-    <%= '<td>'.html_safe %>
-      <%= f.text_field :hours, :value => 'Actual Hours Hours' %>
-    <%= '</td>'.html_safe %>
+    <div class="form-group">
+      <%= f.text_field :planned_hours, :value => 'Estimated Hours', class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.text_field :hours, :value => 'Actual Hours Hours', class: 'form-control' %>
+    </div>
   <% end %>
 
-  <%= '<td>'.html_safe %>
-    <%= f.submit 'Save', :class => 'btn-sm btn-success', style: 'display:inline' %>
-    <%= link_to 'Cancel', cancel_task_update_path(invoice.id), :class => 'btn-sm btn-primary', style: '' %>
+  <div class="form-group pull-right">
+    <%= f.submit 'Save', :class => 'btn btn-sm btn-success' %>
+    <%= link_to 'Cancel', cancel_task_update_path(invoice.id), :class => 'btn btn-sm btn-primary', remote: true %>
     <%= f.hidden_field :invoice_id, :value => invoice.id %>
-  <%= '</td>'.html_safe %>
+  </div>
 <% end %>
 
