@@ -1,5 +1,5 @@
 class InvoicesController < ApplicationController
-  before_action :set_invoice, only: [:show, :edit, :update, :destroy]
+  before_action :set_objects, only: [:show, :edit, :update, :destroy]
 
   def open_sprint_payment
     @invoice = Invoice.find(params[:invoice_id])
@@ -19,10 +19,25 @@ class InvoicesController < ApplicationController
 
   def make_payment
 
-    payment = Payment.new
-    payment.amount = params[:amount]
-    payment.invoice = params[:invoice_id].to_d
-    payment.user = params[:user_id]
+    @payment = Payment.new
+    @payment.amount = params[:amount]
+    @payment.invoice = Invoice.find(params[:invoice_id])
+    @payment.user = User.find(params[:user_id])
+    @payment.save
+
+    @user = current_user
+
+    if @payment.valid?
+      if @payment.invoice.payment_due?
+        @payment.invoice.payment_due = false
+        @payment.invoice.save
+        @payment.invoice.reload
+      end
+    end
+
+    if @payment.invalid?
+      logger.error("Payment Error User ID: " + @payment.user.id.to_s + " Project ID: " + @payment.invoice.project.id.to_s + " Sprint " + @payment.invoice.sprint.to_s)
+    end
 
     respond_to do |format|
       format.js
@@ -135,16 +150,13 @@ class InvoicesController < ApplicationController
   # GET /invoices
   # GET /invoices.json
   def index
-    @invoices = Invoice.all
+    @project = Project.find(params[:project_id])
   end
 
   # GET /invoices/1
   # GET /invoices/1.json
   def show
     @invoice = Invoice.find(params[:id])
-    respond_to do |format|
-      format.js
-    end
   end
 
   def generate_invoice
@@ -208,8 +220,9 @@ class InvoicesController < ApplicationController
 
   private
   # Use callbacks to share common setup or constraints between actions.
-  def set_invoice
+  def set_objects
     @invoice = Invoice.find(params[:id])
+    @project = @invoice.project
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

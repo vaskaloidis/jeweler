@@ -1,0 +1,51 @@
+<div id="home_widgets" class="rowm">
+
+  <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-12 col-lg-3">
+    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_cost.to_s %>" data-suffix=" $" data-duration="2">
+      <div class="xe-icon">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">$<%= total_cost.to_s %></strong>
+        <span>Overall Billed Revenue</span>
+      </div>
+    </div>
+  </div>
+
+  <div onclick="$('#sprint_hours_message').toggle('slide'); return false;" class="col-sm-12 col-lg-3">
+    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_hours.to_s %>" data-suffix=" Hours" data-duration="2">
+      <div class="xe-icon">
+        <i class="far fa-clock"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num"><%= total_hours.to_s %> Hours</strong>
+        <span>Billed Hours</span>
+      </div>
+    </div>
+  </div>
+
+  <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-12 col-lg-3">
+    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_payment.to_s %>" data-suffix=" $" data-duration="2">
+      <div class="xe-icon">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">$<%= total_payment.to_s %></strong>
+        <span>Total Payment</span>
+      </div>
+    </div>
+  </div>
+
+  <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-12 col-lg-3">
+    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_balance.to_s %>" data-suffix=" $" data-duration="2">
+      <div class="xe-icon">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">$<%= total_balance.to_s %></strong>
+        <span>Overall Unpaid Balance</span>
+      </div>
+    </div>
+  </div>
+
+</div>

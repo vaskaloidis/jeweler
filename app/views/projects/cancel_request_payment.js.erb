@@ -8,7 +8,9 @@ if ($("#error_message").is(':visible')) {
     $("#error_message").hide('slide');
 }
 
-$("#request_payment_cancel_button_sprint_<%= @invoice.sprint.to_s %>").hide('slide')
+$("#request_payment_cancel_button_sprint_<%= @invoice.sprint.to_s %>").hide('slide');
 $('#request_payment_cencelled_sprint_<%= @invoice.sprint.to_s %>').show('slide');
 
-$("#request_payment_notification_sprint_<%= @invoice.sprint.to_s %>").hide('slide')
+$("#request_payment_notification_sprint_<%= @invoice.sprint.to_s %>").hide('slide');
+
+$("#settings_container").html('<%= j render 'layouts/settings_pane', project: @invoice.project, user: @user %>');

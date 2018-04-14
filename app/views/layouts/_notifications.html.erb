@@ -23,7 +23,7 @@
   <% unless @project.payment_requests.empty? %>
     <% @project.payment_requests.each do |invoice| %>
       <div class="alert alert-danger">
-        <strong>Payment Requested For Sprint <%= invoice.sprint.to_s %>.</strong> Click here to pay your dev!
+       Payment Requested For Sprint <%= invoice.sprint.to_s %>. <strong><a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">Make Payment</a></strong>
       </div>
     <% end %>
   <% end %>

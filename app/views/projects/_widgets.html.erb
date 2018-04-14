@@ -1,92 +1,82 @@
-<div class="row hidden-xs hidden-sm">
+<div class="row">
 
-  <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-3">
-    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= @project.current_sprint.sprint_planned_cost.to_s %>" data-suffix=" $" data-duration="2">
-      <div class="xe-icon">
-        <i class="fas fa-dollar-sign"></i>
-      </div>
-      <div class="xe-label">
-        <strong class="num">$<%= @project.current_sprint.sprint_planned_cost.to_s %></strong>
-        <span>Sprint <%= @project.sprint_current.to_s %> Projected</span>
-      </div>
-    </div>
-  </div>
-
-  <div onclick="$('#sprint_hours_message').toggle('slide'); return false;" class="col-sm-3">
-    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= @project.current_sprint.sprint_planned_hours.to_s %>" data-suffix=" Hours" data-duration="2">
+  <div class="col-sm-12 col-lg-3">
+    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint.to_s %>" data-prefix="Sprint " data-duration="2">
       <div class="xe-icon">
         <i class="far fa-clock"></i>
       </div>
       <div class="xe-label">
-        <strong class="num"><%= @project.current_sprint.sprint_planned_hours.to_s %> Hours</strong>
-        <span>Sprint <%= @project.sprint_current.to_s %> Projected</span>
+        <strong class="num">Sprint <%= project.current_sprint.to_s %></strong>
+        <span>Current Sprint</span>
       </div>
     </div>
   </div>
 
-  <div onclick="$('#commit_message').toggle('slide'); return false;" class="col-sm-3">
-    <% commits = @project.notes.where(note_type: 'commit').count %>
+  <% if project.current_sprint.only_planned? %>
+
+    <div class="col-sm-12 col-lg-3" data-animate="true">
+      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_planned_cost.to_s %>" data-prefix="$" data-duration="2">
+        <div class="xe-icon">
+          <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="xe-label">
+          <strong class="num">$<%= project.current_sprint.sprint_planned_cost.to_s %></strong>
+          <span>Sprint <%= project.sprint_current.to_s %> Projected Revenue</span>
+        </div>
+      </div>
+    </div>
+
+    <div data-toggle="settings-pane" data-animate="true" class="col-sm-12 col-lg-3">
+      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_planned_hours.to_s %>" data-suffix=" Hours" data-duration="2">
+        <div class="xe-icon">
+          <i class="far fa-clock"></i>
+        </div>
+        <div class="xe-label">
+          <strong class="num"><%= project.current_sprint.sprint_planned_hours.to_s %> Hours</strong>
+          <span>Sprint <%= project.sprint_current.to_s %> Projected Duration</span>
+        </div>
+      </div>
+    </div>
+
+  <% else %>
+
+    <div data-toggle="settings-pane" data-animate="true" class="col-sm-12 col-lg-3">
+      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_cost.to_s %>" data-prefix=" $" data-duration="2">
+        <div class="xe-icon">
+          <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="xe-label">
+          <strong class="num">$<%= project.current_sprint.sprint_cost.to_s %></strong>
+          <span>Sprint <%= project.sprint_current.to_s %> Billed</span>
+        </div>
+      </div>
+    </div>
+
+    <div data-toggle="settings-pane" data-animate="true" class="col-sm-12 col-lg-3">
+      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_payments.to_s %>" data-prefix="$" data-duration="2">
+        <div class="xe-icon">
+          <i class="far fa-clock"></i>
+        </div>
+        <div class="xe-label">
+          <strong class="num">$<%= project.current_sprint.sprint_payments.to_s %></strong>
+          <span>Sprint <%= project.sprint_current.to_s %> Revenue (Payment Received)</span>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+
+  <div class="col-sm-12 col-lg-3">
+    <% commits = project.notes.where(note_type: 'commit').count %>
     <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= commits.to_s %>" data-suffix=" Commits" data-duration="2">
       <div class="xe-icon">
         <i class="fas fa-code-branch"></i>
       </div>
       <div class="xe-label">
         <strong class="num"><%= commits.to_s %> Commits</strong>
-        <span>Sprint <%= @project.sprint_current.to_s %></span>
+        <span>Sprint <%= project.sprint_current.to_s %></span>
       </div>
     </div>
   </div>
 
-  <div onclick="$('#payment_message').toggle('slide'); return false;" class="col-sm-3">
-    <% if @project.payment_requested? %>
-      <% payment_requests = @project.payment_requests.count %>
-      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= payment_requests.to_s %>" data-suffix="" data-duration="2">
-        <div class="xe-icon">
-          <i class="fas fa-user"></i>
-        </div>
-        <div class="xe-label">
-          <strong class="num"><%= payment_requests.to_s %></strong>
-          <span>Payments Requested</span>
-        </div>
-      </div>
-    <% end %>
-
-  </div>
-
-</div>
-
-
-
-<div id="payment_message" style="display:none" class="row">
-
-  <div style="display:block">
-    <div onclick="$('#payment_message').hide('slide'); return false;" class="pull-right">
-      <small>Close</small>
-    </div>
-  </div>
-
-  <div style="margin-top:25px;display:block">
-    <% unless @project.payment_requests.empty? %>
-      <% unless @project.payment_requests.empty? %>
-        <% @project.payment_requests.each do |invoice| %>
-          <div id="request_payment_notification_sprint_<%= invoice.id.to_s %>" class="alert alert-danger">
-            <div style="color: white; padding-right:15px">
-              <i class="fas fa-dollar-sign pull-left"></i>
-              <%#= link_to '<i class="fas fa-ban pull-left"></i>'.html_safe,
-                        cancel_request_payment_path(invoice.id),
-                        remote: true %>
-            </div>
-            <div style="color:white; margin-left:15px">
-              <strong>
-                Payment Requested For Sprint <%= invoice.sprint.to_s %>
-                <%= link_to '<span style="color:white" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>'.html_safe,
-                            cancel_request_payment_path(invoice.id),
-                            remote: true %>
-              </strong>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
 </div>

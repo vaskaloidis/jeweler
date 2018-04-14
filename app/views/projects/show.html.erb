@@ -11,11 +11,11 @@
 
             <div class="row">
               <div class="col-sm-3">
-                <%= render 'projects/project_image' %>
+                <%= render 'projects/project_image', project: @project %>
               </div>
               <div class="col-sm-9">
-                <%= render 'projects/widgets' %>
-                <%= render 'projects/sprint_meter' %>
+                <%= render 'projects/widgets', project: @project %>
+                <%= render 'projects/sprint_meter', project: @project %>
 
                 <div id="home_timeline_container">
                   <%= render 'projects/timeline', notes: @notes %>
@@ -29,63 +29,24 @@
         </div>
       </div>
 
-      <div class="tab-pane" id="timeline">
-        <div id="timeline_notes">
+    </div>
+    <div class="tab-pane" id="readme">
+      <%= @github_readme_parsed.html_safe %>
+    </div>
 
-          <% if @project.is_owner?(current_user) %>
-            <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-single btn-sm">
-              Create Note
-            </a>
-            <hr>
+    <div class="tab-pane" id="settings">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Project Settings
+        </div>
+        <div class="panel-body">
+          <% unless @project.is_owner?(current_user) %>
+            <%= link_to '<i class="linecons-trash"></i> Leave Project'.html_safe, leave_project_path(@project.id, current_user) %>
           <% end %>
-
-          <%= render 'projects/note_full_timeline', local_note: @project.notes.order('created_at DESC') %>
         </div>
       </div>
-
-      <div class="tab-pane" id="invoices">
-        <%= render 'projects/invoices' %>
-      </div>
-
-      <div class="tab-pane" id="customers">
-        <div id="customers_container">
-          <%= render 'projects/customers', project: @project %>
-        </div>
-      </div>
-
-      <div class="tab-pane" id="current_sprint">
-        <%= render 'projects/view_current_sprint' %>
-      </div>
-
-      <div class="tab-pane" id="commits">
-      </div>
-
-      <div class="tab-pane" id="builds">
-
-      </div>
-      <div class="tab-pane" id="readme">
-        <%= @github_readme_parsed.html_safe %>
-      </div>
-
-      <div class="tab-pane" id="settings">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            Project Settings
-          </div>
-          <div class="panel-body">
-            <% unless @project.is_owner?(current_user) %>
-              <%= link_to '<i class="linecons-trash"></i> Leave Project'.html_safe, leave_project_path(@project.id, current_user) %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
     </div>
 
   </div>
+
 </div>
-
-
-
-
-<%#= render 'projects/tabs' %>

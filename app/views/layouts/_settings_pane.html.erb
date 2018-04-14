@@ -8,23 +8,23 @@
 
     <div class="row">
 
-      <div class="col-md-2 col-lg-offset-2">
+      <div class="col-md-2">
 
         <div class="user-info">
 
           <div class="user-image">
-              <% if @project.owner.image.url.nil? %>
-                <img src="<%= image_path 'user-2.png' %>" class="img-responsive img-circle"/>
-              <% else %>
-                <img src="<%= image_path @project.owner.image.url %>" class="img-responsive img-circle"/>
-              <% end %>
+            <% if project.owner.image.url.nil? %>
+              <img src="<%= image_path 'user-2.png' %>" class="img-responsive img-circle"/>
+            <% else %>
+              <img src="<%= image_path project.owner.image.url %>" class="img-responsive img-circle"/>
+            <% end %>
           </div>
 
           <div class="user-details">
 
             <h3>
-              <a href="<%= root_url %>"><%= @project.owner.first_name %>
-                <% @project.owner.last_name %></a>
+              <a href="<%= root_url %>"><%= project.owner.first_name %>
+                <% project.owner.last_name %></a>
 
               <span class="user-status is-online"></span>
             </h3>
@@ -32,21 +32,86 @@
             <p class="user-title">Project Owner</p>
 
             <div class="user-links">
-              <% if @project.is_customer(current_user) %>
-                <a href="<%= open_payment_path(@project.id) %>" class="btn btn-success">Make Payment</a>
-              <% end %>
+              <!-- TODO: Place a PM project owner button here (when we write messaging feature eventually) -->
             </div>
 
           </div>
 
         </div>
         <div class="row">
-          <%= render 'invoices/payment_form', project: @project %>
+          <%= render 'invoices/payment_form', project: project, display_balances: false %>
         </div>
 
       </div>
 
-      <div class="col-md-10 col-lg-7 col-lg-offset-1 text-left">
+      <div class="col-md-2 text-left">
+
+        <div class="left-sep">
+          <h4>
+            <span>Sprint Balances</span>
+          </h4>
+
+          <div>
+            <ul class="settings_sprint_balance list-group list-group-minimal">
+              <% unless project.invoices.empty? %>
+                <% project.invoices.order('sprint::integer ASC').each do |invoice| %>
+                  <% if invoice.balance > 0 %>
+                    <li class="list-group-item">
+                      <span>
+                          Sprint <%= invoice.sprint.to_s %>
+                          <% if invoice.is_current? %>
+                            (current)
+                          <% end %>
+                      </span>
+                      <span class="badge badge-roundless badge-danger">$<%= invoice.balance.to_s %></span>
+                    </li>
+                  <% end %>
+                <% end %>
+                <li class="list-group-item">
+                  <span><strong>Total:</strong> </span>
+                  <span class="badge badge-roundless badge-success">$<%= project.balance.to_s %></span>
+                </li>
+              <% else %>
+                <li class="list-group-item">
+                  (None)
+                </li>
+              <% end %>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-4 text-left">
+
+        <div class="left-sep">
+          <h4>
+            <span>Project Payments</span>
+          </h4>
+
+          <div>
+            <% unless project.payments.empty? %>
+              <% project.payments.each do |payment| %>
+                <div class="alert alert-success">
+                  <div style="color: white; padding-right:15px">
+                    <i class="fas fa-dollar-sign pull-right"></i>
+                    <strong>Payment: </strong>
+                    Sprint <%= payment.invoice.sprint.to_s %> <%= payment.user.first_name %> <%= payment.user.last_name %>
+                    - $<%= payment.amount.to_s %>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <span>(None)</span>
+            <% end %>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-4 text-left">
 
         <div class="left-sep">
           <h4>
@@ -54,22 +119,16 @@
           </h4>
 
           <div>
-            <% unless @project.payment_requests.empty? %>
-              <% @project.payment_requests.each do |invoice| %>
+            <% unless project.payment_requests.empty? %>
+              <% project.payment_requests.each do |invoice| %>
                 <div id="request_payment_notification_sprint_<%= invoice.id.to_s %>" class="alert alert-danger">
                   <div style="color: white; padding-right:15px">
-                    <i class="fas fa-dollar-sign pull-left"></i>
-                    <%#= link_to '<i class="fas fa-ban pull-left"></i>'.html_safe,
-                        cancel_request_payment_path(invoice.id),
-                        remote: true %>
-                  </div>
-                  <div style="color:white; margin-left:15px">
-                    <strong>
-                      Payment Requested For Sprint <%= invoice.sprint.to_s %>
+                    Payment Requested For Sprint <%= invoice.sprint.to_s %>
+                    <% if project.is_owner?(user) %>
                       <%= link_to '<span style="color:white" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>'.html_safe,
                                   cancel_request_payment_path(invoice.id),
                                   remote: true %>
-                    </strong>
+                    <% end %>
                   </div>
                 </div>
               <% end %>

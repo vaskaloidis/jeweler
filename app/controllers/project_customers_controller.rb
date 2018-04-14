@@ -63,7 +63,7 @@ class ProjectCustomersController < ApplicationController
   # GET /project_customers
   # GET /project_customers.json
   def index
-    @project_customers = ProjectCustomer.all
+    @project = Project.find(params[:project_id])
   end
 
   # GET /project_customers/1

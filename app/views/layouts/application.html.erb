@@ -131,7 +131,9 @@
 
   <% if signed_in? %>
     <% if controller_name == 'projects' %>
-      <%= render 'layouts/settings_pane' %>
+      <div id="settings_container">
+        <%= render 'layouts/settings_pane', project: @project, user: current_user %>
+      </div>
     <% end %>
   <% end %>
 

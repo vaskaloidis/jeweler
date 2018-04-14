@@ -20,7 +20,7 @@
         <li>
           <ul id="notifications_top_bar" class="dropdown-menu-list list-unstyled ps-scrollbar">
 
-            <% if controller_name == 'projects' and action_name != 'index' %>
+            <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
 
               <% if @project.current_task.nil? %>
                 <li class="active notification-success">
@@ -134,34 +134,28 @@
       </a>
     </li>
 
-    <% if controller_name == 'projects' %>
+    <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
       <li>
-        <a href="#summary" data-toggle="tab">
-          <i class="fas fa-home"></i>
-          <span class="title">Home</span>
-        </a>
+          <a href="<%= project_path(@project) %>">
+            <i class="fas fa-home"></i>
+            <span class="title">Home</span>
+          </a>
       </li>
-      <!--<li>-->
-        <!--<a href="#current_sprint" data-toggle="tab">-->
-          <!--<i class="fas fa-fighter-jet"></i>-->
-          <!--<span class="title">Current Sprint</span>-->
-        <!--</a>-->
-      <!--</li>-->
       <li>
-        <a href="#invoices" data-toggle="tab">
+        <a href="<%= project_invoices_path(@project) %>">
           <i class="fas fa-paper-plane"></i>
           <span class="title">Sprints</span>
         </a>
       </li>
       <li>
-        <a href="#customers" data-toggle="tab">
+        <a href="<%= project_project_customers_path(@project) %>">
           <i class="fas fa-user"></i>
           <span class="title">Customers</span>
         </a>
       </li>
       <li>
         <a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">
-        <i class="fas fa-money-bill-alt"></i>
+          <i class="fas fa-money-bill-alt"></i>
           Payments
           <% payment_requests = @project.payment_requests %>
           <% unless payment_requests.empty? %>
@@ -170,16 +164,15 @@
         </a>
       </li>
       <li>
-        <a href="#settings" data-toggle="tab">
+        <a href="#settings" data-toggle="tab" data-animate="true">
           <i class="fas fa-cogs"></i>
           <span class="title">Settings</span>
         </a>
       </li>
     <% else %>
       <li>
-        <a href="
-          <% root_path %>">
-          <i class="fas fa-bookmark"></i>
+        <a href="<%= root_path %>">
+          <i class="fas fa-home"></i>
           <span class="title">Home</span>
         </a>
       </li>
@@ -202,7 +195,7 @@
     <!--</li>-->
 
     <li>
-      <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');"_c>
+      <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" _c>
         <i class="fas fa-sticky-note"></i>
       </a>
     </li>

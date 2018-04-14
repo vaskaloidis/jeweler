@@ -3,25 +3,25 @@
 
   <a href="#" class="user-img">
     <!-- Add img-cirlce to image class possibly-->
-    <% if @project.image.url.nil? %>
+    <% if project.image.url.nil? %>
       <img src="<%= image_path 'user-4.png' %>" alt="user-img" class="img-cirlce img-responsive img-thumbnail">
     <% else %>
-      <img style="max-width: 150px;" src="<%= image_path @project.image.url %>" alt="user-img" class="img-circleimg-responsive img-thumbnail">
+      <img style="max-width: 150px;" src="<%= image_path project.image.url %>" alt="user-img" class="img-circleimg-responsive img-thumbnail">
     <% end %>
   </a>
 
   <a href="#" class="user-name">
-    <%= @project.name %>
+    <%= project.name %>
     <span class="user-status is-online"></span>
   </a>
 
-  <!--<span class="user-title"><%#= @project.language %> </span>-->
+  <!--<span class="user-title"><%#= project.language %> </span>-->
   <span id="language_icon" class="user-title">
-    <%= ApplicationHelper.build_language_icon(@project.language).html_safe %>
-    <a href="<%= @project.github_url %>">
+    <%= ApplicationHelper.build_language_icon(project.language).html_safe %>
+    <a href="<%= project.github_url %>">
         <%= ApplicationHelper.build_language_icon('github').html_safe %>
     </a>
-    <% unless @project.heroku_token.nil? %>
+    <% unless project.heroku_token.nil? %>
       <%= ApplicationHelper.build_language_icon('heroku').html_safe %>
     <% end %>
   </span>
@@ -31,53 +31,53 @@
   <ul class="list-unstyled user-info-list">
     <li>
       <i class="fa-home"></i>
-      <%= @project.owner.first_name %>
-      <%= @project.owner.last_name %>
+      <%= project.owner.first_name %>
+      <%= project.owner.last_name %>
     </li>
-    <% unless @project.owner.company.nil? %>
+    <% unless project.owner.company.nil? %>
       <li>
         <i class="fa-briefcase"></i>
-        <%= @project.owner.company %>
-        <%= @project.owner.last_name %>
+        <%= project.owner.company %>
+        <%= project.owner.last_name %>
       </li>
     <% end %>
     <li>
       <a href="#" data-toggle="settings-pane" data-animate="true">
         <i class="fas fa-money-bill-alt"></i>
         Payment Requests
-        <% payment_requests = @project.payment_requests %>
+        <% payment_requests = project.payment_requests %>
         <% unless payment_requests.empty? %>
           <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
         <% end %>
       </a>
     </li>
-    <% if @project.is_customer(current_user) %>
+    <% if project.is_customer(current_user) %>
       <li>
-        <%= link_to '<i class="fas fa-money-bill-alt"></i> Make Payment'.html_safe, open_payment_path(@project.id), remote: true %>
+        <%= link_to '<i class="fas fa-money-bill-alt"></i> Make Payment'.html_safe, open_payment_path(project.id), remote: true %>
       </li>
     <% end %>
     <hr>
     <li>
-      <a href="<%= @project.demo_url %>">
+      <a href="<%= project.demo_url %>">
         <i class="fas fa-eye"></i>
-        <strong>Demo:</strong> <%= @project.demo_url %>
+        <strong>Demo:</strong> <%= project.demo_url %>
       </a>
     </li>
     <li>
-      <a href="<%= @project.stage_website_url %>">
+      <a href="<%= project.stage_website_url %>">
         <i class="fas fa-microchip"></i>
-        <strong>Staging:</strong> <%= @project.stage_website_url %>
+        <strong>Staging:</strong> <%= project.stage_website_url %>
       </a>
     </li>
     <li>
-      <a href="<%= @project.prod_url %>">
+      <a href="<%= project.prod_url %>">
         <i class="fas fa-server"></i>
-        <strong>Production:</strong> <%= @project.prod_url %>
+        <strong>Production:</strong> <%= project.prod_url %>
       </a>
     </li>
-    <% if @project.is_owner?(current_user) %>
+    <% if project.is_owner?(current_user) %>
       <li>
-        <a href="<%= edit_project_path(@project) %>">
+        <a href="<%= edit_project_path(project) %>">
           <i class="fas fa-cogs"></i>
           Edit Project
         </a>
@@ -88,11 +88,11 @@
   <hr>
   <ul class="list-unstyled user-friends-count">
     <li>
-      <span><%= @project.sprint_current %></span>
+      <span><%= project.sprint_current %></span>
       Sprint
     </li>
     <li>
-      <span><%= @project.sprint_total %></span>
+      <span><%= project.sprint_total %></span>
       Total
     </li>
   </ul>
@@ -101,7 +101,7 @@
     <%= render 'layouts/notifications' %>
   </div>
 
-  <% if @project.is_owner?(current_user) %>
+  <% if project.is_owner?(current_user) %>
     <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-block text-left">
       Create Note<i class="fas fa-sticky-note pull-right"></i>
     </a>
@@ -110,5 +110,9 @@
       Create Project Update<i class="far fa-clock pull-right"></i>
     </a>
   <% end %>
+
+  <!--<hr>-->
+
+  <!--TODO: Project Demo Features Goes here -->
 
 </div>

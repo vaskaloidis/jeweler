@@ -1,29 +1,3 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Project Customers</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Project</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @project_customers.each do |project_customer| %>
-      <tr>
-        <td><%= project_customer.project %></td>
-        <td><%= project_customer.user %></td>
-        <td><%= link_to 'Show', project_customer %></td>
-        <td><%= link_to 'Edit', edit_project_customer_path(project_customer) %></td>
-        <td><%= link_to 'Destroy', project_customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Project Customer', new_project_customer_path %>
+<div id="customers_container">
+  <%= render 'projects/customers', project: @project %>
+</div>

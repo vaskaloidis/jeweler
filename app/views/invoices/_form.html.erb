@@ -1,4 +1,4 @@
-<%= form_with(model: invoice, local: true) do |form| %>
+<%= form_with(model: invoice, local: true, class: 'form-horizontal') do |form| %>
   <% if invoice.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(invoice.errors.count, "error") %> prohibited this invoice from being saved:</h2>
@@ -11,32 +11,18 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :phase %>
-    <%= form.number_field :phase %>
-  </div>
-
-  <div class="field">
-    <%= form.label :payment_due_date %>
-    <%= form.date_select :payment_due_date %>
-  </div>
-
-  <div class="field">
-    <%= form.label :payment_due %>
-    <%= form.check_box :payment_due %>
-  </div>
-
-  <div class="field">
+  <div class="form-group">
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, class: 'form-control' %>
   </div>
 
-  <div class="field">
-    <%= form.label :belongs_to %>
-    <%= form.text_field :belongs_to %>
+  <div class="form-group">
+    <%= form.label :payment_due_date %>
+    <%= form.date_select :payment_due_date, class: 'form-control' %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Save', class: 'btn btn-success' %>
+    <%= link_to 'Cancel', invoice_path(invoice), class: 'btn btn-primary' %>
   </div>
 <% end %>

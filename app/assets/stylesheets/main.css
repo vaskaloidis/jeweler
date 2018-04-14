@@ -54,3 +54,40 @@ i.fas.fa-ban.pull-right {
 #home_widgets {
     margin-top: 10px;
 }
+.settings_balance_label {
+    font-size: 1.2em !important;
+    margin:10px;
+    display:block
+}
+
+.alert > a {
+    color: white;
+    font-weight: bold;
+}
+
+.alert > strong > a {
+    color: white;
+}
+ul.settings_sprint_balance > li > span.badge {
+    font-size: 1.1em;
+}
+.payment_form_item > select {
+    width:100%;
+}
+.payment_form_item > button {
+    width:100%;
+}
+.settings-pane-inner > .row > .settings_scroll_column {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+.settings_sprint_balance > .list-group-item > span {
+    color: black;
+}
+.settings_sprint_balance > .list-group-item > .badge {
+    color: white !important;
+}
+
+.white-icon {
+    color: #979898;
+}

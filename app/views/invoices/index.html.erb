@@ -1,35 +1,46 @@
-<p id="notice"><%= notice %></p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Current Sprint
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <%= render 'invoices/invoice_slider', invoice: @project.current_sprint, sprint: @project.current_sprint.sprint  %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<h1>Invoices</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Remaining Sprints
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <% @project.invoices.order('sprint ASC').each_with_index do |invoice, count| %>
+          <% if count > @project.current_sprint.sprint %>
+            <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Phase</th>
-      <th>Payment due date</th>
-      <th>Payment due</th>
-      <th>Description</th>
-      <th>Belongs to</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @invoices.each do |invoice| %>
-      <tr>
-        <td><%= invoice.phase %></td>
-        <td><%= invoice.payment_due_date %></td>
-        <td><%= invoice.payment_due %></td>
-        <td><%= invoice.description %></td>
-        <td><%= invoice.belongs_to %></td>
-        <td><%= link_to 'Show', invoice %></td>
-        <td><%= link_to 'Edit', edit_invoice_path(invoice) %></td>
-        <td><%= link_to 'Destroy', invoice, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Invoice', new_invoice_path %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Completed Sprints
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <% @project.invoices.order('sprint ASC').each_with_index do |invoice, count| %>
+          <% if count < @project.current_sprint.sprint %>
+            <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint  %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 class WebhookController < ApplicationController
   # protect_from_forgery with: :exception, if: Proc.new { |c| c.request.format != 'application/json' }
   # protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
-  skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token
 
   respond_to :json, :html
 
@@ -87,6 +87,19 @@ class WebhookController < ApplicationController
 
   end
 
+  def configure_webhook
+    user = User.find(params[:user_id])
+    token = user.oauth
+
+    gh = Github.new oauth: token
+
+    github = Github.new oauth: project.owner.oauth
+    logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
+    logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
+    repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
+
+  end
+
   def save_oath
     token = params[:code]
 
@@ -102,6 +115,18 @@ class WebhookController < ApplicationController
         format.html {redirect_to root_path, :flash => {:error => 'Error Authenticated GitHub Authenticated.'}}
       end
     end
+  end
+
+  def authorize_account
+    github = Github.new client_id: ENV['GITHUB_CLIENT_ID'], client_secret: ENV['GITHUB_CLIENT_SECRET']
+    github.authorize_url scope: 'repo admin:repo_hook write:repo_hook read:repo_hook admin:org_hook notifications'
+
+    logger.debug("Github Auth URL: " + github.authorize_url)
+
+    respond_to do |format|
+      format.html { redirect_to github.authorize_url }
+    end
+
   end
 
 

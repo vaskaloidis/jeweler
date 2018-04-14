@@ -22,12 +22,22 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :notes
   accepts_nested_attributes_for :invitations
 
-
-
   validates :sprint_total, presence: true
   validates :sprint_current, presence: true
   validates :name, presence: true
   validates :github_url, presence: true, uniqueness: true
+
+  def events
+    return self.notes.where(note_type: [:event, :project_update]).order('created_at DESC').all
+  end
+
+  def is_owner(user)
+    return self.is_owner?(user)
+  end
+
+  def balance
+    return self.total_balance
+  end
 
   def total_balance
     unless self.total_cost.nil? or self.total_payment.nil?
@@ -106,6 +116,7 @@ class Project < ApplicationRecord
         sprint.reload
       end
 
+      self.reload
       self.save
       return self
     end

@@ -1,5 +1,69 @@
 module ApplicationHelper
 
+  def self.display_project_nav?(controller_name, action_name)
+
+    if  (controller_name == 'projects' and action_name != 'index' and action_name != 'new') or
+        (controller_name == 'invoices') or
+        (controller_name == 'project_customers')
+      return true
+    else
+      return false
+    end
+
+  end
+
+  def self.github_object(project)
+    github = Github.new oauth: project.owner.oauth
+    # logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
+    # logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
+    return github
+  end
+
+  def self.github_hook_configured?(project)
+    begin
+      gh = self.github_object(project)
+      hooks = gh.repos.hooks.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
+
+    rescue
+      # logger.error("ERROR - Getting Github Repo Hooks")
+      # return false
+      return true # TODO: Finish this feature
+    end
+
+    if hooks.empty?
+      return false
+    else
+      return true
+    end
+  end
+
+
+  def self.github_user(project)
+    uri = URI(project.github_url)
+    return uri.path.split('/').second
+  end
+
+  def self.github_repo(project)
+    uri = URI(project.github_url)
+    return uri.path.split('/').third
+  end
+
+  def self.is_number?(number)
+    if Float(number)
+      return true
+    elsif BigDecimal(number)
+      return true
+    elsif Integer(number)
+      return true
+    else
+      return false
+    end
+
+  rescue
+    return false
+
+  end
+
   def self.prettify(number)
     # to_i == number ? to_i : number
 
@@ -10,6 +74,12 @@ module ApplicationHelper
     end
 
   end
+
+  # Devicon Icons & Form Helper
+  #
+  # TODO: Move these to another helper, and
+  #       figure out why it was not working
+  #       in another helper last time
 
   def self.build_languages_dropdown
     cat = self.categories
@@ -124,33 +194,6 @@ module ApplicationHelper
     else
       return ''
     end
-  end
-
-
-  def self.github_user(project)
-    uri = URI(project.github_url)
-    return uri.path.split('/').second
-  end
-
-  def self.github_repo(project)
-    uri = URI(project.github_url)
-    return uri.path.split('/').third
-  end
-
-  def self.is_number?(number)
-    if Float(number)
-      return true
-    elsif BigDecimal(number)
-      return true
-    elsif Integer(number)
-      return true
-    else
-      return false
-    end
-
-  rescue
-    return false
-    
   end
 
 

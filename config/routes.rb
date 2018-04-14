@@ -44,6 +44,8 @@ Rails.application.routes.draw do
   get "/create_task_inline/:invoice_id" => 'invoice_items#create_inline', as: 'create_task_inline'
   match '/save_task_inline', to: 'invoice_items#save_inline', via: [:post], as: 'save_task_inline'
 
+  get '/authorize_github', to: 'webhook#authorize_account', as: 'authorize_github'
+
   # Github Webhooks
   get '/oath', to: 'webhook#save_oath', as: 'oath_save'
   post '/hook', to: 'webhook#hook', as: 'webhook_execute'
@@ -62,6 +64,7 @@ Rails.application.routes.draw do
     resources :notes do
       resources :discussions
     end
+    resources :invoices
   end
 
   # Devise

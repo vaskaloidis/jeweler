@@ -36,6 +36,16 @@ class InvoiceItemsController < ApplicationController
     @task.invoice.reload
     @invoice = @task.invoice
 
+    if @invoice.sprint_complete?
+      # TODO: Implement Close Sprint Upon Completion Feature Setting
+      close_sprint_upon_completion_feature = false
+      if close_sprint_upon_completion_feature
+        if @invoice.open
+          @invoice.open = false
+          @invoice.save
+        end
+      end
+    end
 
     respond_to do |format|
       format.js

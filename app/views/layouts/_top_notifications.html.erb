@@ -6,11 +6,19 @@
 <% end %>
 
 <% if signed_in? %>
-  <% if current_user.oauth.nil? or current_user.oauth == '' %>
+  <% if (current_user.oauth.nil? or current_user.oauth == '') and @project.is_owner?(current_user) %>
     <% gh_url = 'https://github.com/login/oauth/authorize?client_id=' + ENV['GITHUB_CLIENT_ID'] %>
     <p class="alert alert-danger">
-      Please Connect Jewler with GitHub, <%= link_to 'Here', gh_url %>
+      Please Connect Jewler with GitHub, <%= link_to 'Here', authorize_github_path %>
     </p>
+  <% else %>
+    <% if controller_name == 'projects' %>
+      <% unless ApplicationHelper.github_hook_configured?(@project) %>
+        <p class="alert alert-danger">
+          You need to add Jewler GitHub Webhook. Add it <%= link_to 'Here', authorize_github_path %>.
+        </p>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>
 

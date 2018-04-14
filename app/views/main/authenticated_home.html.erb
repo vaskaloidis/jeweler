@@ -7,7 +7,7 @@
   <% total_balance = 0.0 %>
   <div class="panel panel-default">
     <div class="panel-heading">
-      Owner Projects
+      Your Projects
     </div>
     <div class="panel-body">
       <div class="row">
@@ -43,63 +43,13 @@
           </div>
         </div>
       </div>
-    </div>
-    <div id="home_widgets" class="row hidden-xs hidden-sm">
 
-      <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-3">
-        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_cost.to_s %>" data-suffix=" $" data-duration="2">
-          <div class="xe-icon">
-            <i class="fas fa-dollar-sign"></i>
-          </div>
-          <div class="xe-label">
-            <strong class="num">$<%= total_cost.to_s %></strong>
-            <span>Overall Billed Revenue</span>
-          </div>
-        </div>
-      </div>
-
-      <div onclick="$('#sprint_hours_message').toggle('slide'); return false;" class="col-sm-3">
-        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_hours.to_s %>" data-suffix=" Hours" data-duration="2">
-          <div class="xe-icon">
-            <i class="far fa-clock"></i>
-          </div>
-          <div class="xe-label">
-            <strong class="num"><%= total_hours.to_s %> Hours</strong>
-            <span>Billed Hours</span>
-          </div>
-        </div>
-      </div>
-
-      <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-3">
-        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_payment.to_s %>" data-suffix=" $" data-duration="2">
-          <div class="xe-icon">
-            <i class="fas fa-dollar-sign"></i>
-          </div>
-          <div class="xe-label">
-            <strong class="num">$<%= total_payment.to_s %></strong>
-            <span>Total Payment</span>
-          </div>
-        </div>
-      </div>
-
-      <div onclick="$('#sprint_cost_message').toggle('slide'); return false;" class="col-sm-3">
-        <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= total_balance.to_s %>" data-suffix=" $" data-duration="2">
-          <div class="xe-icon">
-            <i class="fas fa-dollar-sign"></i>
-          </div>
-          <div class="xe-label">
-            <strong class="num">$<%= total_balance.to_s %></strong>
-            <span>Overall Unpaid Balance</span>
-          </div>
-        </div>
-      </div>
+      <%= render 'main/home_widgets', total_cost: total_cost, total_payment: total_payment, total_balance: total_balance, total_hours: total_hours %>
 
     </div>
   </div>
   <hr>
 <% end %>
-
-
 
 <% unless current_user.invitations.empty? %>
   <div class="panel panel-default">
@@ -133,7 +83,7 @@
 <% unless current_user.customer_projects.empty? %>
   <div class="panel panel-default">
     <div class="panel-heading">
-      Customer Projects
+      Projects Member
     </div>
     <div class="panel-body">
       <div class="row">

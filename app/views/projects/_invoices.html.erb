@@ -1,19 +1,46 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    Development Sprints
+    Current Sprint
   </div>
-
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
-
-          <% count = 1 %>
-          <% @invoices.each do |i| %>
-            <%= render 'invoices/invoice_slider', invoice: i, sprint: count %>
-            <% count = count + 1 %>
-          <% end %>
-
-        </div>
+        <%= render 'invoices/invoice_slider', invoice: project.current_sprint, sprint: project.current_sprint.sprint  %>
       </div>
     </div>
   </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Remaining Sprints
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <% project.invoices.order('sprint ASC').each_with_index do |invoice, count| %>
+          <% if count > project.current_sprint.sprint %>
+            <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Completed Sprints
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <% project.invoices.order('sprint ASC').each_with_index do |invoice, count| %>
+          <% if count < project.current_sprint.sprint %>
+            <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint  %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

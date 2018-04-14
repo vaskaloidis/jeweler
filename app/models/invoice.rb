@@ -11,6 +11,26 @@ class Invoice < ApplicationRecord
 
   validates :sprint, presence: true
 
+  def tasks
+    return self.invoice_items.sort_by(&:created_at)
+  end
+
+  def commits
+    return self.notes.where(note_type: :commit).sort_by(&:created_at)
+  end
+
+  def is_current?
+    if self.project.current_sprint == self
+      return true
+    else
+      return false
+    end
+  end
+
+  def balance
+    return (self.sprint_cost - self.sprint_payments)
+  end
+
   def sprint_complete?
     if self.invoice_items.empty?
       return false

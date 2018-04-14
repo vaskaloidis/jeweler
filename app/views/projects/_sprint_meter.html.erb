@@ -2,7 +2,7 @@
 
   # Sprint Progress Meter
 
-  progress_percent = (@project.sprint_current.to_f / @project.sprint_total.to_f) * 100.to_f
+  progress_percent = (project.sprint_current.to_f / project.sprint_total.to_f) * 100.to_f
 %>
 
 <div id="rootwizard" class="form-wizard">
@@ -10,12 +10,12 @@
   <!-- Sprint Numbers -->
   <ul class="tabs">
     <% count = 1 %>
-    <% @project.sprint_total.times do |sprint| %>
-      <% if count == @project.sprint_current %>
+    <% project.sprint_total.times do |sprint| %>
+      <% if count == project.sprint_current %>
         <li class="completed ms-hover">
           <a href="#tab<%= count %>" data-toggle="tab"><%= count %></a>
         </li>
-      <% elsif count < @project.sprint_current %>
+      <% elsif count < project.sprint_current %>
         <li class="completed">
           <a href="#tab<%= count %>" data-toggle="tab"><%= count %></a>
         </li>
@@ -29,7 +29,7 @@
   </ul>
 
   <!-- Green Bar -->
-  <% if @project.sprint_current != @project.sprint_total %>
+  <% if project.sprint_current != project.sprint_total %>
     <div class="progress-indicator"
          style="width: <%= progress_percent %>%;">
       <span></span>
@@ -45,9 +45,9 @@
   <div style="margin-top:0px;" class="tab-content">
     <% count = 1 %>
 
-    <% @project.sprint_total.times do |sprint| %>
+    <% project.sprint_total.times do |sprint| %>
 
-      <% if count == @project.sprint_current %>
+      <% if count == project.sprint_current %>
 
         <div class="tab-pane active" id="tab<%= count %>">
           <% if !Invoice.where(project: @project, sprint: count).empty? %>

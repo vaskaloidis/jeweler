@@ -1,0 +1,25 @@
+if ($("#success_message").is(':visible')) {
+    $("#success_message").html('');
+    $("#success_message").hide('slide');
+}
+
+if ($("#error_message").is(':visible')) {
+    $("#error_message").html('');
+    $("#error_message").hide('slide');
+}
+
+$('.settings-pane').hide('slide');
+
+
+<% if @payment.valid? %>
+
+  $("#success_message").show('slide');
+  $("#success_message").html('Sprint <%= @payment.invoice.sprint.to_s %> payment made!');
+  $("#settings_container").html('<%= j render 'layouts/settings_pane', project: @payment.invoice.project, user: @user %>');
+
+<% else %>
+
+  $("#error_message").show('slide')
+  $("#error_message").html('Sprint <%= @payment.invoice.sprint.to_s %> payment could not be made.');
+
+<% end %>
