@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get "/open_sprint/:invoice_id" => 'invoices#open_sprint_inline', as: 'open_sprint'
   get "/close_sprint/:invoice_id" => 'invoices#close_sprint_inline', as: 'close_sprint'
 
+
   get "/edit_note_modal/:note_id" => 'notes#edit_note_modal', as: 'edit_note_modal'
   match '/update_note_modal' => 'notes#update_note_modal', via: [:post], as: 'update_note_modal'
   get "/delete_note_inline/:note_id" => 'notes#delete_note_inline', as: 'delete_note_inline'

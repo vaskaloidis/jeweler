@@ -1,2 +1,8 @@
-$('#task_row_<%= @task.id.to_s %>').html('');
-$('#task_row_<%= @task.id.to_s %>').append('<div><%= j render 'invoice_items/edit_inline_form', task: @task %></div>');
+<% if false %>
+  <!-- This is to edit the Task inline on the table -->
+  $('#task_row_<%= @task.id.to_s %>').html('<div><%= j render 'invoice_items/edit_inline_form', task: @task %></div>');
+<% else %>
+  $('#task_row_<%= @task.id.to_s %>').hide('slide');
+  $("#edit_invoice_items_<%= @task.invoice.id.to_s %>_hidden_row").html('<%= j render('invoice_items/edit_inline_form', task: @task) %>');
+  $("#edit_invoice_items_<%= @task.invoice.id.to_s %>_hidden_row").show('slide');
+<% end %>

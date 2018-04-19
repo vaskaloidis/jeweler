@@ -1,29 +1,10 @@
-console.log("Saving Task Inline JS ERB")
-
-if ($("#success_message").is(':visible')) {
-    $("#success_message").html('');
-    $("#success_message").hide('slide');
-}
-
-if ($("#error_message").is(':visible')) {
-    $("#error_message").html('');
-    $("#error_message").hide('slide');
-}
-
 $("#invoice_items_<%= @invoice.id.to_s %>_hidden_row").hide('slide')
 
 <% if @task.valid? %>
-
   $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice %>');
-  $("#success_message").show('slide');
-  $("#success_message").html('Task Created Successfully');
-
+  toastr.success('Task Created Successfully');
 <% else %>
-
-  <% #TODO: Log this error also %>
-  $("#error_message").show('slide')
-  $("#error_message").html('Your Task Could Not Be Created');
-
+  toastr.error('Your Task Could Not Be Created');
 <% end %>
 
 <%# NEW: render 'invoices/invoice_panel', invoice: invoice, sprint: count %>

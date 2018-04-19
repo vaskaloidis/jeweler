@@ -1,6 +1,15 @@
-<%= form_with url: create_chat_message_inline_path, class: 'form-inline' do |f| %>
-  <%= f.text_field :content, style: 'width:75%' %>
-  <%= f.submit 'Send', :class => 'btn-sm btn-success', style: 'display:inline' %>
-  <%= f.hidden_field :user_id, :value => user.id %>
-  <%= f.hidden_field :note_id, :value => note.id %>
-<% end %>
+<div id="note_form_<%= note.id.to_s %>" style="display:none" class="row">
+  <%= form_with url: create_chat_message_inline_path, class: 'form-inline margin-bottom-5 margin-left-10 margin-top-20' do |f| %>
+    <%= f.text_field :content, class: 'col-sm-12 col-md-4 margin-left-20' %>
+    <%= f.submit 'Comment', :class => 'btn-sm btn-success', style: 'height:26px; bottom: 10px' %>
+    <%= f.hidden_field :user_id, :value => user.id %>
+    <%= f.hidden_field :note_id, :value => note.id %>
+  <% end %>
+</div>
+<script>
+    function click_discussion_<%= note.id.to_s %>() {
+        $('#note_form_<%= note.id.to_s %>').show('slide');
+        $('#click_discussion_button_<%= note.id.to_s %>').hide('slide');
+        return false;
+    }
+</script>

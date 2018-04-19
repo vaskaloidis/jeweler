@@ -33,7 +33,7 @@ Discussion.delete_all
   pass = Faker::Internet.password
   c1.password = pass
   c1.password_confirmation = pass
-  u.company = 'Red Tail Software'
+  c1.company = 'Red Tail Software'
   c1.first_name = Faker::Name.first_name
   c1.last_name = Faker::Name.last_name
   c1.website_url = Faker::Internet.url
@@ -48,7 +48,7 @@ Discussion.delete_all
   pass = Faker::Internet.password
   c2.password = pass
   c2.password_confirmation = pass
-  u.company = 'Jim Bob Software Corporation'
+  c2.company = 'Jim Bob Software Corporation'
   c2.first_name = Faker::Name.first_name
   c2.last_name = Faker::Name.last_name
   c2.website_url = Faker::Internet.url
@@ -63,7 +63,7 @@ Discussion.delete_all
   pass = Faker::Internet.password
   c3.password = pass
   c3.password_confirmation = pass
-  u.company = 'Google Software Company'
+  c3.company = 'Google Software Company'
   c3.first_name = Faker::Name.first_name
   c3.last_name = Faker::Name.last_name
   c3.website_url = Faker::Internet.url

@@ -15,7 +15,7 @@ class ProjectsController < ApplicationController
     @project = @invoice.project
 
     if @invoice.valid?
-      Note.create_project_update(@invoice.project, current_user, 'Payment Requested')
+      Note.create_payment_request(@invoice, current_user)
     end
 
     respond_to do |format|
@@ -30,7 +30,7 @@ class ProjectsController < ApplicationController
 
     @user = current_user
 
-    Note.create_event(@invoice.project, current_user, 'Payment Request Canceled')
+    Note.create_event(@invoice.project, current_user, 'Sprint ' + @invoice.sprint.to_s + ' Payment Request Canceled')
 
     respond_to do |format|
       format.js

@@ -1,14 +1,15 @@
-if ($("#success_message").is(':visible')) {
-    $("#success_message").html('');
-    $("#success_message").hide('slide');
-}
-
-if ($("#error_message").is(':visible')) {
-    $("#error_message").html('');
-    $("#error_message").hide('slide');
-}
-
 $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice  %>');
 $("#invoice_panel_<%= @old_invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @old_invoice  %>');
+
+toastr.success('Sprint Changed To <%= @invoice.sprint.to_s %> From <%= @old_invoice.sprint.to_s %> ');
+
+$('#sprint_gauge_container').animate({
+    width: '0'
+});
+
+$('#sprint_gauge_container').animate({
+    width: '<%= ApplicationHelper.sprint_percent(@invoice.project) %>%'
+});
+
 
 // Invoice.where(project: @project, sprint: count).first, sprint: count

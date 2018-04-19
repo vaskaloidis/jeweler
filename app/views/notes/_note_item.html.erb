@@ -1,0 +1,15 @@
+<li>
+  <time class="cbp_tmtime" datetime="2014-12-06T03:45">
+    <span>Now</span>
+    <span>Today</span>
+  </time>
+
+  <div class="cbp_tmicon timeline-bg-success">
+    <i class="fas fa-sticky-note"></i>
+  </div>
+  <div class="cbp_tmlabel">
+    <%= render 'notes/note_header', note: note %>
+    <h3><%= note.content %></h3>
+    <%= render 'notes/note_meta', note: note, current_user: current_user %>
+  </div>
+</li>

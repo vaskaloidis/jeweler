@@ -10,11 +10,12 @@
       </div>
 
       <div class="xe-comment">
-        <a href="#" class="xe-user-name">
+        <span class="xe-user-name">
           <strong><%= c.user.first_name %> <%= c.user.last_name %></strong>
-        </a>
-
-        <p><%= c.content %></p>
+        </span>
+        <div class="chat_message" style="text-align: left">
+          <p><%= c.content %></p>
+        </div>
       </div>
     </div>
   </li>

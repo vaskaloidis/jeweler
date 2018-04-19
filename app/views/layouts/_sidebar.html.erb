@@ -29,19 +29,21 @@
         </a>
       </div>
 
-      <!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
-      <div class="settings-icon">
-        <a href="<%= edit_user_registration_path %>" data-toggle="settings-pane" data-animate="true">
+      <% if false %>
+        <!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
+        <div class="settings-icon">
+          <a href="<%= edit_user_registration_path %>" data-toggle="settings-pane" data-animate="true">
 
-          <% unless @project.nil? %>
-            <i class="fas fa-hand-holding-usd white-icon"></i>
-            <% payment_requests = @project.payment_requests %>
-            <% unless payment_requests.empty? %>
-              <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
+            <% unless @project.nil? %>
+              <i class="fas fa-hand-holding-usd white-icon"></i>
+              <% payment_requests = @project.payment_requests %>
+              <% unless payment_requests.empty? %>
+                <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
+              <% end %>
             <% end %>
-          <% end %>
-        </a>
-      </div>
+          </a>
+        </div>
+      <% end %>
 
 
     </header>

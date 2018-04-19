@@ -39,7 +39,11 @@
 
         </div>
         <div class="row">
-          <%= render 'invoices/payment_form', project: project, display_balances: false %>
+          <% if project.is_owner? %>
+            <%= render 'invoices/payment_form', project: project, display_balances: false %>
+          <% else %>
+            <%= render 'invoices/admin_payment_form', project: project, display_balances: false %>
+          <% end %>
         </div>
 
       </div>
@@ -59,8 +63,8 @@
                     <li class="list-group-item">
                       <span>
                           Sprint <%= invoice.sprint.to_s %>
-                          <% if invoice.is_current? %>
-                            (current)
+                        <% if invoice.is_current? %>
+                            <strong>(current)</strong>
                           <% end %>
                       </span>
                       <span class="badge badge-roundless badge-danger">$<%= invoice.balance.to_s %></span>

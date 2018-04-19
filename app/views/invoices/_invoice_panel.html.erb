@@ -9,7 +9,7 @@
 %>
 <div class="panel panel-default">
   <% if invoice.sprint_complete? %>
-    <div class="alert alert-success">Sprint Complete<i class="fas fa-fire pull-right"></i></div>
+    <div class="alert alert-success">Sprint Complete<i class="fas fa-check fa-1x pull-right"></i></div>
   <% end %>
   <div class="panel-heading">
     <h4 class="panel-title">
@@ -17,7 +17,7 @@
     </h4>
     <div style="color:white !important;font-size: 18px;" class="panel-options">
       <% if invoice.project.sprint_current == invoice.sprint %>
-        <div class="label label-success"><i class="fas fa-fighter-jet"></i> Current Sprint</div>
+        <div class="label label-success"><i class="fas fa-paper-plane"></i> Current Sprint</div>
       <% else %>
         <% if invoice.project.is_owner?(current_user) %>
           <div class="label label-success">
@@ -52,17 +52,13 @@
           <div style="display:none;margin-right:10px" id="request_payment_2_sprint_<%= invoice.sprint.to_s %>" class="label label-warning">
             Payment Requested
           </div>
-          <div style="display:inline" id="request_payment_button_2_sprint_<%= invoice.sprint.to_s %>">
-            <%= link_to '<div class="label label-success">Request Payment</div>'.html_safe,
-                        request_payment_path(invoice.id),
-                        remote: true %>
-          </div>
+          <div style="display:inline" id="request_payment_button_2_sprint_<%= invoice.sprint.to_s %>"></div>
         <% else %>
           <div style="display:none;margin-right:10px" id="request_payment_cancelled_sprint_<%= invoice.sprint.to_s %>" class="label label-warning">
             Payment Request Cancelled
           </div>
           <div style="display:inline" id="request_payment_cancel_button_sprint_<%= invoice.sprint.to_s %>">
-            <%= link_to '<div class="label label-warning">Payment Requested <small>(Cancel)</small></div>'.html_safe,
+            <%= link_to '<div class="label label-warning">Payment Requested</div>'.html_safe,
                         cancel_request_payment_path(invoice.id),
                         remote: true %>
           </div>
@@ -76,89 +72,137 @@
         <div class="label label-info">Cost: $<%= invoice.sprint_cost %></div>
       <% end %>
 
+      <% if invoice.project.is_owner?(current_user) %>
+        <div class="btn-group">
+          <button type="button" class="btn btn-gray dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa-wrench"></i> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-white" role="menu">
+            <li>
+              <a href="<%= invoice_path(invoice) %>">Edit Sprint</a>
+            </li>
+            <li>
+              <% unless invoice.payment_due? %>
+                <span id="request_payment_button_2_sprint_<%= invoice.sprint.to_s %>">
+                  <%= link_to 'Request Payment'.html_safe,
+                              request_payment_path(invoice.id),
+                              remote: true %>
+                </span>
+              <% else %>
+                <span id="request_payment_cancel_button_sprint_<%= invoice.sprint.to_s %>">
+                  <%= link_to 'Cancel Payment Requested'.html_safe,
+                              cancel_request_payment_path(invoice.id),
+                              remote: true %>
+                </span>
+              <% end %>
+            </li>
+            <% unless invoice.is_current? %>
+              <li>
+                <%= link_to 'Set Current Sprint',
+                            set_current_sprint_path(invoice.id), remote: true %>
+              </li>
+            <% end %>
+            <li>
+              <% if invoice.open? %>
+                <%= link_to 'Close Sprint', close_sprint_path(invoice.id), remote: true, data: {confirm: 'Are you sure you want to close sprint ' + invoice.sprint.to_s + '?'} %>
+              <% else %>
+                <%= link_to 'Open Sprint', open_sprint_path(invoice.id), remote: true, data: {confirm: 'Are you sure you want to open sprint ' + invoice.sprint.to_s + '?'} %>
+              <% end %>
+            </li>
+            <li>
+              Generate Invoice
+            </li>
+          </ul>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="panel-body">
 
-    <!-- visible-xs visible-sm -->
-    <div style="display:none" class="text-center">
-      <%#= render 'invoices/mobile_invoice_items', invoice: invoice, hour_total: hour_total, price_total: price_total %>
+    <!-- TODO: Alternate Invoice-Panel for Mobile (visible-xs visible-sm) -->
+    <% if false %>
+      <div style="display:none" class="text-center">
+        <%#= render 'invoices/mobile_invoice_items', invoice: invoice, hour_total: hour_total, price_total: price_total %>
+      </div>
+    <% end %>
+
+    <div class="table-responsive" data-pattern="priority-columns">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th data-priority="1"></th>
+          <th data-priority="1">Task</th>
+          <th data-priority="2">Rate</th>
+          <th data-priority="3">Estimate</th>
+          <% if invoice.only_planned? %>
+            <th data-priority="3">Projected Cost</th>
+          <% else %>
+            <th data-priority="2">Hours</th>
+            <th data-priority="2">Cost</th>
+          <% end %>
+
+        </tr>
+        </thead>
+
+        <tbody
+        <% if invoice.project.current_task == invoice.id %>
+        class="current_sprint task_list">
+        <% else %>
+        >
+        <% end %>
+
+        <% invoice.invoice_items.sort_by(&:created_at).each do |task| %>
+        <tr id="task_row_<%= task.id.to_s %>" onclick="$('#task_<%= task.id.to_s %>').toggle('slide'); return false;">
+          <td width="10">
+            <% if invoice.project.current_task == task %>
+              <span class="label label-default">Current Task</span>
+            <% elsif task.complete %>
+              <i class="fas fa-check fa-1x"></i>
+            <% end %>
+          </td>
+          <td>
+            <%= render 'invoice_items/task_actions', task: task, user: current_user %>
+            <%= task.description %>
+          </td>
+          <td>$<%= task.rate %>/hr</td>
+          <td><%= task.planned_hours %> hrs.</td>
+          <% if invoice.only_planned? %>
+            <td>$<%= task.planned_cost %></td>
+          <% else %>
+            <td><%= task.hours %> hrs.</td>
+            <td>$<%= task.total_cost %></td>
+          <% end %>
+
+        </tr>
+        <% end %>
+
+        <tr>
+          <th></th>
+          <th id="create_task_container_invoice_<%= invoice.id.to_s %>">
+            <% if invoice.project.is_owner?(current_user) %>
+              <%= link_to 'Create Task',
+                          create_task_inline_path(invoice.id),
+                          remote: true,
+                          id: 'create_task_inline_button',
+                          class: 'btn btn-sm btn-primary',
+                          style: 'display:inline;font-size:1em; padding-right:10px;' %>
+            <% end %>
+          </th>
+          <th><strong>Total:</strong></th>
+          <th><%= invoice.sprint_planned_hours %> hrs.</th>
+          <% if invoice.only_planned? %>
+            <td>$<%= invoice.sprint_planned_cost %></td>
+          <% else %>
+            <td><%= invoice.sprint_hours %> hrs.</td>
+            <td>$<%= invoice.sprint_cost %></td>
+          <% end %>
+        </tr>
+        </tbody>
+      </table>
     </div>
-
-    <!--hidden-xs hidden-sm -->
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th width="10"><i class="far fa-check-square"></i></th>
-        <th>Task</th>
-        <th>Rate</th>
-        <th>Estimate</th>
-        <% if invoice.only_planned? %>
-          <th>Projected Cost</th>
-        <% else %>
-          <th>Hours</th>
-          <th>Cost</th>
-        <% end %>
-
-      </tr>
-      </thead>
-
-      <tbody
-      <% if invoice.project.current_task == invoice.id %>
-      class="current_sprint task_list">
-      <% else %>
-      >
-      <% end %>
-
-      <% invoice.invoice_items.sort_by(&:created_at).each do |task| %>
-      <tr id="task_row_<%= task.id.to_s %>" onclick="$('#task_<%= task.id.to_s %>').toggle('slide'); return false;">
-        <td width="10">
-          <% if invoice.project.current_task == task %>
-            <span class="label label-default">Current Task</span>
-          <% elsif task.complete %>
-            <i class="far fa-check-square"></i>
-          <% end %>
-        </td>
-        <td>
-          <%= render 'invoice_items/task_actions', task: task, user: current_user %>
-          <%= task.description %>
-        </td>
-        <td>$<%= task.rate %>/hr</td>
-        <td><%= task.planned_hours %> hrs.</td>
-        <% if invoice.only_planned? %>
-          <td>$<%= task.planned_cost %></td>
-        <% else %>
-          <td><%= task.hours %> hrs.</td>
-          <td>$<%= task.total_cost %></td>
-        <% end %>
-
-      </tr>
-      <% end %>
-
-      <tr>
-        <th></th>
-        <th id="create_task_container_invoice_<%= invoice.id.to_s %>">
-          <% if invoice.project.is_owner?(current_user) %>
-            <%= link_to 'Create Task',
-                        create_task_inline_path(invoice.id),
-                        remote: true,
-                        id: 'create_task_inline_button',
-                        class: 'btn btn-sm btn-primary',
-                        style: 'display:inline;font-size:1em; padding-right:10px;' %>
-          <% end %>
-        </th>
-        <th><strong>Total:</strong></th>
-        <th><%= invoice.sprint_planned_hours %> hrs.</th>
-        <% if invoice.only_planned? %>
-          <td>$<%= invoice.sprint_planned_cost %></td>
-        <% else %>
-          <td><%= invoice.sprint_hours %> hrs.</td>
-          <td>$<%= invoice.sprint_cost %></td>
-        <% end %>
-      </tr>
-      </tbody>
-    </table>
+    <div style="display:none" id="edit_invoice_items_<%= invoice.id.to_s %>_hidden_row"></div>
     <div style="display:none" id="invoice_items_<%= invoice.id.to_s %>_hidden_row"></div>
+
 
     <% unless invoice.payments.empty? %>
       <table class="hidden-xs table table-condensed">
@@ -203,7 +247,10 @@
 
     <% if invoice.project.is_customer(current_user) %>
       <div>
-        <%= link_to 'Make Payment', open_sprint_payment_path(invoice.id), class: 'btn btn-primary btn-sm', remote: true %>
+        <div style="display:none" id="sprint_payment_inline_<%= invoice.id.to_s %>">
+          <%= render 'invoices/sprint_payment_form', invoice: invoice %>
+        </div>
+        <%= link_to 'Make Sprint ' + invoice.sprint.to_s + ' Payment', open_sprint_payment_path(invoice.id), class: 'btn btn-primary btn-sm', remote: true %>
       </div>
     <% end %>
 

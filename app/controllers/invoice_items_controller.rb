@@ -8,11 +8,13 @@ class InvoiceItemsController < ApplicationController
 
     project = @task.invoice.project
 
+    # If Completing Current Task,
+    # Then Set Next InComplete Task To Current-Task
     if @task.is_current?
       project.current_task = nil
       count = 1
       next_task = false
-      until !project.current_task.nil? or (count >= @task.invoice.invoice_items.count)
+      until !project.current_task.nil? or (count > @task.invoice.invoice_items.count)
         @task.invoice.invoice_items.sort_by(&:created_at).each do |t|
           if next_task
             if t.complete == false
@@ -37,7 +39,7 @@ class InvoiceItemsController < ApplicationController
     @invoice = @task.invoice
 
     if @invoice.sprint_complete?
-      # TODO: Implement Close Sprint Upon Completion Feature Setting
+      # Do We Want To Close Sprint Upon Completion Feature, or Make It A Setting
       close_sprint_upon_completion_feature = false
       if close_sprint_upon_completion_feature
         if @invoice.open
@@ -164,6 +166,10 @@ class InvoiceItemsController < ApplicationController
       project.save
     end
 
+    if @task.invalid? and project.invalid?
+      logger.error('Error creating new task')
+    end
+
     respond_to do |format|
       format.js
     end
@@ -240,7 +246,7 @@ class InvoiceItemsController < ApplicationController
           logger.error(@task.errors)
         end
 
-        Note.create_event(@project, current_user, 'Task Updated: ' + @task.description)
+        Note.create_event(@task.invoice.project, current_user, 'Task Updated: ' + @task.description)
 
         format.html {redirect_to @invoice_item, notice: 'Invoice item was successfully updated.'}
         format.json {render :show, status: :ok, location: @invoice_item}

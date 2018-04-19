@@ -1,0 +1,34 @@
+<div class="timeline_title">
+  <div class="pull-right">
+    <% unless note.invoice.nil? %>
+  <span id="timeline_sprint_task_message" class="alert alert-success">
+        Sprint <%= note.invoice.sprint.to_s %>
+      </span>
+    <% end %>
+    <% unless note.invoice_item.nil? %>
+  <span id="timeline_sprint_task_message" class="alert alert-success">
+        Task: <%= truncate(note.invoice_item.description.to_s) %>
+      </span>
+    <% end %>
+  </div>
+  <h2>
+    <%= note.author.first_name %> <%= note.author.last_name %>
+
+    <% case note.note_type %>
+    <% when 'commit' %>
+      Committed Code
+    <% when 'event' %>
+      <%= note.content %>
+    <% when 'project_update' %>
+      Posted a Project Update
+    <% when 'payment_request' %>
+      Requested a Payment
+    <% when 'payment' %>
+      Made a Payment
+    <% when 'note' %>
+      Posted a Note
+    <% when 'demo' %>
+      Posted a Demo of <%= note.content %>
+    <% end %>
+  </h2>
+</div>

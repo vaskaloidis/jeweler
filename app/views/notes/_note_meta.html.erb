@@ -1,27 +1,24 @@
-<small>
-  <% if note.discussions.empty? %>
-    <%= link_to 'Discuss', fetch_discussion_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
-  <% else %>
-    <%= link_to ('Comments <span style="margin-top:0px;font-size:.6em" class="badge badge-white pull-right">' + note.discussions.count.to_s + '</span>').html_safe, fetch_discussion_path(note.id), remote: true, class: 'btn btn-sm btn-success', style: 'padding-top:7px; padding-bottom:7px;' %>
-  <% end %>
+<div>
+  <small>
+    <div class="margin-10">
+      <%= render 'discussions/conversation', discussions: note.discussions, user: current_user, note: note %>
+    </div>
 
-  <!-- Note Owner -->
-  <% if note.user_id == current_user.id %>
-
-    <% if note.note_type != 'commit' and note.note_type != 'project_update' %>
-      <%# Debugging Helper: if note.note_type != 'commit' %>
-
-      <%= link_to '<i style="padding-right: 1px; margin-right:0px" class="far fa-edit"></i>'.html_safe,
-                  edit_note_modal_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
-      <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
-                  delete_note_inline_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
-
-      <% unless note.commit_diff_path.nil? %>
-        <%= link_to '<i style="padding-right: 4px;" class="fab fa-github"></i>'.html_safe,
-                    note.commit_diff_path, class: 'btn btn-sm btn-success' %>
+    <div class="btn-group">
+      <% if note.user_id == current_user.id or note.project.is_owner?(current_user) %>
+        <% if note.note_type != 'commit' or 'project_update' or 'payment' or 'payment_request' or 'event' %>
+          <%# Debugging Helper: if note.note_type != 'commit' %>
+          <%= link_to '<i style="padding-right: 1px; margin-right:0px" class="far fa-edit"></i>'.html_safe,
+                      edit_note_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
+          <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                      delete_note_inline_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
+          <% unless note.commit_diff_path.nil? %>
+            <%= link_to '<i style="padding-right: 4px;" class="fab fa-github"></i>'.html_safe,
+                        note.commit_diff_path, class: 'btn btn-sm btn-success' %>
+          <% end %>
+        <% end %>
       <% end %>
-
-    <% end %>
-
-  <% end %>
-</small>
+      <div id="click_discussion_button_<%= note.id.to_s %>" class="btn btn-sm btn-success" href="#" onclick="click_discussion_<%= note.id.to_s %>()">Comment</div>
+    </div>
+  </small>
+</div>

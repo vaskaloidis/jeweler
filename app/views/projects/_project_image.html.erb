@@ -102,9 +102,18 @@
   </div>
 
   <% if project.is_owner?(current_user) %>
-    <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-block text-left">
-      Create Note<i class="fas fa-sticky-note pull-right"></i>
-    </a>
+
+    <% if true %>
+      <div>
+        <% create_sprint_btn = 'Create Sprint ' + @project.current_sprint.sprint.to_s + ' Note<i class="fas fa-sticky-note pull-right"></i>' %>
+        <%= link_to create_sprint_btn.html_safe, new_project_note_path(@project.id), class: 'btn btn-success btn-block text-left', remote: true %>
+
+      </div>
+    <% else %>
+      <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" class="btn btn-success btn-block text-left">
+        Create Note<i class="fas fa-sticky-note pull-right"></i>
+      </a>
+    <% end %>
 
     <a href="javascript:;" onclick="jQuery('#create_project_update_modal').modal('show');" class="btn btn-success btn-block text-left">
       Create Project Update<i class="far fa-clock pull-right"></i>

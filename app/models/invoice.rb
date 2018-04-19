@@ -8,9 +8,11 @@ class Invoice < ApplicationRecord
   accepts_nested_attributes_for :project
   accepts_nested_attributes_for :notes
 
-
   validates :sprint, presence: true
 
+  def completed_tasks
+    return self.invoice_items.where(complete: true).all
+  end
   def tasks
     return self.invoice_items.sort_by(&:created_at)
   end

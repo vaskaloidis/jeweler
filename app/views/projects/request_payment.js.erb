@@ -1,12 +1,4 @@
-if ($("#success_message").is(':visible')) {
-    $("#success_message").html('');
-    $("#success_message").hide('slide');
-}
-
-if ($("#error_message").is(':visible')) {
-    $("#error_message").html('');
-    $("#error_message").hide('slide');
-}
+toastr.success('Payment Requested.');
 
 $('#notifications_container').html('<%= j render 'layouts/notifications' %>');
 

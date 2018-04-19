@@ -1,9 +1,9 @@
-<%= form_with url: make_payment_path do |f| %>
-
-  <h4>Sprint <%= invoice.sprint.to_s %> Payment</h4>
-  <div style="font-size: 1.2em; margin:10px" class="label label-warning">Balance:
-    $<%= invoice.sprint_cost - invoice.sprint_payments %></div><br>
+<%= form_with url: make_payment_path, class: 'form-inline' do |f| %>
   <%= f.hidden_field :invoice_id, :value => invoice.id %>
+  <%= f.hidden_field :project_id, :value => invoice.id %>
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+  <%= f.hidden_field :sprint_payment, :value => true %>
+
 
   <%= f.text_field :amount, :value => 'Payment Amount' %>
 

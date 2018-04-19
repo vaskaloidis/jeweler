@@ -1,5 +1,22 @@
 module ApplicationHelper
 
+  def self.sprint_percent(project)
+    total_tasks = project.current_sprint.tasks.count
+    completed_tasks = project.current_sprint.completed_tasks.count
+    if total_tasks > 0
+    tasks_diff =  completed_tasks.to_f / total_tasks.to_f
+    else
+      tasks_diff = 0
+    end
+    progress_total = (project.sprint_current - 1.0) + tasks_diff.to_f
+    progress_percent = ( progress_total.to_f / project.sprint_total.to_f) * 100.to_f
+    return progress_percent
+  end
+
+  def self.alphabet
+    return ("a".."zz").to_a
+  end
+
   def self.display_project_nav?(controller_name, action_name)
 
     if  (controller_name == 'projects' and action_name != 'index' and action_name != 'new') or

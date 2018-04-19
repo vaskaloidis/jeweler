@@ -130,7 +130,7 @@
   <% end %>
 
   <% if signed_in? %>
-    <% if controller_name == 'projects' %>
+    <% if (controller_name == 'projects') && action_name != 'new' && action_name != 'create' %>
       <div id="settings_container">
         <%= render 'layouts/settings_pane', project: @project, user: current_user %>
       </div>
@@ -155,7 +155,8 @@
         <% end %>
       <% end %>
 
-      <%= render 'layouts/top_notifications' %>
+
+      <%= render 'layouts/top_notifications', project: @project, current_user: current_user %>
 
       <%= yield %>
 
@@ -165,9 +166,6 @@
 
     <% unless @timeline_modals.nil? %>
       <% if @timeline_modals %>
-        <%= render 'notes/create_project_update_modal' %>
-        <%= render 'notes/create_note_modal' %>
-        <%= render 'notes/update_note_modal' %>
         <%= render 'discussions/discussion_modal' %>
       <% end %>
     <% end %>

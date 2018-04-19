@@ -24,9 +24,14 @@ i.fas.fa-ban.pull-right {
     margin-right: 5px;
 }
 .timeline_title > h2 {
-    display:inline;
+    /*display:inline;*/
 }
 .timeline_title > span.alert {
+    margin-right: 5px;
+    padding:2px !important;
+    font-size: .8em;
+}
+#timeline_sprint_task_message {
     margin-right: 5px;
     padding:2px !important;
     display: inline !important;
@@ -89,5 +94,51 @@ ul.settings_sprint_balance > li > span.badge {
 }
 
 .white-icon {
-    color: #979898;
+    color: #979898 !important;
+}
+
+.xe-widget.xe-conversations .xe-body {
+    border-bottom: 0px solid white !important;
+}
+.xe-widget.xe-conversations .xe-body .xe-comment-entry .xe-comment {
+    padding: 1px 0px 1px 10px !important;
+    margin-bottom:1px !important;
+}
+.xe-widget.xe-conversations .xe-body ul>li {
+    margin:1px 0px !important;
+}
+
+/* Margins and Paddings */
+.margin-bottom-2 {
+    margin-bottom: 2px;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+
+.margin-right-5 {
+    margin-right: 5px;
+}
+.margin-7 {
+    margin: 7px;
+}
+.margin-top-10 {
+    margin-top:10px;
+}
+.margin-top-20 {
+    margin-top:20px;
+}
+.margin-10 {
+    margin:10px;
+}
+.margin-left-10 {
+    margin-left: 10px;
+}
+.margin-left-20 {
+     margin-left:10px;
+ }
+
+.cbp_tmlabel > h3 h4 {
+    margin: 15px;
 }

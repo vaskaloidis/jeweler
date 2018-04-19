@@ -1,29 +1,6 @@
 class NotesController < ApplicationController
   before_action :set_note, only: [:show, :edit, :update, :destroy]
 
-  def edit_note_modal
-    @note = Note.find(params[:note_id])
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def update_note_modal
-
-    @note = Note.update(params)
-    @note.save
-
-    if @note.invalid?
-      logger.error("Note not updated succesfully")
-      log.error(@note.errors)
-    end
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def delete_note_inline
     id = params[:note_id]
     @note = Note.find(id)
@@ -31,50 +8,6 @@ class NotesController < ApplicationController
     @note.destroy
 
     @notes = @project.notes.order('created_at DESC').all
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def create_note_modal
-
-    logger.debug("Executing Note Modal")
-
-    @project = Project.find(params[:project_id])
-
-    @note = Note.create_note(@project, current_user, params[:content])
-
-    if @note.invalid?
-      @note.errors.each do |e|
-        logger.error(e)
-      end
-      redirect_to root_path, notice: 'Note was NOT created.'
-    end
-
-    @notes = @project.notes.where(note_type: [:note, :commit, :project_update]).order('created_at DESC').all
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def create_project_update_modal
-
-    logger.debug("Executing Project Update Modal")
-
-    @project = Project.find(params[:project_id])
-
-    @note = Note.create_event(@project, current_user, params[:content])
-
-    if @note.invalid?
-      @note.errors.each do |e|
-        logger.error(e)
-      end
-      redirect_to root_path, notice: 'Note was NOT created.'
-    end
-
-    @notes = @project.notes.where(note_type: [:note, :commit, :project_update]).order('created_at DESC').all
 
     respond_to do |format|
       format.js
@@ -95,6 +28,21 @@ class NotesController < ApplicationController
   # GET /notes/new
   def new
     @note = Note.new
+    @note.author = current_user
+    @note.project = Project.find(params[:project_id])
+    @note.note_type = 'note'
+
+    unless @note.project.current_sprint.nil?
+      @note.invoice = @note.project.current_sprint
+    end
+
+    unless @note.project.current_task.nil?
+      @note.invoice_item = @note.project.current_task
+    end
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /notes/1/edit
@@ -105,16 +53,22 @@ class NotesController < ApplicationController
   # POST /notes.json
   def create
     @note = Note.new(note_params)
+    @note.author = current_user
+
+    project = @note.project
+    unless project.current_sprint.nil?
+      @note.invoice = project.current_sprint
+    end
+
+    unless project.current_task.nil?
+      @note.invoice_item = project.current_task
+    end
 
     if @note.note_type == 'demo'
       uploader = AvatarUploader.new
-
       require 'screencap'
-
       f = Screencap::Fetcher.new(@note.content)
-
       screenshot = f.fetch
-
       # r = Random.new
       # r.rand(1...1000)
       # f = Screencap::Fetcher.new('http://google.com')
@@ -124,13 +78,11 @@ class NotesController < ApplicationController
 
     respond_to do |format|
       if @note.save
-        @notes = Note.all
-
-        format.html {redirect_to @note, notice: 'Note was successfully created.'}
+        @note.reload
         format.json {render :show, status: :created, location: @note}
         format.js
       else
-        format.html {render :new}
+        logger.error("Error Creating Note: " + @note.errors.full_messages.first)
         format.json {render json: @note.errors, status: :unprocessable_entity}
         format.js
       end
@@ -140,13 +92,18 @@ class NotesController < ApplicationController
   # PATCH/PUT /notes/1
   # PATCH/PUT /notes/1.json
   def update
+    if @note.invalid?
+      logger.error("Note not updated succesfully")
+      log.error(@note.errors)
+    end
+
     respond_to do |format|
       if @note.update(note_params)
-        format.html {redirect_to @note, notice: 'Note was successfully updated.'}
         format.json {render :show, status: :ok, location: @note}
+        format.js
       else
-        format.html {render :edit}
         format.json {render json: @note.errors, status: :unprocessable_entity}
+        format.js
       end
     end
   end

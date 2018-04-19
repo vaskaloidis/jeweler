@@ -1,9 +1,9 @@
 <div style="padding:0px" class="xe-widget xe-conversations">
   <div class="xe-body">
-    <ul id="conversation_messages_target" class="list-unstyled">
+    <ul id="conversation_messages_target_<%= note.id.to_s %>" class="list-unstyled">
       <%= render 'discussions/conversation_messages', discussions: discussions %>
     </ul>
-    <div id="conversation_form_target">
+    <div id="conversation_form_target_<%= note.id.to_s %>">
       <%= render 'discussions/conversation_create_message_form', note: note, user: user %>
     </div>
   </div>

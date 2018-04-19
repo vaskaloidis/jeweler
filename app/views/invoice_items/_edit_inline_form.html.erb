@@ -1,8 +1,6 @@
-<%= form_with model: task, url: update_task_inline_path, class: 'form-inline', remote: true do |f| %>
+<%= form_with model: task, class: 'form-inline', remote: true do |f| %>
   <div class="form-group">
-    <%= f.submit 'Save', :class => 'btn-sm btn-success', style: 'display:inline' %>
-
-    <%= f.check_box :complete %>
+    <%= f.check_box :complete, class: 'iswitch iswitch-info' %>
   </div>
 
   <div class="form-group">
@@ -46,16 +44,21 @@
       <% else %>
         <%= f.text_field :hours %>
       <% end %>
-
-      <%= f.hidden_field :invoice_id, :value => task.invoice.id %>
     </div>
+
+
+      <div class="form-group pull-right">
+        <%= f.hidden_field :invoice_id, :value => task.invoice.id %>
+        <div class="btn-group">
+          <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save"></i></button>
+          <%#= f.submit '<i class="fas fa-save"></i>'.html_safe, :class => 'btn-sm btn-success', style: 'display:inline' %>
+          <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                      delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
+                      class: 'btn btn-sm btn-success', style: '' %>
+          <%= link_to '<i class="fas fa-times"></i>'.html_safe, cancel_task_update_path(task.invoice.id), :class => 'btn btn-sm btn-success', style: '' %>
+        </div>
+      </div>
   <% end %>
 
-
-
-  <%#= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
-                delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
-                class: 'btn btn-sm btn-success', style: 'padding:10x;color:white;font-size:1.2em;display:inline;' %>
-  <%#= link_to 'Cancel', cancel_task_update_path(task.invoice.id), :class => 'btn-sm btn-primary', style: '' %>
 <% end %>
 

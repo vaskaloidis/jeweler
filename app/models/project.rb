@@ -27,12 +27,43 @@ class Project < ApplicationRecord
   validates :name, presence: true
   validates :github_url, presence: true, uniqueness: true
 
-  def events
-    return self.notes.where(note_type: [:event, :project_update]).order('created_at DESC').all
+  @@current_user = nil
+
+  def sprint_notes
+    return self.current_sprint.notes.where(note_type: [:note, :commit, :project_update, :event, :payment, :payment_request, :demo]).order('created_at DESC').all
   end
 
-  def is_owner(user)
-    return self.is_owner?(user)
+  def set_user(current_user)
+    @@current_user = current_user
+  end
+
+  def is_owner?(user = nil)
+    if user.nil?
+      if User.current_user == self.owner
+        return true
+      else
+        return false
+      end
+    else
+      if self.owner == user
+        return true
+      else
+        return false
+      end
+    end
+  end
+
+
+  def is_customer(user = nil)
+    if self.customers.include?(user)
+      return true
+    else
+      return false
+    end
+  end
+
+  def events
+    return self.notes.where(note_type: [:event, :project_update]).order('created_at DESC').all
   end
 
   def balance
@@ -116,7 +147,14 @@ class Project < ApplicationRecord
         sprint.reload
       end
 
-      self.reload
+      if sprint.invalid?
+        logger.error("Error opening Sprint, while setting current sprint (changing sprint) on project ID: " + self.id.to_s);
+      end
+
+      if self.invalid?
+        logger.error("Error changing current sprint on project ID: " + self.id.to_s)
+      end
+
       self.save
       return self
     end
@@ -148,32 +186,6 @@ class Project < ApplicationRecord
     note.user_id = current_user
     note.project = self
     note.save
-  end
-
-  def is_owner?(user = nil)
-
-    if user.nil?
-      if self.owner == current_user
-        return true
-      else
-        return false
-      end
-    else
-      if self.owner == user
-        return true
-      else
-        return false
-      end
-    end
-  end
-
-
-  def is_customer(user)
-    if self.customers.include?(user)
-      return true
-    else
-      return false
-    end
   end
 
   def non_customers

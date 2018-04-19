@@ -1,52 +1,31 @@
-<%= form_with(model: note, local: true) do |form| %>
-  <% if note.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(note.errors.count, "error") %> prohibited this note from being saved:</h2>
+<li id="new_note_item">
+  <time class="cbp_tmtime" datetime="2014-12-06T03:45">
+    <span>Now</span>
+    <span>Today</span>
+  </time>
 
-      <ul>
-      <% note.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :content %>
-    <%= form.text_field :content %>
+  <div class="cbp_tmicon timeline-bg-success">
+    <i class="fas fa-sticky-note"></i>
   </div>
-
-  <div class="field">
-    <%= form.label :note_type %>
-    <%= form.number_field :note_type %>
+  <div class="cbp_tmlabel">
+    <%= render 'notes/note_header', note: note %>
+    <%= form_with model: note do |f| %>
+      <div class="modal-body" style="padding-bottom:0px; height:125%">
+        <div class="form-group">
+          <%= f.text_area :content, class: 'form-control' %>
+          <%= f.hidden_field :project_id, :value => note.project.id %>
+          <%= f.hidden_field :note_type, :value => note.note_type %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="btn-group">
+          <%= f.submit "Post Note", :class => 'btn btn-success' %>
+          <a href="#" onclick="$('#new_note_item').remove(); return false;" class="btn btn-primary">Cancel</a>
+        </div>
+      </div>
+    <% end %>
+    <%#= render 'notes/note_meta', note: note, current_user: current_user %>
   </div>
+</li>
 
-  <div class="field">
-    <%= form.label :content %>
-    <%= form.text_area :content %>
-  </div>
 
-  <div class="field">
-    <%= form.label :git_commit_id %>
-    <%= form.text_field :git_commit_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :project_id %>
-    <%= form.text_field :project_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :discussion_id %>
-    <%= form.text_field :discussion_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :author_id %>
-    <%= form.text_field :author_id %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>

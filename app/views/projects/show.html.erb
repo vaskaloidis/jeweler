@@ -10,17 +10,15 @@
           <section class="profile-env">
 
             <div class="row">
-              <div class="col-sm-3">
+              <div class="col-sm-xs-12 col-sm-3">
                 <%= render 'projects/project_image', project: @project %>
               </div>
-              <div class="col-sm-9">
+              <div class="col-xs-12 col-sm-9">
                 <%= render 'projects/widgets', project: @project %>
                 <%= render 'projects/sprint_meter', project: @project %>
-
-                <div id="home_timeline_container">
-                  <%= render 'projects/timeline', notes: @notes %>
-                </div>
-
+              </div>
+              <div id="home_timeline_container" class="col-xs-12 col-md-8 pull-right">
+                <%= render 'projects/timeline', notes: @project.sprint_notes %>
               </div>
             </div>
 
@@ -29,24 +27,31 @@
         </div>
       </div>
 
-    </div>
-    <div class="tab-pane" id="readme">
-      <%= @github_readme_parsed.html_safe %>
-    </div>
-
-    <div class="tab-pane" id="settings">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Project Settings
-        </div>
-        <div class="panel-body">
-          <% unless @project.is_owner?(current_user) %>
-            <%= link_to '<i class="linecons-trash"></i> Leave Project'.html_safe, leave_project_path(@project.id, current_user) %>
-          <% end %>
+      <div class="tab-pane" id="readme">
+        <div class="panel panel-default panel-border">
+          <div class="panel-heading">
+            <%= @project.readme_file %>
+          </div>
+          <div class="panel-body">
+            <p><%= @github_readme_parsed.html_safe %></p>
+          </div>
         </div>
       </div>
+
+      <div class="tab-pane" id="settings">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Project Settings
+          </div>
+          <div class="panel-body">
+            <% unless @project.is_owner?(current_user) %>
+              <%= link_to '<i class="linecons-trash"></i> Leave Project'.html_safe, leave_project_path(@project.id, current_user) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
-
 </div>

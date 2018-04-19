@@ -35,9 +35,13 @@ class InvoicesController < ApplicationController
       end
     end
 
-    if @payment.invalid?
+    if @payment.valid?
+      Note.create_payment(@payment.invoice, current_user, @payment.amount)
+    else
       logger.error("Payment Error User ID: " + @payment.user.id.to_s + " Project ID: " + @payment.invoice.project.id.to_s + " Sprint " + @payment.invoice.sprint.to_s)
     end
+
+    @sprint_payment = params[:sprint_payment]
 
     respond_to do |format|
       format.js
@@ -50,11 +54,9 @@ class InvoicesController < ApplicationController
     @project = @invoice.project
     @old_task = @project.current_task
 
-    unless @old_task.nil?
-      unless @old_task.complete
+    unless @old_task.nil? or @old_task.complete
         @old_task.complete = true
         @old_task.save
-      end
     end
 
     @project.current_task = @task

@@ -1,17 +1,7 @@
-if ($("#success_message").is(':visible')) {
-    $("#success_message").html('');
-    $("#success_message").hide('slide');
-}
-
-if ($("#error_message").is(':visible')) {
-    $("#error_message").html('');
-    $("#error_message").hide('slide');
-}
-
 <% if @save.valid? %>
-  $("#success_message").html('Customer added successfully');
+  toastr.success('Customer Added');
 <% else %>
-  $("#error_message").html('Error adding Customer to project');
+  toastr.error('Error adding Customer to project');
 <% end %>
 
 $('#customers_container').html('<%= j render 'projects/customers', project: @project %>');

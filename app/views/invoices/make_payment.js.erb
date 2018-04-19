@@ -1,25 +1,13 @@
-if ($("#success_message").is(':visible')) {
-    $("#success_message").html('');
-    $("#success_message").hide('slide');
-}
-
-if ($("#error_message").is(':visible')) {
-    $("#error_message").html('');
-    $("#error_message").hide('slide');
-}
-
 $('.settings-pane').hide('slide');
 
-
 <% if @payment.valid? %>
-
-  $("#success_message").show('slide');
-  $("#success_message").html('Sprint <%= @payment.invoice.sprint.to_s %> payment made!');
+  toastr.success('Sprint <%= @payment.invoice.sprint.to_s %> payment made!');
   $("#settings_container").html('<%= j render 'layouts/settings_pane', project: @payment.invoice.project, user: @user %>');
 
+  <% unless @sprint_payment.nil? and !@sprint_payment%>
+      $("#invoice_panel_<%= @payment.invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @payment.invoice  %>');
+  <% end %>
+
 <% else %>
-
-  $("#error_message").show('slide')
-  $("#error_message").html('Sprint <%= @payment.invoice.sprint.to_s %> payment could not be made.');
-
+  toastr.error('Sprint <%= @payment.invoice.sprint.to_s %> payment could not be made.');
 <% end %>

@@ -1,2 +1,3 @@
-$('#timeline_notes').html("<%= escape_javascript(render 'projects/note_full_timeline', local_note: Note.all ) %>");
-$('#create_note_modal').modal('hide');
+toastr.success('Note Created');
+
+$('#home_timeline_container').html('<%= j render 'projects/timeline', notes: @note.project.sprint_notes %>');
