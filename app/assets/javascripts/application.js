@@ -27,3 +27,15 @@
 //= require devexpress-web-14.1/js/dx.all.js
 //= require toastr/toastr.min.js
 //= require xenon-custom.js
+
+
+$('.load-spinner').bind('ajax:beforeSend', function() {
+    $('#loader-2').show();
+    $('body').addClass('page-loading-overlay');
+});
+
+$('.load-spinner').bind('ajax:complete', function() {
+    $('#loader-2').hide();
+    $('body').removeClass('page-loading-overlay');
+
+});

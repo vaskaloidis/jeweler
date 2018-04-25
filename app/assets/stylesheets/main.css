@@ -3,7 +3,17 @@
 /*
  *= require font-awesome
  */
-
+.sprint-displayed {
+    border-top:3px solid gray;
+}
+.timeline_query {
+    width:100%;
+    background: white !important;
+    border: 1px solid #eaeaea !important;
+}
+.timeline_query > span {
+    display: inline
+}
 #timeline_alert {
     padding:1px;
 }
