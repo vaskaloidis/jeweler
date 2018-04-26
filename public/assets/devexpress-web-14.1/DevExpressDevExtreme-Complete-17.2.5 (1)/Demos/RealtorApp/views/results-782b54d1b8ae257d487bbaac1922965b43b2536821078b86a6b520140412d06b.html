@@ -1,0 +1,20 @@
+<div data-options="dxView : { name: 'Results' } " >
+    <div data-bind="dxCommand: { title: '', id: 'list', icon: iconList, onExecute: goToList }"></div>
+    <div data-bind="dxCommand: { title: '', id: 'map', icon: iconMap, onExecute: goToMap }"></div>
+    <div data-bind="dxCommand: { title: '', id: 'gallery', icon: iconGallery, onExecute: goToGallery }"></div>
+
+    <div data-options="dxContent : { targetPlaceholder: 'content' } " class="result-item">
+
+        <div data-bind="dxMultiView: { height: '100%', selectedIndex: activeItem }">
+            <div data-options="dxItem: {}">
+                <div class="results list-content" data-options="dxViewPlaceholder: { viewName: 'ResultsList' }"></div>
+            </div>
+            <div data-options="dxItem: {}">
+                <div class="results map-content" data-options="dxViewPlaceholder: { viewName: 'ResultsMap' }"></div>
+            </div>
+            <div data-options="dxItem: {}">
+                <div class="results gallery-content" data-options="dxViewPlaceholder: { viewName: 'ResultsGallery' }"></div>
+            </div>
+        </div>
+    </div>
+</div>

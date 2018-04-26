@@ -1,0 +1,19 @@
+<div class="panorama-container">
+    <dx-panorama
+        title="Pictures"
+        [dataSource]="panoramaData"
+        (onItemClick)="itemClick($event)">
+        <dxo-background-image
+            [width]="800"
+            [height]="600"
+            url="../../../../images/cities/28.jpg"
+        ></dxo-background-image>
+        <div *dxTemplate="let data of 'item'">
+            <div>{{data.text}}</div>
+            <div class="image-container" *ngFor="let image of data.images">
+                <div class="image" [style.background-image]="'url(' + image.src + ')'"></div>
+                <div>{{image.text}}</div>
+            </div>
+        </div>
+    </dx-panorama>
+</div>

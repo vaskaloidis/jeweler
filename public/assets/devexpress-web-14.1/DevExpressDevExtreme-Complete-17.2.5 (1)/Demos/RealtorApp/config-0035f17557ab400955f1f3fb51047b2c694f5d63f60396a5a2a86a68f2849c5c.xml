@@ -1,0 +1,13 @@
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+  <preference name="DisallowOverscroll" value="true" />
+  <preference name="android-windowSoftInputMode" value="adjustPan" />
+  <preference name="StatusBarOverlaysWebView" value="false" />
+  <preference name="StatusBarBackgroundColor" value="#000000" />
+  <author email="email@sample.com" href="sample.com">Description</author>
+  <plugin name="cordova-plugin-geolocation" />
+  <plugin name="cordova-plugin-splashscreen" onload="true" />
+  <plugin name="cordova-plugin-whitelist" />
+  <plugin name="cordova-plugin-ios-longpress-fix" />
+  <plugin name="cordova-plugin-statusbar" onload="true" />
+  <access origin="*" />
+</widget>

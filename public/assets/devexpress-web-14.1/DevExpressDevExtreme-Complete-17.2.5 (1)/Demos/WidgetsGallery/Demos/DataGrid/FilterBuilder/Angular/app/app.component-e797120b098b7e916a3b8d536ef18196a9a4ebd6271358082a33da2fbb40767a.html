@@ -1,0 +1,41 @@
+<dx-data-grid 
+    id="gridContainer" 
+    [dataSource]="dataSource"
+    [columns]="columns"
+    (onToolbarPreparing)="onToolbarPreparing($event)">
+</dx-data-grid>
+<dx-popup
+    title="Filter Builder"
+    [deferRendering]="false"
+    [(visible)]="popupVisible"
+    (onShowing)="onPopupShowing()">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view direction="both"> 
+            <dx-filter-builder
+                [(value)]="filterValue"
+                [(allowHierarchicalFields)]="allowHierarchicalFields"
+                [fields]="columns">
+            </dx-filter-builder>
+        </dx-scroll-view>       
+    </div>
+    <dxi-toolbar-item
+        toolbar="bottom" 
+        location="after" 
+        widget="dxButton"
+        [options]="applyFilterButtonOptions">
+    </dxi-toolbar-item>
+    <dxi-toolbar-item
+        toolbar="bottom" 
+        location="after" 
+        widget="dxButton"
+        [options]="cancelButtonOptions">
+    </dxi-toolbar-item>
+</dx-popup>
+<div class="options">
+    <div class="caption">Options</div>
+    <div class="option">
+    <dx-check-box 
+        text="Allow hierarchical fields" 
+        [(value)]="allowHierarchicalFields"></dx-check-box>
+    </div>
+</div>

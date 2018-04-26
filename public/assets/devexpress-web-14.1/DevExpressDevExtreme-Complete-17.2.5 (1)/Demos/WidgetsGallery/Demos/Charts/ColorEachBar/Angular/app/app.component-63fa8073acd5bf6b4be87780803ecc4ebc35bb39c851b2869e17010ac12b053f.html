@@ -1,0 +1,16 @@
+<dx-chart
+    id="chart"
+    [dataSource]="userData"
+    [equalBarWidth]=false
+    palette="soft">
+    <dxo-title 
+        text="Age Breakdown of Facebook Users in the U.S."
+        subtitle="as of January 2017">
+    </dxo-title>
+    <dxo-common-series-settings 
+        argumentField="age"
+        type="bar"
+        valueField="number">
+    </dxo-common-series-settings>
+    <dxo-series-template nameField="age"></dxo-series-template>
+</dx-chart>

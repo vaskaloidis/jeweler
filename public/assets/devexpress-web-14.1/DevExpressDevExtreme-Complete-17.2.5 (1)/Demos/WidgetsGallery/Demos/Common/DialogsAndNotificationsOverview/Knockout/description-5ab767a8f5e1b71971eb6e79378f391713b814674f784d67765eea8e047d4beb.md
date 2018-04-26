@@ -1,0 +1,1 @@
+DevExtreme provides a comprehensive set of HTML5 JavaScript Dialog and Notification Widgets that includes Popup, Popover, Toast, Tooltip, and many others. Making use of the MVVM pattern, the widgets support two-way binding to view model properties. Discover their key features in detail from demos in this section.

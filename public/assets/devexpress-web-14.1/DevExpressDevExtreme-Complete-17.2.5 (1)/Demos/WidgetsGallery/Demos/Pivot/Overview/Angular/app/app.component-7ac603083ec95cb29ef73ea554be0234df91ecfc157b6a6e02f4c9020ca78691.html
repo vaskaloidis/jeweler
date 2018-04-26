@@ -1,0 +1,18 @@
+<div class="pivot-container">
+    <dx-pivot [dataSource]="dataSource" (onItemClick)="itemClick($event)">
+        <div *dxTemplate="let pivotItem of 'item'">
+            <dx-list [dataSource]="pivotItem.listData">
+                <div *dxTemplate="let contact of 'item'">
+                    <div class="image-container">
+                        <div class="image" [style.background-image]="'url(' + contact.image + ')'"></div>
+                    </div>
+                    <div class="info">
+                        <div>{{contact.name}}</div>
+                        <div>{{contact.phone}}</div>
+                        <div>{{contact.email}}</div>
+                    </div>
+                </div>
+            </dx-list>
+        </div>
+    </dx-pivot>
+</div>
