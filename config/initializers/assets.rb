@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file.
 
 # Version of your assets, change this if you want to expire all your assets.
-Rails.application.config.assets.version = '1.0'
+Rails.application.config.assets.version = '1.1'
 
 # Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
@@ -23,15 +23,15 @@ Rails.application.config.assets.precompile += %w( application.css.less )
 
 # Fonts
 Rails.application.config.assets.precompile += %w( http://fonts.googleapis.com/css?family=Arimo:400,700,400italic )
-Rails.application.config.assets.precompile += %w( fonts/linecons/css/linecons.css )
-Rails.application.config.assets.precompile += %w( fonts/fontawesome/css/font-awesome.min.css )
+Rails.application.config.assets.precompile += %w( fonts/linecons/css/linecons.css.erb )
+Rails.application.config.assets.precompile += %w( fontawesome.css )
 
 # LESS Pre-Parsed Stylesheets
-Rails.application.config.assets.precompile += %w( bootstrap.css.less )
-Rails.application.config.assets.precompile += %w( xenon-core.css.less )
-Rails.application.config.assets.precompile += %w( xenon-forms.css.less )
-Rails.application.config.assets.precompile += %w( xenon-components.css.less )
-Rails.application.config.assets.precompile += %w( xenon-skins.css.less )
+Rails.application.config.assets.precompile += %w( less/bootstrap.less )
+Rails.application.config.assets.precompile += %w( less/xenon-core.less )
+Rails.application.config.assets.precompile += %w( less/xenon-forms.less )
+Rails.application.config.assets.precompile += %w( less/xenon-components.less )
+Rails.application.config.assets.precompile += %w( less/xenon-skins.less )
 
 # Controller Stylesheets
 Rails.application.config.assets.precompile += %w( main.css )
@@ -46,16 +46,13 @@ Rails.application.config.assets.precompile += %w( xenon-toggles.js )
 Rails.application.config.assets.precompile += %w( joinable.js )
 Rails.application.config.assets.precompile += %w( xenon-widgets.js )
 Rails.application.config.assets.precompile += %w( devexpress-web-14.1/js/dx.all.js )
-Rails.application.config.assets.precompile += %w( devexpress-web-14.1/js/dx.chartjs.j )
+Rails.application.config.assets.precompile += %w( devexpress-web-14.1/js/dx.chartjs.js )
 Rails.application.config.assets.precompile += %w( toastr/toastr.min.js )
-Rails.application.config.assets.precompile += %w( xenon-custom.js );
+Rails.application.config.assets.precompile += %w( xenon-custom.js )
 
 Rails.application.config.assets.precompile += %w( home.css )
 
-# Rails.application.config.assets.precompile += %w( jeweler-logo-full-black.png );
-# Rails.application.config.assets.precompile += %w( jeweler-logo-mini-small-black.png );
-
-Rails.application.config.assets.precompile += %w( fontawesome-all.min.css );
+Rails.application.config.assets.precompile += %w( fontawesome-all.min.css )
 Rails.application.config.assets.precompile += %w( home/bootstrap.css )
 Rails.application.config.assets.precompile += %w( home/style.css )
 Rails.application.config.assets.precompile += %w( home/dark.css )
