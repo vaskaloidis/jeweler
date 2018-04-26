@@ -1,15 +1,157 @@
 module ApplicationHelper
 
+  def self.alphabet
+    return ("a".."z").to_a
+  end
+
+  def self.name_pretty(pretty_name)
+    pretty_name.gsub! '_', ' '
+    pretty_name.capitalize!
+    return pretty_name
+  end
+
+  def self.uglify(ugly_name)
+    ugly_name.gsub! ' ', '_'
+    ugly_name.downcase
+    return ugly_name
+  end
+
+  def self.note_event_action(note)
+    case note.note_type
+      when 'commit'
+        'Committed Code'
+      when 'event'
+        case note.event_type
+          when 'task_created'
+            return 'Created a Task'
+          when 'task_updated'
+            return 'Updated a Task'
+          when 'task_deleted'
+            return 'Deleted a Task'
+          when 'sprint_opened'
+            return 'Opened a Sprint'
+          when 'sprint_closed'
+            return 'Closed a Sprint'
+          when 'hours_reported'
+            return 'Reported Hours'
+          when 'task_completed'
+            return 'Completed a Task'
+          when 'sprint_completed'
+            return 'Completed a Sprint'
+          when 'payment_request_cancelled'
+            return 'Cancelled a Payment Request'
+          when 'current_task_changed'
+            return 'Changed Current Task'
+          when 'current_sprint_changed'
+            return 'Changed the Current Sprint'
+          else
+            return ''
+        end
+      when 'project_update'
+        return 'Posted a Project Update'
+      when 'payment_request'
+        return 'Requested a Payment'
+      when 'payment'
+        'Made a Payment'
+      when 'note'
+        return 'Posted a Note'
+      when 'demo'
+        return 'Posted a Demo of ' + note.content
+      else
+        return ''
+    end
+  end
+
+  def self.note_icon_header_section(note_type)
+    case note_type
+      when 'project_update'
+        return '<div class="cbp_tmicon timeline-bg-warning">
+                  <i class="far fa-clock"></i>
+                </div>'
+      when 'event'
+        return '<div class="cbp_tmicon timeline-bg-info">
+              <i class="far fa-clock"></i>
+            </div>'
+      when 'note'
+        return '<div class="cbp_tmicon timeline-bg-success">
+                  <i class="fas fa-sticky-note"></i>
+                </div>'
+      when 'demo'
+        return '<div class="cbp_tmicon timeline-bg-red">
+                  <i class="fa-binoculars"></i>
+                </div>'
+      when 'payment'
+        return ' <div class="cbp_tmicon timeline-bg-success">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>'
+      when 'payment_request'
+        return '<div class="cbp_tmicon timeline-bg-success">
+                  <i style="color:white !important" class="fas fa-hand-holding-usd white-icon"></i>
+                </div>'
+      when 'commit'
+        return '<div class="cbp_tmicon timeline-bg-danger">
+                  <i class="fas fa-code-branch"></i>
+                </div>'
+      else
+        return '<div class="cbp_tmicon timeline-bg-success">
+                  <i class="fas fa-sticky-note"></i>
+                </div>'
+    end
+  end
+
+  def self.note_icon_color(note_type)
+    case note_type
+      when 'project_update'
+        return 'warning'
+      when 'event'
+        return 'info'
+      when 'note'
+        return 'success'
+      when 'demo'
+        return 'danger'
+      when 'payment'
+        return 'success'
+      when 'payment_request'
+        return 'success'
+      when 'commit'
+        return 'danger'
+      else
+        return 'success'
+    end
+  end
+
+  def self.note_icon(note_type)
+    case note_type
+      when 'project_update'
+        return '<i class="far fa-clock"></i>'
+      when 'event'
+        return '<i class="far fa-clock"></i>'
+      when 'note'
+        return '<i class="fas fa-sticky-note"></i>'
+      when 'demo'
+        return '<i class="fa-binoculars"></i>'
+      when 'payment'
+        return '<i class="fas fa-dollar-sign"></i>'
+      when 'payment_request'
+        return '<i style="color:white !important" class="fas fa-hand-holding-usd white-icon"></i>'
+      when 'commit'
+        return '<i class="fas fa-code-branch"></i>'
+      else
+        return '<i class="fas fa-sticky-note"></i>'
+    end
+
+  end
+
   def self.sprint_percent(project)
     total_tasks = project.current_sprint.tasks.count
     completed_tasks = project.current_sprint.completed_tasks.count
     if total_tasks > 0
-    tasks_diff =  completed_tasks.to_f / total_tasks.to_f
+      tasks_diff = completed_tasks.to_f / total_tasks.to_f
     else
       tasks_diff = 0
     end
     progress_total = (project.sprint_current - 1.0) + tasks_diff.to_f
-    progress_percent = ( progress_total.to_f / project.sprint_total.to_f) * 100.to_f
+    progress_percent = (progress_total.to_f / project.sprint_total.to_f) * 100.to_f
     return progress_percent
   end
 
@@ -19,9 +161,10 @@ module ApplicationHelper
 
   def self.display_project_nav?(controller_name, action_name)
 
-    if  (controller_name == 'projects' and action_name != 'index' and action_name != 'new') or
+    if (controller_name == 'projects' and action_name != 'index' and action_name != 'new') or
         (controller_name == 'invoices') or
-        (controller_name == 'project_customers')
+        (controller_name == 'project_customers') or
+        (controller_name == 'payments' and action_name == 'index')
       return true
     else
       return false
