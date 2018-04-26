@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180412160727) do
+ActiveRecord::Schema.define(version: 20180425001138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20180412160727) do
     t.decimal "hours"
     t.decimal "rate", default: "0.0"
     t.string "item_type"
-    t.boolean "complete"
+    t.boolean "complete", default: false
     t.bigint "invoice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20180412160727) do
     t.bigint "invoice_id"
     t.bigint "invoice_item_id"
     t.string "commit_diff_path"
+    t.integer "event_type"
     t.index ["invoice_id"], name: "index_notes_on_invoice_id"
     t.index ["invoice_item_id"], name: "index_notes_on_invoice_item_id"
     t.index ["project_id"], name: "index_notes_on_project_id"
@@ -126,6 +127,7 @@ ActiveRecord::Schema.define(version: 20180412160727) do
     t.integer "sprint_total"
     t.integer "sprint_current"
     t.string "heroku_token"
+    t.string "google_analytics_tracking_code"
     t.index ["github_url"], name: "index_projects_on_github_url", unique: true
     t.index ["invoice_item_id"], name: "index_projects_on_invoice_item_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
@@ -158,7 +160,7 @@ ActiveRecord::Schema.define(version: 20180412160727) do
     t.datetime "locked_at"
     t.string "tagline"
     t.string "image"
-    t.string "company"
+    t.string "company", default: ""
     t.string "oauth"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
