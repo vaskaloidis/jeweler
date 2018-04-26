@@ -1,53 +1,48 @@
 <%= form_with model: task, class: 'form-inline', remote: true do |f| %>
-  <div class="form-group">
-    <%= f.check_box :complete, class: 'iswitch iswitch-info' %>
+  <div class="row">
+    <div class="col-xs-12 col-md-1">
+    </div>
+    <div class="col-xs-12 col-md-3">
+      Task
+    </div>
+    <div class="col-xs-12 col-md-2">
+      Rate
+    </div>
+    <div class="col-xs-12 col-md-2">
+      Estimate Hrs.
+    </div>
+    <div class="col-xs-12 col-md-2">
+      Actual Hrs.
+    </div>
+    <div class="col-xs-12 col-md-2">
+    </div>
   </div>
-
-  <div class="form-group">
-    <%= f.text_field :description, style: 'width:100%' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.text_field :rate %>
-  </div>
-
-  <% if task.invoice.only_planned? %>
-    <div class="form-group">
+  <div class="row">
+    <div class="col-xs-12 col-md-1">
+      <%= f.check_box :complete, class: 'iswitch iswitch-info' %>
+    </div>
+    <div class="col-xs-12 col-md-3">
+      <%= f.text_field :description, style: 'width:100%', class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-md-2">
+      <%= f.text_field :rate, style: '', class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-md-2">
       <% if task.planned_hours.nil? %>
-        <%= f.text_field :planned_hours, :value => 'Estimated Hours' %>
+        <%= f.text_field :planned_hours, :value => 'Estimated Hours', class: 'form-control' %>
       <% else %>
-        <%= f.text_field :planned_hours %>
-
+        <%= f.text_field :planned_hours, class: 'form-control' %>
       <% end %>
     </div>
-
-    <div class="form-group">
+    <div class="col-xs-12 col-md-2">
       <% if task.hours.nil? %>
-        <%= f.text_field :hours, :value => 'Reported Hours' %>
+        <%= f.text_field :hours, :value => 'Reported Hours', class: 'form-control' %>
       <% else %>
-        <%= f.text_field :hours %>
+        <%= f.text_field :hours, class: 'form-control' %>
       <% end %>
     </div>
-
-  <% else %>
-    <div class="form-group">
-      <% if task.planned_hours.nil? %>
-        <%= f.text_field :planned_hours, :value => 'Estimated Hours' %>
-      <% else %>
-        <%= f.text_field :planned_hours %>
-      <% end %>
-    </div>
-
-    <div class="form-group">
-      <% if task.hours.nil? %>
-        <%= f.text_field :hours, :value => 'Reported Hours' %>
-      <% else %>
-        <%= f.text_field :hours %>
-      <% end %>
-    </div>
-
-
-      <div class="form-group pull-right">
+    <div class="col-xs-12 col-md-2">
+      <div class="form-group">
         <%= f.hidden_field :invoice_id, :value => task.invoice.id %>
         <div class="btn-group">
           <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save"></i></button>
@@ -55,10 +50,12 @@
           <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
                       delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
                       class: 'btn btn-sm btn-success', style: '' %>
-          <%= link_to '<i class="fas fa-times"></i>'.html_safe, cancel_task_update_path(task.invoice.id), :class => 'btn btn-sm btn-success', style: '' %>
+          <%= link_to '<i class="fas fa-times"></i>'.html_safe, cancel_task_update_path(task.invoice.id), :class => 'btn btn-sm btn-success', style: '', remote:true %>
         </div>
       </div>
-  <% end %>
+    </div>
+  </div>
+
 
 <% end %>
 

@@ -1,11 +1,21 @@
-$("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice  %>');
+<%= render 'invoices/re-render_invoice_panel', invoice: @task.invoice %>
+
+<%= render 'notes/re-render_timeline', notes: @task.invoice.project.sprint_notes, project: @task.invoice.project %>
 
 toastr.success('Current Task Updated.');
 
 $('#sprint_gauge_container').animate({
-    width: '0'
+    width: '<%= ApplicationHelper.sprint_percent(@task.invoice.project) %>%'
 });
 
-$('#sprint_gauge_container').animate({
-    width: '<%= ApplicationHelper.sprint_percent(@invoice.project) %>%'
+
+$('#notifications_container').html('<%= j render 'layouts/notifications', project: @task.invoice.project %>');
+
+
+$('.link-delete').bind('ajax:beforeSend', function() {
+    $('#mySpinner').show();
+});
+
+$('.link-delete').bind('ajax:complete', function() {
+    $('#mySpinner').hide();
 });

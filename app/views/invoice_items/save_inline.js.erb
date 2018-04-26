@@ -1,12 +1,7 @@
 $("#invoice_items_<%= @invoice.id.to_s %>_hidden_row").hide('slide')
-
 <% if @task.valid? %>
-  $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice %>');
+  <%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
   toastr.success('Task Created Successfully');
 <% else %>
   toastr.error('Your Task Could Not Be Created');
 <% end %>
-
-<%# NEW: render 'invoices/invoice_panel', invoice: invoice, sprint: count %>
-<%# OLD: render('invoice_items/inline_item', invoice: @invoice) %>
-<%# DOCS: $("#items_grid").html("<%= escape_javascript(render partial: 'items_list', locals: { items: @selected } ) %>

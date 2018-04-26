@@ -1,27 +1,26 @@
-<% if @project.is_owner?(current_user) %>
+<% if project.is_owner?(current_user) %>
   <button type="button" class="btn btn-success btn-block text-left">
     Project Owner
     <i class="fa-check pull-right"></i>
   </button>
 
-
-  <% if @project.current_task.nil? %>
+  <% if project.current_task.nil? %>
     <div class="alert alert-danger">
-      Please <a href="#" style="color: white" onclick="$('#task_list').popover('toggle');"><strong>Set a Current Task</strong></a> You Are Working On.
+      Please <a href="#" style="color: white" onclick="$('.task_list').effect('shake');"><strong>Set a Current Task</strong></a> You Are Working On.
       <i class="fa-lg fa-check pull-right"></i>
     </div>
   <% end %>
 
 
-<% elsif @project.is_customer(current_user) %>
+<% elsif project.is_customer(current_user) %>
 
   <button type="button" class="btn btn-success btn-block text-left">
     Project Member
     <i class="fa-check pull-right"></i>
   </button>
 
-  <% unless @project.payment_requests.empty? %>
-    <% @project.payment_requests.each do |invoice| %>
+  <% unless project.payment_requests.empty? %>
+    <% project.payment_requests.each do |invoice| %>
       <div class="alert alert-danger">
        Payment Requested For Sprint <%= invoice.sprint.to_s %>. <strong><a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">Make Payment</a></strong>
       </div>

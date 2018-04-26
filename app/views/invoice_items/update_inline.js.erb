@@ -1,16 +1,6 @@
-
-
-
-
 <% if @task.valid? %>
-
-  $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= render 'invoices/invoice_panel', invoice: @invoice %>');
-
+  <%= render 'invoices/re-render_invoice_panel', invoice: invoice %>
   toastr.success('Task Created Successfully');
-
 <% else %>
-
-
   toastr.error('Your Task Could Not Be Created');
-
 <% end %>

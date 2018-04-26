@@ -23,7 +23,7 @@
         </td>
         <td class="user-name">
           <span class="name"><%= project.owner.first_name %> <%= project.owner.last_name %></span>
-          <span><%= project.owner.tagline %></span>
+          <span><%= project.owner.company %></span>
         </td>
         <td class="">
           <span class="email"><%= project.owner.email %></span>
@@ -57,7 +57,9 @@
           </td>
           <td class="user-name">
             <span class="name"><%= u.first_name %> <%= u.last_name %></span>
-            <span><%= u.tagline %></span>
+            <% unless u.company.nil? %>
+              <span><%= u.company %></span>
+            <% end %>
           </td>
           <td class="hidden-xs hidden-sm">
             <span class="email"><%= u.email %></span>

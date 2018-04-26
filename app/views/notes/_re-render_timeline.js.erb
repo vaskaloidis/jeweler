@@ -1,0 +1,5 @@
+<% if (defined?(query)).nil? %>
+  $('#home_timeline_container').html('<%= j render 'projects/timeline', notes: notes, project: project  %>');
+<% else %>
+  $('#home_timeline_container').html('<%= j render 'projects/timeline', notes: notes, query: query, project:project  %>');
+<% end %>

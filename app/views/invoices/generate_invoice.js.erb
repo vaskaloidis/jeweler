@@ -1,3 +1,4 @@
-$("#modal_target").html("<%= escape_javascript(render partial: 'conversation',
-                            locals: { discussion: @conversation } ) %>");
+$("#modal_target").html("<%= j render 'invoices/generate_printable_invoice', invoice: @invoice, estimate: @estimate %>");
+
+
 $('#modal').modal('show');

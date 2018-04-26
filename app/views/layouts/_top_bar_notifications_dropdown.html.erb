@@ -1,0 +1,31 @@
+
+  <% if project.current_task.nil? %>
+    <li class="active notification-success">
+      <a tabindex="0" data-container="" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="Choose a Task You are Currently Working On.">
+        <i class="fa-user"></i>
+
+        <span class="line">
+          <strong>Choose a Task You are Currently Working on</strong>
+        </span>
+
+        <span class="line small time">
+        </span>
+      </a>
+    </li>
+  <% end %>
+
+  <% project.sprint_notes.each do |event| %>
+
+    <li class="notification-<%= ApplicationHelper.note_icon_color(event.note_type) %>">
+      <a href="#">
+        <%= ApplicationHelper.note_icon(event.note_type).html_safe %>
+
+        <span class="line">
+          <strong><%= event.author.full_name %> <%= ApplicationHelper.note_event_action(event) %></strong>
+        </span>
+
+        <span class="line small time"></span>
+      </a>
+    </li>
+
+  <% end %>

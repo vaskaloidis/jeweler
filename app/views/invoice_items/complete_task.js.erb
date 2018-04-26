@@ -1,7 +1,8 @@
 <% if @task.valid? %>
-  $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice %>');
 
-  console.log(<%= ApplicationHelper.sprint_percent(@invoice.project) %>);
+  <%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
+  <%= render 'notes/re-render_timeline', notes: @invoice.project.sprint_notes, project: @invoice.project %>
+  <%= render 'layouts/re-render_notifications', project:@invoice.project %>
 
   $('#sprint_gauge_container').animate({
       width: '0'
@@ -11,7 +12,7 @@
       width: '<%= ApplicationHelper.sprint_percent(@invoice.project) %>%'
   });
 
-<% if @invoice.sprint_complete? %>
+  <% if @invoice.sprint_complete? %>
     toastr.success('Sprint Complete. Congragulations!!');
   <% else %>
     toastr.success('Task Complete.')

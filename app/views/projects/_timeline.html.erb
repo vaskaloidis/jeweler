@@ -1,4 +1,70 @@
 <% @timeline_modals = true %>
+
+<!--TODO:Change default query if notes.empty? - Instead display Events which should never be empty -->
+
+<div class="timeline_query alert alert-default">
+  <span>
+  <% if !defined? sprint_query %>
+    <% sprint_query = project.sprint_current %>
+      <%= link_to 'All', note_query_path(project.id, 'all', 'all'), class: 'btn btn-sm btn-success', remote: true %>
+  <% else %>
+    <% if sprint_query == 'all' %>
+      <%= link_to 'All', note_query_path(project.id, 'all', 'all'), class: 'btn btn-sm btn-success disabled', remote: true %>
+    <% else %>
+      <%= link_to 'All', note_query_path(project.id, 'all', 'all'), class: 'btn btn-sm btn-success', remote: true %>
+    <% end %>
+  <% end %>
+    </span>
+
+  <% 1.upto(project.sprint_total + 1) do |sprint| %>
+    <sprint>
+      <% if sprint == sprint_query %>
+        <%= link_to 'Sprint ' + sprint.to_s, note_query_path(project.id, sprint, 'all'), class: 'btn btn-sm btn-success disabled', remote: true %>
+      <% else %>
+        <%= link_to 'Sprint ' + sprint.to_s, note_query_path(project.id, sprint, 'all'), class: 'btn btn-sm btn-success', remote: true %>
+      <% end %>
+    </sprint>
+  <% end %>
+  <br>
+  <% Note.note_types.each do |type| %>
+    <span>
+      <% if defined? query %>
+        <% if query.downcase == type %>
+          <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
+        <% else %>
+          <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success', remote: true %>
+        <% end %>
+      <% else %>
+
+          <% if type == 'all'  %>
+          <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, type), class: 'btn btn-sm btn-success disabled', remote: true %>
+        <% else %>
+          <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, type), class: 'btn btn-sm btn-success', remote: true %>
+        <% end %>
+
+        <% if false %>
+          <% case type %>
+              <% when 'commit' %>
+                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
+              <% when 'note' %>
+                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
+              <% when 'payment' %>
+                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
+              <% when 'payment_request' %>
+                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
+              <% when 'project_update' %>
+                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
+              <% when 'demo' %>
+                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
+              <% else %>
+                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success', remote: true %>
+            <% end %>
+          <% end %>
+      <% end %>
+    </span>
+  <% end %>
+</div>
+
 <ul id="timeline_container" class="cbp_tmtimeline">
 
   <li id="create_note_inline" style="display:none">
@@ -12,7 +78,7 @@
         <i class="fas fa-sticky-note"></i>
       </div>
       <div class="cbp_tmlabel empty">
-        <span>No Activity</span>
+        <span>No Activity To Display</span>
       </div>
     </li>
   <% else %>
@@ -33,7 +99,7 @@
         </time>
 
         <% if note.note_type == 'note' %>
-          <div class="cbp_tmicon timeline-bg-success">
+          <div class="cbp_tmicon timeline-bg-info">
             <i class="fas fa-sticky-note"></i>
           </div>
           <div class="cbp_tmlabel">
@@ -41,6 +107,7 @@
             <h3><%= note.content %></h3>
             <%= render 'notes/note_meta', note: note, current_user: current_user %>
           </div>
+
         <% elsif note.note_type == 'demo' %>
           <div class="cbp_tmicon timeline-bg-red">
             <i class="fa-binoculars"></i>
@@ -68,7 +135,7 @@
           </div>
 
         <% elsif note.note_type == 'event' %>
-          <div class="cbp_tmicon timeline-bg-info">
+          <div class="cbp_tmicon timeline-bg-warning">
             <i class="far fa-clock"></i>
           </div>
           <div class="cbp_tmlabel">
@@ -99,16 +166,6 @@
 
         <% elsif note.note_type == 'project_update' %>
           <div class="cbp_tmicon timeline-bg-warning">
-            <i class="far fa-clock"></i>
-          </div>
-          <div class="cbp_tmlabel">
-            <%= render 'notes/note_header', note: note %>
-            <h3><%= note.content %></h3>
-            <%= render 'notes/note_meta', note: note, current_user: current_user %>
-          </div>
-
-        <% elsif note.note_type == 'event' %>
-          <div class="cbp_tmicon timeline-bg-info">
             <i class="far fa-clock"></i>
           </div>
           <div class="cbp_tmlabel">
@@ -159,5 +216,15 @@
         <% end %>
       </li>
     <% end %>
+    <li>
+      <time class="cbp_tmtime" datetime="2014-12-06T18:30">
+        <span class="large"></span></time>
+      <div class="cbp_tmicon timeline-bg-gray">
+        <i class="fas fa-sticky-note"></i>
+      </div>
+      <div class="cbp_tmlabel empty">
+        <span>Beginning of Time</span>
+      </div>
+    </li>
   <% end %>
 </ul>

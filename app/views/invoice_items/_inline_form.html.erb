@@ -11,21 +11,14 @@
     <%= f.text_field :rate, :value => 'Rate', class: 'form-control' %>
   </div>
 
-  <% if invoice.only_planned? %>
-    <div class="form-group">
-      <%= f.text_field :planned_hours, :value => 'Estimated Hours', class: 'form-control' %>
-      <%= f.text_field :hours, :value => 'Hours', class: 'form-control' %>
-    </div>
-  <% else %>
-    <div class="form-group">
-      <%= f.text_field :planned_hours, :value => 'Estimated Hours', class: 'form-control' %>
-    </div>
-    <div class="form-group">
-      <%= f.text_field :hours, :value => 'Actual Hours Hours', class: 'form-control' %>
-    </div>
-  <% end %>
+  <div class="form-group ">
+    <%= f.text_field :planned_hours, :value => 'Estimated Hours', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.text_field :hours, :value => 'Hours', class: 'form-control' %>
+  </div>
 
-  <div class="form-group pull-right">
+  <div class="form-group">
     <%= f.submit 'Save', :class => 'btn btn-sm btn-success' %>
     <%= link_to 'Cancel', cancel_task_update_path(invoice.id), :class => 'btn btn-sm btn-primary', remote: true %>
     <%= f.hidden_field :invoice_id, :value => invoice.id %>

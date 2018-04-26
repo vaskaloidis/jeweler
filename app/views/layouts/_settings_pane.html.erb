@@ -40,9 +40,11 @@
         </div>
         <div class="row">
           <% if project.is_owner? %>
-            <%= render 'invoices/payment_form', project: project, display_balances: false %>
-          <% else %>
+              <h4>Add Payment</h4>
             <%= render 'invoices/admin_payment_form', project: project, display_balances: false %>
+          <% else %>
+              <h4>Make Payment</h4>
+            <%= render 'invoices/payment_form', project: project, display_balances: false %>
           <% end %>
         </div>
 
@@ -73,7 +75,11 @@
                 <% end %>
                 <li class="list-group-item">
                   <span><strong>Total:</strong> </span>
-                  <span class="badge badge-roundless badge-success">$<%= project.balance.to_s %></span>
+                  <% if project.balance > 0 %>
+                    <span class="badge badge-roundless badge-success">$+<%= project.balance.to_s %></span>
+                  <% else %>
+                    <span class="badge badge-roundless badge-danger">$-<%= project.balance.to_s %></span>
+                  <% end %>
                 </li>
               <% else %>
                 <li class="list-group-item">
@@ -87,7 +93,7 @@
 
       </div>
 
-      <div class="col-md-4 text-left">
+      <div class="col-md-4 text-left settings_scroll_column">
 
         <div class="left-sep">
           <h4>
@@ -102,7 +108,7 @@
                     <i class="fas fa-dollar-sign pull-right"></i>
                     <strong>Payment: </strong>
                     Sprint <%= payment.invoice.sprint.to_s %> <%= payment.user.first_name %> <%= payment.user.last_name %>
-                    - $<%= payment.amount.to_s %>
+                    - $<%= payment.amount.to_s %> (<%= payment.payment_type.to_s %>) - <%= payment.payment_note.to_s %>
                   </div>
                 </div>
               <% end %>
@@ -115,7 +121,7 @@
 
       </div>
 
-      <div class="col-md-4 text-left">
+      <div class="col-md-4 text-left settings_scroll_column">
 
         <div class="left-sep">
           <h4>
@@ -127,9 +133,17 @@
               <% project.payment_requests.each do |invoice| %>
                 <div id="request_payment_notification_sprint_<%= invoice.id.to_s %>" class="alert alert-danger">
                   <div style="color: white; padding-right:15px">
-                    Payment Requested For Sprint <%= invoice.sprint.to_s %>
+                    Payment Requested For Sprint <%= invoice.sprint.to_s %>.
+                    <% if invoice == 0 %>
+                      Balance (None)
+                    <% elsifif invoice.balance > 0 %>
+                      Balance: $+<% invoice.balance.to_s %>
+                      <% else %>
+                      Balance: $-<%= invoice.balance.to_s %>
+                      <% end %>
                     <% if project.is_owner?(user) %>
-                      <%= link_to '<span style="color:white" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>'.html_safe,
+                      <% payment_request_btn = '<span style="color:white" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>' %>
+                      <%= link_to payment_request_btn.html_safe,
                                   cancel_request_payment_path(invoice.id),
                                   remote: true %>
                     <% end %>

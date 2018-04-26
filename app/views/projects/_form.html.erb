@@ -74,6 +74,13 @@
 
     <div class="row">
       <div class="form-group">
+        <%= form.label :google_analytics_tracking_code, 'Google Analytics Tracking Code', class: 'control-label' %>
+        <%= form.text_field :google_analytics_tracking_code, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
         <%= form.label :heroku_token, 'Heroku API Token', class: 'control-label' %>
         <%= form.text_field :heroku_token, class: 'form-control' %>
       </div>

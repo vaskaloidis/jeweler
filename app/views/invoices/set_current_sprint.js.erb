@@ -1,5 +1,8 @@
-$("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice  %>');
-$("#invoice_panel_<%= @old_invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @old_invoice  %>');
+<%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
+<%= render 'invoices/re-render_invoice_panel', invoice: @old_invoice %>
+
+<%= render 'notes/re-render_timeline', notes: @invoice.project.sprint_notes, project:@invoice.project %>
+<%= render 'payments/re-render_payments_panel', project: @invoice.project, user: current_user %>
 
 toastr.success('Sprint Changed To <%= @invoice.sprint.to_s %> From <%= @old_invoice.sprint.to_s %> ');
 

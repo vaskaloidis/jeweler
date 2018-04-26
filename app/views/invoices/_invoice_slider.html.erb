@@ -1,12 +1,5 @@
 <%
-  # TODO: We can probably remove this is we are sure its handled during invoice-sync
-  if @project.sprint_current == invoice.sprint
-    if invoice.open == false
-      invoice.open = true
-      invoice.save
-    end
-  end
-
+  # TODO:Get rid of this, we already have a invoice.payment_total method built
   payment_total = 0
   invoice.payments.each do |payment|
     payment_total = payment_total + payment.amount

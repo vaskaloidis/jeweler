@@ -1,8 +1,6 @@
 toastr.success('Payment Request Canceled.');
 
-$("#request_payment_cancel_button_sprint_<%= @invoice.sprint.to_s %>").hide('slide');
-$('#request_payment_cencelled_sprint_<%= @invoice.sprint.to_s %>').show('slide');
-
-$("#request_payment_notification_sprint_<%= @invoice.sprint.to_s %>").hide('slide');
-
-$("#settings_container").html('<%= j render 'layouts/settings_pane', project: @invoice.project, user: @user %>');
+<%= render 'layouts/re-render_notifications', project:@invoice.project %>
+<%= render 'payments/re-render_payments_panel', project: @invoice.project, user: @user %>
+<%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
+<%= render 'notes/re-render_timeline', notes: @invoice.project.sprint_notes, project:@invoice.project %>

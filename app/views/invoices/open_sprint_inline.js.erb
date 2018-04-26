@@ -1,16 +1,6 @@
-
-
-
-
 <% if @sprint.valid? %>
-
-  $("#invoice_panel_<%= @sprint.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @sprint %>');
-
+  <%= render 'invoices/re-render_invoice_panel', invoice: @sprint %>
   toastr.success('Sprint <%= @sprint.sprint.to_s %>  Open');
-
 <% else %>
-
-
   toastr.error('Sprint <%= @sprint.sprint.to_s %> Could Not Be Opened');
-
 <% end %>

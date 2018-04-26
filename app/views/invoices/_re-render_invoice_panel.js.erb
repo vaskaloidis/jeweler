@@ -1,0 +1,2 @@
+$("#invoice_panel_<%= invoice.sprint.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: invoice  %>');
+$("#sprint-tabs").html('<%= j render 'invoices/sprint_tabs', sprints: invoice.project.sprints %>');

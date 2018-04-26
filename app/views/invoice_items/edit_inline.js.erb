@@ -2,7 +2,9 @@
   <!-- This is to edit the Task inline on the table -->
   $('#task_row_<%= @task.id.to_s %>').html('<div><%= j render 'invoice_items/edit_inline_form', task: @task %></div>');
 <% else %>
+$('.currently-editing').show('slide').removeClass('currently-editing');
   $('#task_row_<%= @task.id.to_s %>').hide('slide');
+  $('#task_row_<%= @task.id.to_s %>').addClass('currently-editing');
   $("#edit_invoice_items_<%= @task.invoice.id.to_s %>_hidden_row").html('<%= j render('invoice_items/edit_inline_form', task: @task) %>');
   $("#edit_invoice_items_<%= @task.invoice.id.to_s %>_hidden_row").show('slide');
 <% end %>

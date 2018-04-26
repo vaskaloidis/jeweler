@@ -1,5 +1,6 @@
 <% if @sprint.valid? %>
-  $("#invoice_panel_<%= @sprint.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @sprint %>');
+<%= render 'invoices/re-render_invoice_panel', invoice: @sprint %>
+<%= render 'notes/re-render_timeline', notes: @sprint.project.sprint_notes, project: @sprint.project %>
   toastr.success('Sprint <%= @sprint.sprint.to_s %> Closed');
 <% else %>
   toastr.error('Sprint <%= @sprint.sprint.to_s %> Could Not Be Closed');

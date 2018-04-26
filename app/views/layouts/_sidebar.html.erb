@@ -57,7 +57,7 @@
             <img src="<%= image_path 'user-2.png' %>" width="60" height="60" class="img-circle img-corona" alt="user-pic"/>
           <% end %>
           <span>
-            <strong><%= current_user.first_name %> <%= current_user.last_name %></strong> <%= current_user.tagline %>
+            <strong><%= current_user.first_name %> <%= current_user.last_name %></strong> <%= current_user.company %>
           </span>
         </a>
 
@@ -128,28 +128,31 @@
                 <span class="title">Customers</span>
               </a>
             </li>
-            <li>
-              <a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">
-                <i class="fas fa-money-bill-alt"></i>
-                Payments
-                <% payment_requests = @project.payment_requests %>
-                <% unless payment_requests.empty? %>
-                  <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
-                <% end %>
-              </a>
-            </li>
-            <li>
-              <a href="#readme" data-toggle="tab" data-animate="true">
-                <i class="fab fa-readme"></i>
-                <span class="title">Readme</span>
-              </a>
-            </li>
-            <li>
-              <a href="#settings" data-toggle="tab" data-animate="true">
-                <i class="fas fa-cogs"></i>
-                <span class="title">Settings</span>
-              </a>
-            </li>
+            <% if controller_name == 'projects' and action_name == 'show' %>
+              <li>
+                <a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">
+                  <i class="fas fa-money-bill-alt"></i>
+                  Payments
+                  <% payment_requests = @project.payment_requests %>
+                  <% unless payment_requests.empty? %>
+                    <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
+                  <% end %>
+                </a>
+              </li>
+              <li>
+                <a href="#readme" data-toggle="tab" data-animate="true">
+                  <i class="fab fa-readme"></i>
+                  <span class="title">Readme</span>
+                </a>
+              </li>
+              <li>
+                <a href="#settings" data-toggle="tab" data-animate="true">
+                  <i class="fas fa-cogs"></i>
+                  <span class="title">Settings</span>
+                </a>
+              </li>
+            <% end %>
+
           </ul>
         </li>
       <% end %>

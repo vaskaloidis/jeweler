@@ -1,5 +1,1 @@
-
-
-
-
-$('#home_timeline_container').html('<%= escape_javascript( render 'projects/timeline', notes: @notes ) %>');
+$('#timeline_note_<%= @note.id.to_s %>').hide('slide');

@@ -1,5 +1,5 @@
 <% if @task.valid? %>
-  $("#invoice_panel_<%= @task.invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @task.invoice %>');
+  <%= render 'invoices/re-render_invoice_panel', invoice: @task.invoice %>
   toastr.success('Task Created Successfully');
 <% else %>
   toastr.error('Your Task Could Not Be Created');

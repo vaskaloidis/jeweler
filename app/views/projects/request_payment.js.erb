@@ -1,11 +1,12 @@
-toastr.success('Payment Requested.');
 
-$('#notifications_container').html('<%= j render 'layouts/notifications' %>');
+<% if @invoice.payment_due %>
+  toastr.success('Payment Requested.');
 
-$("#request_payment_button_sprint_<%= @invoice.sprint.to_s %>").hide('slide');
-$('#request_payment_sprint_<%= @invoice.sprint.to_s %>').show('slide');
+  <%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
+  <%= render 'layouts/re-render_notifications', project:@invoice.project %>
+  <%= render 'payments/re-render_payments_panel', project: @invoice.project, user: @user %>
+  <%= render 'notes/re-render_timeline', notes: @invoice.project.sprint_notes, project: @invoice.project %>
 
-$("#request_payment_button_2_sprint_<%= @invoice.sprint.to_s %>").hide('slide');
-$('#request_payment_2_sprint_<%= @invoice.sprint.to_s %>').show('slide');
-
-$("#settings_container").html('<%= j render 'layouts/settings_pane', project: @invoice.project, user: @user %>');
+<% else %>
+  toastr.error('You must report hours to request payment');
+<% end %>

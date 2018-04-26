@@ -1,0 +1,22 @@
+// $('.tab-pane active fade in active').hide('fade');
+
+// $('.tab-pane .active .fade .in .active').tab('hide');
+
+$('.sprint-displayed').removeClass('sprint-displayed');
+
+$('.invoice-tab.active').removeClass('active').hide('fade');
+$('#sprint_tab_<%= @invoice.sprint.to_s %>').addClass('active');
+
+// $('#sprint_tab_<%#= @invoice.sprint.to_s %>').show('fade');
+
+<%#= j render 'invoices/re-render_invoice_panel', invoice: @project.get_sprint(sprint) %>
+<%#= j @invoice.render_panel %>
+<%#= j render 'invoices/re-render_invoice_panel', invoice: @invoice %>
+
+// TODO:Check if its empty to prevent useless re-rendering
+// if( $('#invoice_panel_<%#= @invoice.sprint.to_s %>_container').html() == '' ) {
+    $("#invoice_panel_<%= @invoice.sprint.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice  %>');
+// }
+$('#sprint_tab_<%= @invoice.sprint.to_s %>').show('fade');
+
+$('li > #sprint_btn_<%= @invoice.sprint.to_s %>').addClass('sprint-displayed');

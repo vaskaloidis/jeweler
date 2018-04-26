@@ -6,7 +6,7 @@
 
     <div class="btn-group">
       <% if note.user_id == current_user.id or note.project.is_owner?(current_user) %>
-        <% if note.note_type != 'commit' or 'project_update' or 'payment' or 'payment_request' or 'event' %>
+        <% if (note.note_type != 'commit' and note.note_type != 'project_update' and note.note_type != 'payment' and note.note_type != 'payment_request' and note.note_type != 'event') or current_user.is_god? %>
           <%# Debugging Helper: if note.note_type != 'commit' %>
           <%= link_to '<i style="padding-right: 1px; margin-right:0px" class="far fa-edit"></i>'.html_safe,
                       edit_note_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>

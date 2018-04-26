@@ -1,3 +1,3 @@
 toastr.success('Note Created');
 
-$('#home_timeline_container').html('<%= j render 'projects/timeline', notes: @note.project.sprint_notes %>');
+<%= render 'notes/re-render_timeline', notes: @note.project.sprint_notes, project: @note.project %>

@@ -20,10 +20,6 @@
     </div>
   <% end %>
 
-  <div class="row text-center">
-    <h4>Make Payment</h4>
-  </div>
-
   <div class="row">
     <div class="col-xs-12">
       <div class="form-field" style="color: black">
@@ -31,6 +27,22 @@
       </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-field" style="color: black">
+        <%= f.select(:payment_type, Payment.payment_types.collect {|payment| [ApplicationHelper.name_pretty(payment), payment]}, {}, {:class => 'form-control payment_form_item', :style => 'color:black'}) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+  <div class="col-xs-12">
+    <div class="form-field">
+      <%= f.text_field :payment_note, :value => 'Payment Note', class: 'form-control payment_form_item' %>
+    </div>
+  </div>
+</div>
 
   <div class="row">
     <div class="col-xs-12">

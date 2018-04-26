@@ -1,0 +1,156 @@
+<% customer = invoice.project.customers.first %>
+<div class="panel panel-default">
+  <div class="panel-heading hidden-print">Invoice</div>
+  <div class="panel-body">
+
+    <section class="invoice-env">
+
+      <!-- Invoice header -->
+      <div class="invoice-header">
+
+        <!-- Invoice Options Buttons -->
+        <div class="invoice-options hidden-print">
+          <a href="#" class="btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left">
+            <i class="fa-envelope-o"></i>
+            <span>Send</span>
+          </a>
+
+          <a href="#" class="btn btn-block btn-secondary btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left">
+            <i class="fa-print"></i>
+            <span>Print</span>
+          </a>
+        </div>
+
+        <!-- Invoice Data Header -->
+        <div class="invoice-logo">
+
+          <a href="#" class="logo">
+            <img width="150" src="<%= invoice.project.image.url %>" class="img-responsive"/>
+          </a>
+
+          <ul class="list-unstyled">
+            <li class="upper">Sprint <strong><%= invoice.sprint.to_s %></strong></li>
+            <li><%= Date.today.to_s %></li>
+            <li><%= invoice.project.owner.first_name %> <%= invoice.project.owner.last_name %></li>
+          </ul>
+
+        </div>
+
+      </div>
+
+
+      <!-- Client and Payment Details -->
+      <div class="invoice-details">
+
+        <div class="invoice-client-info">
+          <strong>Client</strong>
+
+          <ul class="list-unstyled">
+            <% unless customer.nil? %>
+              <% unless customer.first_name.nil? and customer.last_name.nil? %>
+                <li><%= customer.first_name %> <%= customer.last_name %></li>
+              <% end %>
+              <% unless customer.company.nil? %>
+                <li><%= customer.company %> </li>
+              <% end %>
+              <% unless customer.email.nil? %>
+                <li><%= customer.email %></li>
+              <% end %>
+            <% end %>
+          </ul>
+
+          <ul class="list-unstyled">
+          </ul>
+        </div>
+
+        <div class="invoice-payment-info">
+          <ul class="list-unstyled">
+            <li>Tasks:
+              <stron><%= invoice.tasks.size.to_s %></stron>
+            </li>
+            <li>Estimated Hours:
+              <stron><%= invoice.sprint_planned_hours.to_s %> hrs.</stron>
+            </li>
+            <% unless estimate %>
+              <li>Tasks:
+                <Reported Hours><%= invoice.sprint_hours.to_s %> hrs.</Reported>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+      </div>
+
+
+      <!-- Invoice Entries -->
+      <table class="table table-bordered">
+        <thead>
+        <tr class="no-borders">
+          <th class="text-center hidden-xs"></th>
+          <th width="50%" class="text-center">Task</th>
+          <th class="text-center">Rate</th>
+          <% if estimate %>
+            <th class="text-center hidden-xs">Estimate</th>
+            <th class="text-center">Cost</th>
+          <% else %>
+            <th class="text-center hidden-xs">Estimate</th>
+            <th class="text-center hidden-xs">Hours</th>
+            <th class="text-center">Cost</th>
+          <% end %>
+        </tr>
+        </thead>
+
+        <tbody>
+        <% invoice.tasks.each do |task| %>
+          <tr>
+            <td class="text-center hidden-xs"><%= task.get_letter %></td>
+            <td><%= task.description %></td>
+            <td class="text-center"><%= task.rate.to_s %>$/hr.</td>
+            <% if estimate %>
+              <td class="text-center hidden-xs"><%= task.planned_hours.to_s %> hrs.</td>
+              <td class="text-center text-primary text-bold">$<%= task.planned_cost.to_s %></td>
+            <% else %>
+              <td class="text-center hidden-xs"><%= task.planned_hours.to_s %> hrs.</td>
+              <td class="text-center hidden-xs"><%= task.hours.to_s %> hrs.</td>
+              <td class="text-right text-primary text-bold">$<%= task.total_cost.to_s %></td>
+            <% end %>
+
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+      <!-- Invoice Subtotals and Totals -->
+      <div class="invoice-totals">
+
+        <div class="invoice-subtotals-totals">
+								<span>
+									Sub - Total amount:
+									<strong>$<%= invoice.cost.to_s %></strong>
+								</span>
+
+          <!-- TODO:Add Tax rate to settings -->
+          <% if false %>
+          <span>
+									Tax:
+									<strong>3.9%</strong>
+								</span>
+          <% end %>
+
+          <hr/>
+
+          <span>
+									Grand Total:
+									<strong>$<%= invoice.cost.to_s %></strong>
+								</span>
+        </div>
+
+        <div class="invoice-bill-info">
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+</div>

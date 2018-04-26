@@ -13,22 +13,6 @@
   </div>
   <h2>
     <%= note.author.first_name %> <%= note.author.last_name %>
-
-    <% case note.note_type %>
-    <% when 'commit' %>
-      Committed Code
-    <% when 'event' %>
-      <%= note.content %>
-    <% when 'project_update' %>
-      Posted a Project Update
-    <% when 'payment_request' %>
-      Requested a Payment
-    <% when 'payment' %>
-      Made a Payment
-    <% when 'note' %>
-      Posted a Note
-    <% when 'demo' %>
-      Posted a Demo of <%= note.content %>
-    <% end %>
+    <%= ApplicationHelper.note_event_action(note) %>
   </h2>
 </div>

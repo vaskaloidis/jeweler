@@ -1,6 +1,2 @@
-$("#success_message").show('slide')
-  toastr.success('Task Deleted');
-
+toastr.success('Task Deleted');
 $('#task_row_<%= @invoice_item.id.to_s %>').hide('slide');
-
-// $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<#%= j render 'invoices/invoice_panel', invoice: @invoice %>');

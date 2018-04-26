@@ -1,0 +1,102 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Payments
+  </div>
+  <div class="panel-body">
+    <div class="row">
+
+      <div class="col-xs-12 col-md-6">
+        <ul class="settings_sprint_balance list-group list-group-minimal">
+          <h2>Sprint Balances</h2>
+          <% unless project.invoices.empty? %>
+            <% project.invoices.order('sprint::integer ASC').each do |invoice| %>
+              <% if invoice.balance > 0 %>
+                <li class="list-group-item">
+                      <span>
+                          Sprint <%= invoice.sprint.to_s %>
+                        <% if invoice.is_current? %>
+                            <strong>(current)</strong>
+                          <% end %>
+                      </span>
+                  <span class="badge badge-roundless badge-danger">$<%= invoice.balance.to_s %></span>
+                </li>
+              <% end %>
+            <% end %>
+            <li class="list-group-item">
+              <span><strong>Total:</strong> </span>
+              <% if project.balance > 0 %>
+                <span class="badge badge-roundless badge-success">$+<%= project.balance.to_s %></span>
+              <% else %>
+                <span class="badge badge-roundless badge-danger">$-<%= project.balance.to_s %></span>
+              <% end %>
+            </li>
+          <% else %>
+            <li class="list-group-item">
+              (None)
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <h2>Payment Requests</h2>
+        <% unless project.payment_requests.empty? %>
+          <% project.payment_requests.each do |invoice| %>
+            <div id="request_payment_notification_sprint_<%= invoice.id.to_s %>" class="alert alert-danger">
+              <div style="color: white; padding-right:15px">
+                Payment Requested For Sprint <%= invoice.sprint.to_s %>.
+                <% if invoice == 0 %>
+                  Balance (None)
+                  <% elsifif invoice.balance > 0 %>
+                  Balance: $+
+                  <% invoice.balance.to_s %>
+                <% else %>
+                  Balance: $-<%= invoice.balance.to_s %>
+                <% end %>
+                <% if project.is_owner?(current_user) %>
+                  <% payment_request_btn = '<span style="color:white" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>' %>
+                  <%= link_to payment_request_btn.html_safe,
+                              cancel_request_payment_path(invoice.id),
+                              remote: true %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <span>(None)</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-6">
+          <% if project.is_owner? %>
+            <h2>Add Payment</h2>
+            <%= render 'invoices/admin_payment_form', project: project, display_balances: false %>
+          <% else %>
+            <h2>Make Payment</h2>
+            <%= render 'invoices/payment_form', project: project, display_balances: false %>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <h2>Payments</h2>
+        <% unless project.payments.empty? %>
+          <% project.payments.each do |payment| %>
+            <div class="alert alert-success">
+              <div style="color: white; padding-right:15px">
+                <i class="fas fa-dollar-sign pull-right"></i>
+                <strong>Payment: </strong>
+                Sprint <%= payment.invoice.sprint.to_s %> <%= payment.user.first_name %> <%= payment.user.last_name %>
+                - $<%= payment.amount.to_s %> (<%= payment.payment_type.to_s %>) - <%= payment.payment_note.to_s %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <span>(None)</span>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>

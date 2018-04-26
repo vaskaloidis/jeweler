@@ -1,6 +1,6 @@
 <div class="row">
 
-  <div class="col-sm-12 col-lg-3">
+  <div class="col-xs-12 col-sm-6 col-lg-3">
     <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint.to_s %>" data-prefix="Sprint " data-duration="2">
       <div class="xe-icon">
         <i class="far fa-clock"></i>
@@ -14,7 +14,7 @@
 
   <% if project.current_sprint.only_planned? %>
 
-    <div class="col-sm-12 col-lg-3" data-animate="true">
+    <div class="col-xs-12 col-sm-6 col-lg-3" data-animate="true">
       <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_planned_cost.to_s %>" data-prefix="$" data-duration="2">
         <div class="xe-icon">
           <i class="fas fa-dollar-sign"></i>
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div data-toggle="settings-pane" data-animate="true" class="col-sm-12 col-lg-3">
+    <div data-toggle="settings-pane" data-animate="true" class="col-xs-12 col-sm-6 col-lg-3">
       <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_planned_hours.to_s %>" data-suffix=" Hours" data-duration="2">
         <div class="xe-icon">
           <i class="far fa-clock"></i>
@@ -40,7 +40,7 @@
 
   <% else %>
 
-    <div data-toggle="settings-pane" data-animate="true" class="col-sm-12 col-lg-3">
+    <div data-toggle="settings-pane" data-animate="true" class="col-xs-12 col-sm-6 col-lg-3">
       <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_cost.to_s %>" data-prefix=" $" data-duration="2">
         <div class="xe-icon">
           <i class="fas fa-dollar-sign"></i>
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div data-toggle="settings-pane" data-animate="true" class="col-sm-12 col-lg-3">
+    <div data-toggle="settings-pane" data-animate="true" class="col-xs-12 col-sm-6 col-lg-3">
       <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_payments.to_s %>" data-prefix="$" data-duration="2">
         <div class="xe-icon">
           <i class="far fa-clock"></i>
@@ -66,7 +66,7 @@
 
   <% end %>
 
-  <div class="col-sm-12 col-lg-3">
+  <div class="col-xs-12 col-sm-6 col-lg-3">
     <% commits = project.notes.where(note_type: 'commit').count %>
     <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= commits.to_s %>" data-suffix=" Commits" data-duration="2">
       <div class="xe-icon">

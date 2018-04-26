@@ -1,5 +1,6 @@
 <% if @task.valid? %>
-  $("#invoice_panel_<%= @invoice.id.to_s %>_container").html('<%= j render 'invoices/invoice_panel', invoice: @invoice %>');
+
+  <%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
 
   console.log(<%= ApplicationHelper.sprint_percent(@invoice.project) %>);
 
