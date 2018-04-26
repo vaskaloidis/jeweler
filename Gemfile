@@ -38,7 +38,6 @@ gem 'less-rails', '~> 3.0.0'
 gem 'therubyracer' # Ruby
 # gem 'mini_racer', platforms: :ruby
 gem 'coffee-rails', '~> 4.2'
-gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 4.0'
 # gem 'bcrypt', '~> 3.1.7'
@@ -52,6 +51,8 @@ group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? Do we want this?
   gem 'rails_12factor'
   gem 'foreman'
+  gem 'uglifier', '>= 1.3.0'
+  gem 'yui-compressor'
 end
 group :development, :test do
   gem 'dotenv-rails'
