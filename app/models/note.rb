@@ -1,8 +1,10 @@
 class Note < ApplicationRecord
-  enum note_type: [ :note, :project_update, :demo, :commit, :payment, :payment_request, :task, :event ]
+  enum note_type: [:note, :project_update, :demo, :commit, :payment, :payment_request, :task, :event]
+
+  enum event_type: [:task_created, :task_updated, :task_deleted, :sprint_opened, :sprint_closed, :hours_reported, :task_completed, :sprint_completed, :current_task_changed, :current_sprint_changed, :payment_request_cancelled, :invitation_accepted, :invitation_rejected, :invitation_sent, :invitation_deleted]
 
   belongs_to :project
-  has_many :discussions
+  has_many :discussions, dependent: :destroy
   belongs_to :author, :class_name => 'User', :foreign_key => 'user_id', inverse_of: 'notes', required: true
 
   belongs_to :invoice, optional: true
@@ -12,6 +14,19 @@ class Note < ApplicationRecord
 
   accepts_nested_attributes_for :invoice
   accepts_nested_attributes_for :invoice_item
+
+  def self.note_types
+    note_types = Array.new
+    note_types << 'all'
+    note_types << 'note'
+    note_types << 'project_update'
+    note_types << 'demo'
+    note_types << 'commit'
+    note_types << 'payment'
+    note_types << 'payment_request'
+    note_types << 'event'
+    return note_types
+  end
 
   def self.create_payment(invoice, current_user, payment_amount)
     project = invoice.project
@@ -29,7 +44,7 @@ class Note < ApplicationRecord
       note.invoice_item = project.current_task
     end
 
-    note.content = '$' + payment_amount + ' Payment for Sprint ' + invoice.sprint.to_s
+    note.content = '$' + payment_amount.to_s + ' Payment for Sprint ' + invoice.sprint.to_s
     note.save
 
     if note.invalid?
@@ -65,22 +80,29 @@ class Note < ApplicationRecord
     return note
   end
 
-  def self.create_event(project, current_user, message)
+  def self.create_event(project, event_type, message, invoice = nil)
 
     note = Note.new
     note.note_type = 'event'
-    note.author = current_user
+    note.author = User.current_user
+    note.event_type = event_type
 
     unless project.nil?
       note.project = project
     end
 
-    unless project.current_sprint.nil?
-      note.invoice = project.current_sprint
-    end
-
-    unless project.current_task.nil?
-      note.invoice_item = project.current_task
+    if invoice.nil?
+      unless project.current_sprint.nil?
+        note.invoice = project.current_sprint
+      end
+      unless project.current_task.nil?
+        note.invoice_item = project.current_task
+      end
+    else
+      note.invoice = invoice
+      if project.current_sprint = invoice
+        note.invoice_item = invoice.current_task
+      end
     end
 
     # note.content = 'Sprint ' + note.invoice.sprint.to_s + ' - ' + message

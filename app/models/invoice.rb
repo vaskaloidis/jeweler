@@ -10,6 +10,18 @@ class Invoice < ApplicationRecord
 
   validates :sprint, presence: true
 
+  def render_panel
+    return render 'invoices/re-render_invoice_panel', invoice: self
+  end
+
+  def current_task
+    return self.project.current_task
+  end
+
+  def incomplete_tasks
+    return self.invoice_items.where(complete: false).all
+  end
+
   def completed_tasks
     return self.invoice_items.where(complete: true).all
   end
@@ -53,6 +65,10 @@ class Invoice < ApplicationRecord
     return ApplicationHelper.prettify(total_payments)
   end
 
+  def cost
+    return self.sprint_cost
+  end
+
   def sprint_cost
     total_cost = 0
     self.invoice_items.each do |item|
@@ -81,6 +97,10 @@ class Invoice < ApplicationRecord
       end
     end
     return ApplicationHelper.prettify(total_cost)
+  end
+
+  def hours
+    return self.sprint_hours
   end
 
   def sprint_planned_hours

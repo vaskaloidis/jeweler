@@ -21,6 +21,18 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :lockable, :confirmable
 
+  def full_name
+    return self.first_name + ' ' + self.last_name
+  end
+
+  def is_god?
+    if self.email == 'vas.kaloidis@gmail.com'
+      return true
+    else
+      return false
+    end
+  end
+
   def first_last_name_email
     "#{first_name} #{last_name} - #{email}"
   end

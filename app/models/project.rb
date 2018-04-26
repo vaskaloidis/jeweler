@@ -4,7 +4,7 @@ class Project < ApplicationRecord
   has_many :customers, :through => :project_customers, :source => :user
   has_many :notes
 
-  belongs_to :current_task, :class_name => 'InvoiceItem', :foreign_key => 'invoice_item_id', optional: true
+  belongs_to :current_task, :class_name => 'InvoiceItem', :foreign_key => 'invoice_item_id', inverse_of: 'project', optional: true
 
   has_many :invoices
   has_many :invoice_items
@@ -27,14 +27,32 @@ class Project < ApplicationRecord
   validates :name, presence: true
   validates :github_url, presence: true, uniqueness: true
 
-  @@current_user = nil
-
-  def sprint_notes
-    return self.current_sprint.notes.where(note_type: [:note, :commit, :project_update, :event, :payment, :payment_request, :demo]).order('created_at DESC').all
+  def sprints
+    return self.invoices.order('sprint::integer ASC')
   end
 
-  def set_user(current_user)
-    @@current_user = current_user
+  # Create an Event
+  # Event Types: :task_created, :task_updated, :task_deleted, :sprint_opened, :sprint_closed, :hours_reported,
+  #              :task_completed, :sprint_completed, :current_task_changed, :current_sprint_changed,
+  #              :payment_request_cancelled]
+  def create_event(event_type, message)
+    Note.create_event(self, event_type, message)
+  end
+
+  def sprint_events
+    return self.current_sprint.notes.where(note_type: [:event]).order('created_at DESC').all
+  end
+
+  def events
+    return self.sprint_events
+  end
+
+  def home_page_notes
+    return self.sprint_notes
+  end
+
+  def sprint_notes
+    return self.current_sprint.notes.where(note_type: [:note, :commit, :project_update, :payment, :payment_request, :demo]).order('created_at DESC').all
   end
 
   def is_owner?(user = nil)
@@ -60,10 +78,6 @@ class Project < ApplicationRecord
     else
       return false
     end
-  end
-
-  def events
-    return self.notes.where(note_type: [:event, :project_update]).order('created_at DESC').all
   end
 
   def balance
@@ -129,34 +143,32 @@ class Project < ApplicationRecord
     end
   end
 
-  def current_sprint(sprint = nil)
+  def current_sprint=(sprint)
+    self.sprint_current = sprint.sprint
 
-    if sprint.nil?
-      this_sprint_invoice = self.invoices.where(sprint: self.sprint_current)
-      if this_sprint_invoice.empty?
-        return nil
-      else
-        return this_sprint_invoice.first
-      end
+    unless sprint.open?
+      sprint.open = true
+      sprint.save
+      sprint.reload
+    end
+
+    if sprint.invalid?
+      logger.error("Error opening Sprint, while setting current sprint (changing sprint) on project ID: " + self.id.to_s);
+    end
+
+    if self.invalid?
+      logger.error("Error changing current sprint on project ID: " + self.id.to_s)
+    end
+
+    return self.save
+  end
+
+  def current_sprint
+    this_sprint_invoice = self.invoices.where(sprint: self.sprint_current)
+    if this_sprint_invoice.empty?
+      return nil
     else
-      self.sprint_current = sprint.sprint
-
-      unless sprint.open?
-        sprint.open = true
-        sprint.save
-        sprint.reload
-      end
-
-      if sprint.invalid?
-        logger.error("Error opening Sprint, while setting current sprint (changing sprint) on project ID: " + self.id.to_s);
-      end
-
-      if self.invalid?
-        logger.error("Error changing current sprint on project ID: " + self.id.to_s)
-      end
-
-      self.save
-      return self
+      return this_sprint_invoice.first
     end
   end
 

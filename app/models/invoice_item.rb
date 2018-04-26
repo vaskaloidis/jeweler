@@ -7,11 +7,20 @@ class InvoiceItem < ApplicationRecord
 
   accepts_nested_attributes_for :notes
   accepts_nested_attributes_for :invoice
+  accepts_nested_attributes_for :project
+
 
   # validates :planned_hours, presence: true
   # validates :description, presence: true
   # validates :rate, presence: true
 
+  def get_letter
+    self.invoice.tasks.each_with_index do |i, pos|
+      if self == i
+        return ApplicationHelper.alphabet.at(pos)
+      end
+    end
+  end
 
   # def hours
   #   h = self.hours
