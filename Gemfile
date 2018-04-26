@@ -34,7 +34,7 @@ gem 'jquery-ui-rails'
 # gem 'jquery-rails'
 gem 'rails-ujs'
 gem 'sass-rails', '~> 5.0'
-# gem 'less-rails', '~> 3.0.0'
+gem 'less-rails', '~> 3.0.0'
 gem 'therubyracer' # Ruby
 # gem 'mini_racer', platforms: :ruby
 gem 'coffee-rails', '~> 4.2'

@@ -23,7 +23,6 @@
 /node_modules
 /yarn-error.log
 
-/public/assets
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
@@ -53,5 +52,6 @@
 /*/*/.DS_Store
 /*/*/*/.DS_Store
 /*/*/*/*/.DS_Store
+
 # Ignore encrypted secrets key file.
 config/secrets.yml.key
