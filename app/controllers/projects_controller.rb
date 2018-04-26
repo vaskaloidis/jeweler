@@ -5,18 +5,28 @@ class ProjectsController < ApplicationController
   before_action :verify_owner, only: [:edit, :update, :destroy]
   respond_to :html, :js, only: [:request_payment]
 
+  def commit_codes_modal
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def request_payment
     @invoice = Invoice.find(params[:invoice_id])
-    @invoice.payment_due = true
-    @invoice.save
+    if @invoice.cost > 0
+      @invoice.payment_due = true
+      @invoice.save
 
-    @user = current_user
+      @user = current_user
 
-    @project = @invoice.project
+      @project = @invoice.project
 
-    if @invoice.valid?
-      Note.create_payment_request(@invoice, current_user)
+      if @invoice.valid?
+        Note.create_payment_request(@invoice, current_user)
+      end
     end
+
 
     respond_to do |format|
       format.js
@@ -30,7 +40,7 @@ class ProjectsController < ApplicationController
 
     @user = current_user
 
-    Note.create_event(@invoice.project, current_user, 'Sprint ' + @invoice.sprint.to_s + ' Payment Request Canceled')
+    Note.create_event(@invoice.project, 'payment_request_cancelled', 'Sprint ' + @invoice.sprint.to_s + ' Payment Request Canceled')
 
     respond_to do |format|
       format.js
@@ -163,7 +173,8 @@ class ProjectsController < ApplicationController
 
   def sync_github(project, user)
     unless project.owner.oauth.nil?
-      if project.is_owner(user)
+      if project.is_owner?(user)
+        begin
         github = Github.new oauth: project.owner.oauth
         logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
         logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
@@ -190,6 +201,10 @@ class ProjectsController < ApplicationController
             note.save
             puts 'Note Created for Commit Sync, SHA: ' + commit.sha
           end
+        end
+        rescue Exception
+          logger.error("Error syncing Github Repo")
+          logger.error
         end
       end
     end

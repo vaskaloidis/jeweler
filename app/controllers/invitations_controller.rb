@@ -18,6 +18,8 @@ class InvitationsController < ApplicationController
       logger.error("Error accepting invitation")
     end
 
+    Note.create_event(@project, 'invitation_accepted', invitation.email + ' Accepted Project Invitation')
+
     respond_to do |format|
       format.html { redirect_to root_path, notice: 'You have joined the project ' + @project.name }
     end
@@ -26,6 +28,8 @@ class InvitationsController < ApplicationController
 
   def decline_invitation
     invitation = Invitation.find(params[:invitation_id])
+
+    Note.create_event(@project, 'invitation_declined', invitation.email + ' Declined Project Invitation')
 
     invitation.destroy
 
@@ -36,6 +40,8 @@ class InvitationsController < ApplicationController
 
   def remove_invitation_inline
     invitation = Invitation.find(params[:invitation_id])
+
+    Note.create_event(@project, 'invitation_deleted', invitation.email + ' Invitation Was Deleted by Project Owner')
 
     @project = invitation.project
     @project.invitations.delete(invitation)

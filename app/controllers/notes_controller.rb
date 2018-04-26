@@ -1,6 +1,51 @@
 class NotesController < ApplicationController
   before_action :set_note, only: [:show, :edit, :update, :destroy]
 
+  def note_query
+    @project = Project.find(params[:project_id])
+    @note_type = params[:note_type].downcase
+    @sprint_query = params[:sprint_query]
+
+    logger.debug("Note Type Query: " + @note_type)
+    logger.debug("Sprint Query: " + @sprint_query)
+
+    if @sprint_query == 'all'
+      @sprint = @project.notes
+    else
+      @sprint = @project.get_sprint(@sprint_query).notes
+    end
+
+    if @note_type == 'all'
+      @notes = @sprint.order('created_at DESC').all
+    else
+      case @note_type
+        when 'commit'
+          @notes = @sprint.where(note_type: :commit).order('created_at DESC').all
+        when 'note'
+          @notes = @sprint.where(note_type: :note).order('created_at DESC').all
+        when 'project_update'
+          @notes = @sprint.where(note_type: :project_update).order('created_at DESC').all
+        when 'demo'
+          @notes = @sprint.where(note_type: :demo).order('created_at DESC').all
+        when 'payment'
+          @notes = @sprint.where(note_type: :payment).order('created_at DESC').all
+        when 'payment_request'
+          @notes = @sprint.where(note_type: :payment_request).order('created_at DESC').all
+        when 'task'
+          @notes = @sprint.where(note_type: :task).order('created_at DESC').all
+        when 'event'
+          @notes = @sprint.where(note_type: :event).order('created_at DESC').all
+        else
+          @notes = @sprint.all
+      end
+    end
+
+    @query = @note_type
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def delete_note_inline
     id = params[:note_id]
     @note = Note.find(id)

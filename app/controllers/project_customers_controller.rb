@@ -5,29 +5,50 @@ class ProjectCustomersController < ApplicationController
                 only: [:create, :edit, :update, :destroy]
 
   def create_customer_inline
+    logger.debug("Creating Customer AJAX")
+    # TODO: Ma\ybe move this Invitation feature to settings (Invite existing Jeweler users, or simply add them)
     invite_feature = false
 
     email = params[:email]
+    @email = email
     project = Project.find(params[:project_id])
 
+    if project.invitations.where(email: email).empty?
+      @invitation_exists = false
 
-    @save = project.invitations.create(email: email)
+      @invitation = Invitation.new
+      @invitation.project = project
+      @invitation.email = email
+      @invitation.save
+      # @save = project.invitations.create(email: email)
 
-    if invite_feature
-      # if User.where(email: email).empty?
-      # else
-      user = User.where(email: email).first
+      if User.where(email: email).empty?
+        logger.debug("User does not exist, (sending an invitation email): " + email)
+        # UserInviteMailer.with(email: email, project: project.id).invite_user.deliver_later
+        UserInviteMailer.with(email: email, project: project.id).invite_user.deliver_now
+        # UserInviteMailer.invite_user(email, project.id).deliver
+        @user_invited = true
+      else
+        logger.debug("User exists (no invitation email): " + email)
+        @user_invited = false
+      end
 
-      logger.debug("Adding Customer to Project ID: " + project.id.to_s + ". Customer ID: " + user.id.to_s + " / EMAIL: " + email)
+      if invite_feature
+        user = User.where(email: email).first
 
-      pc = ProjectCustomer.new
-      pc.project = project
-      pc.user = user
-      pc.save
-      @save = pc
+        logger.debug("Adding Customer to Project ID: " + project.id.to_s + ". Customer ID: " + user.id.to_s + " / EMAIL: " + email)
+
+        pc = ProjectCustomer.new
+        pc.project = project
+        pc.user = user
+        pc.save
+        @save = pc
+      end
+
+      project.invitations.reload
+    else
+      @invitation_exists = true
     end
-
-    project.invitations.reload
     @project = project
 
     respond_to do |format|
