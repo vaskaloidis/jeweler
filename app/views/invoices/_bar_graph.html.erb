@@ -1,0 +1,45 @@
+<% if true %>
+  <div class="row">
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            var dataSource = [
+                <% project.invoices.each_with_index do |invoice, index| %>
+                  {
+                      sprint: "Sprint <%= invoice.sprint.to_s %>",
+                      estimated_cost: <%= invoice.sprint_planned_cost.to_s %>,
+                      cost: <%= invoice.cost.to_s %>
+                  } <% if index != project.invoices.size %>, <% end %>
+                <% end %>
+            ];
+
+            $("#bar-1").dxChart({
+                equalBarWidth: false,
+                dataSource: dataSource,
+                commonSeriesSettings: {
+                    argumentField: "sprint",
+                    type: "bar"
+                },
+                series: [
+                    {valueField: "estimated_cost", name: "Estimated Cost", color: "#3f7a1f"},
+                    {valueField: "cost", name: "Cost", color: "#68b828"},
+                ],
+                // barWidth: $('#sprint_tab_1').width() - ($('#dxc-val-axis') / <%= project.sprint_total.to_s %>),
+                commonAxisSettings: {
+                  grid: {
+                      visible: false,
+                      indentFromAxis: 0
+                  }
+                },
+                legend: {
+                    position: "inside", // or "outside"
+                    horizontalAlignment: "right", // or "left" | "right"
+                    verticalAlignment: "top", // or "bottom"
+                    backgroundColor: '#eeeeee'
+                }
+            });
+        });
+
+    </script>
+    <div id="bar-1" style="height: 150px; width: 100%;"></div>
+  </div>
+<% end %>

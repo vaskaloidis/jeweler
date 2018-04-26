@@ -10,6 +10,67 @@
       Your Projects
     </div>
     <div class="panel-body">
+
+      <% if true %>
+        <div class="row">
+          <script type="text/javascript">
+              jQuery(document).ready(function ($) {
+                  if (!$.isFunction($.fn.dxChart))
+                      return;
+
+                  $("#range-1").dxRangeSelector({
+                      margin: {
+                          top: 50
+                      },
+                      scale: {
+                          minorTickInterval: "day",
+                          majorTickInterval: {
+                              days: 7
+                          }
+                      },
+                      size: {
+                          height: 250
+                      },
+                      dataSource: [
+                          {t: new Date(2011, 11, 22), costs: 19, income: 18},
+                          {t: new Date(2011, 11, 29), costs: 27, income: 12},
+                          {t: new Date(2012, 0, 5), costs: 30, income: 5},
+                          {t: new Date(2012, 0, 12), costs: 26, income: 6},
+                          {t: new Date(2012, 0, 19), costs: 18, income: 10},
+                          {t: new Date(2012, 0, 26), costs: 15, income: 15},
+                          {t: new Date(2012, 1, 2), costs: 14, income: 21},
+                          {t: new Date(2012, 1, 9), costs: 14, income: 25}
+                      ],
+                      chart: {
+                          series: [
+                              {argumentField: "t", valueField: "costs", color: "#7c38bc"},
+                              {argumentField: "t", valueField: "income", color: "#4fcdfc"}
+                          ],
+                          valueAxis: {
+                              min: 0
+                          }
+                      },
+                      selectedRange: {
+                          startValue: new Date(2011, 11, 25),
+                          endValue: new Date(2012, 0, 1)
+                      },
+                      selectedRangeChanged: function (e) {
+                          $("#range-1-selected strong").html(e.startValue.toDateString() + ' - ' + e.endValue.toDateString());
+                      }
+                  });
+
+              });
+
+          </script>
+          <div id="range-1" style="height: 250px; width: 100%;"></div>
+
+          <div id="range-1-selected">
+            Selected range:
+            <strong class="text-primary">/</strong>
+          </div>
+        </div>
+      <% end %>
+
       <div class="row">
         <div class="col-sm-12">
           <div class="list-group">
@@ -66,10 +127,10 @@
                 <p class="list-group-item-text">
                 <p><%= invitation.project.description %></p>
 
-                  <p>
-                    <%= link_to 'Accept', accept_invitation_path(invitation.id), class: 'btn btn-success' %>
-                    <%= link_to 'Decline', decline_invitation_path(invitation.id), class: 'btn btn-danger' %>
-                  </p>
+                <p>
+                  <%= link_to 'Accept', accept_invitation_path(invitation.id), class: 'btn btn-success' %>
+                  <%= link_to 'Decline', decline_invitation_path(invitation.id), class: 'btn btn-danger' %>
+                </p>
                 </p>
               </div>
             <% end %>
@@ -93,7 +154,7 @@
               <a href="<%= project_path(project) %>" class="list-group-item">
                 <h4 class="list-group-item-heading"><%= project.name %></h4>
                 <p class="list-group-item-text">
-                  <p><%= project.description %></p>
+                <p><%= project.description %></p>
                 </p>
               </a>
             <% end %>
