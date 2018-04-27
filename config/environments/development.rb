@@ -1,18 +1,21 @@
 Rails.application.configure do
   config.log_level = :debug
 
-  # config.assets.js_compressor = :uglifier
+  config.assets.compile = false
+  config.assets.compress = false
+  config.assets.digest = false
+  config.assets.debug = false
+  config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :yui
-  config.assets.css_compressor = :sass
-  # Do not fallback to assets pipeline if a precompiled asset is missed.
-  # config.assets.compile = false
+  # config.assets.css_compressor = :sass
+  config.less.paths << "#{Rails.root}/app/assets/css/less"
+
+  # config.gem "jammit"
 
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  config.less.paths << "#{Rails.root}/app/assets/css/less"
-  config.less.compress = false
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

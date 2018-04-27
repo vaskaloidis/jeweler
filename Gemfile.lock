@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/documentcloud/jammit.git
+  revision: dc866f1ac3eb069d65215599c451db39d66119a7
+  specs:
+    jammit (0.7.1)
+      cssmin (~> 1.0)
+      jsmin (~> 1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -85,6 +93,7 @@ GEM
     commonjs (0.2.7)
     concurrent-ruby (1.0.5)
     crass (1.0.4)
+    cssmin (1.0.3)
     database_cleaner (1.7.0)
     debug_inspector (0.0.3)
     descendants_tracker (0.0.4)
@@ -142,6 +151,7 @@ GEM
       multi_json (>= 1.2)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
+    jsmin (1.0.1)
     json (2.1.0)
     jwt (1.5.6)
     launchy (2.4.3)
@@ -356,11 +366,12 @@ DEPENDENCIES
   font-awesome-rails
   foreman
   github_api
+  jammit!
   jbuilder (~> 2.5)
   jquery-ui-rails
   json
   launchy
-  less-rails (~> 3.0.0)
+  less-rails
   pg
   platform-api
   pry-rails
@@ -373,7 +384,7 @@ DEPENDENCIES
   rollbar
   rspec
   rspec-rails (~> 3.7)
-  sass-rails (~> 5.0)
+  sass-rails
   screencap
   selenium-webdriver
   shoulda-matchers (~> 3.1)

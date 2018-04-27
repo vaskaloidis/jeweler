@@ -33,11 +33,16 @@ gem 'yaml_db'
 gem 'jquery-ui-rails'
 # gem 'jquery-rails'
 gem 'rails-ujs'
-gem 'sass-rails', '~> 5.0'
-gem 'less-rails', '~> 3.0.0'
+
+# gem 'sass-rails', '~> 5.0'
+# gem 'sass-rails', '~> 3.2.3'
+gem 'sass-rails'
+gem 'less-rails'
+gem 'jammit', :git => 'git://github.com/documentcloud/jammit.git'
+
 gem 'therubyracer' # Ruby
-# gem 'mini_racer', platforms: :ruby
 gem 'coffee-rails', '~> 4.2'
+
 gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 4.0'
 # gem 'bcrypt', '~> 3.1.7'
