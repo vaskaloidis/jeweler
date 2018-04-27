@@ -1,6 +1,6 @@
 <% sprints.each do |sprint| %>
   <% if sprint.is_current? %>
-    <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed ms-hover sprint-displayed">
+    <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed sprint-displayed">
       <% sprint_btn = '<i class="fas fa-paper-plane"> ' + sprint.sprint.to_s %>
       <%= link_to sprint.sprint.to_s, render_invoice_panel_path(sprint), id: 'sprint_btn_' + sprint.sprint.to_s, remote: true %>
     </li>

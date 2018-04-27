@@ -7,7 +7,7 @@ Rails.application.configure do
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :yui
   # config.assets.css_compressor = :sass
-  config.less.paths << "#{Rails.root}/app/assets/css/less"
+  # config.less.paths << "#{Rails.root}/app/assets/css/less"
 
   config.read_encrypted_secrets = true
 

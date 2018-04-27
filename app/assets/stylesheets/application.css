@@ -12,18 +12,17 @@
  *
  */
 
-@import "http://fonts.googleapis.com/css?family=Arimo:400,700,400italic";
-//@import "fonts/linecons/css/linecons.css";
-//@import "fonts/fontawesome/css/font-awesome.min.css";
-//KEEP - @import "fontawesome-all.min.css";
-//@import "bootstrap.css";
-//@import "xenon-core.css";
-//@import "xenon-forms.css";
-//@import "xenon-components.css";
-//@import "xenon-skins.css";
+/*//@import "fonts/linecons/css/linecons.css";*/
+/*//@import "fonts/fontawesome/css/font-awesome.min.css";*/
+/*//KEEP - @import "fontawesome-all.min.css";*/
+/*//@import "bootstrap.css";*/
+/*//@import "xenon-core.css";*/
+/*//@import "xenon-forms.css";*/
+/*//@import "xenon-components.css";*/
+/*//@import "xenon-skins.css";*/
 
 .alert-danger > a {
-  color: white;
+  /*color: white;*/
 }
 
 #timeline_alert {

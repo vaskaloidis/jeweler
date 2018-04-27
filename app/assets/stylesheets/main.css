@@ -21,7 +21,7 @@
     color: white;
 }
 #notifications_container > .alert {
-    color: white;
+    color: black;
 }
 i.fas.fa-ban.pull-right {
     color: white;
@@ -76,12 +76,12 @@ i.fas.fa-ban.pull-right {
 }
 
 .alert > a {
-    color: white;
+    /*color: white;*/
     font-weight: bold;
 }
 
 .alert > strong > a {
-    color: white;
+    /*color: white;*/
 }
 ul.settings_sprint_balance > li > span.badge {
     font-size: 1.1em;

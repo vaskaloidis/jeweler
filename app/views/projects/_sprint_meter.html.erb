@@ -23,7 +23,7 @@
 
       <% if sprint == project.current_sprint %>
 
-        <div class="invoice-tab active" id="sprint_tab_<%= sprint.sprint.to_s %>" style="">
+        <div class="invoice-tab active" id="invoice_tab_<%= sprint.sprint.to_s %>" style="">
           <div class="current_invoice_panel" id="invoice_panel_<%= sprint.sprint.to_s %>_container">
             <%= render 'invoices/invoice_panel', invoice: sprint %>
           </div>
@@ -31,7 +31,7 @@
 
       <% else %>
 
-        <div class="invoice-tab" id="sprint_tab_<%= sprint.sprint.to_s %>" style="display:none">
+        <div class="invoice-tab" id="invoice_tab_<%= sprint.sprint.to_s %>" style="display:none">
           <div id="invoice_panel_<%= sprint.sprint.to_s %>_container">
           </div>
         </div>

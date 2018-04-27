@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file.
 
 # Version of your assets, change this if you want to expire all your assets.
-Rails.application.config.assets.version = '1.2'
+Rails.application.config.assets.version = '1.4'
 
 # Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
@@ -18,13 +18,13 @@ Rails.application.config.assets.version = '1.2'
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 
-# Application.css.less
-# Rails.application.config.assets.precompile += %w( application.css.less )
+# Application.css
+Rails.application.config.assets.precompile += %w( application.css )
 
 # Fonts
 Rails.application.config.assets.precompile += %w( http://fonts.googleapis.com/css?family=Arimo:400,700,400italic )
 Rails.application.config.assets.precompile += %w( fonts/linecons/css/linecons.css.erb )
-# Rails.application.config.assets.precompile += %w( fontawesome.css )
+Rails.application.config.assets.precompile += %w( fontawesome.css )
 
 # LESS Pre-Parsed Stylesheets
 # Rails.application.config.assets.precompile += %w( less/bootstrap.less )
@@ -32,6 +32,8 @@ Rails.application.config.assets.precompile += %w( fonts/linecons/css/linecons.cs
 # Rails.application.config.assets.precompile += %w( less/xenon-forms.less )
 # Rails.application.config.assets.precompile += %w( less/xenon-components.less )
 # Rails.application.config.assets.precompile += %w( less/xenon-skins.less )
+
+Rails.application.config.assets.precompile += %w( jeweler-logo-full-black.png jeweler-logo-full-white.png )
 
 Rails.application.config.assets.precompile += %w( bootstrap.css )
 Rails.application.config.assets.precompile += %w( xenon-core.css )

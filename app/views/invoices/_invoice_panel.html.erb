@@ -65,7 +65,7 @@
 
       <% if invoice.project.is_owner?(current_user) %>
         <div class="btn-group">
-          <button type="button" class="btn btn-gray dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <button type="button" class="btn btn-sm btn-gray dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
             <i class="fa-wrench"></i> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu dropdown-white" role="menu">
@@ -77,13 +77,15 @@
                             set_current_sprint_path(invoice.id), remote: true %>
               </li>
             <% end %>
-            <li>
-              <% if invoice.open? %>
-                <%= link_to 'Close Sprint', close_sprint_path(invoice.id), remote: true, data: {confirm: 'Are you sure you want to close sprint ' + invoice.sprint.to_s + '?'} %>
-              <% else %>
-                <%= link_to 'Open Sprint', open_sprint_path(invoice.id), remote: true, data: {confirm: 'Are you sure you want to open sprint ' + invoice.sprint.to_s + '?'} %>
-              <% end %>
-            </li>
+            <% unless invoice.is_current? %>
+              <li>
+                <% if invoice.open? %>
+                  <%= link_to 'Close Sprint', close_sprint_path(invoice.id), remote: true, data: {confirm: 'Are you sure you want to close sprint ' + invoice.sprint.to_s + '?'} %>
+                <% else %>
+                  <%= link_to 'Open Sprint', open_sprint_path(invoice.id), remote: true, data: {confirm: 'Are you sure you want to open sprint ' + invoice.sprint.to_s + '?'} %>
+                <% end %>
+              </li>
+            <% end %>
             <li>
               Generate Invoice
             </li>

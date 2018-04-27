@@ -2,38 +2,39 @@
   <span style="display:inline;font-size:1em; padding:5px;" class="alert alert-success">
     #task<%= task.invoice.sprint.to_s %><%= task.get_letter %>
   </span>
-  <% if task.is_current? %>
-    <% if task.invoice.project.is_owner?(user) %>
-        <% if task.complete %>
-          <%= link_to 'Incomplete',
-                      uncomplete_task_path(task.id), remote: true,
-                      class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px;' %>
-        <% else %>
-          <%= link_to 'Complete',
-                      complete_task_path(task.id), remote: true,
-                      class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px;' %>
-        <% end %>
+  <% if task.invoice.open? %>
+    <% if task.is_current? %>
+      <% if task.invoice.project.is_owner?(user) %>
+          <% if task.complete %>
+            <%= link_to 'Incomplete',
+                        uncomplete_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px;' %>
+          <% else %>
+            <%= link_to 'Complete',
+                        complete_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px;' %>
+          <% end %>
         <%= link_to '<i class="far fa-edit"></i>'.html_safe,
                     edit_task_inline_path(task.id), remote: true,
                     class: 'btn btn-sm btn-default load-spinner', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
         <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
                     delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
                     class: 'btn btn-sm btn-default load-spinner', style: 'color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
-    <% end %>
-  <% else %>
-    <% if task.invoice.project.is_owner?(user) %>
-          <%= link_to 'Current Task',
-                      set_current_task_path(task.id), remote: true,
-                      class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px; padding-right:10px;' %>
+      <% end %>
+    <% else %>
+      <% if task.invoice.project.is_owner?(user) %>
+            <%= link_to 'Current Task',
+                        set_current_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px; padding-right:10px;' %>
         <% if task.complete %>
-          <%= link_to 'Incomplete',
-                      uncomplete_task_path(task.id), remote: true,
-                      class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px; ' %>
-        <% else %>
-          <%= link_to 'Complete',
-                      complete_task_path(task.id), remote: true,
-                      class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px;' %>
-        <% end %>
+            <%= link_to 'Incomplete',
+                        uncomplete_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px; ' %>
+          <% else %>
+            <%= link_to 'Complete',
+                        complete_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px;' %>
+          <% end %>
 
         <%= link_to '<i class="far fa-edit"></i>'.html_safe,
                     edit_task_inline_path(task.id), remote: true,
@@ -44,6 +45,11 @@
                     class: 'btn btn-sm btn-default load-spinner', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
 
 
+      <% end %>
     <% end %>
+  <% else %>
+    <span style="display:inline;font-size:1em; padding:5px;" class="alert alert-success">
+      Open Sprint to Modify
+    </span>
   <% end %>
 </span>
