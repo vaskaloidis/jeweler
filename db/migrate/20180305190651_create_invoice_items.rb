@@ -1,4 +1,4 @@
-class CreateInvoiceItems < ActiveRecord::Migration[5.2]
+class CreateInvoiceItems < ActiveRecord::Migration[5.1]
   def change
     create_table :invoice_items do |t|
       t.text :description

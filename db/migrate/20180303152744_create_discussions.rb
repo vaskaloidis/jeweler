@@ -1,4 +1,4 @@
-class CreateDiscussions < ActiveRecord::Migration[5.2]
+class CreateDiscussions < ActiveRecord::Migration[5.1]
   def change
     create_table :discussions do |t|
       t.belongs_to :note, foreign_key: true
