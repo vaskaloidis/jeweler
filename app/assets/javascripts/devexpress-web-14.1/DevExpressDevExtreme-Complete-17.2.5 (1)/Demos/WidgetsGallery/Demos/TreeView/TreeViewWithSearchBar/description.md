@@ -1,1 +1,0 @@
-This demo demonstrates the **TreeView** widget&rsquo;s searching capabilities. The widget can find nodes containing your search string or&nbsp;only starting with it&nbsp;depending on&nbsp;the search mode.

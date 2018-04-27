@@ -1,1 +1,0 @@
-In&nbsp;this demo, tooltips are displayed using an&nbsp;HTML template defined in&nbsp;the **tooltip**&nbsp;| **customizeTooltip** function.

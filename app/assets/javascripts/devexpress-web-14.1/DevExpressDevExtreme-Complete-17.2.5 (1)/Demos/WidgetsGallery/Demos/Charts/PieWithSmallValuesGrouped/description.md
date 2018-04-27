@@ -1,1 +1,0 @@
-In&nbsp;this example, the **PieChart** widget combines all values below the **threshold** option in&nbsp;one category called _&laquo;others&raquo;_.

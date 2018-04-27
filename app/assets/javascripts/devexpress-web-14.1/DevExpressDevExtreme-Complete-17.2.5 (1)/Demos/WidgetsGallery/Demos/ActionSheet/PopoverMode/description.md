@@ -1,1 +1,0 @@
-This demo illustrates the **ActionSheet** widget in&nbsp;the popover mode.

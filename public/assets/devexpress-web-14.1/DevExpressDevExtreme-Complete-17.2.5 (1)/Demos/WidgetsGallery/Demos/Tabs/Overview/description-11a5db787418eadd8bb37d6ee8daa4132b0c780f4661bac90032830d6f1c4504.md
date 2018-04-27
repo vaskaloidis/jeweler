@@ -1,1 +1,0 @@
-The **Tabs** is&nbsp;a&nbsp;tab strip used to&nbsp;switch between pages or&nbsp;views.

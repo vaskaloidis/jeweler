@@ -1,1 +1,0 @@
-This demo illustrates how to&nbsp;organize **Form** items into groups and tabbed pages. For this purpose, an&nbsp;array containing &laquo;group&raquo; and &laquo;tabbed&raquo; items is&nbsp;passed to&nbsp;the items option.

@@ -1,1 +1,0 @@
-This demo illustrates the flexibility of&nbsp;the standard _bar_ series type. To&nbsp;help compare values across different categories, rectangular bars are positioned side-by-side.

@@ -1,1 +1,0 @@
-This demo shows how to&nbsp;specify and customize the **CircularGauge** title using the options of&nbsp;the **title** configuration object.

@@ -1,1 +1,0 @@
-This demo shows a&nbsp;collection of&nbsp;bullets. Here, the horizontal bar of&nbsp;each bullet indicates the current temperature, while its vertical line indicates the average temperature for a&nbsp;corresponding week.

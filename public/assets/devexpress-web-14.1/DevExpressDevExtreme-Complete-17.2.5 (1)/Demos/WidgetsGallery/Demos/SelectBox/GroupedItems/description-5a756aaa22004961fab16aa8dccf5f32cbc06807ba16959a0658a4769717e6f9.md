@@ -1,1 +1,0 @@
-The **SelectBox** widget allows you to&nbsp;group items within the drop-down list. This demo illustrates how to&nbsp;enable grouping and how to&nbsp;define a&nbsp;custom template for groups.

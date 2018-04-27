@@ -1,1 +1,0 @@
-In&nbsp;this demo, argument axis labels overlap due to&nbsp;their length. You can decide how to&nbsp;resolve the overlapping by&nbsp;choosing one of&nbsp;the overlapping behavior modes.

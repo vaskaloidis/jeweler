@@ -1,1 +1,0 @@
-This demo shows how to&nbsp;filter data in&nbsp;the **DataGrid** using the **FilterBuilder** widget.

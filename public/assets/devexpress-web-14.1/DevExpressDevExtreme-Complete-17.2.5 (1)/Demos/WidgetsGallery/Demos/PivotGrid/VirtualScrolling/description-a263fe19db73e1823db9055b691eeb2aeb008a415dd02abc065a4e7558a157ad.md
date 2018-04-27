@@ -1,1 +1,0 @@
-The **PivotGrid** ships with virtual scrolling support. Virtual scrolling improves the performance when displaying large numbers of&nbsp;**PivotGrid** cells. The **PivotGrid** in&nbsp;this demo contains approximately 4000&nbsp;cells. To&nbsp;see virtual scrolling in&nbsp;action, scroll the **PivotGrid** horizontally.

@@ -1,1 +1,0 @@
-The **DataGrid** widget ships with an&nbsp;integrated filtering API, allowing you apply filters in&nbsp;code. In&nbsp;this example, the grid&rsquo;s filter function is&nbsp;called to&nbsp;filter data based on&nbsp;selections made within the drop-down menu above the **DataGrid**.

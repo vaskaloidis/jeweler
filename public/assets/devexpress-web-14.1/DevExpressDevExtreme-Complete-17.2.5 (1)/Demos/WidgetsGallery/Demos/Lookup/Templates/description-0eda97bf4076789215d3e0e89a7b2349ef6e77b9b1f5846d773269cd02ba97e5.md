@@ -1,1 +1,0 @@
-This demo shows how you can customize the input field and the items of&nbsp;the **Lookup** widget.

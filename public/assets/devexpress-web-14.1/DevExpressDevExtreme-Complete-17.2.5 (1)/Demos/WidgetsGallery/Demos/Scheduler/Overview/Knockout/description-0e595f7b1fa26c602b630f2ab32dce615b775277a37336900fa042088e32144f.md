@@ -1,1 +1,0 @@
-DevExtreme HTML5 JavaScript Scheduler is an adaptive widget for managing events and appointments. It is available as a Knockout component. This demo showcases the customization capabilities of the Scheduler control. Discover more Scheduler features, including appointment grouping, current time indication, recurring appointments, in other demos from this section.

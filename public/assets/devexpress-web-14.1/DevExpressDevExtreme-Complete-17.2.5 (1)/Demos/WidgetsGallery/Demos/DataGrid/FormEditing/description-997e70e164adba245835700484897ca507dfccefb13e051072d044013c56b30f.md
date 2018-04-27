@@ -1,1 +1,0 @@
-The **DataGrid** widget supports inline data editing for both visible and invisible row cells. To&nbsp;see inline data editing in&nbsp;action, click the _&laquo;Edit&raquo;_ button to&nbsp;the right of&nbsp;a&nbsp;row. To&nbsp;apply changes, click the _&laquo;Save&raquo;_ button.

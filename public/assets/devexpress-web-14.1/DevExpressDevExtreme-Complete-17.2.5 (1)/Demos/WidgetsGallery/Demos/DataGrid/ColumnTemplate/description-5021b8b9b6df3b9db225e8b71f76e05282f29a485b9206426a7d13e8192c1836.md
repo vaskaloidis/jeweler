@@ -1,1 +1,0 @@
-The **DataGrid** widget supports custom column templates. In&nbsp;this demo, a&nbsp;custom column template is&nbsp;assigned to&nbsp;the **cellTemplate** option of&nbsp;the _Picture_ column.

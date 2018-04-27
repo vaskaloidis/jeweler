@@ -1,1 +1,0 @@
-In&nbsp;this example, the **PieChart** widget displays only top&nbsp;N values and aggregates the remainder into the _others_ category.

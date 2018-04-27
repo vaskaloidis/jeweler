@@ -1,9 +1,0 @@
-/deep/ .pies-container {
-    margin: auto;
-    width: 800px;
-}
-
-/deep/ .pies-container > .pie {
-    width: 400px;
-    float: left;
-}

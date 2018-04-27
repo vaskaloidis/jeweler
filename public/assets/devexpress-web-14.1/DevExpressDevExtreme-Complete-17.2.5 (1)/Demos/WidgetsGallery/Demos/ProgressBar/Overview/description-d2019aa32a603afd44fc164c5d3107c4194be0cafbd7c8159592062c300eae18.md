@@ -1,1 +1,0 @@
-The **ProgressBar** is&nbsp;a&nbsp;widget that shows current progress.

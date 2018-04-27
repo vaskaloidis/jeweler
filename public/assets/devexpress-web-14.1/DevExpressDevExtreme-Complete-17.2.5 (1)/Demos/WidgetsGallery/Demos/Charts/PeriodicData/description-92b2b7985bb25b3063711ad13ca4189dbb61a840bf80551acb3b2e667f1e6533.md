@@ -1,1 +1,0 @@
-This example illustrates the visualization of&nbsp;periodic data. To&nbsp;notify the widget that data is&nbsp;periodic, the **period** option of&nbsp;the **argumentAxis** is&nbsp;specified.

@@ -1,1 +1,0 @@
-This example demonstrates how to&nbsp;configure the **DataGrid** widget to&nbsp;display remote data accessed using the OData protocol. Specify the data store type and remote data service URL, define data shaping options, and configure grid columns.

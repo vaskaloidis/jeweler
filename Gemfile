@@ -38,7 +38,7 @@ gem 'rails-ujs'
 # gem 'sass-rails', '~> 3.2.3'
 gem 'sass-rails'
 gem 'less-rails'
-gem 'jammit', :git => 'git://github.com/documentcloud/jammit.git'
+# gem 'jammit', :git => 'git://github.com/documentcloud/jammit.git'
 
 gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'

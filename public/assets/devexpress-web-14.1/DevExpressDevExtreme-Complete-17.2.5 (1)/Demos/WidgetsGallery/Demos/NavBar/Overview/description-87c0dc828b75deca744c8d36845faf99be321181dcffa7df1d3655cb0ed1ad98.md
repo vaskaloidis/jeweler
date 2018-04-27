@@ -1,1 +1,0 @@
-The **NavBar** is&nbsp;a&nbsp;widget that navigates the application views.

@@ -1,1 +1,0 @@
-This example demonstrates the **Scheduler** widget loading data from a&nbsp;Web API service.

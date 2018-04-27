@@ -1,1 +1,0 @@
-The **TreeView** widget displays a&nbsp;hierarchical collection of&nbsp;items using a&nbsp;traditional tree structure. **TreeView** nodes can be&nbsp;expanded and collapsed to&nbsp;display sub-items.
