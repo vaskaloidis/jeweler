@@ -1,6 +1,6 @@
 Rails.application.configure do
 
-  config.assets.compile = false
+  config.assets.compile = true
   config.assets.compress = false
   config.assets.digest = false
   config.assets.debug = false
