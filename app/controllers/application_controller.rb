@@ -23,7 +23,9 @@ class ApplicationController < ActionController::Base
   end
 
   def load_requires
-    require 'dotenv/load'
+    unless Rails.env.production?
+      require 'dotenv/load'
+    end
     # require 'colorize'
   end
 
@@ -31,6 +33,6 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:image, :first_name, :last_name, :company, :location, :website_url, :tagline])
     devise_parameter_sanitizer.permit(:account_update, keys: [:image, :first_name, :last_name, :company, :location, :website_url, :tagline])
-    end
-
   end
+
+end
