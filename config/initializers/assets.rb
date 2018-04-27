@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file.
 
 # Version of your assets, change this if you want to expire all your assets.
-Rails.application.config.assets.version = '1.4'
+Rails.application.config.assets.version = '1.5'
 
 # Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
@@ -36,7 +36,8 @@ Rails.application.config.assets.precompile += %w( fontawesome.css )
 Rails.application.config.assets.precompile += %w( jeweler-logo-full-black.png jeweler-logo-full-white.png )
 
 Rails.application.config.assets.precompile += %w( bootstrap.css )
-Rails.application.config.assets.precompile += %w( xenon-core.css )
+Rails.application.config.assets.precompile += %w( less/xenon-core.less )
+# Rails.application.config.assets.precompile += %w( xenon-core.css )
 Rails.application.config.assets.precompile += %w( xenon-forms.css )
 Rails.application.config.assets.precompile += %w( xenon-components.css )
 Rails.application.config.assets.precompile += %w( xenon-skins.css )
