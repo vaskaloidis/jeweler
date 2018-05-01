@@ -35,18 +35,19 @@
     </style>
 
   <% else %>
-    <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
     <%= stylesheet_link_tag "fonts/linecons/css/linecons.css" %>
     <%= stylesheet_link_tag "fontawesome.css" %>
-    <%= stylesheet_link_tag "main.css" %>
     <%= stylesheet_link_tag "bootstrap.css" %>
-    <%#= stylesheet_link_tag "xenon-core.css" %>
-    <%= stylesheet_link_tag "less/xenon-core.less" %>
+    <%= stylesheet_link_tag "xenon-core.css" %>
     <%= stylesheet_link_tag "xenon-forms.css" %>
     <%= stylesheet_link_tag "xenon-components.css" %>
     <%= stylesheet_link_tag "xenon-skins.css" %>
+
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= stylesheet_link_tag "main.css" %>
+
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -158,16 +159,6 @@
 
       <%= yield %>
 
-      <%= render 'layouts/modal' %>
-
-      <% if defined? @timeline_modals %>
-        <% unless @timeline_modals.nil? %>
-          <% if @timeline_modals %>
-            <%= render 'discussions/discussion_modal' %>
-          <% end %>
-        <% end %>
-      <% end %>
-
     </div>
 
   </div>
@@ -195,6 +186,16 @@
   </footer>
 
   <%#= render 'layouts/chat_sidebar' %>
+
+  <%= render 'layouts/modal' %>
+
+  <% if defined? @timeline_modals %>
+    <% unless @timeline_modals.nil? %>
+      <% if @timeline_modals %>
+        <%= render 'discussions/discussion_modal' %>
+      <% end %>
+    <% end %>
+  <% end %>
 
 <% end %>
 

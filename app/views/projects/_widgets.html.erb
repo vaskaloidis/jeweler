@@ -55,7 +55,7 @@
     <div data-toggle="settings-pane" data-animate="true" class="col-xs-12 col-sm-6 col-lg-3">
       <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_payments.to_s %>" data-prefix="$" data-duration="2">
         <div class="xe-icon">
-          <i class="far fa-clock"></i>
+          <i class="fas fa-dollar-sign"></i>
         </div>
         <div class="xe-label">
           <strong class="num">$<%= project.current_sprint.sprint_payments.to_s %></strong>
@@ -68,13 +68,13 @@
 
   <div class="col-xs-12 col-sm-6 col-lg-3">
     <% commits = project.notes.where(note_type: 'commit').count %>
-    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= commits.to_s %>" data-suffix=" Commits" data-duration="2">
+    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= commits.to_s %>" data-suffix="" data-duration="2">
       <div class="xe-icon">
         <i class="fas fa-code-branch"></i>
       </div>
       <div class="xe-label">
-        <strong class="num"><%= commits.to_s %> Commits</strong>
-        <span>Sprint <%= project.sprint_current.to_s %></span>
+        <strong class="num"><%= commits.to_s %></strong>
+        <span>Sprint <%= project.sprint_current.to_s %> Commits</span>
       </div>
     </div>
   </div>

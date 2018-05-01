@@ -29,22 +29,19 @@
         </a>
       </div>
 
-      <% if false %>
-        <!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
-        <div class="settings-icon">
-          <a href="<%= edit_user_registration_path %>" data-toggle="settings-pane" data-animate="true">
+      <!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
+      <div class="settings-icon">
+        <a href="<%= edit_user_registration_path %>" data-toggle="settings-pane" data-animate="true">
 
-            <% unless @project.nil? %>
-              <i class="fas fa-hand-holding-usd white-icon"></i>
-              <% payment_requests = @project.payment_requests %>
-              <% unless payment_requests.empty? %>
-                <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
-              <% end %>
+          <% unless @project.nil? %>
+            <i class="fas fa-hand-holding-usd white-icon"></i>
+            <% payment_requests = @project.payment_requests %>
+            <% unless payment_requests.empty? %>
+              <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
             <% end %>
-          </a>
-        </div>
-      <% end %>
-
+          <% end %>
+        </a>
+      </div>
 
     </header>
 
@@ -71,10 +68,9 @@
           <li>
             <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
               <% if @project.is_owner?(current_user) %>
-                <a href="javascript:;" onclick="jQuery('#create_note_modal').modal('show');" _c>
-                  <i class="fas fa-sticky-note"></i>
-                  New Note
-                </a>
+                <%= link_to '<i class="fas fa-sticky-note"></i> New Note'.html_safe,
+                            create_note_modal_path(@project.id),
+                            remote: true %>
               <% else %>
                 <a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">
                   <i class="fas fa-money-bill-alt"></i>
@@ -129,16 +125,22 @@
               </a>
             </li>
             <% if controller_name == 'projects' and action_name == 'show' %>
-              <li>
-                <a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">
-                  <i class="fas fa-money-bill-alt"></i>
-                  Payments
-                  <% payment_requests = @project.payment_requests %>
-                  <% unless payment_requests.empty? %>
-                    <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
-                  <% end %>
-                </a>
-              </li>
+              <% if @project.is_owner?(current_user) %>
+                <li>
+                  <%= link_to '<i class="fas fa-money-bill-alt"></i> Payments'.html_safe, project_payments_path(@project.id) %>
+                </li>
+              <% else %>
+                <li>
+                  <a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">
+                    <i class="fas fa-money-bill-alt"></i>
+                    Payment Requests
+                    <% payment_requests = @project.payment_requests %>
+                    <% unless payment_requests.empty? %>
+                      <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
+                    <% end %>
+                  </a>
+                </li>
+              <% end %>
               <li>
                 <a href="#readme" data-toggle="tab" data-animate="true">
                   <i class="fab fa-readme"></i>

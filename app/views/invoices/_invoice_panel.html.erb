@@ -5,63 +5,76 @@
   <div class="panel-heading">
     <h4 class="panel-title">
       Sprint <%= invoice.sprint.to_s %>
+      <span id="invoice_<%= invoice.sprint.to_s %>_description" class="description">
+        <% if invoice.description.nil? and invoice.project.is_owner?(current_user) %>
+          <%= link_to 'Add Description', edit_invoice_description_path(invoice.id), remote: true %>
+        <% else %>
+          - <%= invoice.description %>
+          <% if invoice.project.is_owner?(current_user) %>
+              <%= link_to '(Edit)', edit_invoice_description_path(invoice.id), remote: true %>
+            <% end %>
+        <% end %>
+        </span>
     </h4>
-    <div style="color:white !important;font-size: 18px;" class="panel-options">
-      <% if invoice.project.sprint_current == invoice.sprint %>
-        <div class="label label-success"><i class="fas fa-paper-plane"></i> Current Sprint</div>
-      <% else %>
-        <% if invoice.project.is_owner?(current_user) %>
-          <div class="label label-success">
+    <div class="panel-options">
+      <div class="btn-group">
+        <% if invoice.project.sprint_current == invoice.sprint %>
+          <a href="#" disabled class="btn btn-sm btn-success"><i class="fas fa-paper-plane"></i> Current Sprint</a>
+        <% else %>
+          <% if invoice.project.is_owner?(current_user) and invoice.open? %>
             <%= link_to 'Set Current Sprint',
-                        set_current_sprint_path(invoice.id), remote: true,
-                        class: '', style: 'display:inline;font-size:1em;' %>
-          </div>
-        <% end %>
-        <% if invoice.open? %>
-          <div class="label label-success">
+                        set_current_sprint_path(invoice.id),
+                        class: 'btn btn-sm btn-success',
+                        remote: true,
+                        data: {confirm: 'Are you sure you want to change current sprint to ' + invoice.sprint.to_s + '?'} %>
+          <% end %>
+          <% if invoice.open? %>
             <% if invoice.project.is_owner?(current_user) %>
-              <%= link_to 'Sprint Open', close_sprint_path(invoice.id), remote: true, data: {confirm: 'Are you sure you want to close sprint ' + invoice.sprint.to_s + '?'} %>
+              <%= link_to 'Sprint Open',
+                          close_sprint_path(invoice.id),
+                          class: 'btn btn-sm btn-success',
+                          remote: true,
+                          data: {confirm: 'Are you sure you want to close sprint ' + invoice.sprint.to_s + '?'} %>
             <% else %>
-              Sprint Open
+              <a href="#" disabled class="btn btn-sm btn-sucess">Sprint Open</a>
             <% end %>
-          </div>
-        <% else %>
-          <div class="label label-danger">
+          <% else %>
             <% if invoice.project.is_owner?(current_user) %>
-              <%= link_to 'Sprint Closed', open_sprint_path(invoice.id), remote: true, data: {confirm: 'Are you sure you want to open sprint ' + invoice.sprint.to_s + '?'} %>
+              <%= link_to 'Sprint Closed',
+                          open_sprint_path(invoice.id),
+                          class: 'btn btn-sm btn-danger',
+                          remote: true,
+                          data: {confirm: 'Are you sure you want to open sprint ' + invoice.sprint.to_s + '?'} %>
             <% else %>
-              Sprint Closed
+              <a href="#" disabled class="btn btn-sm btn-danger">Sprint Closed</a>
             <% end %>
-          </div>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
+      <div class="btn-group">
 
-      <% if invoice.project.is_owner?(current_user) %>
-        <% if invoice.only_planned? %>
-          <div style="display:inline" class="label label-success">
-            <%= link_to 'Generate Estimate', generate_invoice_path(invoice.id, 'true'), remote: true %>
-          </div>
-        <% else %>
-          <div style="display:inline" class="label label-success">
-            <%= link_to 'Generate Invoice', generate_invoice_path(invoice.id, 'false'), remote: true %>
-          </div>
+        <% if invoice.project.is_owner?(current_user) %>
+          <% if invoice.only_planned? %>
+            <%= link_to 'Generate Estimate', generate_invoice_path(invoice.id, 'true'), class: 'btn btn-sm btn-success', remote: true %>
+          <% else %>
+            <%= link_to 'Generate Invoice', generate_invoice_path(invoice.id, 'false'), class: 'btn btn-sm btn-success', remote: true %>
+          <% end %>
         <% end %>
-      <% end %>
 
-      <% if invoice.project.is_owner?(current_user) %>
-        <% if invoice.payment_due? %>
-          <div style="display:inline" class="label label-warning">
-            <%= link_to 'Payment Requested (cancel)'.html_safe, cancel_request_payment_path(invoice.id),
+        <% if invoice.project.is_owner?(current_user) %>
+          <% if invoice.payment_due? %>
+            <%= link_to 'Payment Requested (cancel)'.html_safe,
+                        cancel_request_payment_path(invoice.id),
+                        class: 'btn btn-sm btn-warning',
                         remote: true %>
-          </div>
-        <% else %>
-          <div style="display:inline" class="label label-success">
+          <% else %>
             <%= link_to 'Request Pay'.html_safe,
                         request_payment_path(invoice.id),
+                        class: 'btn btn-sm btn-success',
                         remote: true %>
-          </div>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
 
       <% if invoice.project.is_owner?(current_user) %>
         <div class="btn-group">
@@ -231,7 +244,12 @@
       </div>
     <% end %>
 
-    <div style="font-size:1.45em" class="pull-right">
+    <div class="pull-right">
+      <% if invoice.only_planned? %>
+        <div class="label label-danger">
+          No Hours Reported
+        </div>
+      <% end %>
       <% if invoice.sprint_cost > invoice.sprint_payments %>
         <div class="label label-danger">
           Balance: $-<%= invoice.sprint_cost - invoice.sprint_payments %>
@@ -252,7 +270,5 @@
         <div class="label label-info">Cost: $<%= invoice.sprint_cost %></div>
       <% end %>
     </div>
-
-
   </div>
 </div>

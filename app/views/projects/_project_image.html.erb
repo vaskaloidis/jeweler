@@ -40,16 +40,18 @@
         <%= project.owner.company %>
       </li>
     <% end %>
-    <li>
-      <a href="#" data-toggle="settings-pane" data-animate="true">
-        <i class="fas fa-money-bill-alt"></i>
-        Payment Requests
-        <% payment_requests = project.payment_requests %>
-        <% unless payment_requests.empty? %>
-          <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
-        <% end %>
-      </a>
-    </li>
+    <% unless project.is_owner?(current_user) %>
+      <li>
+        <a href="#" data-toggle="settings-pane" data-animate="true">
+          <i class="fas fa-money-bill-alt"></i>
+          Pay Developer
+          <% payment_requests = project.payment_requests %>
+          <% unless payment_requests.empty? %>
+            <span class="badge badge-secondary pull-right"><%= payment_requests.count.to_s %></span>
+          <% end %>
+        </a>
+      </li>
+    <% end %>
     <li>
       <%= link_to '<i class="fas fa-money-bill-alt"></i> Payments'.html_safe, project_payments_path(@project.id) %>
     </li>

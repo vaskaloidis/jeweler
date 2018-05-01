@@ -1,4 +1,4 @@
 $("#modal_target").html("<%= j render 'invoices/generate_printable_invoice', invoice: @invoice, estimate: @estimate %>");
 
 
-$('#modal').modal('show');
+<%= render 'layouts/render_modal', title: 'Generate Invoice' %>

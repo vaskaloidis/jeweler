@@ -1,0 +1,9 @@
+$('#modal_title').html('<%= title %>');
+
+<% if defined? display_close %>
+  <% if display_close %>
+    $('#modal_close').show();
+  <% end %>
+<% end %>
+
+$('#modal').modal('show');

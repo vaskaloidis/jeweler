@@ -1,0 +1,13 @@
+<%= form_with model: note, class: 'form-horizontal' do |f| %>
+  <div class="form-group">
+    <%= f.text_area :content, class: 'form-control' %>
+    <%= f.hidden_field :project_id, :value => note.project.id %>
+    <%= f.hidden_field :note_type, :value => note.note_type %>
+  </div>
+  <div class="form-group">
+    <div class="btn-group">
+      <%= f.submit "Post Note", :class => 'btn btn-success' %>
+      <a href="#" onclick="$('#modal').modal('hide'); return false;" class="btn btn-primary">Cancel</a>
+    </div>
+  </div>
+<% end %>
