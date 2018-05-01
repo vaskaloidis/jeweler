@@ -28,9 +28,8 @@ module JewlerCRM
     # the framework and any gems in your application.
 
     config.generators do |g|
-      g.factory_bot dir: 'spec/factories'
-      g.test_framework :rspec, :fixture => true
-
+      g.factory_bot dir: 'test/factories'
+      # g.test_framework :rspec, :fixture => true
     end
 
     config.action_mailer.perform_deliveries = true # Set it to false to disable the email in dev mode

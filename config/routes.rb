@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   # Ajax
 
+  get '/edit_description/:invoice_id', to: 'invoices#edit_description', as: 'edit_invoice_description'
+
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
 
   get '/display_payments_panel/:project_id', to: 'payments#display_panel', as: 'display_payments_panel'
@@ -26,11 +28,9 @@ Rails.application.routes.draw do
   get '/close_sprint/:invoice_id' => 'invoices#close_sprint_inline', as: 'close_sprint'
 
   get '/timeline_query/:project_id/:sprint_query/:note_type', to: 'notes#note_query', as: 'note_query'
-  get '/edit_note_modal/:note_id' => 'notes#edit_note_modal', as: 'edit_note_modal'
-  match '/update_note_modal' => 'notes#update_note_modal', via: [:post], as: 'update_note_modal'
   get '/delete_note_inline/:note_id' => 'notes#delete_note_inline', as: 'delete_note_inline'
-  match '/create_note_modal', to: 'notes#create_note_modal', via: [:post], as: 'create_note_modal'
-  match '/create_project_update_modal', to: 'notes#create_project_update_modal', via: [:post], as: 'create_project_update_modal'
+  get '/create_note_modal/:project_id', to: 'notes#create_note_modal', as: 'create_note_modal'
+  get '/create_project_update_modal/:project_id', to: 'notes#create_project_update_modal', as: 'create_project_update_modal'
 
   match '/create_chat_message', to: 'discussions#create_chat_message_inline', via: [:post], as: 'create_chat_message_inline'
   get '/fetch_discussion/:note_id' => 'discussions#fetch_discussion', as: 'fetch_discussion'
