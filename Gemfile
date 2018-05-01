@@ -31,14 +31,14 @@ gem 'redcarpet'
 gem 'yaml_db'
 # gem 'jquery-rails', '1.11.1'
 gem 'jquery-ui-rails'
-# gem 'jquery-rails'
+gem 'jquery-rails'
 gem 'rails-ujs'
 
 # gem 'sass-rails', '~> 5.0'
 # gem 'sass-rails', '~> 3.2.3'
 gem 'sass-rails'
 gem 'less-rails'
-# gem 'jammit', :git => 'git://github.com/documentcloud/jammit.git'
+gem 'yui-compressor'
 
 gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'
@@ -57,7 +57,6 @@ group :production do
   gem 'rails_12factor'
   gem 'foreman'
   gem 'uglifier', '>= 1.3.0'
-  # gem 'yui-compressor'
 end
 group :development, :test do
   gem 'dotenv-rails'
