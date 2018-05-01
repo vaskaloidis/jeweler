@@ -3,6 +3,26 @@
 /*
  *= require font-awesome
  */
+.modal-backdrop.in {
+    opacity: 0;
+}
+.btn.btn-gray {
+    color: #333 !important;
+}
+.panel .panel-heading>.panel-options a {
+    margin-left: 0px;
+    /*line-height: 1.5px;*/
+}
+
+.btn {
+    color:white !important;
+}
+.description {
+    font-size: .8em;
+}
+.description > a {
+    font-size: .7em;
+}
 .sprint-displayed {
     border-top:3px solid gray;
 }
