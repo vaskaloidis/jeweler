@@ -134,11 +134,34 @@ class NotesController < ApplicationController
     end
   end
 
+  def create_note_modal
+    @note = Note.new
+    @note.note_type = 'note'
+    @note.project = Project.find(params[:project_id])
+    @note.author = current_user
+
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def create_project_update_modal
+    @note = Note.new
+    @note.note_type = 'project_update'
+    @note.project = params[:project_id]
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
   # PATCH/PUT /notes/1
   # PATCH/PUT /notes/1.json
   def update
     if @note.invalid?
-      logger.error("Note not updated succesfully")
+      logger.error("Note not updated successfully")
       log.error(@note.errors)
     end
 

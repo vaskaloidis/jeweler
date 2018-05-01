@@ -1,6 +1,14 @@
 class InvoicesController < ApplicationController
   before_action :set_objects, only: [:show, :edit, :update, :destroy]
 
+  def edit_description
+    @invoice = Invoice.find(params[:invoice_id])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def render_panel
     @invoice = Invoice.find(params[:invoice_id])
 
@@ -219,9 +227,11 @@ class InvoicesController < ApplicationController
       if @invoice.update(invoice_params)
         format.html {redirect_to @invoice, notice: 'Invoice was successfully updated.'}
         format.json {render :show, status: :ok, location: @invoice}
+        format.js
       else
         format.html {render :edit}
         format.json {render json: @invoice.errors, status: :unprocessable_entity}
+        format.js
       end
     end
   end
