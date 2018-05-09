@@ -96,104 +96,6 @@ class InvoiceItemsController < ApplicationController
     end
   end
 
-  def delete_inline
-    @invoice_item = InvoiceItem.find(params[:task_id])
-
-    logger.debug("Delete Task AJAX Task ID: " + @invoice_item.to_s)
-
-    @invoice = @invoice_item.invoice
-
-    Note.create_event(@invoice.project, 'task_deleted', 'Deleted: ' + @invoice_item.description)
-
-    @current_sprint = @invoice.project.sprint_current
-
-    @project = Project.find(@invoice.project.id)
-
-    if @invoice.project.current_task == @invoice_item
-      @invoice.project.current_task = nil
-      @invoice.project.save
-    end
-    # @invoice_item.destroy
-    @invoice_item.deleted = true
-    @invoice_item.save
-    @invoice_item.reload
-    @invoice.project.reload
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def create_inline
-    @invoice_id = params[:invoice_id]
-    @invoice = Invoice.find(@invoice_id)
-
-    logger.debug("Create Task Invoice ID: " + @invoice_id.to_s)
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def save_inline
-    @invoice = Invoice.find(params[:invoice_id])
-
-    @current_sprint = @invoice.project.sprint_current
-
-    @task = InvoiceItem.new
-    @task.description = params[:description]
-
-    if ApplicationHelper.is_number?(params[:hours])
-      @task.hours = params[:hours]
-    else
-      # @task.hours = nil
-    end
-
-    if ApplicationHelper.is_number?(params[:planned_hours])
-      @task.planned_hours = params[:planned_hours]
-    else
-      # @task.planned_hours = nil
-    end
-
-    @task.rate = params[:rate]
-    @task.invoice = Invoice.find(params[:invoice_id])
-
-    if @task.invoice.project.current_task.nil?
-      @task.invoice.project.current_task = @task
-    end
-
-    @task.position = @task.invoice.next_position_int
-
-    @task.save
-
-    if @task.invalid?
-      logger.error("Error Creating Task: " + @task.error.full_message)
-    else
-      logger.debug("Task is valid (Saved)")
-    end
-
-    @task.reload
-
-    if @task.invoice.tasks.empty? and @task.invoice.project.current_task.nil? and @task.invoice.is_current?
-      project = @task.invoice.project
-      project.current_task = @task
-      project.save
-      if project.invalid?
-        logger.error('Error creating new task: ' + project.errors.full_message)
-      end
-      @task.invoice.project.reload
-    end
-
-    if @task.valid?
-      Note.create_event(@invoice.project, 'task_created', 'Task Created: ' + @task.description)
-    end
-
-    respond_to do |format|
-      format.js
-    end
-
-  end
-
   def index
     @invoice_items = InvoiceItem.all
   end
@@ -301,25 +203,6 @@ class InvoiceItemsController < ApplicationController
         format.html {render :new}
         format.json {render json: @invoice_item.errors, status: :unprocessable_entity}
       end
-    end
-  end
-
-  def update_inline
-
-    logger.debug("Updating Inline Task")
-
-    @task = InvoiceItem.update(params)
-    @task.save
-
-    if @task.invalid?
-      logger.error("Task not updated succesfully")
-      logger.error(@task.errors)
-    end
-
-    Note.create_event(@project, current_user, 'Task Updated: ' + @task.description)
-
-    respond_to do |format|
-      format.js
     end
   end
 
