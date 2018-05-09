@@ -1,42 +1,53 @@
-<%= form_with(model: invoice_item, remote: true) do |form| %>
-  <% if invoice_item.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(invoice_item.errors.count, "error") %> prohibited this invoice_item from being saved:</h2>
-
-      <ul>
-      <% invoice_item.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<%= form_with model: invoice_item, class: 'form-inline', remote: true do |f| %>
+  <div id="task-form-row" class="row">
+    <div class="col-xs-12 col-sm-1">
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+    <div class="col-xs-12 col-sm-6">
+      Task
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      Rate
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      Estimate Hrs.
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      Actual Hrs.
+    </div>
+    <div class="col-xs-12 col-sm-2">
+    </div>
+  </div>
+  <div id="task-form-row" class="row">
+    <div class="col-xs-12 col-sm-1">
+      <%= f.check_box :complete, class: 'iswitch iswitch-info' %>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <%= f.text_field :description, style: '', class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      <%= f.text_field :rate, style: '', class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      <%= f.text_field :planned_hours, class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      <%= f.text_field :hours, class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-sm-2">
+      <%= f.hidden_field :id, value: invoice_item.id %>
+      <%= f.hidden_field :invoice_id, value: invoice_item.invoice.id %>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save"></i></button>
+        <%#= f.submit '<i class="fas fa-save"></i>'.html_safe, :class => 'btn-sm btn-success', style: 'display:inline' %>
+        <% unless invoice_item.id.nil? %>
+          <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                      invoice_item_path(invoice_item.invoice.id, invoice_item.id), method: :delete, data: {confirm: "Are you sure?"}, remote: true,
+                      class: 'btn btn-sm btn-success', style: '' %>
+        <% end %>
+        <%= link_to '<i class="fas fa-times"></i>'.html_safe, cancel_task_update_path(invoice_item.invoice.id), :class => 'btn btn-sm btn-success', style: '', remote: true %>
+      </div>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :planned_hours, 'Estimated Hours' %>
-    <%= form.text_field :planned_hours %>
-  </div>
 
-  <div class="field">
-    <%= form.label :hours, 'Task Hours' %>
-    <%= form.text_field :hours %>
-  </div>
-
-  <div class="field">
-    <%= form.label :rate %>
-    <%= form.text_field :rate %>
-  </div>
-
-  <div class="field">
-    <%= form.label :complete %>
-    <%= form.check_box :complete %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
 <% end %>

@@ -1,10 +1,10 @@
-class Float
+class Decimal
   def prettify
     if self.nil?
       return 0
     else
       if self.to_i == self
-        return self.round(0)
+        return self.to_i
       else
         return self
       end
@@ -14,9 +14,9 @@ class Float
   def hours
     result = self.prettify
     if result == 1
-      result = result.to_s + ' hr'
+      result = result + ' hr'
     else
-      result = result.to_s + ' hrs'
+      result = result + 'hrs'
     end
     return result
   end

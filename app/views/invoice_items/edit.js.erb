@@ -1,0 +1,12 @@
+<% if false %>
+  <!-- TODO: Get REAL Task inline editing working.
+             This code is for the feature to edit the Task inline directly on the table row
+             Because right now we just use a hack to edit the task inline BELOW the table -->
+  $('#task_row_<%= @invoice_item.id.to_s %>').html('<div><%= j render 'form', invoice_item: @invoice_item %></div>');
+<% else %>
+  $('.currently-editing').show('slide').removeClass('currently-editing');
+  $('#task_row_<%= @invoice_item.id.to_s %>').hide('slide');
+  $('#task_row_<%= @invoice_item.id.to_s %>').addClass('currently-editing');
+  $("#edit_invoice_items_<%= @invoice_item.invoice.id.to_s %>_hidden_row").html('<%= j render('form', invoice_item: @invoice_item) %>');
+  $("#edit_invoice_items_<%= @invoice_item.invoice.id.to_s %>_hidden_row").show('slide');
+<% end %>

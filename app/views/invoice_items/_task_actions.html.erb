@@ -1,48 +1,46 @@
-<span id="task_<%= task.id.to_s %>" style="display:none;font-size:.8em; padding-right:20px;">
-  <span style="display:inline;font-size:1em; padding:5px;" class="alert alert-success">
-    #task<%= task.invoice.sprint.to_s %><%= task.get_letter %>
-  </span>
+<span id="task_<%= task.id.to_s %>" class="task-actions">
   <% if task.invoice.open? %>
     <% if task.is_current? %>
       <% if task.invoice.project.is_owner?(user) %>
           <% if task.complete %>
             <%= link_to 'Incomplete',
                         uncomplete_task_path(task.id), remote: true,
-                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px;' %>
+                        class: 'btn btn-sm btn-primary' %>
           <% else %>
             <%= link_to 'Complete',
                         complete_task_path(task.id), remote: true,
-                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px;' %>
+                        class: 'btn btn-sm btn-primary' %>
           <% end %>
         <%= link_to '<i class="far fa-edit"></i>'.html_safe,
-                    edit_task_inline_path(task.id), remote: true,
-                    class: 'btn btn-sm btn-default load-spinner', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
-        <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
-                    delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
-                    class: 'btn btn-sm btn-default load-spinner', style: 'color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
+                    edit_invoice_item_path(task.id), remote: true,
+                    class: 'btn btn-sm btn-primary' %>
+        <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe,
+                    invoice_item_path(task.id), method: :delete,
+                    data: {confirm: "Are you sure?"}, remote: true,
+                    class: 'btn btn-sm btn-primary' %>
       <% end %>
     <% else %>
       <% if task.invoice.project.is_owner?(user) %>
             <%= link_to 'Current Task',
                         set_current_task_path(task.id), remote: true,
-                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px; padding-right:10px;' %>
+                        class: 'btn btn-sm btn-primary' %>
         <% if task.complete %>
             <%= link_to 'Incomplete',
                         uncomplete_task_path(task.id), remote: true,
-                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px; ' %>
+                        class: 'btn btn-sm btn-primary' %>
           <% else %>
             <%= link_to 'Complete',
                         complete_task_path(task.id), remote: true,
-                        class: 'btn btn-sm btn-success load-spinner', style: 'display:inline;font-size:1em; padding:5px;' %>
+                        class: 'btn btn-sm btn-primary' %>
           <% end %>
-
         <%= link_to '<i class="far fa-edit"></i>'.html_safe,
-                    edit_task_inline_path(task.id), remote: true,
-                    class: 'btn btn-sm btn-default', style: 'color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline; load-spinner' %>
+                    edit_invoice_item_path(task.id), remote: true,
+                    class: 'btn btn-sm btn-primary' %>
 
-        <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
-                    delete_task_inline_path(task.id), data: {confirm: "Are you sure?"}, remote: true,
-                    class: 'btn btn-sm btn-default load-spinner', style: 'padding:10x;color:white;background-color:#777;font-size:1.2em; padding:2px; display:inline;' %>
+        <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe,
+                    invoice_item_path(task.id), method: :delete,
+                    data: {confirm: "Are you sure?"}, remote: true,
+                    class: 'btn btn-sm btn-primary' %>
 
 
       <% end %>

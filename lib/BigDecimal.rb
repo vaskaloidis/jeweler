@@ -1,14 +1,20 @@
-class Float
+class BigDecimal
   def prettify
     if self.nil?
       return 0
     else
       if self.to_i == self
-        return self.round(0)
+        return self.to_f.round(0)
       else
         return self
       end
     end
+  end
+
+  def invoice_rate
+    result = self.prettify.to_s
+    result = '$' + result + ' /hr'
+    return result
   end
 
   def hours
