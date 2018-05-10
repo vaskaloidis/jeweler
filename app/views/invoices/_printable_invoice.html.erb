@@ -14,28 +14,30 @@
             <i class="fa-envelope-o"></i>
             <span>Send</span>
           </a>
-
-          <a href="#" class="btn btn-block btn-secondary btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left">
-            <i class="fa-print"></i>
-            <span>Print</span>
-          </a>
+          <% if estimate %>
+            <% print_btn = '<i class="fa-print"></i><span>Print Estimate</span>' %>
+            <%= link_to print_btn.html_safe,
+                        print_invoice_path(invoice.id, 'true'),
+                        class: 'btn btn-block btn-secondary btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+          <% else %>
+            <% print_btn = '<i class="fa-print"></i><span>Print Invoice</span>' %>
+            <%= link_to print_btn.html_safe,
+                        print_invoice_path(invoice.id, 'false'),
+                        class: 'btn btn-block btn-secondary btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+          <% end %>
         </div>
 
         <!-- Invoice Data Header -->
         <div class="invoice-logo">
-
           <a href="#" class="logo">
             <img width="150" src="<%= invoice.project.image.url %>" class="img-responsive"/>
           </a>
-
           <ul class="list-unstyled">
             <li class="upper">Sprint <strong><%= invoice.sprint.to_s %></strong></li>
             <li><%= Date.today.to_s %></li>
             <li><%= invoice.project.owner.first_name %> <%= invoice.project.owner.last_name %></li>
           </ul>
-
         </div>
-
       </div>
 
 
@@ -124,25 +126,25 @@
       <div class="invoice-totals">
 
         <div class="invoice-subtotals-totals">
-								<span>
-									Sub - Total amount:
-									<strong>$<%= invoice.cost.to_s %></strong>
-								</span>
+          <span>
+            Sub - Total amount:
+            <strong>$<%= invoice.cost.to_s %></strong>
+          </span>
 
           <!-- TODO:Add Tax rate to settings -->
           <% if false %>
           <span>
-									Tax:
-									<strong>3.9%</strong>
-								</span>
+            Tax:
+            <strong>3.9%</strong>
+          </span>
           <% end %>
 
           <hr/>
 
           <span>
-									Grand Total:
-									<strong>$<%= invoice.cost.to_s %></strong>
-								</span>
+            Grand Total:
+            <strong>$<%= invoice.cost.to_s %></strong>
+          </span>
         </div>
 
         <div class="invoice-bill-info">

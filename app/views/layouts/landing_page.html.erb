@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>JewelerCRM</title>
+
+  <%= csrf_meta_tags %>
+
+  <!-- Home Page -->
+  <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" %>
+  <%= stylesheet_link_tag "home/bootstrap.css" %>
+  <%= stylesheet_link_tag "home/style.css" %>
+  <%= stylesheet_link_tag "home/dark.css" %>
+  <%= stylesheet_link_tag "home/font-icons.css" %>
+  <%#= stylesheet_link_tag "fontawesome-all.min.css" %>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+  <%= stylesheet_link_tag "home/animate.css" %>
+  <%= stylesheet_link_tag "home/magnific-popup.css" %>
+  <%= stylesheet_link_tag "home/responsive.css" %>
+  <%= stylesheet_link_tag "home/main.css" %>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <!--[if lt IE 9]>
+      <%= javascript_include_tag 'https://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js' %>
+      <![endif]-->
+  <style>
+    .device-lg #slider .emphasis-title h1 {
+      font-size: 52px;
+    }
+
+    .device-md #slider .emphasis-title h1 {
+      font-size: 44px;
+    }
+  </style>
+</head>
+
+<body id="body">
+
+
+<script>
+    window.onload = function () {
+        var body = document.getElementsByTagName("BODY")[0];
+        body.classList.add('stretched');
+    };
+</script>
+
+<% if notice %>
+  <p class="alert alert-success"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="alert alert-danger"><%= alert %></p>
+<% end %>
+
+<div class="loader-2"></div>
+
+<%= yield %>
+
+<%= javascript_include_tag "home/jquery.js" %>
+<%= javascript_include_tag "home/plugins.js" %>
+<%= javascript_include_tag "home/functions.js" %>
+
+</body>
+</html>
+
+<%#= console %>

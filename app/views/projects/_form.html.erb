@@ -27,9 +27,26 @@
     </div>
 
     <div class="row">
-      <div class="form-group">
-        <%= form.label :image, 'Project Logo', class: 'control-label' %>
-        <%= form.file_field :image, multiple: false %>
+      <div class="well">
+        <div class="row">
+          <div class="col-xs-6">
+            <% unless project.image.url.nil? %>
+              <div class="row">
+                <div class="col-xs-6">
+                  <%= image_tag project.image.url, class: 'img-responsive img-rounded' %>
+                </div>
+              </div>
+            <% end %>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <%= form.label :image, 'Project Logo', class: 'control-label' %>
+                  <%= form.file_field :image, multiple: false %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -43,24 +60,26 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="">
-        <div class="row form-group">
-          <%= form.label :sprint_current, class: 'col-sm-4 control-label' %>
-          <%= form.text_field :sprint_current, class: 'col-sm-2 form-control' %>
+    <div class="well">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <%= form.label :sprint_current, class: 'control-label' %>
+            <%= form.text_field :sprint_current, class: 'form-control' %>
+          </div>
         </div>
-      </div>
-      <div class="">
-        <div class="row form-group">
-          <%= form.label :sprint_total, class: 'col-sm-4 control-label' %>
-          <%= form.text_field :sprint_total, class: 'col-sm-2 form-control' %>
+        <div class="col-xs-6">
+          <div class="form-group">
+            <%= form.label :sprint_total, class: 'control-label' %>
+            <%= form.text_field :sprint_total, class: 'form-control' %>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="form-group">
-        <%= form.label :description, class: 'control-label' %>
+        <%= form.label :description, 'Project Description', class: 'control-label' %>
         <%= form.text_area :description, class: 'form-control' %>
       </div>
     </div>
@@ -102,24 +121,28 @@
 
     <% end %>
 
-    <div class="row">
-      <div class="form-group">
-        <%= form.label :stage_website_url, 'Staging Server URL', class: 'control-label' %>
-        <%= form.text_field :stage_website_url, class: 'form-control' %>
+    <div class="well">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <%= form.label :stage_website_url, 'Staging Server URL', class: 'control-label' %>
+            <%= form.text_field :stage_website_url, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="form-group">
+            <%= form.label :prod_url, 'Production Server URL', class: 'control-label' %>
+            <%= form.text_field :prod_url, class: 'form-control' %>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group">
-        <%= form.label :demo_url, 'Demo Server URL', class: 'control-label' %>
-        <%= form.text_field :demo_url, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group">
-        <%= form.label :prod_url, 'Production Server URL', class: 'control-label' %>
-        <%= form.text_field :prod_url, class: 'form-control' %>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <%= form.label :demo_url, 'Demo Server URL', class: 'control-label' %>
+            <%= form.text_field :demo_url, class: 'form-control' %>
+          </div>
+        </div>
       </div>
     </div>
 

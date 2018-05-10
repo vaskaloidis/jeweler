@@ -2,7 +2,10 @@
   <div class="form-group">
     <%= f.text_field :description, style: 'width:100%', class: 'form-control' %>
   </div>
-  <div class="form-group">
-    <%= f.submit 'Save', class: 'btn btn-sm btn-success' %>
+  <div style="margin-top:10px;" class="form-group">
+    <div class="btn-group">
+      <%= f.submit 'Save', class: 'btn btn-sm btn-success' %>
+      <%= link_to 'Cancel', cancel_task_update_path(invoice.id), :class => 'btn btn-sm btn-primary', style: '', remote: true %>
+    </div>
   </div>
 <% end %>

@@ -1,11 +1,70 @@
 <div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      <%= render 'invoices/sprints_bar_graph', project: @project %>
+    </div>
+  </div>
+</div>
+
+<script>
+    <% @project.sprints.each do |sprint| %>
+    $("#sprint_btn_<%= sprint.sprint.to_s %>").click(function () {
+        $('html, body').animate({
+            scrollTop: $("#sprint_<%= sprint.sprint.to_s %>_panel").offset().top
+        }, 2000);
+        return false;
+    });
+    <% end %>
+</script>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Sprint
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div id="rootwizard" class="form-wizard">
+        <!-- Sprint Tab Numbers -->
+        <ul id="sprint-tabs" class="tabs">
+          <% @project.sprints.each do |sprint| %>
+            <% if sprint.is_current? %>
+              <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed current-sprint-tab">
+                <a href="#" id="sprint_btn_<%= sprint.sprint.to_s %>"><%= sprint.sprint.to_s %></a>
+              </li>
+            <% elsif sprint.sprint < sprint.project.sprint_current %>
+              <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed">
+                <a href="#" id="sprint_btn_<%= sprint.sprint.to_s %>"><%= sprint.sprint.to_s %></a>
+              </li>
+            <% else %>
+              <li id="sprint_tab_<%= sprint.sprint.to_s %>">
+                <a href="#" id="sprint_btn_<%= sprint.sprint.to_s %>"><%= sprint.sprint.to_s %></a>
+              </li>
+            <% end %>
+          <% end %>
+
+        </ul>
+        <div id="sprint_gauge_container" class="progress-indicator"
+             style="width: 0%;">
+          <span></span>
+        </div>
+        <script>
+            $('#sprint_gauge_container').animate({
+                width: '<%= ApplicationHelper.sprint_percent(@project) %>%'
+            }, {duration: 1000});
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
   <div class="panel-heading">
     Current Sprint
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-sm-12">
-        <%= render 'invoices/invoice_slider', invoice: @project.current_sprint, sprint: @project.current_sprint.sprint  %>
+      <div id="sprint_<%= @project.current_sprint.sprint.to_s %>_panel" class="col-sm-12">
+        <%= render 'invoices/invoice_slider', invoice: @project.current_sprint, sprint: @project.current_sprint.sprint %>
       </div>
     </div>
   </div>
@@ -19,9 +78,11 @@
     <div class="row">
       <div class="col-sm-12">
         <% @project.invoices.order('sprint ASC').each_with_index do |invoice, count| %>
-          <% if count > @project.current_sprint.sprint %>
-            <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint %>
-          <% end %>
+          <div id="sprint_<%= invoice.sprint.to_s %>_panel">
+            <% if count > @project.current_sprint.sprint %>
+              <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint %>
+            <% end %>
+          </div>
         <% end %>
       </div>
     </div>
@@ -36,9 +97,11 @@
     <div class="row">
       <div class="col-sm-12">
         <% @project.invoices.order('sprint ASC').each_with_index do |invoice, count| %>
-          <% if count < @project.current_sprint.sprint %>
-            <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint  %>
-          <% end %>
+          <div id="sprint_<%= invoice.sprint.to_s %>_panel">
+            <% if count < @project.current_sprint.sprint %>
+              <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint %>
+            <% end %>
+          </div>
         <% end %>
       </div>
     </div>

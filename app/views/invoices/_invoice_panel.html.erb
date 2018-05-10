@@ -32,7 +32,7 @@
             <% if invoice.project.is_owner?(current_user) %>
               <%= link_to 'Sprint Open',
                           close_sprint_path(invoice.id),
-                          class: 'btn btn-sm btn-success',
+                          class: 'btn btn-sm btn-success sprint-open-btn',
                           remote: true,
                           data: {confirm: 'Are you sure you want to close sprint ' + invoice.sprint.to_s + '?'} %>
             <% else %>
@@ -42,7 +42,7 @@
             <% if invoice.project.is_owner?(current_user) %>
               <%= link_to 'Sprint Closed',
                           open_sprint_path(invoice.id),
-                          class: 'btn btn-sm btn-danger',
+                          class: 'btn btn-sm btn-danger sprint-close-btn',
                           remote: true,
                           data: {confirm: 'Are you sure you want to open sprint ' + invoice.sprint.to_s + '?'} %>
             <% else %>
@@ -63,14 +63,14 @@
 
         <% if invoice.project.is_owner?(current_user) %>
           <% if invoice.payment_due? %>
-            <%= link_to 'Payment Requested (cancel)'.html_safe,
+            <%= link_to 'Payment Requested'.html_safe,
                         cancel_request_payment_path(invoice.id),
-                        class: 'btn btn-sm btn-warning',
+                        class: 'btn btn-sm btn-warning payment-requested-btn',
                         remote: true %>
           <% else %>
             <%= link_to 'Request Pay'.html_safe,
                         request_payment_path(invoice.id),
-                        class: 'btn btn-sm btn-success',
+                        class: 'btn btn-sm btn-success payment-request-btn',
                         remote: true %>
           <% end %>
         <% end %>
@@ -81,16 +81,14 @@
           <button type="button" class="btn btn-sm btn-gray dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
             <i class="fa-wrench"></i> <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu dropdown-white" role="menu">
+          <ul class="dropdown-menu pull-left dropdown-white" role="menu">
             <li>
               <a href="<%= invoice_path(invoice) %>">Edit Sprint</a>
-              <% unless invoice.is_current? %>
-              <li>
-                <%= link_to 'Set Current Sprint',
-                            set_current_sprint_path(invoice.id), remote: true %>
-              </li>
-            <% end %>
+            </li>
             <% unless invoice.is_current? %>
+              <li>
+                <%= link_to 'Set Current Sprint', set_current_sprint_path(invoice.id), remote: true %>
+              </li>
               <li>
                 <% if invoice.open? %>
                   <%= link_to 'Close Sprint', close_sprint_path(invoice.id), remote: true, data: {confirm: 'Are you sure you want to close sprint ' + invoice.sprint.to_s + '?'} %>
@@ -99,9 +97,10 @@
                 <% end %>
               </li>
             <% end %>
-            <li>
-              Generate Invoice
-            </li>
+            <li><%= link_to 'Generate Estimate', generate_invoice_path(invoice.id, 'true'), remote: true %></li>
+            <% unless invoice.only_planned? %>
+              <li><%= link_to 'Generate Invoice', generate_invoice_path(invoice.id, 'false'), remote: true %></li>
+            <% end %>
           </ul>
         </div>
       <% end %>
@@ -141,7 +140,7 @@
         >
         <% end %>
 
-        <% invoice.invoice_items.sort_by(&:created_at).each do |task| %>
+        <% invoice.tasks.each do |task| %>
         <tr id="task_row_<%= task.id.to_s %>" onclick="$('#task_<%= task.id.to_s %>').toggle('slide'); return false;">
           <td width="10">
             <% if invoice.project.current_task == task %>
@@ -152,15 +151,18 @@
           </td>
           <td>
             <%= render 'invoice_items/task_actions', task: task, user: current_user %>
+            <span class="alert alert-success task-id">
+              #task<%= task.invoice.sprint.to_s %><%= task.get_letter %>
+            </span>
             <%= task.description %>
           </td>
-          <td>$<%= task.rate %>/hr</td>
-          <td><%= task.planned_hours %> hrs.</td>
+          <td>$<%= task.rate.to_f.prettify %>/hr</td>
+          <td><%= task.planned_hours.prettify %> hrs.</td>
           <% if invoice.only_planned? %>
-            <td>$<%= task.planned_cost %></td>
+            <td><%= task.planned_cost.money %></td>
           <% else %>
-            <td><%= task.hours %> hrs.</td>
-            <td>$<%= task.total_cost %></td>
+            <td><%= task.hours.prettify %> hrs.</td>
+            <td><%= task.total_cost.money %></td>
           <% end %>
 
         </tr>
@@ -171,7 +173,7 @@
           <th id="create_task_container_invoice_<%= invoice.id.to_s %>">
             <% if invoice.project.is_owner?(current_user) %>
               <%= link_to 'Create Task',
-                          create_task_inline_path(invoice.id),
+                          new_project_invoice_invoice_item_path(invoice.project.id, invoice.id),
                           remote: true,
                           id: 'create_task_inline_button',
                           class: 'btn btn-sm btn-primary',
@@ -179,19 +181,19 @@
             <% end %>
           </th>
           <th><strong>Total:</strong></th>
-          <th><%= invoice.sprint_planned_hours %> hrs.</th>
+          <th><%= invoice.sprint_planned_hours.prettify %> hrs.</th>
           <% if invoice.only_planned? %>
-            <td>$<%= invoice.sprint_planned_cost %></td>
+            <td><%= invoice.sprint_planned_cost.money %></td>
           <% else %>
-            <td><%= invoice.sprint_hours %> hrs.</td>
-            <td>$<%= invoice.sprint_cost %></td>
+            <td><%= invoice.sprint_hours.prettify %> hrs.</td>
+            <td><%= invoice.sprint_cost.money %></td>
           <% end %>
         </tr>
         </tbody>
       </table>
     </div>
-    <div style="display:none" id="edit_invoice_items_<%= invoice.id.to_s %>_hidden_row"></div>
-    <div style="display:none" id="invoice_items_<%= invoice.id.to_s %>_hidden_row"></div>
+    <div style="display:none" id="edit_invoice_items_<%= invoice.id.to_s %>_hidden_row" class="col-xs-12"></div>
+    <div style="display:none" id="invoice_items_<%= invoice.id.to_s %>_hidden_row" class="col-xs-12"></div>
 
 
     <% unless invoice.payments.empty? %>
@@ -201,7 +203,7 @@
           <tr>
             <td><%= payment.amount %></td>
             <td><%= payment.payment_type %></td>
-            <td><%= payment.user.first_name %> <%= payment.user.last_name %></td>
+            <td><%= payment.user.full_name %></td>
             <td><%= payment.created_at.strftime("%d %b. %Y") %> </td>
           </tr>
         <% end %>
@@ -209,7 +211,7 @@
           <td></td>
           <td></td>
           <td><strong>Payment Total:</strong></td>
-          <td><%= invoice.sprint_payments %></td>
+          <td><%= invoice.sprint_payments.money %></td>
         </tr>
         </tbody>
       </table>
@@ -218,10 +220,10 @@
         <% invoice.payments.each do |payment| %>
           <p>
             <% unless payment.user.first_name.nil? or payment.user.last_name.nil? %>
-              <%= payment.user.first_name %> <%= payment.user.last_name %> Paid
+              <%= payment.user.full_name %> Paid
             <% end %>
 
-            <%= payment.amount %>
+            <%= payment.amount.money %>
 
             <% unless payment.payment_type.nil? %>
               <%= payment.payment_type %>
@@ -231,7 +233,7 @@
           </p>
         <% end %>
         <hr>
-        <strong>Total: </strong>$<%= invoice.sprint_payments %>
+        <strong>Total: </strong><%= invoice.sprint_payments.money %>
       </div>
     <% end %>
 
@@ -244,30 +246,32 @@
       </div>
     <% end %>
 
-    <div class="pull-right">
+    <div class="invoice-totals pull-right well well-sm">
       <% if invoice.only_planned? %>
-        <div class="label label-danger">
-          No Hours Reported
-        </div>
+        <span>
+          <strong>No Hours Reported</strong>
+        </span>
       <% end %>
       <% if invoice.sprint_cost > invoice.sprint_payments %>
-        <div class="label label-danger">
-          Balance: $-<%= invoice.sprint_cost - invoice.sprint_payments %>
-        </div>
+        <span>
+          <strong>Balance:</strong> -<%= (invoice.sprint_cost - invoice.sprint_payments).money %>
+        </span>
       <% elsif invoice.sprint_cost == invoice.sprint_payments %>
-        <div class="label label-success">
-          Balance: $<%= invoice.sprint_cost - invoice.sprint_payments %>
-        </div>
+        <span>
+          <strong>Balance:</strong> <%= (invoice.sprint_cost - invoice.sprint_payments).money %>
+        </span>
       <% elsif invoice.sprint_cost <= invoice.sprint_payments %>
-        <div class="label label-success">
-          Balance: $+<%= invoice.sprint_cost - invoice.sprint_payments %>
-        </div>
+        <span>
+         <strong>Balance:</strong> +<%= (invoice.sprint_cost - invoice.sprint_payments).money %>
+        </span>
       <% end %>
-      <div class="label label-success">Projected Cost: $<%= invoice.sprint_planned_cost %></div>
-      <div class="label label-default">Estimate: <%= invoice.sprint_planned_hours %> hrs</div>
+      <span>
+        <strong>Projected Cost:</strong> $<%= invoice.sprint_planned_cost.money %>
+      </span>
       <% unless invoice.only_planned? %>
-        <div class="label label-default">Reported: <%= invoice.sprint_hours %> hrs</div>
-        <div class="label label-info">Cost: $<%= invoice.sprint_cost %></div>
+        <span>
+          <strong>Cost:</strong> <%= invoice.sprint_cost.money %>
+        </span>
       <% end %>
     </div>
   </div>

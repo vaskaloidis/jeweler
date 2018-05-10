@@ -1,3 +1,5 @@
 $('#timeline_container').prepend("<%= j render 'notes/form', note: @note  %>");
 
-$('#timeline_container').scroll();
+$('html, body').animate({
+    scrollTop: $("#timeline_container").offset().top
+}, 2000);

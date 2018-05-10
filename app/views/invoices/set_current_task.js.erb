@@ -1,21 +1,25 @@
-<%= render 'invoices/re-render_invoice_panel', invoice: @task.invoice %>
+<% if @error %>
+  toastr.error('<%= @error_message %>');
+<% else %>
+  <%= render 'invoices/re-render_invoice_panel', invoice: @task.invoice %>
 
-<%= render 'notes/re-render_timeline', notes: @task.invoice.project.sprint_notes, project: @task.invoice.project %>
+  <%= render 'notes/re-render_timeline', notes: @task.invoice.project.sprint_notes, project: @task.invoice.project %>
 
-toastr.success('Current Task Updated.');
+  toastr.success('Current Task Updated.');
 
-$('#sprint_gauge_container').animate({
-    width: '<%= ApplicationHelper.sprint_percent(@task.invoice.project) %>%'
-});
-
-
-$('#notifications_container').html('<%= j render 'layouts/notifications', project: @task.invoice.project %>');
+  $('#sprint_gauge_container').animate({
+      width: '<%= ApplicationHelper.sprint_percent(@task.invoice.project) %>%'
+  });
 
 
-$('.link-delete').bind('ajax:beforeSend', function() {
-    $('#mySpinner').show();
-});
+  $('#notifications_container').html('<%= j render 'layouts/notifications', project: @task.invoice.project %>');
 
-$('.link-delete').bind('ajax:complete', function() {
-    $('#mySpinner').hide();
-});
+
+  $('.link-delete').bind('ajax:beforeSend', function () {
+      $('#mySpinner').show();
+  });
+
+  $('.link-delete').bind('ajax:complete', function () {
+      $('#mySpinner').hide();
+  });
+<% end %>

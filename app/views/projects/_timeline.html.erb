@@ -16,9 +16,9 @@
   <% end %>
     </span>
 
-  <% 1.upto(project.sprint_total + 1) do |sprint| %>
+  <% 1.upto(project.sprint_total) do |sprint| %>
     <sprint>
-      <% if sprint == sprint_query %>
+      <% if sprint.to_f == sprint_query.to_f %>
         <%= link_to 'Sprint ' + sprint.to_s, note_query_path(project.id, sprint, 'all'), class: 'btn btn-sm btn-success disabled', remote: true %>
       <% else %>
         <%= link_to 'Sprint ' + sprint.to_s, note_query_path(project.id, sprint, 'all'), class: 'btn btn-sm btn-success', remote: true %>
@@ -36,7 +36,7 @@
         <% end %>
       <% else %>
 
-          <% if type == 'all'  %>
+          <% if type == 'all' %>
           <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, type), class: 'btn btn-sm btn-success disabled', remote: true %>
         <% else %>
           <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, type), class: 'btn btn-sm btn-success', remote: true %>
@@ -80,9 +80,17 @@
     </li>
   <% else %>
 
-    <% notes.each do |note| %>
+    <% notes.each_with_index do |note, count| %>
 
-      <li id="timeline_note_<%= note.id.to_s %>">
+      <%
+        if count == 0
+          timeline_class = 'first-timeline-post'
+        else
+          timeline_class = ''
+        end
+      %>
+
+      <li class="<%= timeline_class %>" id="timeline_note_<%= note.id.to_s %>">
         <time class="cbp_tmtime" datetime="2014-12-06T03:45">
           <span><%= note.created_at.strftime("%H:%M") %></span>
 

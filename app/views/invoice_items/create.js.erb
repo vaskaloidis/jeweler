@@ -1,7 +1,10 @@
 $("#invoice_items_<%= @invoice.id.to_s %>_hidden_row").hide('slide')
-<% if @invoice_item.valid? %>
-<%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
-toastr.success('Task Created Successfully');
+
+<% if @error_msgs.empty? %>
+  <%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
+  toastr.success('Task Created Successfully');
 <% else %>
-toastr.error('Your Task Could Not Be Created');
+  <% @error_msgs.each do |em| %>
+    toastr.error('Error creating Task: ' + em);
+  <% end %>
 <% end %>

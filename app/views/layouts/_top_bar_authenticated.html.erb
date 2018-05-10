@@ -36,21 +36,12 @@
     </li>
 
     <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
-      <% if controller_name == 'projects' and action_name == 'show' %>
-        <li>
-          <a href="<%= project_path(@project) %>">
-            <i class="fas fa-home"></i>
-            <span class="title">Home</span>
-          </a>
-        </li>
-      <% else %>
-        <li>
-          <a href="<%= root_path %>">
-            <i class="fas fa-home"></i>
-            <span class="title">Home</span>
-          </a>
-        </li>
-      <% end %>
+      <li>
+        <a href="<%= project_path(@project) %>">
+          <i class="fas fa-home"></i>
+          <span class="title"><%= truncate(@project.name, :length => 15) %></span>
+        </a>
+      </li>
       <li>
         <a href="<%= project_invoices_path(@project) %>">
           <i class="fas fa-paper-plane"></i>
@@ -63,34 +54,27 @@
           <span class="title">Customers</span>
         </a>
       </li>
-      <% unless @project.is_owner?(current_user) %>
-        <% if controller_name == 'projects' and action_name == 'show' %>
-          <li>
-            <a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">
-              <% payments_btn = '<i class="fas fa-money-bill-alt"></i> Payment Requests' %>
-              <% payment_requests = @project.payment_requests %>
-              <% unless payment_requests.empty? %>
-                <% payments_btn = payments_btn + ' <span class="badge badge-secondary pull-right">' + payment_requests.count.to_s + '</span>' %>
-              <% end %>
-              <%= payments_btn.html_safe %>
-              <%#= link_to payments_btn.html_safe, display_payments_panel_path(@project.id), id: 'payment_nav_button', remote:
+      <% if false %>
+        <% unless @project.is_owner?(current_user) %>
+          <% if controller_name == 'projects' and action_name == 'show' %>
+            <li>
+              <a href="#" id="payment_nav_button" data-animate="true">
+                <% payments_btn = '<i class="fas fa-money-bill-alt"></i> Payment Requests' %>
+                <% payment_requests = @project.payment_requests %>
+                <% unless payment_requests.empty? %>
+                  <% payments_btn = payments_btn + ' <span class="badge badge-secondary pull-right">' + payment_requests.count.to_s + '</span>' %>
+                <% end %>
+                <%= payments_btn.html_safe %>
+                <%#= link_to payments_btn.html_safe, display_payments_panel_path(@project.id), id: 'payment_nav_button', remote:
             true %>
-            </a>
-          </li>
+              </a>
+            </li>
+          <% end %>
         <% end %>
       <% end %>
       <li>
         <%= link_to '<i class="fas fa-money-bill-alt"></i> Payments'.html_safe, project_payments_path(@project.id) %>
       </li>
-      <% if controller_name == 'projects' and action_name == 'show' %>
-        <li>
-          <a href="#settings" data-toggle="tab" data-animate="true">
-            <i class="fas fa-cogs"></i>
-            <span class="title">Settings</span>
-          </a>
-        </li>
-      <% end %>
-
     <% end %>
 
   </ul>
@@ -109,12 +93,14 @@
 
     <!--</li>-->
 
-    <% if defined? @project %>
-      <li>
-        <%= link_to '<i class="fas fa-sticky-note"></i> New Note'.html_safe,
-                    create_note_modal_path(@project.id),
-                    remote: true %>
-      </li>
+    <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
+      <% if defined? @project %>
+        <li>
+          <%= link_to '<i class="fas fa-sticky-note"></i> New Note'.html_safe,
+                      create_note_modal_path(@project.id),
+                      remote: true %>
+        </li>
+      <% end %>
     <% end %>
 
     <li class="dropdown user-profile">
@@ -132,17 +118,24 @@
 
       <ul class="dropdown-menu user-profile-menu list-unstyled">
         <li>
+          <a href="<%= edit_user_registration_path %>">
+            <%= current_user.email %>
+          </a>
+        </li>
+        <li>
           <a href="<%= new_project_path %>">
             <i class="fa-edit"></i>
             New Project
           </a>
         </li>
-        <% if defined? @project %>
-          <li>
-            <%= link_to '<i class="fas fa-sticky-note"></i> New Note'.html_safe,
-                        create_note_modal_path(@project.id),
-                        remote: true %>
-          </li>
+        <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
+          <% if defined? @project %>
+            <li>
+              <%= link_to create_note_modal_path(@project.id), remote: true do %>
+                <i class="fas fa-sticky-note"></i> <span class="hide-xs hide-sm">New Note</span>
+              <% end %>
+            </li>
+          <% end %>
         <% end %>
         <li>
           <a href="<%= edit_user_registration_path %>">

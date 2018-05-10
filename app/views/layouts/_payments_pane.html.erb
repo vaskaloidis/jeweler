@@ -107,7 +107,7 @@
                   <div style="padding-right:15px">
                     <i class="fas fa-dollar-sign pull-right"></i>
                     <strong>Payment: </strong>
-                    Sprint <%= payment.invoice.sprint.to_s %> <%= payment.user.first_name %> <%= payment.user.last_name %>
+                    Sprint <%= payment.invoice.sprint.to_s %> <%= payment.user.full_name %>
                     - $<%= payment.amount.to_s %> (<%= payment.payment_type.to_s %>) - <%= payment.payment_note.to_s %>
                   </div>
                 </div>

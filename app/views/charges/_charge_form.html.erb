@@ -1,0 +1,52 @@
+<%= form_tag charges_path, class: 'form' do %>
+
+  <div>
+    <% if flash[:error].present? %>
+      <div id="alert alert-error">
+        <p><%= flash[:error] %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="alert alert-success">
+        Sprint <%= invoice.sprint.to_s %> Balance: <%= ApplicationHelper.money invoice.balance.to_s %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6">
+      <div style="float:left;text-align:left;margin-top:5px;" class="invoice-totals">
+        <div style="float:left;text-align: left" class="invoice-subtotals-totals">
+          <div style="margin-bottom:5px;" class="well">
+            <span><strong>Payment Info</strong></span>
+            <span>Sprint: <strong><%= invoice.sprint.to_s %></strong></span>
+            <span>Payment: <strong><%= ApplicationHelper.money amount %></strong></span>
+            <span>Tax: <strong>$0.00</strong></span>
+            <span>Grand Total: <strong><%= ApplicationHelper.money (amount + 0.00) %></strong></span>
+            <hr/>
+            <span>Remaining Sprint <%= invoice.sprint.to_s %>
+              Balance: <strong><%= ApplicationHelper.money (invoice.balance - amount) %></strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% amount_string = amount.to_s %>
+  <%= hidden_field_tag :customer_id, :value => customer.id %>
+  <%= hidden_field_tag :project_id, :value => project.id %>
+  <%= hidden_field_tag :invoice_id, :value => invoice.id %>
+  <%= hidden_field_tag :payment_note, :value => payment_note %>
+  <%= hidden_field_tag :charge_amount, :value => amount_string.to_s %>
+  <%= hidden_field_tag :payment_type, :value => 'jeweler' %>
+
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+          data-description="JewelerCRM - <%= project.name %> Billing"
+          data-amount="<%= amount * 100.00 %>"
+          data-locale="auto"></script>
+<% end %>
+</div>

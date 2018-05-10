@@ -16,7 +16,7 @@
       }, {duration: 1000});
   </script>
 
-  <div style="margin-top:0px;" class="tab-content task-list">
+  <div id="task-list" style="margin-top:0px;" class="tab-content">
     <% #TODO:Replace count with sprint in loop below %>
 
     <% project.sprints.each do |sprint| %>
@@ -41,5 +41,15 @@
     <% end %>
 
   </div>
+
+  <script>
+      $('#task-list').popover({
+          title: "Select a Task",
+          content: "Select a Current Task you are currently working on. Notes, Git Commits and Events will be assigned to the task.",
+          html: true,
+          placement: 'left',
+          trigger: 'manual'
+      });
+  </script>
 
 </div>

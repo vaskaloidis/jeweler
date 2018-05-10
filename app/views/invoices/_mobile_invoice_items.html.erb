@@ -8,7 +8,7 @@ class="current_sprint task_list">
 <div>
   <ul class="list-group list-group-minimal">
 
-    <% invoice.invoice_items.each do |task| %>
+    <% invoice.tasks.each do |task| %>
 
       <li class="list-group-item" onclick="$('#task_mobile_<%= task.id.to_s %>').toggle('slide'); return false;">
         <!--onmouseout="document.getElementById('task_<%#= task.id.to_s %>').style.display = 'none';">-->

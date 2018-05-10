@@ -6,4 +6,5 @@ $('#modal_title').html('<%= title %>');
   <% end %>
 <% end %>
 
-$('#modal').modal('show');
+// $('#modal').modal('show');
+$('#modal').appendTo("body").modal('show');

@@ -10,194 +10,145 @@
 
   <%= csrf_meta_tags %>
 
-  <% if current_page?(root_path) && !user_signed_in? %>
-    <!-- Home Page -->
-    <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" %>
-    <%= stylesheet_link_tag "home/bootstrap.css" %>
-    <%= stylesheet_link_tag "home/style.css" %>
-    <%= stylesheet_link_tag "home/dark.css" %>
-    <%= stylesheet_link_tag "home/font-icons.css" %>
-    <%= stylesheet_link_tag "fontawesome-all.min.css" %>
-    <%= stylesheet_link_tag "home/animate.css" %>
-    <%= stylesheet_link_tag "home/magnific-popup.css" %>
-    <%= stylesheet_link_tag "home/responsive.css" %>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <!--[if lt IE 9]>
-      <%= javascript_include_tag 'http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js' %>
-      <![endif]-->
-    <style>
-      .device-lg #slider .emphasis-title h1 {
-        font-size: 52px;
-      }
-      .device-md #slider .emphasis-title h1 {
-        font-size: 44px;
-      }
-    </style>
+  <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
+  <%= stylesheet_link_tag "fonts/linecons/css/linecons.css" %>
+  <%= stylesheet_link_tag "fontawesome.css" %>
+  <%= stylesheet_link_tag "bootstrap.css" %>
+  <%= stylesheet_link_tag "xenon-core.css" %>
+  <%= stylesheet_link_tag "xenon-forms.css" %>
+  <%= stylesheet_link_tag "xenon-components.css" %>
+  <%= stylesheet_link_tag "xenon-skins.css" %>
 
-  <% else %>
-    <%= javascript_include_tag 'application' %>
-    <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
-    <%= stylesheet_link_tag "fonts/linecons/css/linecons.css" %>
-    <%= stylesheet_link_tag "fontawesome.css" %>
-    <%= stylesheet_link_tag "bootstrap.css" %>
-    <%= stylesheet_link_tag "xenon-core.css" %>
-    <%= stylesheet_link_tag "xenon-forms.css" %>
-    <%= stylesheet_link_tag "xenon-components.css" %>
-    <%= stylesheet_link_tag "xenon-skins.css" %>
+  <%= stylesheet_link_tag "stripe_button.css" %>
 
-    <%= stylesheet_link_tag 'application', media: 'all' %>
-    <%= stylesheet_link_tag "main.css" %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= stylesheet_link_tag "main.css" %>
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
+<!--  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
       <%= stylesheet_link_tag "https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js" %>
       <%= stylesheet_link_tag "https://oss.maxcdn.com/respond/1.4.2/respond.min.js" %>
   <![endif]-->
-
-  <% end %>
-
-  <script>
-
-      function on_page_load() {
-          $('#current_sprint').popover({
-              title: "Current Task",
-              content: "Set Current Task Here",
-              html: true,
-              placement: 'left',
-              trigger: 'manual'
-          });
-
-          $('#task_list').popover({
-              title: "Set Current Task",
-              content: "Choose a Current Task Here",
-              html: true,
-              placement: 'bottom',
-              trigger: 'manual'
-          });
-      }
-
-  </script>
 </head>
 
-<body onload="on_page_load()" id="body">
+<body id="body">
 
+<script>
+    window.onload = function () {
+        var body = document.getElementsByTagName("BODY")[0];
+        body.classList.add('page-body');
+    };
+</script>
 
-<% if current_page?(root_path) && !user_signed_in? %>
+<% if request.original_url.include?("users/sign_in") %>
   <script>
       window.onload = function () {
           var body = document.getElementsByTagName("BODY")[0];
-          body.classList.add('stretched');
+          body.classList.add('login-page');
+          body.classList.add('login-light');
       };
   </script>
+<% end %>
 
-  <% if notice %>
-    <p class="alert alert-success"><%= notice %></p>
-  <% end %>
-  <% if alert %>
-    <p class="alert alert-danger"><%= alert %></p>
-  <% end %>
-
-  <div class="loader-2"></div>
-
-  <%= yield %>
-
-  <% if current_page?(root_path) %>
-    <%= javascript_include_tag "home/jquery.js" %>
-    <%= javascript_include_tag "home/plugins.js" %>
-    <%= javascript_include_tag "home/functions.js" %>
-  <% end %>
-
-<% else %>
-
-  <script>
-      window.onload = function () {
-          var body = document.getElementsByTagName("BODY")[0];
-          body.classList.add('page-body');
-      };
-  </script>
-
-  <% if request.original_url.include?("users/sign_in") %>
-    <script>
-        window.onload = function () {
-            var body = document.getElementsByTagName("BODY")[0];
-            body.classList.add('login-page');
-            body.classList.add('login-light');
-        };
-    </script>
-  <% end %>
-
-  <% if signed_in? %>
-    <% if controller_name == 'projects' and action_name == 'show' %>
+<% if false %>
+  <% if controller_name == 'projects' and action_name == 'show' %>
+    <% if @project.is_owner?(current_user) %>
       <div id="settings_container">
-        <%= render 'layouts/settings_pane', project: @project, user: current_user %>
+        <%= render 'layouts/payments_pane', project: @project, user: current_user %>
       </div>
     <% end %>
   <% end %>
+<% end %>
 
-  <div class="page-container">
-    <!-- add class "sidebar-collapsed" to close sidebar by default -->
+<div class="page-container">
+  <!-- TODO:Add JS script to check if window size < (Small-pre-defined-size), add class "sidebar-collapsed" to close sidebar by default -->
 
-    <% if user_signed_in? %>
-      <%= render 'layouts/sidebar' %>
-    <% end %>
+  <% if user_signed_in? %>
+    <%= render 'layouts/sidebar' %>
+  <% end %>
 
-    <div class="main-content">
+  <script>
+      function resizeWindow(window_width) {
+          if ((window_width > 1200) && (window_width < 1680)) {
+              console.log('Collapse Sidebar');
+              if(!($('#sidebar').hasClass('collapsed'))) {
+                  $('#sidebar').addClass("collapsed");
+              }
+          }
+          else if ((window_width > 1680)) {
+              console.log('Show Sidebar');
+              if(($('#sidebar').hasClass('collapsed'))) {
+                  $('#sidebar').removeClass("collapsed");
+              }
+          }
+      }
 
-      <% if !request.original_url.include?("users/sign_in") %>
-        <% if user_signed_in? %>
-          <%= render 'layouts/top_bar_authenticated' %>
-          <%#= render 'layouts/notifications' %>
-        <% else %>
-          <%= render 'layouts/top_bar' %>
+      jQuery(document).ready(function ($) {
+          resizeWindow($(window).width());
+      });
+
+      $(window).on('resize', function(){
+          // resizeWindow( $(window).width());
+      });
+  </script>
+
+  <div class="main-content">
+
+    <% if !request.original_url.include?("users/sign_in") %>
+      <% if user_signed_in? %>
+        <%= render 'layouts/top_bar_authenticated' %>
+        <% if defined? @project %>
+          <%= render 'layouts/top_notifications', project: @project, current_user: current_user %>
         <% end %>
+      <% else %>
+        <%= render 'layouts/top_bar' %>
       <% end %>
+    <% end %>
+    <%= yield %>
+  </div>
 
+</div>
 
-      <%= render 'layouts/top_notifications', project: @project, current_user: current_user %>
+<!-- Main Footer -->
+<!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
+<!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
+<!-- Or class "fixed" to  always fix the footer to the end of page -->
+<footer class="main-footer sticky footer-type-2">
 
-      <%= yield %>
+  <div class="footer-inner">
 
+    <div class="footer-text">
+      &copy; 2018
+      <strong>JewelerCRM</strong> - <a href="http://bluehelmet.software">Blue Helmet Software</a>
+    </div>
+
+    <div class="go-up">
+      <a href="#" rel="go-top">
+        <i class="fa-angle-up"></i>
+      </a>
     </div>
 
   </div>
+</footer>
 
-  <!-- Main Footer -->
-  <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
-  <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
-  <!-- Or class "fixed" to  always fix the footer to the end of page -->
-  <footer class="main-footer sticky footer-type-1">
+<%#= render 'layouts/chat_sidebar' %>
 
-    <div class="footer-inner">
+<%= render 'layouts/modal' %>
 
-      <div class="footer-text">
-        &copy; 2018
-        <strong>JewelerCRM</strong> - <a href="http://bluehelmet.software">Blue Helmet Software</a>
-      </div>
-
-      <div class="go-up">
-        <a href="#" rel="go-top">
-          <i class="fa-angle-up"></i>
-        </a>
-      </div>
-
-    </div>
-  </footer>
-
-  <%#= render 'layouts/chat_sidebar' %>
-
-  <%= render 'layouts/modal' %>
-
-  <% if defined? @timeline_modals %>
-    <% unless @timeline_modals.nil? %>
-      <% if @timeline_modals %>
-        <%= render 'discussions/discussion_modal' %>
-      <% end %>
+<% if defined? @timeline_modals %>
+  <% unless @timeline_modals.nil? %>
+    <% if @timeline_modals %>
+      <%= render 'discussions/discussion_modal' %>
     <% end %>
   <% end %>
-
 <% end %>
+
+<script src="https://js.stripe.com/v3/"></script>
 
 </body>
 </html>

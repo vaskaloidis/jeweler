@@ -5,72 +5,23 @@
   <% total_cost = 0.0 %>
   <% total_hours = 0.0 %>
   <% total_balance = 0.0 %>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <% #TODO: Move this chart enable / disable on dshabord to a config %>
+      <% if true %>
+        <div class="row">
+          <%= render 'dashboard_bar_graph', user: current_user %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
   <div class="panel panel-default">
     <div class="panel-heading">
       Your Projects
     </div>
     <div class="panel-body">
-
-      <% if true %>
-        <div class="row">
-          <script type="text/javascript">
-              jQuery(document).ready(function ($) {
-                  if (!$.isFunction($.fn.dxChart))
-                      return;
-
-                  $("#range-1").dxRangeSelector({
-                      margin: {
-                          top: 50
-                      },
-                      scale: {
-                          minorTickInterval: "day",
-                          majorTickInterval: {
-                              days: 7
-                          }
-                      },
-                      size: {
-                          height: 250
-                      },
-                      dataSource: [
-                          {t: new Date(2011, 11, 22), costs: 19, income: 18},
-                          {t: new Date(2011, 11, 29), costs: 27, income: 12},
-                          {t: new Date(2012, 0, 5), costs: 30, income: 5},
-                          {t: new Date(2012, 0, 12), costs: 26, income: 6},
-                          {t: new Date(2012, 0, 19), costs: 18, income: 10},
-                          {t: new Date(2012, 0, 26), costs: 15, income: 15},
-                          {t: new Date(2012, 1, 2), costs: 14, income: 21},
-                          {t: new Date(2012, 1, 9), costs: 14, income: 25}
-                      ],
-                      chart: {
-                          series: [
-                              {argumentField: "t", valueField: "costs", color: "#7c38bc"},
-                              {argumentField: "t", valueField: "income", color: "#4fcdfc"}
-                          ],
-                          valueAxis: {
-                              min: 0
-                          }
-                      },
-                      selectedRange: {
-                          startValue: new Date(2011, 11, 25),
-                          endValue: new Date(2012, 0, 1)
-                      },
-                      selectedRangeChanged: function (e) {
-                          $("#range-1-selected strong").html(e.startValue.toDateString() + ' - ' + e.endValue.toDateString());
-                      }
-                  });
-
-              });
-
-          </script>
-          <div id="range-1" style="height: 250px; width: 100%;"></div>
-
-          <div id="range-1-selected">
-            Selected range:
-            <strong class="text-primary">/</strong>
-          </div>
-        </div>
-      <% end %>
-
       <div class="row">
         <div class="col-sm-12">
           <div class="list-group">
@@ -82,16 +33,17 @@
 
                 <div id="project_description_home">
                   <% if project.total_planned_hours > 0 %>
-                    <span class="alert alert-success">Planned Cost: <%= project.total_planned_cost %></span>
-                    <span class="alert alert-success">planned Hours: <%= project.total_planned_hours %></span>
+                    <span class="alert alert-success">Planned Cost: <%= project.total_planned_cost.money %></span>
+                    <span class="alert alert-success">planned Hours: <%= project.total_planned_hours.prettify %>
+                      hrs</span>
                   <% end %>
                   <% if project.total_hours > 0 %>
-                    <span class="alert alert-success">Total Billed: <%= project.total_cost %></span>
-                    <span class="alert alert-success">Billed Hours: <%= project.total_hours %></span>
-                    <span class="alert alert-warning">Total Payment: <%= project.total_payment %></span>
+                    <span class="alert alert-success">Total Billed: <%= project.total_cost.money %></span>
+                    <span class="alert alert-success">Billed Hours: <%= project.total_hours.prettify %> hrs</span>
+                    <span class="alert alert-warning">Total Payment: <%= project.total_payment.money %></span>
                     <% if project.total_balance > 0 %>
                       <% total_balance = total_balance + project.total_balance %>
-                      <span class="alert alert-danger">Total Payment: <%= project.total_balance %></span>
+                      <span class="alert alert-danger">Total Payment: <%= project.total_balance.money %></span>
                     <% end %>
                     <% total_payment = total_payment + project.total_payment %>
                     <% total_cost = total_cost + project.total_cost %>
@@ -104,12 +56,12 @@
           </div>
         </div>
       </div>
-
-      <%= render 'main/home_widgets', total_cost: total_cost, total_payment: total_payment, total_balance: total_balance, total_hours: total_hours %>
-
+      <div class="row">
+        <% #TODO:Move these calculations for a current_user owner's overall projects to User Model %>
+        <%= render 'main/home_widgets', total_cost: total_cost, total_payment: total_payment, total_balance: total_balance, total_hours: total_hours %>
+      </div>
     </div>
   </div>
-  <hr>
 <% end %>
 
 <% unless current_user.invitations.empty? %>
@@ -155,8 +107,17 @@
                 <h4 class="list-group-item-heading"><%= project.name %></h4>
                 <p class="list-group-item-text">
                 <p><%= project.description %></p>
-                </p>
               </a>
+              <% unless project.payment_requests.empty? %>
+                <p>
+                  <% project.payment_requests.each do |invoice| %>
+                  <div class="alert alert-success">
+                    Payment Requested For Sprint <%= invoice.sprint.to_s %>
+                    <%= link_to '<strong>Make Payment</strong>'.html_safe, project_payments_path(invoice.project.id) %>
+                  </div>
+                <% end %>
+                </p>
+              <% end %>
             <% end %>
           </div>
         </div>

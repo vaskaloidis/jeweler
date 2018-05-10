@@ -1,28 +1,31 @@
 <% if project.is_owner?(current_user) %>
   <button type="button" class="btn btn-success btn-block text-left">
-    Project Owner
-    <i class="fa-check pull-right"></i>
+    Project Owner <i class="fa-check pull-right"></i>
   </button>
 
   <% if project.current_task.nil? %>
     <div class="alert alert-danger">
-      Please <a href="#" onclick="$('.task_list').effect('shake');"><strong>Select a Current Task.</strong></a>
+      Please <a href="#" id="select-current-task-btn"><strong>Select a Current Task.</strong></a>
       <i class="fa-lg fa-check pull-right"></i>
     </div>
+    <script>
+        $('#select-current-task-btn').click(function(){
+            $('#task-list').popover('toggle');
+        });
+    </script>
   <% end %>
 
 
 <% elsif project.is_customer(current_user) %>
 
   <button type="button" class="btn btn-success btn-block text-left">
-    Project Member
-    <i class="fa-check pull-right"></i>
+    Project Member <i class="fa-check pull-right"></i>
   </button>
 
   <% unless project.payment_requests.empty? %>
     <% project.payment_requests.each do |invoice| %>
       <div class="alert alert-danger">
-       Payment Requested For Sprint <%= invoice.sprint.to_s %>. <strong><a href="#" data-toggle="settings-pane" id="payment_nav_button" data-animate="true">Make Payment</a></strong>
+       Payment Requested For Sprint <%= invoice.sprint.to_s %>. <%= link_to '<strong>Make Payment</strong>'.html_safe, payments_path(invoice.project) %>
       </div>
     <% end %>
   <% end %>

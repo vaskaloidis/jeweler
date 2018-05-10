@@ -1,0 +1,6 @@
+<% if @error %>
+  toastr.error('<%= @error_msg %>');
+<% else %>
+  $('#modal_target').html('<%= j render 'charges/charge_form', project: @project, invoice: @invoice, amount:@amount, customer: @customer, payment_note:@payment_note %>');
+  <%= render 'layouts/render_modal', title: 'Make Payment', display_close: true %>
+<% end %>

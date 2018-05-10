@@ -1,7 +1,7 @@
 <div class="row">
 
   <div class="col-xs-12 col-sm-6 col-lg-3">
-    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint.to_s %>" data-prefix="Sprint " data-duration="2">
+    <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint.to_s %>" data-prefix="Sprint " data-duration="2">
       <div class="xe-icon">
         <i class="far fa-clock"></i>
       </div>
@@ -68,7 +68,7 @@
 
   <div class="col-xs-12 col-sm-6 col-lg-3">
     <% commits = project.notes.where(note_type: 'commit').count %>
-    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= commits.to_s %>" data-suffix="" data-duration="2">
+    <div class="xe-widget xe-counter xe-counter-red" data-count=".num" data-from="0" data-to="<%= commits.to_s %>" data-suffix="" data-duration="2">
       <div class="xe-icon">
         <i class="fas fa-code-branch"></i>
       </div>

@@ -1,45 +1,201 @@
-<% if true %>
-  <div class="row">
-    <script type="text/javascript">
-        jQuery(document).ready(function ($) {
-            var dataSource = [
-                <% project.invoices.each_with_index do |invoice, index| %>
-                  {
-                      sprint: "Sprint <%= invoice.sprint.to_s %>",
-                      estimated_cost: <%= invoice.sprint_planned_cost.to_s %>,
-                      cost: <%= invoice.cost.to_s %>
-                  } <% if index != project.invoices.size %>, <% end %>
-                <% end %>
-            ];
+<div class="row">
+  <script type="text/javascript">
+      jQuery(document).ready(function ($) {
+          var i = 0;
+          var line_chart_data_source = [
+              <% project.invoices.each_with_index do |invoice, index| %>
+              {
+                  id: ++i,
+                  planned_hours: <%= invoice.planned_hours.to_s %>,
+                  hours: <%= invoice.hours.to_s %>
+              }<% if index != project.invoices.size %>, <% end %>
+              <% end %>
+          ];
 
-            $("#bar-1").dxChart({
-                equalBarWidth: false,
-                dataSource: dataSource,
-                commonSeriesSettings: {
-                    argumentField: "sprint",
-                    type: "bar"
-                },
-                series: [
-                    {valueField: "estimated_cost", name: "Estimated Cost", color: "#3f7a1f"},
-                    {valueField: "cost", name: "Cost", color: "#68b828"},
-                ],
-                // barWidth: $('#sprint_tab_1').width() - ($('#dxc-val-axis') / <%= project.sprint_total.to_s %>),
-                commonAxisSettings: {
+          <%
+          if project.max_hours >= project.max_planned_hours
+            max_hours = project.max_hours
+          else
+            max_hours = project.max_planned_hours
+          end
+          %>
+          $("#pageviews-visitors-chart").dxChart({
+              dataSource: line_chart_data_source,
+              commonSeriesSettings: {
+                  argumentField: "id",
+                  point: {visible: true, size: 5, hoverStyle: {size: 7, border: 0, color: 'inherit'}},
+                  line: {width: 1, hoverStyle: {width: 1}}
+              },
+              series: [
+                  {valueField: "planned_hours", name: "Estimated Hours", color: "#68b828"},
+                  {valueField: "hours", name: "Hours", color: "#eeeeee"},
+              ],
+              legend: {
+                  position: 'inside',
+                  paddingLeftRight: 5
+              },
+              commonAxisSettings: {
+                  label: {
+                      visible: false
+                  },
                   grid: {
-                      visible: false,
-                      indentFromAxis: 0
+                      visible: true,
+                      color: '#f9f9f9'
                   }
-                },
-                legend: {
-                    position: "inside", // or "outside"
-                    horizontalAlignment: "right", // or "left" | "right"
-                    verticalAlignment: "top", // or "bottom"
-                    backgroundColor: '#eeeeee'
-                }
-            });
-        });
+              },
+              valueAxis: {
+                  max: <%= (max_hours * 2).to_s %>
+              },
+              argumentAxis: {
+                  valueMarginsEnabled: false
+              },
+          });
+          var y = 0;
+          $("#server-uptime-chart").dxChart({
+              dataSource: [
+                  <% project.sprints.each_with_index do |invoice, index| %>
+                  {
+                      id: ++y,
+                      payment: <%= invoice.total_payments.to_s %>
+                  }<% if index != project.invoices.size %>, <% end %>
+                  <% end %>
+              ],
 
-    </script>
-    <div id="bar-1" style="height: 150px; width: 100%;"></div>
+              series: {
+                  argumentField: "id",
+                  valueField: "payment",
+                  name: "Payments",
+                  type: "bar",
+                  color: '#7c38bc'
+              },
+              commonAxisSettings: {
+                  label: {
+                      visible: false
+                  },
+                  grid: {
+                      visible: false
+                  }
+              },
+              legend: {
+                  visible: false
+              },
+              argumentAxis: {
+                  valueMarginsEnabled: true
+              },
+              valueAxis: {
+                  max: <%= project.max_payment %>
+              },
+              equalBarWidth: {
+                  width: 11
+              }
+          });
+
+
+          // Average Sales Chart
+          var doughnut1_data_source = [
+              {region: "Asia", val: 4119626293},
+              {region: "Africa", val: 1012956064},
+              {region: "Northern America", val: 344124520},
+              {region: "Latin America and the Caribbean", val: 590946440},
+              {region: "Europe", val: 727082222},
+              {region: "Oceania", val: 35104756},
+              {region: "Oceania 1", val: 727082222},
+              {region: "Oceania 3", val: 727082222},
+              {region: "Oceania 4", val: 727082222},
+              {region: "Oceania 5", val: 727082222},
+          ], timer;
+
+          $("#sales-avg-chart div").dxPieChart({
+              dataSource: doughnut1_data_source,
+              tooltip: {
+                  enabled: false,
+                  format: "millions",
+                  customizeText: function () {
+                      return this.argumentText + "<br/>" + this.valueText;
+                  }
+              },
+              size: {
+                  height: 90
+              },
+              legend: {
+                  visible: false
+              },
+              series: [{
+                  type: "doughnut",
+                  argumentField: "region"
+              }],
+              palette: ['#5e9b4c', '#6ca959', '#b9f5a6'],
+          });
+      });
+
+
+  </script>
+</div>
+
+<div class="row">
+  <div class="col-sm-3">
+
+    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="99.9" data-suffix="%" data-duration="2">
+      <div class="xe-icon">
+        <i class="linecons-cloud"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">0.0%</strong>
+        <span>Server uptime</span>
+      </div>
+    </div>
+
+    <div class="xe-widget xe-counter xe-counter-purple" data-count=".num" data-from="1" data-to="117" data-suffix="k" data-duration="3" data-easing="false">
+      <div class="xe-icon">
+        <i class="linecons-user"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">1k</strong>
+        <span>Users Total</span>
+      </div>
+    </div>
+
+    <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1000" data-to="2470" data-duration="4" data-easing="true">
+      <div class="xe-icon">
+        <i class="linecons-camera"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">1000</strong>
+        <span>New Daily Photos</span>
+      </div>
+    </div>
+
   </div>
-<% end %>
+  <div class="col-sm-6">
+
+    <div class="chart-item-bg">
+      <div class="chart-label">
+        <div class="h3 text-secondary text-bold" data-count="this" data-from="0.00" data-to="14.85" data-suffix="%" data-duration="1">0.00%</div>
+        <span class="text-medium text-muted">More visitors</span>
+      </div>
+      <div id="pageviews-visitors-chart" style="height: 298px;"></div>
+    </div>
+
+  </div>
+  <div class="col-sm-3">
+
+    <div class="chart-item-bg">
+      <div class="chart-label chart-label-small">
+        <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="95.8" data-suffix="%" data-duration="1.5">0.00%</div>
+        <span class="text-small text-upper text-muted">Current Server Uptime</span>
+      </div>
+      <div id="server-uptime-chart" style="height: 134px;"></div>
+    </div>
+
+    <div class="chart-item-bg">
+      <div class="chart-label chart-label-small">
+        <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="320.45" data-decimal="," data-duration="2">0</div>
+        <span class="text-small text-upper text-muted">Avg. of Sales</span>
+      </div>
+      <div id="sales-avg-chart" style="height: 134px; position: relative;">
+        <div style="position: absolute; top: 25px; right: 0; left: 40%; bottom: 0"></div>
+      </div>
+    </div>
+
+  </div>
+</div>

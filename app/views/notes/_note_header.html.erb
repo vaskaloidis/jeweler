@@ -1,14 +1,14 @@
 <div class="timeline_title">
   <div class="pull-right">
     <% unless note.invoice.nil? %>
-  <span id="timeline_sprint_task_message" class="alert alert-success">
+      <span id="timeline_sprint_task_message" class="alert alert-success">
         Sprint <%= note.invoice.sprint.to_s %>
       </span>
-    <% end %>
-    <% unless note.invoice_item.nil? %>
-  <span id="timeline_sprint_task_message" class="alert alert-success">
-        Task: <%= truncate(note.invoice_item.description.to_s) %>
-      </span>
+      <% unless note.invoice_item.nil? %>
+          <span id="timeline_sprint_task_message" class="alert alert-success">
+            #task<%= note.invoice.sprint.to_s + note.invoice_item.get_letter %>
+          </span>
+      <% end %>
     <% end %>
   </div>
   <h2>
