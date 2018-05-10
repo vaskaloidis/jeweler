@@ -1,98 +1,209 @@
 /* JewelerC - Main.CSS */
-
 /*
  *= require font-awesome
  */
+#task-form-row > div > .iswitch {
+    /*width: 100% !important;*/
+}
+#task-form-row > div > .form-control {
+    width: 100% !important;
+}
+#task-form-row > div {
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+}
+.task-actions > .fas {
+    /*padding-right: 4px;*/
+}
+
+.task-actions > a.btn {
+    display: inline;
+    font-size: 1em;
+    padding: 5px;
+    color: white;
+}
+
+.task-actions > a.btn:last-child {
+    margin-right: 8px;
+}
+
+.task-actions {
+    display: none;
+    font-size: .8em;
+}
+
+.task-id {
+    display: inline;
+    font-size: .8em;
+    padding: 3.5px;
+    margin-right: 5px;
+}
+
+a > .sidebar-icon {
+    color: #979898;
+}
+
+footer.main-footer {
+    margin-top: 0px !important;
+}
+
+.sprint-planning {
+    font-size: 1em;
+}
+
+.sprint-planning > .label {
+    font-size: 1.2em;
+}
+
+.sprint-planning > span {
+    margin-right: 20px;
+}
+
+.top-notifications > .alert {
+    align: center;
+    text-align: center;
+}
+
+.invoice-totals > span {
+    font-size: .85em;
+    margin-right: 25px;
+}
+
+.current-sprint-tab .sprint-displayed {
+    border-top: 0px solid white !important;
+}
+
+.current-sprint-tab {
+    border-top: 3px solid #8dc63f !important;
+}
+
+.sprint-displayed {
+    border-top: 3px solid gray;
+}
+
+.sprint-open-btn:hover:after {
+    content: ' (Close)';
+}
+
+.sprint-close-btn:hover:after {
+    content: ' (Open)';
+}
+
+.payment-request-btn:hover:after {
+}
+
+.payment-requested-btn:hover:after {
+    content: ' (Cancel)';
+}
+
 .modal-backdrop.in {
     opacity: 0;
 }
+
 .btn.btn-gray {
     color: #333 !important;
 }
-.panel .panel-heading>.panel-options a {
+
+.panel .panel-heading > .panel-options a {
     margin-left: 0px;
-    /*line-height: 1.5px;*/
 }
 
 .btn {
-    color:white !important;
+    color: white !important;
 }
+
 .description {
     font-size: .8em;
 }
+
 .description > a {
     font-size: .7em;
 }
+
 .sprint-displayed {
-    border-top:3px solid gray;
+    border-top: 3px solid gray;
 }
+
 .timeline_query {
-    width:100%;
+    width: 100%;
     background: white !important;
     border: 1px solid #eaeaea !important;
 }
+
 .timeline_query > span {
     display: inline
 }
+
 #timeline_alert {
-    padding:1px;
+    padding: 1px;
 }
+
 #notifications_container > .fas {
     color: white;
 }
+
 #notifications_container > .alert {
     color: black;
 }
+
 i.fas.fa-ban.pull-right {
     color: white;
     margin: 2px;
 }
+
 .label > a {
     color: white !important;
 }
+
 .panel-options > div.label {
     margin-right: 5px;
 }
+
 .timeline_title > h2 {
     /*display:inline;*/
 }
+
 .timeline_title > span.alert {
     margin-right: 5px;
-    padding:2px !important;
+    padding: 2px !important;
     font-size: .8em;
 }
+
 #timeline_sprint_task_message {
     margin-right: 5px;
-    padding:2px !important;
+    padding: 2px !important;
     display: inline !important;
     font-size: .8em;
 }
+
 #language_icon {
     font-size: 3.0em !important;
     margin-top: 10px;
-    margin-bottom:5px !important;
+    margin-bottom: 5px !important;
 }
+
 #payment_nav_button {
     /*padding:3px;*/
 }
 
 #project_description_home > span.alert {
-    padding:2px;
+    padding: 2px;
     margin: 4px;
 }
 
 #project_totals_home > span.alert {
-    padding:2px;
+    padding: 2px;
     margin: 4px;
 }
 
 #home_widgets {
     margin-top: 10px;
 }
+
 .settings_balance_label {
     font-size: 1.2em !important;
-    margin:10px;
-    display:block
+    margin: 10px;
+    display: block
 }
 
 .alert > a {
@@ -103,22 +214,28 @@ i.fas.fa-ban.pull-right {
 .alert > strong > a {
     /*color: white;*/
 }
+
 ul.settings_sprint_balance > li > span.badge {
     font-size: 1.1em;
 }
+
 .payment_form_item > select {
-    width:100%;
+    width: 100%;
 }
+
 .payment_form_item > button {
-    width:100%;
+    width: 100%;
 }
+
 .settings-pane-inner > .row > .settings_scroll_column {
     max-height: 300px;
     overflow-y: scroll;
 }
+
 .settings_sprint_balance > .list-group-item > span {
     color: black;
 }
+
 .settings_sprint_balance > .list-group-item > .badge {
     color: white !important;
 }
@@ -130,12 +247,14 @@ ul.settings_sprint_balance > li > span.badge {
 .xe-widget.xe-conversations .xe-body {
     border-bottom: 0px solid white !important;
 }
+
 .xe-widget.xe-conversations .xe-body .xe-comment-entry .xe-comment {
     padding: 1px 0px 1px 10px !important;
-    margin-bottom:1px !important;
+    margin-bottom: 1px !important;
 }
-.xe-widget.xe-conversations .xe-body ul>li {
-    margin:1px 0px !important;
+
+.xe-widget.xe-conversations .xe-body ul > li {
+    margin: 1px 0px !important;
 }
 
 /* Margins and Paddings */
@@ -150,24 +269,30 @@ ul.settings_sprint_balance > li > span.badge {
 .margin-right-5 {
     margin-right: 5px;
 }
+
 .margin-7 {
     margin: 7px;
 }
+
 .margin-top-10 {
-    margin-top:10px;
+    margin-top: 10px;
 }
+
 .margin-top-20 {
-    margin-top:20px;
+    margin-top: 20px;
 }
+
 .margin-10 {
-    margin:10px;
+    margin: 10px;
 }
+
 .margin-left-10 {
     margin-left: 10px;
 }
+
 .margin-left-20 {
-     margin-left:10px;
- }
+    margin-left: 10px;
+}
 
 .cbp_tmlabel > h3 h4 {
     margin: 15px;
