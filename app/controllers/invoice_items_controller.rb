@@ -81,21 +81,6 @@ class InvoiceItemsController < ApplicationController
     end
   end
 
-  def edit_inline
-    @task = InvoiceItem.find(params[:task_id])
-    @invoice = @task.invoice
-
-    if @task.nil?
-      logger.error('Error getting Task ' + params[:task_id].to_s)
-    else
-      logger.debug('Task Fetched OK: ' + @task.id.to_s)
-    end
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def index
     @invoice_items = InvoiceItem.all
   end
@@ -135,33 +120,32 @@ class InvoiceItemsController < ApplicationController
 # POST /invoice_items
 # POST /invoice_items.json
   def create
-    # @invoice_item = InvoiceItem.new(invoice_item_params)
+    @error_msgs = Array.new
+    @invoice_item = InvoiceItem.new(invoice_item_params)
 
-    @invoice = Invoice.find(params.require(:invoice_item).require(:invoice_id))
-
+    # @invoice = Invoice.find(params.require(:invoice_item).require(:invoice_id))
+    @invoice = Invoice.find(@invoice_item.invoice_id)
     @current_sprint = @invoice.project.sprint_current
 
-    @invoice_item = InvoiceItem.new
-
-    @invoice_item.description = params.require(:invoice_item).require(:description)
-
-    hours = params.require(:invoice_item).permit(:hours)
-    if ApplicationHelper.is_number?(hours)
-      @invoice_item.hours = hours
-    else
-      # @invoice_item.hours = nil
-    end
-
-    planned_hours = params.require(:invoice_item).require(:planned_hours)
-    if ApplicationHelper.is_number?(planned_hours)
-      @invoice_item.planned_hours = planned_hours
-    else
-      # @invoice_item.planned_hours = nil
-    end
-
-    rate = params.require(:invoice_item).require(:rate)
-    @invoice_item.rate = rate
-    @invoice_item.invoice = @invoice
+    # @invoice_item = InvoiceItem.new
+    # @invoice_item.description = params.require(:invoice_item).require(:description)
+    # hours = params.require(:invoice_item).permit(:hours)
+    # if ApplicationHelper.is_number?(hours)
+    #   @invoice_item.hours = hours
+    # else
+    #   @error_msg << 'Reported hours must be a number'
+    #   # @invoice_item.hours = nil
+    # end
+    # planned_hours = params.require(:invoice_item).require(:planned_hours)
+    # if ApplicationHelper.is_number?(planned_hours)
+    #   @invoice_item.planned_hours = planned_hours
+    # else
+    #   @error_msg << 'Reported hours must be a number'
+    #   # @invoice_item.planned_hours = nil
+    # end
+    # rate = params.require(:invoice_item).require(:rate)
+    # @invoice_item.rate = rate
+    # @invoice_item.invoice = @invoice
 
     if @invoice_item.invoice.project.current_task.nil?
       @invoice_item.invoice.project.current_task = @invoice_item
@@ -169,32 +153,31 @@ class InvoiceItemsController < ApplicationController
 
     @invoice_item.position = @invoice_item.invoice.next_position_int
 
-    @invoice_item.save
-
-    if @invoice_item.invalid?
-      logger.error("Error Creating Task: " + @invoice_item.error.full_message)
-    else
-      logger.debug("Task is valid (Saved)")
-    end
-
-    # @invoice_item.reload # Why did we put this here?
-
     if @invoice_item.invoice.tasks.empty? and @invoice_item.invoice.project.current_task.nil? and @invoice_item.invoice.is_current?
       project = @invoice_item.invoice.project
       project.current_task = @invoice_item
       project.save
       if project.invalid?
-        logger.error('Error creating new task: ' + project.errors.full_message)
+        project.error.full_messages.each do |error|
+          @error_msg << error
+          # logger.error('Error creating new task: ' + error)
+        end
       end
       @invoice_item.invoice.project.reload
     end
 
-    if @invoice_item.valid?
-      Note.create_event(@invoice.project, 'task_created', 'Task Created: ' + @invoice_item.description)
-    end
-
     respond_to do |format|
       if @invoice_item.save
+
+        if @invoice_item.valid?
+          Note.create_event(@invoice.project, 'task_created', 'Task Created: ' + @invoice_item.description)
+        else
+          @invoice_item.errors.full_messages.each do |error|
+            @error_msg << error
+            logger.error("Error Creating Task: " + @invoice_item.error.full_message)
+          end
+        end
+
         format.js
         format.html {redirect_to @invoice_item, notice: 'Invoice item was successfully created.'}
         format.json {render :show, status: :created, location: @invoice_item}
@@ -232,6 +215,8 @@ class InvoiceItemsController < ApplicationController
   def destroy
 
     # @invoice_item.destroy
+    #
+    Note.create_event(@invoice_item.invoice.project, 'task_deleted', 'Deleted: ' + @invoice_item.description)
     @invoice_item.deleted = true
     @invoice_item.save
     @invoice_item.reload

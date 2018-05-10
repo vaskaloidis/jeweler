@@ -27,6 +27,12 @@ class ApplicationController < ActionController::Base
       require 'dotenv/load'
     end
     # require 'colorize'
+    require 'action_view'
+    require Rails.root.join('lib','Float.rb')
+    require Rails.root.join('lib','Double.rb')
+    require Rails.root.join('lib','BigDecimal.rb')
+    require Rails.root.join('lib','Decimal.rb')
+    require Rails.root.join('lib','NilClass.rb')
   end
 
 

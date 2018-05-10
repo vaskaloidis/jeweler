@@ -28,6 +28,7 @@ class InvitationsController < ApplicationController
 
   def decline_invitation
     invitation = Invitation.find(params[:invitation_id])
+    @project = invitation.project
 
     Note.create_event(@project, 'invitation_declined', invitation.email + ' Declined Project Invitation')
 

@@ -1,9 +1,29 @@
 class InvoicesController < ApplicationController
   before_action :set_objects, only: [:show, :edit, :update, :destroy]
 
+  def generate_invoice
+    @invoice = Invoice.find(params[:invoice_id])
+    @estimate = params[:estimate]
+    logger.debug("Estimate: " + @estimate.to_s)
+    logger.debug("Invoice ID: " + @invoice.id.to_s)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def send_invoice
+    @invoice = Invoice.find(params[:invoice_id])
+    @estimate = params[:estimate]
+  end
+
+  def print_invoice
+    @invoice = Invoice.find(params[:invoice_id])
+    @estimate = params[:estimate]
+    render(:layout => "print")
+  end
+
   def edit_description
     @invoice = Invoice.find(params[:invoice_id])
-
     respond_to do |format|
       format.js
     end
@@ -11,7 +31,6 @@ class InvoicesController < ApplicationController
 
   def render_panel
     @invoice = Invoice.find(params[:invoice_id])
-
     respond_to do |format|
       format.js
     end
@@ -19,7 +38,6 @@ class InvoicesController < ApplicationController
 
   def open_sprint_payment
     @invoice = Invoice.find(params[:invoice_id])
-
     respond_to do |format|
       format.js
     end
@@ -27,48 +45,6 @@ class InvoicesController < ApplicationController
 
   def open_payment
     @project = Project.find(params[:project_id])
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def make_payment
-
-    @payment = Payment.new
-
-    if ApplicationHelper.is_number?(params[:amount])
-
-      @payment.amount = params[:amount]
-      @payment.invoice = Invoice.find(params[:invoice_id])
-      @payment.user = User.find(params[:user_id])
-      if ApplicationHelper.is_number?(params[:payment_note])
-        if params[:payment_note] != 'Payment Note'
-          @payment.payment_note = params[:payment_note]
-        end
-      end
-      @payment.save
-
-      @user = current_user
-
-      if @payment.valid?
-        if @payment.invoice.payment_due?
-          @payment.invoice.payment_due = false
-          @payment.invoice.save
-          @payment.invoice.reload
-        end
-      end
-
-      if @payment.valid?
-        Note.create_payment(@payment.invoice, current_user, @payment.amount)
-      else
-        logger.error("Payment Error User ID: " + @payment.user.id.to_s + " Project ID: " + @payment.invoice.project.id.to_s + " Sprint " + @payment.invoice.sprint.to_s)
-      end
-
-      @sprint_payment = params[:sprint_payment]
-
-      end
-
     respond_to do |format|
       format.js
     end
@@ -78,28 +54,38 @@ class InvoicesController < ApplicationController
     @task = InvoiceItem.find(params[:invoice_item_id])
     @old_task = @task.invoice.project.current_task
 
-    unless @old_task.nil? or @old_task.complete
+    if @task.invoice != @task.invoice.project.current_sprint
+      @error = true
+      @error_message = 'Current Task must be within Current Sprint.'
+      logger.error(@error_message)
+    else
+      logger.debug('No Errors')
+      @error = false
+      unless @old_task.nil? or @old_task.complete
         @old_task.complete = true
         @old_task.save
         @old_task.reload
+      end
+
+      @task.invoice.project.current_task = @task
+      @task.invoice.project.save
+      @task.invoice.project.reload
+      @task.invoice.reload
+
+      if @task.complete? != false
+        @task.complete = false
+        @task.save
+        @task.reload
+      end
+
+      @current_sprint = @task.invoice.project.sprint_current
+
     end
-
-    @task.invoice.project.current_task = @task
-    @task.invoice.project.save
-    @task.invoice.project.reload
-    @task.invoice.reload
-
-    if @task.complete? != false
-      @task.complete = false
-      @task.save
-      @task.reload
-    end
-
-    @current_sprint = @task.invoice.project.sprint_current
-
     if @task.invoice.project.valid?
       Note.create_event(@task.invoice.project, 'current_task_changed', 'Current Task: ' + @task.description)
     else
+      @error = true
+      @@error_message = "Error changing current task."
       logger.error("Error Changing Current Task From to ID: " + @task.id.to_s)
     end
 
@@ -120,8 +106,13 @@ class InvoicesController < ApplicationController
     @old_invoice = @project.current_sprint
     @project.current_sprint = @invoice
 
+    unless @project.current_task.nil?
+      @project.current_task = nil
+    end
+    @project.save
     @project.reload
     @invoice.reload
+    @old_invoice.reload
 
     if @project.valid?
       Note.create_event(@project, 'current_sprint_changed', 'Current Sprint Changed From ' + @old_invoice.sprint.to_s + ' to ' + @invoice.sprint.to_s)
@@ -183,13 +174,6 @@ class InvoicesController < ApplicationController
   # GET /invoices/1.json
   def show
     @invoice = Invoice.find(params[:id])
-  end
-
-  def generate_invoice
-    @invoice = Invoice.find(params[:invoice_id])
-    respond_to do |format|
-      format.js
-    end
   end
 
   # GET /invoices/new
