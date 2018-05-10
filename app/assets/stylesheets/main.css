@@ -2,6 +2,9 @@
 /*
  *= require font-awesome
  */
+.project-edit-img {
+    min-width:250px;
+}
 #task-form-row > div > .iswitch {
     /*width: 100% !important;*/
 }
@@ -296,4 +299,7 @@ ul.settings_sprint_balance > li > span.badge {
 
 .cbp_tmlabel > h3 h4 {
     margin: 15px;
+}
+.padding-left-20 {
+    padding-left: 20px;
 }

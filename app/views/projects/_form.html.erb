@@ -19,29 +19,57 @@
       </div>
     <% end %>
 
-    <div class="row">
-      <div class="form-group">
-        <%= form.label :name, class: 'control-label' %>
-        <%= form.text_field :name, class: 'form-control' %>
+    <div class="well">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <div class="form-group">
+            <%= form.label :name, class: 'control-label' %>
+            <%= form.text_field :name, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <div class="form-group">
+            <%= form.label :description, 'Project Description', class: 'control-label' %>
+            <%= form.text_area :description, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <div class="form-group">
+            <%= form.label :github_url, class: 'control-label' %>
+            <%= form.text_field :github_url, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <div class="form-group">
+            <%#= form.label :language, class: 'control-label' %>
+            <%#= form.text_field :language, class: 'form-control' %>
+            <label class="control-label" for="project_language">Language</label>
+            <%= ApplicationHelper.build_languages_dropdown.html_safe %>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="well">
-        <div class="row">
-          <div class="col-xs-6">
-            <% unless project.image.url.nil? %>
-              <div class="row">
-                <div class="col-xs-6">
-                  <%= image_tag project.image.url, class: 'img-responsive img-rounded' %>
+      <div class="col-xs-12 col-sm-6">
+        <div class="well">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <% unless project.image.url.nil? %>
+                <div class="row">
+                  <div class="col-xs-6">
+                    <%= image_tag project.image.url, class: 'project-edit-img img-responsive img-rounded' %>
+                  </div>
                 </div>
-              </div>
-            <% end %>
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <%= form.label :image, 'Project Logo', class: 'control-label' %>
-                  <%= form.file_field :image, multiple: false %>
+              <% end %>
+              <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    <%= form.label :image, 'Project Logo', class: 'control-label' %>
+                    <%= form.file_field :image, multiple: false %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -50,25 +78,15 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="form-group">
-        <%#= form.label :language, class: 'control-label' %>
-        <%#= form.text_field :language, class: 'form-control' %>
-        <label class="control-label" for="project_language">Language</label>
-        <%= ApplicationHelper.build_languages_dropdown.html_safe %>
-
-      </div>
-    </div>
-
     <div class="well">
       <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <%= form.label :sprint_current, class: 'control-label' %>
             <%= form.text_field :sprint_current, class: 'form-control' %>
           </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <%= form.label :sprint_total, class: 'control-label' %>
             <%= form.text_field :sprint_total, class: 'form-control' %>
@@ -77,36 +95,28 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="form-group">
-        <%= form.label :description, 'Project Description', class: 'control-label' %>
-        <%= form.text_area :description, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group">
-        <%= form.label :github_url, class: 'control-label' %>
-        <%= form.text_field :github_url, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group">
-        <%= form.label :google_analytics_tracking_code, 'Google Analytics Tracking Code', class: 'control-label' %>
-        <%= form.text_field :google_analytics_tracking_code, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group">
-        <%= form.label :heroku_token, 'Heroku API Token', class: 'control-label' %>
-        <%= form.text_field :heroku_token, class: 'form-control' %>
+    <div class="well">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <div class="form-group">
+            <div class="form-group">
+              <%= form.label :google_analytics_tracking_code, 'Google Analytics Tracking Code', class: 'control-label' %>
+              <%= form.text_field :google_analytics_tracking_code, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <div class="form-group">
+            <div class="form-group">
+              <%= form.label :heroku_token, 'Heroku API Token', class: 'control-label' %>
+              <%= form.text_field :heroku_token, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <% project_form_readme_feature = false %>
-
     <% if project_form_readme_feature %>
       <div class="row">
         <div class="form-group">
@@ -147,8 +157,14 @@
     </div>
 
     <div class="row">
-      <%= form.submit 'Submit', :class => 'btn btn-success' %>
-      <%= link_to 'Back', @project, class: 'btn btn-primary' %>
+      <div class="col-xs-12 col-sm-6">
+        <div class="well">
+          <div class="row padding-left-20 margin-top-10">
+            <%= form.submit 'Submit', :class => 'btn btn-success' %>
+            <%= link_to 'Cancel', @project, class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
     </div>
 
 

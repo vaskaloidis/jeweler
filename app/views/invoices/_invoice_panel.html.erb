@@ -141,7 +141,7 @@
         <% end %>
 
         <% invoice.tasks.each do |task| %>
-        <tr id="task_row_<%= task.id.to_s %>" onclick="$('#task_<%= task.id.to_s %>').toggle('slide'); return false;">
+        <tr id="task_row_<%= task.id.to_s %>" onclick="open_task_action(<%= task.id.to_s %>)">
           <td width="10">
             <% if invoice.project.current_task == task %>
               <span class="label label-default">Current Task</span>
