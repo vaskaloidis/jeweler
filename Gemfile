@@ -7,13 +7,14 @@ end
 ruby '2.5.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-# Jeweler: gem 'rails', '~> 5.2.0.rc1'
+gem 'rails', '~> 5.2.0.rc1'
 # gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.6'
+# gem 'rails', '~> 5.1.6'
 # gem 'activestorage', github: 'rails/activestorage'
 
 gem 'platform-api' # Heroku
 gem 'stripe'
+gem 'omniauth-stripe-connect'
 gem 'pg'
 gem 'puma', '~> 3.11'
 gem 'github_api'
