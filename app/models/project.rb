@@ -52,7 +52,11 @@ class Project < ApplicationRecord
   end
 
   def sprint_notes
-    return self.current_sprint.notes.where(note_type: [:note, :commit, :project_update, :payment, :payment_request, :demo]).order('created_at DESC').all
+    default_notes = self.current_sprint.notes.where(note_type: [:note, :commit, :project_update, :payment, :payment_request, :demo]).order('created_at DESC').all
+    if default_notes.empty?
+      default_notes = self.current_sprint.notes.order('created_at DESC').all
+    end
+    return default_notes
   end
 
   def is_owner?(user = nil)
@@ -208,6 +212,36 @@ class Project < ApplicationRecord
       end
     end
     return nc
+  end
+
+  def max_planned_hours
+    max = 0.00
+    self.invoices.each do |i|
+      if max < i.planned_hours
+        max = i.planned_hours
+      end
+    end
+    return max
+  end
+
+  def max_hours
+    max = 0.00
+    self.invoices.each do |i|
+      if max < i.hours
+        max = i.hours
+      end
+    end
+    return max
+  end
+
+  def max_payment
+    max = 0.00
+    self.payments.each do |p|
+      if p.amount > max
+        max = p.amount
+      end
+    end
+    return max
   end
 
 

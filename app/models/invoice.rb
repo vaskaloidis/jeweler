@@ -10,8 +10,33 @@ class Invoice < ApplicationRecord
 
   validates :sprint, presence: true
 
-  def render_panel
-    return render 'invoices/re-render_invoice_panel', invoice: self
+  def max_position_int
+    max_pos = self.invoice_items.maximum(:position)
+    return max_pos
+  end
+
+  def next_position_int
+    if self.max_position_int.nil?
+      return 0
+    else
+      return self.max_position_int + 1
+    end
+  end
+
+  def current_letter
+    return self.max_letter
+  end
+
+  def max_letter
+    return ApplicationHelper.alphabet.at(self.max_position_int)
+  end
+
+  def next_letter
+    return ApplicationHelper.alphabet.at(self.next_position_int)
+  end
+
+  def planned_hours
+    return self.sprint_planned_hours
   end
 
   def current_task
@@ -19,14 +44,15 @@ class Invoice < ApplicationRecord
   end
 
   def incomplete_tasks
-    return self.invoice_items.where(complete: false).all
+    return self.invoice_items.where(complete: false, deleted: false).all
   end
 
   def completed_tasks
-    return self.invoice_items.where(complete: true).all
+    return self.invoice_items.where(complete: true, deleted: false).all
   end
+
   def tasks
-    return self.invoice_items.sort_by(&:created_at)
+    return self.invoice_items.where(deleted: false).all.sort_by(&:created_at)
   end
 
   def commits
@@ -46,10 +72,10 @@ class Invoice < ApplicationRecord
   end
 
   def sprint_complete?
-    if self.invoice_items.empty?
+    if self.tasks.empty?
       return false
     end
-    self.invoice_items.each do |invoice|
+    self.tasks.each do |invoice|
       if !invoice.complete?
         return false
       end
@@ -57,12 +83,12 @@ class Invoice < ApplicationRecord
     return true
   end
 
+  def total_payments
+    return self.sprint_payments
+  end
+
   def sprint_payments
-    total_payments = 0
-    self.payments.each do |p|
-      total_payments = total_payments + p.amount
-    end
-    return ApplicationHelper.prettify(total_payments)
+    return self.payments.sum(:amount)
   end
 
   def cost
@@ -70,33 +96,27 @@ class Invoice < ApplicationRecord
   end
 
   def sprint_cost
-    total_cost = 0
-    self.invoice_items.each do |item|
+    total_cost = 0.00
+    self.tasks.each do |item|
       unless item.hours.nil?
         total_cost = total_cost + (item.rate * item.hours)
       end
     end
-    return ApplicationHelper.prettify(total_cost)
+    return total_cost
   end
 
   def sprint_planned_cost
-    total = 0
-    self.invoice_items.each do |item|
+    total = 0.00
+    self.tasks.each do |item|
       unless item.planned_hours.nil?
         total = total + (item.planned_hours * item.rate)
       end
     end
-    return ApplicationHelper.prettify(total)
+    return total
   end
 
   def sprint_hours
-    total_cost = 0
-    self.invoice_items.each do |item|
-      unless item.hours.nil?
-        total_cost = total_cost + item.hours
-      end
-    end
-    return ApplicationHelper.prettify(total_cost)
+    return self.invoice_items.where(deleted: false).sum(:hours)
   end
 
   def hours
@@ -104,17 +124,11 @@ class Invoice < ApplicationRecord
   end
 
   def sprint_planned_hours
-    total = 0
-    self.invoice_items.each do |item|
-      unless item.planned_hours.nil?
-        total = total + item.planned_hours
-      end
-    end
-    return ApplicationHelper.prettify(total)
+    return self.invoice_items.where(deleted: false).sum(:planned_hours)
   end
 
   def only_planned?
-    self.invoice_items.each do |task|
+    self.tasks.each do |task|
       if !task.hours.nil? and task.hours != 0
         return false
       end

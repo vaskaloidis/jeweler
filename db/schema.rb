@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180430030441) do
+ActiveRecord::Schema.define(version: 2018_05_04_164900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,7 +43,10 @@ ActiveRecord::Schema.define(version: 20180430030441) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "planned_hours"
+    t.integer "position", null: false
+    t.boolean "deleted", default: false
     t.index ["invoice_id"], name: "index_invoice_items_on_invoice_id"
+    t.index ["position"], name: "index_invoice_items_on_position"
   end
 
   create_table "invoices", force: :cascade do |t|
@@ -95,6 +98,7 @@ ActiveRecord::Schema.define(version: 20180430030441) do
     t.bigint "project_id"
     t.bigint "user_id"
     t.string "invitation"
+    t.boolean "v1_tour", default: false
     t.index ["project_id"], name: "index_project_customers_on_project_id"
     t.index ["user_id"], name: "index_project_customers_on_user_id"
   end
@@ -162,6 +166,10 @@ ActiveRecord::Schema.define(version: 20180430030441) do
     t.string "image"
     t.string "company", default: ""
     t.string "oauth"
+    t.string "stripe_account_id"
+    t.string "stripe_type"
+    t.string "stripe_token"
+    t.string "stripe_key"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

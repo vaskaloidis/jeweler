@@ -1,7 +1,7 @@
 class Note < ApplicationRecord
   enum note_type: [:note, :project_update, :demo, :commit, :payment, :payment_request, :task, :event]
 
-  enum event_type: [:task_created, :task_updated, :task_deleted, :sprint_opened, :sprint_closed, :hours_reported, :task_completed, :sprint_completed, :current_task_changed, :current_sprint_changed, :payment_request_cancelled, :invitation_accepted, :invitation_rejected, :invitation_sent, :invitation_deleted]
+  enum event_type: [:task_created, :task_updated, :task_deleted, :sprint_opened, :sprint_closed, :hours_reported, :task_completed, :sprint_completed, :current_task_changed, :current_sprint_changed, :payment_request_cancelled, :invitation_accepted, :invitation_declined, :invitation_sent, :invitation_deleted]
 
   belongs_to :project
   has_many :discussions, dependent: :destroy

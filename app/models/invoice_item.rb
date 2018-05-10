@@ -10,16 +10,20 @@ class InvoiceItem < ApplicationRecord
   accepts_nested_attributes_for :project
 
 
-  # validates :planned_hours, presence: true
-  # validates :description, presence: true
-  # validates :rate, presence: true
+  validates :planned_hours, numericality: { message: 'Planned Hours must be a number.' }
+  validates :hours, numericality: { message: 'Reported Hours must be a number.' }
+  validates :description, presence: { message: 'Task needs a description.' }
+  validates :rate, presence: {message: 'Task must have a rate'}, numericality: { message: 'Rate must be a number.' }
+  validates :position, presence: { message: 'Error creating task position, contact Jeweler support.' }
 
+  def set_next_position
+    self.position = self.invoice.next_position_int
+  end
+  def task_id
+    return 'task' + self.invoice.sprint.to_s + self.get_letter
+  end
   def get_letter
-    self.invoice.tasks.each_with_index do |i, pos|
-      if self == i
-        return ApplicationHelper.alphabet.at(pos)
-      end
-    end
+    return ApplicationHelper.alphabet.at(self.position)
   end
 
   # def hours
@@ -34,17 +38,17 @@ class InvoiceItem < ApplicationRecord
 
   def total_cost
     if self.hours.nil?
-      return 0.0
+      return 0.00
     else
-      return ApplicationHelper.prettify(self.rate * self.hours)
+      return self.rate * self.hours
     end
   end
 
   def planned_cost
     if self.planned_hours.nil?
-      return 0.0
+      return 0.00
     else
-      return ApplicationHelper.prettify(self.rate * self.planned_hours)
+      return self.rate * self.planned_hours
     end
   end
 

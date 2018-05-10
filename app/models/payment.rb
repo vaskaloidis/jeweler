@@ -1,5 +1,5 @@
 class Payment < ApplicationRecord
-  enum payment_type: [ :venmo, :paypal, :credit_card, :jewler_payment, :bank_transfer, :check, :cash ]
+  enum payment_type: [ :venmo, :paypal, :credit_card, :jeweler, :bank_transfer, :check, :cash ]
 
   belongs_to :invoice
   belongs_to :user

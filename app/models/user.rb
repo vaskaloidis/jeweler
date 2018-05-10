@@ -14,12 +14,10 @@ class User < ApplicationRecord
   validates :first_name, :presence => true
   validates :last_name, :presence => true
 
-  # attr_accessor :first_name, :last_name
-
   # Include default devise modules. Others available are: :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :lockable, :confirmable
+         :lockable, :confirmable, :omniauthable
 
   def full_name
     return self.first_name + ' ' + self.last_name
