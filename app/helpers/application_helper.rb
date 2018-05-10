@@ -1,5 +1,13 @@
 module ApplicationHelper
 
+  def self.money(input)
+    require 'action_view'
+
+    input = ActionView::Base.new.number_to_currency(input)
+    input = self.prettify(input)
+    return input.to_s
+  end
+
   def self.alphabet
     return ("a".."z").to_a
   end
@@ -242,10 +250,10 @@ module ApplicationHelper
   #       in another helper last time
 
   def self.build_languages_dropdown
-    cat = self.categories
+    cat = self.dropdown_categories
     string = "<select class='form-control' name='project[language]' id='project_language' >"
     cat.each do |c|
-      string = string + "<option value='" + c + "'>" + c.capitalize + "</option>"
+      string = string + "<option value='" + c + "'>" + self.category_pretty(c) + "</option>"
     end
     string = string + "</select>"
     return string
@@ -356,6 +364,87 @@ module ApplicationHelper
     end
   end
 
+  def self.category_pretty(category)
+    pretty = Hash.new
+    pretty["java ee"] = "Java EE"
+    pretty["javafx"] = "Java FX"
+    pretty["jquery"] = "JQuery"
+    pretty["mips"] = "MIPS"
+    pretty["c++"] = "C++"
+    pretty["opengl"] = "OpenGL"
+    pretty["sml"] = "SML"
+    pretty["mongo db"] = "Mongo DB"
+    pretty["yacc"] = "YACC"
+    pretty["php"] = "PHP"
+    pretty["mysql"] = "MySQL"
+    pretty["node js"] = "Node JS"
+    pretty["rails"] = "Ruby on Rails"
+    pretty["mac osx"] = "Mac OSX"
+    pretty["sass"] = "SASS"
+    pretty["css"] = "CSS"
+    pretty["maven mojo"] = "Maven MOJO"
+    pretty["phpstorm"] = "PhpStorm"
+
+    if pretty.has_key?(category)
+      return pretty.fetch(category)
+    else
+      return category.capitalize
+    end
+
+  end
+
+  def self.dropdown_categories
+    cat = Array.new
+    cat.push("go")
+    cat.push("docker")
+    cat.push("css")
+    cat.push("apache")
+    cat.push("html")
+    cat.push("bootstrap")
+    cat.push("java ee")
+    cat.push("javafx")
+    cat.push("java")
+    cat.push("jquery")
+    cat.push("mips")
+    cat.push("c++")
+    cat.push("laravel")
+    cat.push("linux")
+    cat.push("opengl")
+    cat.push("sml")
+    cat.push("javascript")
+    cat.push("mongo db")
+    cat.push("c")
+    cat.push("yacc")
+    cat.push("circuit")
+    cat.push("php")
+    cat.push("mysql")
+    cat.push("node js")
+    cat.push("photoshop")
+    cat.push("rails")
+    cat.push("postgres")
+    cat.push("ruby")
+    cat.push("redis")
+    cat.push("mac osx")
+    cat.push("sass")
+    cat.push("ubuntu")
+    cat.push("bower")
+    cat.push("wordpress")
+    cat.push("css")
+    cat.push("python")
+    cat.push("maven")
+    cat.push("maven mojo")
+    cat.push("composer")
+    cat.push("mips")
+    cat.push("gulp")
+    cat.push("grunt")
+    cat.push("phpstorm")
+    cat.push("react")
+    cat.push("swift")
+    cat.push("wordpress")
+    cat.push("tomcat")
+    cat.push("travis")
+    return cat
+  end
 
   def self.categories
     cat = Array.new
@@ -409,7 +498,6 @@ module ApplicationHelper
     cat.push("swift")
     cat.push("wordpress")
     cat.push("tomcat")
-    cat.push("redis")
     cat.push("travis")
     return cat
   end
