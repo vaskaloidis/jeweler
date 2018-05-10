@@ -17,6 +17,8 @@ Devise.setup do |config|
   # with default "from" parameter.
   config.mailer_sender = 'mailer@jewlercrm.com'
 
+  config.omniauth :stripe_connect, ENV['STRIPE_CLIENT_ID'], ENV['STRIPE_SECRET']
+
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
 

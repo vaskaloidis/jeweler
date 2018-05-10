@@ -21,6 +21,8 @@ Rails.application.config.assets.version = '1.5'
 # Application.css
 Rails.application.config.assets.precompile += %w( application.css )
 
+Rails.application.config.assets.precompile += %w( stripe_button.css )
+
 # Fonts
 Rails.application.config.assets.precompile += %w( http://fonts.googleapis.com/css?family=Arimo:400,700,400italic )
 Rails.application.config.assets.precompile += %w( fonts/linecons/css/linecons.css.erb )
@@ -64,6 +66,7 @@ Rails.application.config.assets.precompile += %w( fontawesome-all.min.css )
 Rails.application.config.assets.precompile += %w( home/bootstrap.css )
 Rails.application.config.assets.precompile += %w( home/style.css )
 Rails.application.config.assets.precompile += %w( home/dark.css )
+Rails.application.config.assets.precompile += %w( home/main.css )
 Rails.application.config.assets.precompile += %w( home/font-icons.css.erb )
 Rails.application.config.assets.precompile += %w( home/animate.css )
 Rails.application.config.assets.precompile += %w( home/magnific-popup.css )

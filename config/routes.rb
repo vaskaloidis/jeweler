@@ -2,16 +2,16 @@ Rails.application.routes.draw do
 
   # Ajax
 
-  get '/edit_description/:invoice_id', to: 'invoices#edit_description', as: 'edit_invoice_description'
+  match '/new_charge', to: 'charges#new', via: [:post], as: 'new_charge'
 
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
 
-  get '/display_payments_panel/:project_id', to: 'payments#display_panel', as: 'display_payments_panel'
-  get '/request_payment/:invoice_id'  => 'projects#request_payment', as: 'request_payment'
-  get '/cancel_request_payment/:invoice_id'  => 'projects#cancel_request_payment', as: 'cancel_request_payment'
+  # get '/display_payments_panel/:project_id', to: 'payments#display_panel', as: 'display_payments_panel'
+  get '/request_payment/:invoice_id' => 'projects#request_payment', as: 'request_payment'
+  get '/cancel_request_payment/:invoice_id' => 'projects#cancel_request_payment', as: 'cancel_request_payment'
   get '/open_payment/:project_id', to: 'invoices#open_payment', as: 'open_payment'
   get '/open_sprint_payment/:invoice_id', to: 'invoices#open_sprint_payment', as: 'open_sprint_payment'
-  match '/make_payment', to: 'invoices#make_payment', via: [:post], as: 'make_payment'
+  # match '/make_payment', to: 'invoices#make_payment', via: [:post], as: 'make_payment'
 
   get '/accept_invitation/:invitation_id', to: 'invitations#accept_invitation', as: 'accept_invitation'
   get '/decline_invitation/:invitation_id', to: 'invitations#decline_invitation', as: 'decline_invitation'
@@ -21,6 +21,10 @@ Rails.application.routes.draw do
   get '/remove_customer/:project_id/:user_id', to: 'project_customers#remove_customer_inline', as: 'remove_customer_inline'
   get '/remove_invitation/:invitation_id', to: 'invitations#remove_invitation_inline', as: 'remove_invitation_inline'
 
+  get '/send_invoice/:invoice_id/:estimate', to: 'invoices#send_invoice', as: 'send_invoice'
+  get '/print_invoice/:invoice_id/:estimate', to: 'invoices#print_invoice', as: 'print_invoice'
+
+  get '/edit_description/:invoice_id', to: 'invoices#edit_description', as: 'edit_invoice_description'
   get '/generate_invoice/:invoice_id/:estimate', to: 'invoices#generate_invoice', as: 'generate_invoice'
   get '/render_invoice/:invoice_id', to: 'invoices#render_panel', as: 'render_invoice_panel'
   get '/set_current_sprint/:invoice_id' => 'invoices#set_current_sprint', as: 'set_current_sprint'
@@ -52,25 +56,37 @@ Rails.application.routes.draw do
   post '/hook', to: 'webhook#hook', as: 'webhook_execute'
 
   # Scaffolds
-  resources :invitations
-  resources :payments
-  resources :invoice_items
-  resources :invoices
   resources :project_customers
   resources :notes
   resources :discussions
 
+  resources :invitations
+  resources :payments
+
+  resources :invoice_items
+  resources :invoices do
+    resources :invoice_items
+  end
+
   resources :projects do
-    resources :project_customers
     resources :notes do
       resources :discussions
     end
-    resources :invoices
+    resources :invoices do
+      resources :invoice_items do
+        resources :payments
+      end
+    end
+    resources :project_customers
     resources :payments
   end
 
+  # Stripe
+  resources :charges
+
   # Devise
-  devise_for :users
+  devise_for :users, :controllers => {:omniauth_callbacks => "omniauth_callbacks"}
+
 
   # Home Pages
   unauthenticated do

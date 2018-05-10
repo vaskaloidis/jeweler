@@ -18,6 +18,9 @@ require 'carrierwave/orm/activerecord'
 
 module JewlerCRM
   class Application < Rails::Application
+    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
     # TODO: Update this with Rails version once we update: config.load_defaults 5.2
@@ -28,14 +31,14 @@ module JewlerCRM
     # the framework and any gems in your application.
 
     config.generators do |g|
-      g.factory_bot dir: 'test/factories'
+      # g.factory_bot dir: 'test/factories'
       # g.test_framework :rspec, :fixture => true
+      g.test_framework  :test_unit, fixture: true
     end
 
     config.action_mailer.perform_deliveries = true # Set it to false to disable the email in dev mode
-    config.action_mailer.raise_delivery_errors = true
+    config.action_mailer.raise_delivery_errors = false
     config.action_mailer.delivery_method = :smtp
-    config.action_mailer.default_url_options = {:host => "localhost:3000"}
 
 
     ActionMailer::Base.smtp_settings = {
@@ -45,6 +48,20 @@ module JewlerCRM
         :user_name => ENV['GMAIL_EMAIL'],
         :password => ENV['GMAIL_PASSWORD']
     }
+
+    ActionMailer::Base.delivery_method = :smtp
+    ActionMailer::Base.perform_deliveries = true
+    ActionMailer::Base.raise_delivery_errors = true
+    ActionMailer::Base.smtp_settings =
+        {
+
+            :address            => 'smtp.gmail.com',
+            :port               => 587,
+            :domain             => 'gmail.com', #you can also use google.com
+            :authentication     => :plain,
+            :user_name          => 'XXXXX@gmail.com',
+            :password           => 'XXXXXXX'
+        }
 
 
   end
