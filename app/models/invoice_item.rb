@@ -10,11 +10,10 @@ class InvoiceItem < ApplicationRecord
   accepts_nested_attributes_for :project
 
 
-  validates :planned_hours, numericality: { message: 'Planned Hours must be a number.' }
-  validates :hours, numericality: { message: 'Reported Hours must be a number.' }
-  validates :description, presence: { message: 'Task needs a description.' }
-  validates :rate, presence: {message: 'Task must have a rate'}, numericality: { message: 'Rate must be a number.' }
-  validates :position, presence: { message: 'Error creating task position, contact Jeweler support.' }
+  validates :planned_hours, numericality: { message: 'Must be a number.' }, allow_nil: true
+  validates :hours, numericality: { message: 'Must be a number.' }, allow_nil: true
+  validates :description, presence: { message: 'Cannot be empty.' }
+  validates :rate, presence: {message: 'must cannot me empty.'}, numericality: { message: 'must be a number.' }
 
   def set_next_position
     self.position = self.invoice.next_position_int

@@ -43,7 +43,7 @@
                     <span class="alert alert-warning">Total Payment: <%= project.total_payment.money %></span>
                     <% if project.total_balance > 0 %>
                       <% total_balance = total_balance + project.total_balance %>
-                      <span class="alert alert-danger">Total Payment: <%= project.total_balance.money %></span>
+                      <span class="alert alert-danger">Balance: <%= project.total_balance.money %></span>
                     <% end %>
                     <% total_payment = total_payment + project.total_payment %>
                     <% total_cost = total_cost + project.total_cost %>

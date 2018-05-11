@@ -82,19 +82,19 @@
         <h2>Payments</h2>
         <% unless project.payments.empty? %>
           <% project.payments.each do |payment| %>
-            <div class="alert alert-success">
+            <div class="alert alert-default">
               <div style="padding-right:15px">
                 <i class="fas fa-dollar-sign pull-right"></i>
-                <strong>Payment: </strong>
-                Sprint <%= payment.invoice.sprint.to_s %> <%= payment.user.full_name %>
+                <strong>Payment: </strong> Sprint <%= payment.invoice.sprint.to_s %><br>
+                <%= payment.user.full_name %><br>
 
                 <%= ApplicationHelper.money(payment.amount.to_s) %>
                 <% unless payment.payment_type.nil? %>
-                  (<%= payment.payment_type.to_s %>)
+                  <strong><%= payment.payment_type.to_s %></strong>
                 <% end %>
 
                 <% unless payment.payment_note.nil? %>
-                  <italic><%= payment.payment_note.to_s %></italic>
+                  <italic><%= payment.payment_note.to_s %></italic><br>
                 <% end %>
               </div>
             </div>

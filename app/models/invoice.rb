@@ -12,6 +12,7 @@ class Invoice < ApplicationRecord
 
   def max_position_int
     max_pos = self.invoice_items.maximum(:position)
+    logger.debug("Max position: " + max_pos.to_s)
     return max_pos
   end
 

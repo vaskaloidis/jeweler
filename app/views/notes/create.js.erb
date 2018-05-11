@@ -1,3 +1,5 @@
 toastr.success('Note Created');
 
+$('#modal').modal('hide');
+
 <%= render 'notes/re-render_timeline', notes: @note.project.sprint_notes, project: @note.project %>

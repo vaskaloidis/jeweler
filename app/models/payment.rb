@@ -7,6 +7,9 @@ class Payment < ApplicationRecord
   accepts_nested_attributes_for :invoice
   accepts_nested_attributes_for :user
 
+  validates :amount, numericality: { message: 'Must be Present.' }
+
+
   def self.payment_types
     payment_types = Array.new
     payment_types << 'all'

@@ -28,16 +28,34 @@
         <ul id="sprint-tabs" class="tabs">
           <% @project.sprints.each do |sprint| %>
             <% if sprint.is_current? %>
-              <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed current-sprint-tab">
+              <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed current-sprint-tab invoices-sprint-tab">
                 <a href="#" id="sprint_btn_<%= sprint.sprint.to_s %>"><%= sprint.sprint.to_s %></a>
+                <% if sprint.open %>
+                  <span class="label label-success">Open</span>
+                <% else %>
+                  <span class="label label-danger">Closed</span>
+                <% end %><br>
+                <span><%= truncate(sprint.description, length: 100) %></span>
               </li>
             <% elsif sprint.sprint < sprint.project.sprint_current %>
-              <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed">
+              <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed invoices-sprint-tab">
                 <a href="#" id="sprint_btn_<%= sprint.sprint.to_s %>"><%= sprint.sprint.to_s %></a>
+                <% if sprint.open %>
+                  <span class="label label-success">Open</span>
+                <% else %>
+                  <span class="label label-danger">Closed</span>
+                <% end %><br>
+                <span><%= truncate(sprint.description, length: 100) %></span>
               </li>
             <% else %>
-              <li id="sprint_tab_<%= sprint.sprint.to_s %>">
+              <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="invoices-sprint-tab">
                 <a href="#" id="sprint_btn_<%= sprint.sprint.to_s %>"><%= sprint.sprint.to_s %></a>
+                <% if sprint.open %>
+                  <span class="label label-success">Open</span>
+                <% else %>
+                  <span class="label label-danger">Closed</span>
+                <% end %><br>
+                <span><%= truncate(sprint.description, length: 100) %></span>
               </li>
             <% end %>
           <% end %>

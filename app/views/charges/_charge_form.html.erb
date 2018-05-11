@@ -1,4 +1,4 @@
-<%= form_tag charges_path, class: 'form' do %>
+<%= form_tag(url: charges_path, class: 'form') do %>
 
   <div>
     <% if flash[:error].present? %>
@@ -9,39 +9,38 @@
   </div>
 
   <div class="row">
-    <div class="col-xs-12">
-      <div class="alert alert-success">
-        Sprint <%= invoice.sprint.to_s %> Balance: <%= ApplicationHelper.money invoice.balance.to_s %>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
     <div class="col-xs-6">
       <div style="float:left;text-align:left;margin-top:5px;" class="invoice-totals">
         <div style="float:left;text-align: left" class="invoice-subtotals-totals">
           <div style="margin-bottom:5px;" class="well">
-            <span><strong>Payment Info</strong></span>
-            <span>Sprint: <strong><%= invoice.sprint.to_s %></strong></span>
-            <span>Payment: <strong><%= ApplicationHelper.money amount %></strong></span>
-            <span>Tax: <strong>$0.00</strong></span>
-            <span>Grand Total: <strong><%= ApplicationHelper.money (amount + 0.00) %></strong></span>
-            <hr/>
-            <span>Remaining Sprint <%= invoice.sprint.to_s %>
-              Balance: <strong><%= ApplicationHelper.money (invoice.balance - amount) %></strong></span>
+            <span><strong>Payment Info</strong></span><br>
+            <span>Sprint: <strong><%#= invoice.sprint.to_s %></strong></span><br>
+            <span>Payment: <strong><%= amount.money %></strong></span><br>
+            <span>Tax: <strong>$0.00</strong></span><br>
+            <span>Grand Total: <strong><%= (amount + 0.00).money %></strong></span><br>
+            <hr style="color: black">
+            Sprint <%= invoice.sprint.to_s %> Balance (before payment): <strong><%= invoice.balance.money.to_s %></strong><br>
+            <span>Remaining Sprint <%= invoice.sprint.to_s %> Balance (after payment): <strong><%= (invoice.balance - amount).money.to_s %></strong></span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <% amount_string = amount.to_s %>
-  <%= hidden_field_tag :customer_id, :value => customer.id %>
-  <%= hidden_field_tag :project_id, :value => project.id %>
-  <%= hidden_field_tag :invoice_id, :value => invoice.id %>
-  <%= hidden_field_tag :payment_note, :value => payment_note %>
-  <%= hidden_field_tag :charge_amount, :value => amount_string.to_s %>
-  <%= hidden_field_tag :payment_type, :value => 'jeweler' %>
+  <%= hidden_field_tag :customer_id, customer.id %>
+  <%= hidden_field_tag :project_id, project.id %>
+  <%= hidden_field_tag :invoice_id, invoice.id %>
+  <%= hidden_field_tag :payment_note, payment_note %>
+  <%= hidden_field_tag :charge_amount, amount %>
+  <%= hidden_field_tag :payment_type, 'jeweler' %>
+
+  <div class="row margin-bottom-20 margin-top-20">
+    <div class="col-xs-12">
+      <div class="alert alert-success">
+        <span>You are making a <strong>payment of <%= amount.money %></strong></span><br>
+      </div>
+    </div>
+  </div>
 
   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
           data-key="<%= Rails.configuration.stripe[:publishable_key] %>"

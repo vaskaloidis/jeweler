@@ -2,6 +2,19 @@
 /*
  *= require font-awesome
  */
+.invoices-sprint-tab {
+ padding: 7px;
+}
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+.modal-dialog {
+    margin: 2px auto;
+    z-index: 1100 !important;
+}
+.modal-backdrop.in {
+    /*opacity: 0;*/
+}
 .project-edit-img {
     min-width:250px;
 }
@@ -98,11 +111,6 @@ footer.main-footer {
 .payment-requested-btn:hover:after {
     content: ' (Cancel)';
 }
-
-.modal-backdrop.in {
-    opacity: 0;
-}
-
 .btn.btn-gray {
     color: #333 !important;
 }
@@ -283,6 +291,9 @@ ul.settings_sprint_balance > li > span.badge {
 
 .margin-top-20 {
     margin-top: 20px;
+}
+.margin-bottom-20 {
+    margin-bottom: 20px;
 }
 
 .margin-10 {

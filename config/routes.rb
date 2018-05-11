@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   # Ajax
 
-  match '/new_charge', to: 'charges#new', via: [:post], as: 'new_charge'
+  match '/new_charge_modal', to: 'charges#generate_modal', via: [:post], as: 'generate_charge_modal'
 
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
 

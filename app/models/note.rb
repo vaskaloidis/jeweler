@@ -81,40 +81,45 @@ class Note < ApplicationRecord
   end
 
   def self.create_event(project, event_type, message, invoice = nil)
+    begin
+      note = Note.new
+      note.note_type = 'event'
+      note.author = User.current_user
+      note.event_type = event_type
 
-    note = Note.new
-    note.note_type = 'event'
-    note.author = User.current_user
-    note.event_type = event_type
+      unless project.nil?
+        note.project = project
+      end
 
-    unless project.nil?
-      note.project = project
+      if invoice.nil?
+        unless project.current_sprint.nil?
+          note.invoice = project.current_sprint
+        end
+        unless project.current_task.nil?
+          note.invoice_item = project.current_task
+        end
+      else
+        note.invoice = invoice
+        if project.current_sprint = invoice
+          note.invoice_item = invoice.current_task
+        end
+      end
+
+      # note.content = 'Sprint ' + note.invoice.sprint.to_s + ' - ' + message
+      note.content = message
+
+      note.save
+
+      if note.invalid?
+        logger.error("Error saving project update")
+      end
+
+      return note
+
+    rescue => error
+      logger.error(error)
     end
 
-    if invoice.nil?
-      unless project.current_sprint.nil?
-        note.invoice = project.current_sprint
-      end
-      unless project.current_task.nil?
-        note.invoice_item = project.current_task
-      end
-    else
-      note.invoice = invoice
-      if project.current_sprint = invoice
-        note.invoice_item = invoice.current_task
-      end
-    end
-
-    # note.content = 'Sprint ' + note.invoice.sprint.to_s + ' - ' + message
-    note.content = message
-
-    note.save
-
-    if note.invalid?
-      logger.error("Error saving project update")
-    end
-
-    return note
   end
 
   def self.create_project_update(project, current_user, message)

@@ -105,6 +105,12 @@ class InvoiceItemsController < ApplicationController
   def edit
     @invoice = @invoice_item.invoice
 
+    if @invoice_item.invoice.nil?
+      logger.error('Error invoice is nil' + params[:invoice_id].to_s)
+    else
+      logger.debug('Envoice is good: ' + @invoice_item.id.to_s)
+    end
+
     if @invoice_item.nil?
       logger.error('Error getting Task ' + params[:id].to_s)
     else
@@ -122,89 +128,78 @@ class InvoiceItemsController < ApplicationController
   def create
     @error_msgs = Array.new
     @invoice_item = InvoiceItem.new(invoice_item_params)
-
     # @invoice = Invoice.find(params.require(:invoice_item).require(:invoice_id))
-    @invoice = Invoice.find(@invoice_item.invoice_id)
-    @current_sprint = @invoice.project.sprint_current
-
-    # @invoice_item = InvoiceItem.new
-    # @invoice_item.description = params.require(:invoice_item).require(:description)
-    # hours = params.require(:invoice_item).permit(:hours)
-    # if ApplicationHelper.is_number?(hours)
-    #   @invoice_item.hours = hours
-    # else
-    #   @error_msg << 'Reported hours must be a number'
-    #   # @invoice_item.hours = nil
-    # end
-    # planned_hours = params.require(:invoice_item).require(:planned_hours)
-    # if ApplicationHelper.is_number?(planned_hours)
-    #   @invoice_item.planned_hours = planned_hours
-    # else
-    #   @error_msg << 'Reported hours must be a number'
-    #   # @invoice_item.planned_hours = nil
-    # end
-    # rate = params.require(:invoice_item).require(:rate)
-    # @invoice_item.rate = rate
     # @invoice_item.invoice = @invoice
-
-    if @invoice_item.invoice.project.current_task.nil?
-      @invoice_item.invoice.project.current_task = @invoice_item
-    end
+    @invoice = Invoice.find(@invoice_item.invoice.id)
+    @current_sprint = @invoice.project.sprint_current
 
     @invoice_item.position = @invoice_item.invoice.next_position_int
 
-    if @invoice_item.invoice.tasks.empty? and @invoice_item.invoice.project.current_task.nil? and @invoice_item.invoice.is_current?
-      project = @invoice_item.invoice.project
-      project.current_task = @invoice_item
-      project.save
-      if project.invalid?
-        project.error.full_messages.each do |error|
-          @error_msg << error
-          # logger.error('Error creating new task: ' + error)
-        end
-      end
-      @invoice_item.invoice.project.reload
-    end
-
     respond_to do |format|
       if @invoice_item.save
+
+        if @invoice_item.invoice.tasks.empty? and @invoice_item.invoice.project.current_task.nil? and @invoice_item.invoice.is_current?
+          project = @invoice_item.invoice.project
+          project.current_task = @invoice_item
+          project.save
+          if project.invalid?
+            project.error.full_messages.each do |error|
+              # @error_msgs << error
+              logger.error('Error setting new the new task as new current task: ' + error)
+            end
+          end
+          @invoice_item.invoice.project.reload
+        end
 
         if @invoice_item.valid?
           Note.create_event(@invoice.project, 'task_created', 'Task Created: ' + @invoice_item.description)
         else
           @invoice_item.errors.full_messages.each do |error|
-            @error_msg << error
-            logger.error("Error Creating Task: " + @invoice_item.error.full_message)
+            @error_msgs << error
+            logger.error("Error Creating Task: " + error)
           end
         end
-
         format.js
         format.html {redirect_to @invoice_item, notice: 'Invoice item was successfully created.'}
         format.json {render :show, status: :created, location: @invoice_item}
       else
+        @invoice_item.errors.full_messages.each do |error|
+          @error_msgs << error
+          logger.error("Error Creating Task: " + error)
+        end
         format.js
-        format.html {render :new}
+        format.html {render :new, notice: 'Error creating task: ' + @error_msgs.first}
         format.json {render json: @invoice_item.errors, status: :unprocessable_entity}
       end
     end
   end
 
   def update
+    @error_msgs = Array.new
     respond_to do |format|
 
       if @invoice_item.update(invoice_item_params)
 
-        @task = @invoice_item
-        if @invoice_item.invalid?
-          logger.error("Task not updated succesfully: " + @invoice_item.errors.full_message)
-        end
+        # TODO: Figure out why we cannot create this event note
+        # Note.create_event(@task.invoice.project, 'task_updated', 'Updated: ' + @task.description)
 
-        Note.create_event(@task.invoice.project, 'task_updated', 'Updated: ' + @task.description)
+        if @invoice_item.invalid?
+          @invoice_item.errors.full_messages.each do |error|
+            @error_msgs << error
+            logger.error('Error Updating Invoice: ' + error)
+          end
+        end
 
         format.js
         format.html {redirect_to @invoice_item, notice: 'Invoice item was successfully updated.'}
         format.json {render :show, status: :ok, location: @invoice_item}
       else
+
+        @invoice_item.errors.full_messages.each do |error|
+          @error_msgs << error
+          logger.error('Error Updating Invoice: ' + error)
+        end
+
         format.js
         format.html {render :edit}
         format.json {render json: @invoice_item.errors, status: :unprocessable_entity}
@@ -213,13 +208,22 @@ class InvoiceItemsController < ApplicationController
   end
 
   def destroy
+    @error_msgs = Array.new
 
     # @invoice_item.destroy
-    #
+
     Note.create_event(@invoice_item.invoice.project, 'task_deleted', 'Deleted: ' + @invoice_item.description)
+
     @invoice_item.deleted = true
     @invoice_item.save
     @invoice_item.reload
+
+    if @invoice_item.invalid?
+      @invoice_item.errors.full_messages.each do |error|
+        @error_msgs << error
+        logger.error('Error Destroying Invoice: ' + error)
+      end
+    end
 
     respond_to do |format|
       format.html {redirect_to invoice_items_url, notice: 'Invoice item was successfully destroyed.'}
