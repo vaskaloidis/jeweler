@@ -30,7 +30,7 @@ gem 'jquery-rails'
 gem 'rails-ujs'
 # gem 'sass-rails', '~> 5.0'
 # gem 'sass-rails', '~> 3.2.3'
-# gem 'yui-compressor'
+gem 'yui-compressor'
 gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'

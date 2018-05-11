@@ -10,13 +10,10 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery-1.11.1.min.js
+// require jquery-1.11.1.min.js
 // require jquery
-
 //= require rails-ujs
 //  require activestorage
-
-// https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js
 // require bootstrap.min.js
 //= require TweenMax.min.js
 //= require resizeable.js
