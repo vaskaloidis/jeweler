@@ -151,6 +151,7 @@ class ProjectsController < ApplicationController
   end
 
   private
+
   def verify_owner
     unless @project.is_owner?(current_user)
       flash[:error] = "You must be the owner to modify project"
@@ -172,39 +173,43 @@ class ProjectsController < ApplicationController
 
 
   def sync_github(project, user)
-    unless project.owner.oauth.nil?
-      if project.is_owner?(user)
-        begin
-        github = Github.new oauth: project.owner.oauth
-        logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
-        logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
-        repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
-        repos.each do |commit|
-          sha = commit.sha
-          if Note.where(project: project, git_commit_id: sha).empty?
-            note = Note.new
-            note.author = project.owner
-            note.note_type = 'commit'
-            note.git_commit_id = sha
-            note.sync = true
-            note.project = project
-            note.content = commit.commit.message.to_s + ' - ' + commit.commit.author.name.to_s
+    # TODO: Add a setting to enable / disable Github_Sync
 
-            unless project.current_sprint.nil?
-              note.invoice = project.current_sprint
-            end
-            unless project.current_task.nil?
-              note.invoice_item = project.current_task
-            end
+    if false
+      unless project.owner.oauth.nil?
+        if project.is_owner?(user)
+          begin
+            github = Github.new oauth: project.owner.oauth
+            logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
+            logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
+            repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
+            repos.each do |commit|
+              sha = commit.sha
+              if Note.where(project: project, git_commit_id: sha).empty?
+                note = Note.new
+                note.author = project.owner
+                note.note_type = 'commit'
+                note.git_commit_id = sha
+                note.sync = true
+                note.project = project
+                note.content = commit.commit.message.to_s + ' - ' + commit.commit.author.name.to_s
 
-            note.created_at = commit.commit.committer.date
-            note.save
-            puts 'Note Created for Commit Sync, SHA: ' + commit.sha
+                unless project.current_sprint.nil?
+                  note.invoice = project.current_sprint
+                end
+                unless project.current_task.nil?
+                  note.invoice_item = project.current_task
+                end
+
+                note.created_at = commit.commit.committer.date
+                note.save
+                puts 'Note Created for Commit Sync, SHA: ' + commit.sha
+              end
+            end
+          rescue Exception
+            logger.error("Error syncing Github Repo")
+            logger.error
           end
-        end
-        rescue Exception
-          logger.error("Error syncing Github Repo")
-          logger.error
         end
       end
     end

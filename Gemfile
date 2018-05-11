@@ -9,7 +9,7 @@ ruby '2.5.0'
 # gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
 # gem 'activestorage', github: 'rails/activestorage'
-gem 'platform-api' # Heroku
+# gem 'platform-api' # Heroku
 gem 'stripe'
 gem 'omniauth-stripe-connect'
 gem 'pg'
