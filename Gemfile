@@ -34,11 +34,9 @@ gem 'yui-compressor'
 gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
-# gem 'bcrypt', '~> 3.1.7'
-# gem 'audited', '~> 4.6' # TODO: Install and configure Audited Gem
-gem 'bootsnap', '>= 1.1.0', require: false
+# gem 'bootsnap', '>= 1.1.0', require: false
+gem 'bootsnap', require: false
 gem 'rollbar'
-gem 'colorize'
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
   gem 'rails_12factor'
@@ -49,7 +47,6 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'faker'
   gem 'capybara'
-  # gem 'awesome_print' #TODO: Use this one day
   gem 'better_errors'
   gem 'launchy'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console

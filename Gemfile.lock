@@ -85,7 +85,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    colorize (0.8.1)
     concurrent-ruby (1.0.5)
     crass (1.0.4)
     database_cleaner (1.7.0)
@@ -306,14 +305,13 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
-  bootsnap (>= 1.1.0)
+  bootsnap
   byebug
   cancancan (~> 2.0)
   capybara
   carrierwave (~> 1.0)
   chromedriver-helper
   coffee-rails (~> 4.2)
-  colorize
   database_cleaner
   derailed_benchmarks
   devise
