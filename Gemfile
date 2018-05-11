@@ -7,14 +7,14 @@ end
 ruby '2.5.0'
 
 # gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 5.2.0rc2'
 # gem 'activestorage', github: 'rails/activestorage'
 # gem 'platform-api' # Heroku
 gem 'stripe'
 gem 'omniauth-stripe-connect'
 gem 'pg'
 gem 'puma', '~> 3.11'
-gem 'github_api'
+# gem 'github_api'
 gem 'devise'
 gem 'carrierwave', '~> 1.0'
 gem 'rolify'
