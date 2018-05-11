@@ -1,7 +1,7 @@
 Rails.application.configure do
 
   # config.less.paths << "#{Rails.root}/app/assets/stylesheets"
-  config.assets.compile = false
+  config.assets.compile = true
   config.assets.compress = false
   config.assets.digest = false
   config.assets.debug = false

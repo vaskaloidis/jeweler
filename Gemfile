@@ -6,9 +6,8 @@ end
 # Jeweler Gems
 ruby '2.5.0'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.0.rc1'
 # gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 5.2.0'
 # gem 'rails', '~> 5.1.6'
 # gem 'activestorage', github: 'rails/activestorage'
 
@@ -37,9 +36,10 @@ gem 'rails-ujs'
 
 # gem 'sass-rails', '~> 5.0'
 # gem 'sass-rails', '~> 3.2.3'
-gem 'sass-rails'
-gem 'less-rails'
-gem 'yui-compressor'
+
+# gem 'sass-rails'
+# gem 'less-rails'
+# gem 'yui-compressor'
 
 gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'
