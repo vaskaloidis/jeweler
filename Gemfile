@@ -4,10 +4,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 # Jeweler Gems
-ruby '2.5.0'
+ruby '2.5.1'
 
 # gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.0rc2'
+gem 'rails', '~> 5.2.0'
 # gem 'activestorage', github: 'rails/activestorage'
 # gem 'platform-api' # Heroku
 gem 'stripe'
@@ -35,7 +35,7 @@ gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
 # gem 'bootsnap', '>= 1.1.0', require: false
-gem 'bootsnap', require: false
+# gem 'bootsnap', require: false
 gem 'rollbar'
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.

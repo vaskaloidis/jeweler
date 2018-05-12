@@ -9,7 +9,9 @@
   <title>JewelerCRM</title>
 
   <%= csrf_meta_tags %>
-
+  <%= javascript_include_tag 'jquery-1.11.1.min.js' %>
+  <%= javascript_include_tag 'bootstrap.min' %>
+  <%= javascript_include_tag 'application' %>
   <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
   <%= stylesheet_link_tag "fonts/linecons/css/linecons.css" %>
   <%= stylesheet_link_tag "fontawesome.css" %>
@@ -24,7 +26,7 @@
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= stylesheet_link_tag "main.css" %>
 
-<!--  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">-->
+  <!--  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">-->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
 
@@ -75,13 +77,13 @@
       function resizeWindow(window_width) {
           if ((window_width > 1200) && (window_width < 1680)) {
               console.log('Collapse Sidebar');
-              if(!($('#sidebar').hasClass('collapsed'))) {
+              if (!($('#sidebar').hasClass('collapsed'))) {
                   $('#sidebar').addClass("collapsed");
               }
           }
           else if ((window_width > 1680)) {
               console.log('Show Sidebar');
-              if(($('#sidebar').hasClass('collapsed'))) {
+              if (($('#sidebar').hasClass('collapsed'))) {
                   $('#sidebar').removeClass("collapsed");
               }
           }
@@ -91,7 +93,7 @@
           resizeWindow($(window).width());
       });
 
-      $(window).on('resize', function(){
+      $(window).on('resize', function () {
           // resizeWindow( $(window).width());
       });
   </script>
@@ -149,9 +151,6 @@
 <div class="modal-overlay"></div>
 
 <%# TODO:Convert these to Minified versions %>
-<%= javascript_include_tag 'jquery-1.11.1.min.js' %>
-<%= javascript_include_tag 'bootstrap.min' %>
-<%= javascript_include_tag 'application' %>
 <script src="https://js.stripe.com/v3/"></script>
 
 </body>
