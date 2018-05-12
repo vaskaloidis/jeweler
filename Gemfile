@@ -38,10 +38,9 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bootsnap', require: false
 gem 'rollbar'
 
-gem 'dotenv-rails'
-gem 'rack-mini-profiler'
-gem 'memory_profiler'
-gem 'flamegraph'
+# gem 'rack-mini-profiler'
+# gem 'memory_profiler'
+# gem 'flamegraph'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
@@ -51,6 +50,7 @@ group :production do
   gem 'puma_worker_killer'
 end
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'faker'
   gem 'capybara'
   gem 'better_errors'

@@ -118,7 +118,6 @@ GEM
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.23)
-    flamegraph (0.9.5)
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
     foreman (0.84.0)
@@ -200,8 +199,6 @@ GEM
       get_process_mem (~> 0.2)
       puma (>= 2.7, < 4)
     rack (2.0.5)
-    rack-mini-profiler (1.0.0)
-      rack (>= 1.2.0)
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
     rails (5.2.0)
@@ -322,7 +319,6 @@ DEPENDENCIES
   factory_bot
   factory_bot_rails
   faker
-  flamegraph
   font-awesome-rails
   foreman
   jbuilder (~> 2.5)
@@ -330,13 +326,11 @@ DEPENDENCIES
   jquery-ui-rails
   json
   launchy
-  memory_profiler
   omniauth-stripe-connect
   pg
   pry-rails
   puma (~> 3.11)
   puma_worker_killer
-  rack-mini-profiler
   rails (~> 5.2.0)
   rails-ujs
   rails_12factor
