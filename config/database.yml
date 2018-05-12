@@ -14,9 +14,13 @@ test:
   <<: *default
   database: jewlercrm-test
 
+production-local:
+  <<: *default
+  database: jewlercrm-dev
+
 production:
   <<: *default
   url: <%= ENV['DATABASE_URL'] %>
-  database: jeweler-staging_production
-  username: jeweler-staging
-  password: <%= ENV['JEWLERCRM_DATABASE_PASSWORD'] %>
+  database: jeweler-staging-server_production
+  username: jeweler-staging-server
+  password: <%= ENV['JEWELER-STAGING-SERVER_DATABASE_PASSWORD'] %>
