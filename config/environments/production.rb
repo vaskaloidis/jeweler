@@ -2,9 +2,9 @@ Rails.application.configure do
 
   # config.less.paths << "#{Rails.root}/app/assets/stylesheets"
   config.assets.compile = true
-  config.assets.compress = false
-  config.assets.digest = false
-  config.assets.debug = false
+  config.assets.compress = true
+  config.assets.digest = true
+  config.assets.debug = true
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :yui
   # config.assets.css_compressor = :sass
