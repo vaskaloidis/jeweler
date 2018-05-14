@@ -32,6 +32,8 @@ class ApplicationController < ActionController::Base
     require Rails.root.join('lib','Double.rb')
     require Rails.root.join('lib','BigDecimal.rb')
     require Rails.root.join('lib','Decimal.rb')
+    require Rails.root.join('lib','String.rb')
+    require Rails.root.join('lib','Integer.rb')
     require Rails.root.join('lib','NilClass.rb')
   end
 

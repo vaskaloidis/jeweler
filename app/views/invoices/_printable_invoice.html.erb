@@ -1,158 +1,250 @@
-<% customer = invoice.project.customers.first %>
-<div class="panel panel-default">
-  <div class="panel-heading hidden-print">Invoice</div>
-  <div class="panel-body">
+<section class="invoice-env">
 
-    <section class="invoice-env">
+  <!-- Invoice header -->
+  <div class="invoice-header">
 
-      <!-- Invoice header -->
-      <div class="invoice-header">
+    <!-- TODO:Figure this out -->
+    <div style="display: none">
+      <% if estimate %>
+        <h2 class="pull-right">Estimate</h2>
+      <% else %>
+        <h2 class="pull-right">Invoice</h2>
+      <% end %>
+    </div>
 
-        <!-- Invoice Options Buttons -->
-        <div class="invoice-options hidden-print">
-          <a href="#" class="btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left">
-            <i class="fa-envelope-o"></i>
-            <span>Send</span>
-          </a>
-          <% if estimate %>
-            <% print_btn = '<i class="fa-print"></i><span>Print Estimate</span>' %>
-            <%= link_to print_btn.html_safe,
-                        print_invoice_path(invoice.id, 'true'),
-                        class: 'btn btn-block btn-secondary btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
-          <% else %>
-            <% print_btn = '<i class="fa-print"></i><span>Print Invoice</span>' %>
-            <%= link_to print_btn.html_safe,
-                        print_invoice_path(invoice.id, 'false'),
-                        class: 'btn btn-block btn-secondary btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
-          <% end %>
-        </div>
-
-        <!-- Invoice Data Header -->
-        <div class="invoice-logo">
-          <a href="#" class="logo">
-            <img width="150" src="<%= invoice.project.image.url %>" class="img-responsive"/>
-          </a>
-          <ul class="list-unstyled">
-            <li class="upper">Sprint <strong><%= invoice.sprint.to_s %></strong></li>
-            <li><%= Date.today.to_s %></li>
-            <li><%= invoice.project.owner.first_name %> <%= invoice.project.owner.last_name %></li>
-          </ul>
-        </div>
-      </div>
-
-
-      <!-- Client and Payment Details -->
-      <div class="invoice-details">
-
-        <div class="invoice-client-info">
-          <strong>Client</strong>
-
-          <ul class="list-unstyled">
-            <% unless customer.nil? %>
-              <% unless customer.first_name.nil? and customer.last_name.nil? %>
-                <li><%= customer.first_name %> <%= customer.last_name %></li>
-              <% end %>
-              <% unless customer.company.nil? %>
-                <li><%= customer.company %> </li>
-              <% end %>
-              <% unless customer.email.nil? %>
-                <li><%= customer.email %></li>
-              <% end %>
-            <% end %>
-          </ul>
-
-          <ul class="list-unstyled">
-          </ul>
-        </div>
-
-        <div class="invoice-payment-info">
-          <ul class="list-unstyled">
-            <li>Tasks:
-              <stron><%= invoice.tasks.size.to_s %></stron>
-            </li>
-            <li>Estimated Hours:
-              <stron><%= invoice.sprint_planned_hours.to_s %> hrs.</stron>
-            </li>
-            <% unless estimate %>
-              <li>Tasks:
-                <Reported Hours><%= invoice.sprint_hours.to_s %> hrs.</Reported>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-
-      </div>
-
-
-      <!-- Invoice Entries -->
-      <table class="table table-bordered">
-        <thead>
-        <tr class="no-borders">
-          <th class="text-center hidden-xs"></th>
-          <th width="50%" class="text-center">Task</th>
-          <th class="text-center">Rate</th>
-          <% if estimate %>
-            <th class="text-center hidden-xs">Estimate</th>
-            <th class="text-center">Cost</th>
-          <% else %>
-            <th class="text-center hidden-xs">Estimate</th>
-            <th class="text-center hidden-xs">Hours</th>
-            <th class="text-center">Cost</th>
-          <% end %>
-        </tr>
-        </thead>
-
-        <tbody>
-        <% invoice.tasks.each do |task| %>
-          <tr>
-            <td class="text-center hidden-xs"><%= task.get_letter %></td>
-            <td><%= task.description %></td>
-            <td class="text-center"><%= task.rate.to_s %>$/hr.</td>
-            <% if estimate %>
-              <td class="text-center hidden-xs"><%= task.planned_hours.to_s %> hrs.</td>
-              <td class="text-center text-primary text-bold">$<%= task.planned_cost.to_s %></td>
-            <% else %>
-              <td class="text-center hidden-xs"><%= task.planned_hours.to_s %> hrs.</td>
-              <td class="text-center hidden-xs"><%= task.hours.to_s %> hrs.</td>
-              <td class="text-right text-primary text-bold">$<%= task.total_cost.to_s %></td>
-            <% end %>
-
-          </tr>
+    <div style="display: block">
+      <% if invoice.payment_due %>
+        <% if payment_request_amount %>
+          <div class="alert alert-success">
+            <i class="fa-dollar-sign pull-right"></i>
+            A payment of <%= payment_request_amount %> has been requested
+          </div>
+        <% else %>
+          <div class="alert alert-success">
+            <i class="fa-dollar-sign pull-right"></i>
+            Payment Requested
+          </div>
         <% end %>
-        </tbody>
-      </table>
+      <% end %>
+    </div>
 
-      <!-- Invoice Subtotals and Totals -->
-      <div class="invoice-totals">
+    <% if (defined? display_send_btn and display_send_btn) or (defined? display_print_btn and display_print_btn) or (defined? display_pay_btn and display_pay_btn) %>
+      <div class="invoice-options hidden-print">
+    <% end %>
 
-        <div class="invoice-subtotals-totals">
+    <% if defined? display_send_btn %>
+      <% if display_send_btn %>
+        <% send_btn = '<i class="fa-envelope-o"></i><span>Send</span>' %>
+        <%= link_to send_btn.html_safe,
+                    generate_customer_invoice_path(invoice.id, 'true'),
+                    remote: true,
+                    class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' %>
+      <% end %>
+    <% end %>
+
+    <% if defined? display_print_btn and display_print_btn %>
+      <% print_btn = '<i class="fa-print"></i><span>Print Estimate</span>' %>
+      <%= link_to print_btn.html_safe,
+                  print_invoice_path(invoice.id, 'true'),
+                  class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+      <% print_btn = '<i class="fa-print"></i><span>Print Invoice</span>' %>
+      <%= link_to print_btn.html_safe,
+                  print_invoice_path(invoice.id, 'false'),
+                  class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+    <% end %>
+
+    <% if defined? display_pay_btn and display_pay_btn %>
+      <% pay_btn = '<i class="fa-money"></i><span>Make Payment</span>' %>
+      <%= link_to pay_btn.html_safe,
+                  pay_path(invoice.project.id),
+                  class: 'btn btn-block btn-secondary btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+    <% end %>
+
+    <% if (defined? display_send_btn and display_send_btn) or (defined? display_print_btn and display_print_btn) or (defined? display_pay_btn and display_pay_btn) %>
+      </div>
+    <% end %>
+
+    <!-- Invoice Data Header -->
+    <div class="invoice-logo">
+      <a href="#" class="logo">
+        <img width="150" src="<%= invoice.project.image.url %>" class="img-responsive"/>
+      </a>
+      <ul class="list-unstyled">
+        <li><%= Date.today.to_s %></li>
+        <li><%= invoice.project.owner.first_name %> <%= invoice.project.owner.last_name %></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- Client and Payment Details -->
+  <div class="invoice-details">
+
+    <% if !customer.nil? and customer %>
+      <div class="invoice-client-info">
+        <strong>Client</strong>
+        <ul class="list-unstyled">
+          <% unless customer.first_name.nil? and customer.last_name.nil? %>
+            <li><%= customer.first_name %> <%= customer.last_name %></li>
+          <% end %>
+          <% unless customer.company.nil? %>
+            <li><%= customer.company %> </li>
+          <% end %>
+          <% unless customer.email.nil? %>
+            <li><%= customer.email %></li>
+          <% end %>
+        </ul>
+        <ul class="list-unstyled">
+        </ul>
+      </div>
+    <% elsif !customer_email.nil? and customer_email %>
+      <div class="invoice-client-info">
+        <strong>Client</strong>
+        <ul class="list-unstyled">
+          <li><%= customer_email %> </li>
+        </ul>
+        <ul class="list-unstyled">
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="invoice-payment-info">
+      <% if invoice.is_current? %>
+        <span class="label label-default">Current Sprint</span>
+      <% end %>
+      <ul class="list-unstyled">
+        <li class="upper">Sprint <strong><%= invoice.sprint.to_s %></strong></li>
+        <li><strong>Tasks: </strong><%= invoice.tasks.size.to_s %></li>
+        <li><strong>Estimated Hours: </strong><%= invoice.sprint_planned_hours.to_s %> hrs.</li>
+        <% unless estimate %>
+          <li><strong>Reported Hours: </strong><%= invoice.sprint_hours.to_s %> hrs.</li>
+        <% end %>
+        <% if invoice_note %>
+          <li><strong>Note: </strong><%= invoice_note %></li>
+        <% end %>
+      </ul>
+    </div>
+
+  </div>
+
+
+  <!-- Invoice Entries -->
+  <table class="table table-bordered">
+    <thead>
+    <tr class="no-borders">
+      <th class="text-center hidden-xs"></th>
+      <th width="50%" class="text-center">Task</th>
+      <th class="text-center">Rate</th>
+      <% if estimate %>
+        <th class="text-center hidden-xs">Estimate</th>
+        <th class="text-center">Projected Cost</th>
+      <% else %>
+        <th class="text-center hidden-xs">Hours</th>
+        <th class="text-center">Cost</th>
+      <% end %>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% invoice.tasks.each do |task| %>
+      <tr>
+        <td class="text-center hidden-xs">
+          <% if invoice.project.current_task == task %>
+            <span class="label label-default">Current Task</span>
+          <% elsif task.complete %>
+            <i class="fas fa-check fa-1x"></i>
+          <% end %>
+        </td>
+        <td><span class="alert alert-success task-id">#<%= task.task_id %></span><%= task.description %></td>
+        <td class="text-center"><%= task.rate.to_s %>$/hr.</td>
+        <% if estimate %>
+          <td class="text-center hidden-xs"><%= task.planned_hours.to_s %> hrs.</td>
+          <td class="text-center text-primary text-bold">$<%= task.planned_cost.to_s %></td>
+        <% else %>
+          <td class="text-center hidden-xs"><%= task.hours.to_s %> hrs.</td>
+          <td class="text-right text-primary text-bold">$<%= task.total_cost.to_s %></td>
+        <% end %>
+
+      </tr>
+    <% end %>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <% if estimate %>
+        <td class="text-center hidden-xs"><%= invoice.sprint_planned_hours %> hrs.</td>
+        <td class="text-center text-primary text-bold"><%= invoice.sprint_planned_cost.money %></td>
+      <% else %>
+        <td class="text-center hidden-xs"><%= invoice.sprint_hours.to_s %> hrs.</td>
+        <td class="text-right text-primary text-bold"><%= invoice.sprint_cost.money %></td>
+      <% end %>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Invoice Subtotals and Totals -->
+  <div class="invoice-totals">
+
+    <div class="invoice-subtotals-totals">
           <span>
             Sub - Total amount:
             <strong>$<%= invoice.cost.to_s %></strong>
           </span>
 
-          <!-- TODO:Add Tax rate to settings -->
-          <% if false %>
+      <!-- TODO:Add Tax rate to settings -->
+      <% if false %>
           <span>
             Tax:
             <strong>3.9%</strong>
           </span>
-          <% end %>
+      <% end %>
 
-          <hr/>
-
-          <span>
-            Grand Total:
-            <strong>$<%= invoice.cost.to_s %></strong>
-          </span>
-        </div>
-
-        <div class="invoice-bill-info">
-        </div>
-
-      </div>
-
-    </section>
-
+      <hr/>
+      <% if estimate %>
+        <span>Projected Cost: <strong>$<%= invoice.sprint_planned_cost.to_s %></strong></span>
+      <% else %>
+        <span>Grand Total: <strong>$<%= invoice.cost.to_s %></strong></span>
+      <% end %>
+    </div>
   </div>
-</div>
+
+  <% if display_payments %>
+    <table class="table table-condensed">
+      <tbody>
+      <% invoice.payments.each do |payment| %>
+        <tr>
+          <td><%= payment.amount %></td>
+          <td><%= payment.payment_type %></td>
+          <td><%= payment.user.full_name %></td>
+          <td><%= payment.created_at.strftime("%d %b. %Y") %> </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td></td>
+        <td></td>
+        <td><strong>Payment Total:</strong></td>
+        <td><%= invoice.sprint_payments.money %></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="invoice-totals">
+      <div class="invoice-subtotals-totals">
+        <span>Invoice Amount: <strong><%= invoice.cost.money %></strong></span>
+        <span>Payments: <strong><%= invoice.total_payments.money %></strong></span>
+        <hr/>
+        <span>Balance: <strong><%= invoice.balance.money %></strong></span>
+      </div>
+      <div class=" invoice-bill-info">
+      </div>
+    </div>
+  <% end %>
+
+  <div class="jeweler-invoice-logo">
+    <span>Generated by Jeweler, a crm for programmers.</span>
+    <%= image_tag 'jeweler-logo-full-white.png' %>
+  </div>
+  <div class="jeweler-invoice-footer-url">
+    <span>www.jewelercrm.io</span>
+  </div>
+</section>

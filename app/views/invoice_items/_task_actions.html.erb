@@ -1,5 +1,5 @@
 <span id="task_<%= task.id.to_s %>" class="task-actions">
-  <% if task.invoice.open? %>
+  <% if task.invoice.open? or task.invoice.is_current? %>
     <% if task.is_current? %>
       <% if task.invoice.project.is_owner?(user) %>
           <% if task.complete %>
@@ -15,8 +15,9 @@
                     edit_invoice_item_path(task.id), remote: true,
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe,
-                    invoice_item_path(task.id), method: :delete,
-                    data: {confirm: "Are you sure?"}, remote: true,
+                    invoice_item_path(task.id),
+                    remote: true, method: :delete,
+                    data: {confirm: "Are you sure?"},
                     class: 'btn btn-sm btn-primary' %>
       <% end %>
     <% else %>
@@ -38,11 +39,10 @@
                     class: 'btn btn-sm btn-primary' %>
 
         <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe,
-                    invoice_item_path(task.id), method: :delete,
-                    data: {confirm: "Are you sure?"}, remote: true,
+                    invoice_item_path(task.id),
+                    remote: true, method: :delete,
+                    data: {confirm: "Are you sure?"},
                     class: 'btn btn-sm btn-primary' %>
-
-
       <% end %>
     <% end %>
   <% else %>

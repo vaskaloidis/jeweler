@@ -1,9 +1,107 @@
 class InvoicesController < ApplicationController
   before_action :set_objects, only: [:show, :edit, :update, :destroy]
 
+  def send_invoice
+    @invoice = Invoice.find(params[:invoice_id])
+    @estimate = params[:estimate].to_b
+    @customer_email = params[:customer_email]
+    @customer = params[:customer]
+    @invoice_note = params[:invoice_note]
+    @display_payments = params[:display_payments]
+    @request_amount = params[:request_amount]
+    @estimate = params[:estimate].to_b
+
+    unless @customer.to_b
+      if User.where(email: @customer_email)
+        @invitation = true
+      else
+        @invitation = false
+      end
+    else
+      @invitation = false
+    end
+
+    if @invitation
+      if @customer_email
+        UserInviteMailer.with(email: @customer_email, project: @invoice.project.id).invite_user.deliver_now
+      else
+        UserInviteMailer.with(email: @customer.email, project: @invoice.project.id).invite_user.deliver_now
+      end
+
+      jeweler_invitation = Invitation.new
+      jeweler_invitation.project = @invoice.project
+      jeweler_invitation.email = @customer_email
+      jeweler_invitation.save
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def review_customer_invoice
+    @error_msgs = Array.new
+
+    @invoice = Invoice.find(params[:invoice_id])
+    @estimate = params[:estimate].to_b
+    @customer_email = params[:customer_email]
+    @invoice_note = params[:invoice_note]
+    @display_payments = params[:display_payments] == "1"
+    @request_amount = params[:request_amount]
+    @estimate = params[:estimate].to_b
+
+    if @customer_email == 'Customer Email' or @customer_email == ''
+      if params[:customer_id].nil? or params[:customer_id] == ''
+        @error_msgs << 'A customer was not selected'
+      else
+        @customer = User.find(params[:customer_id])
+        @customer_email = @customer.email
+      end
+    else
+      @customer = false
+    end
+
+    if @customer
+      if User.where(email: @customer_email)
+        @invitation = true
+      else
+        @invitation = false
+      end
+    else
+      @invitation = false
+    end
+
+    if @invoice_note == '(Optional) Invoice Note' or @invoice_note == ''
+      @invoice_note = false
+    end
+
+    if @request_amount == '(Optional) Request Amount' or @request_amount == ''
+      @request_amount = false
+    else
+      if @request_amount != '(Optional) Request Amount' and @request_amount != ''
+        if !ApplicationHelper.is_number? @request_amount
+          @error_msgs << 'Payment request amount must be a number (or leave it empty)'
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def generate_customer_invoice
+    @invoice = Invoice.find(params[:invoice_id])
+    @estimate = params[:estimate].to_b
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def generate_invoice
     @invoice = Invoice.find(params[:invoice_id])
-    @estimate = params[:estimate]
+    @estimate = params[:estimate].to_b
     logger.debug("Estimate: " + @estimate.to_s)
     logger.debug("Invoice ID: " + @invoice.id.to_s)
     respond_to do |format|
@@ -11,15 +109,17 @@ class InvoicesController < ApplicationController
     end
   end
 
-  def send_invoice
-    @invoice = Invoice.find(params[:invoice_id])
-    @estimate = params[:estimate]
-  end
-
   def print_invoice
     @invoice = Invoice.find(params[:invoice_id])
-    @estimate = params[:estimate]
-    render(:layout => "print")
+    @estimate = params[:estimate].true?
+    # render(:layout => "print")
+    render partial: 'invoices/generate_printable_invoice',
+           locals: {invoice: @invoice,
+                    estimate: @estimate,
+                    display_send_btn: false,
+                    display_pay_btn: false,
+                    display_print_btn: false},
+           layout: 'print'
   end
 
   def edit_description
@@ -57,7 +157,7 @@ class InvoicesController < ApplicationController
     if @task.invoice != @task.invoice.project.current_sprint
       @error = true
       @error_message = 'Current Task must be within Current Sprint.'
-      logger.error(@error_message)
+      logger.debug('Error: ' + @error_message)
     else
       logger.debug('No Errors')
       @error = false
@@ -76,6 +176,11 @@ class InvoicesController < ApplicationController
         @task.complete = false
         @task.save
         @task.reload
+      end
+
+      if @task.invoice.closed?
+        @task.invoice.open = true
+        @task.invoice.save
       end
 
       @current_sprint = @task.invoice.project.sprint_current
@@ -231,6 +336,7 @@ class InvoicesController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_objects
     @invoice = Invoice.find(params[:id])

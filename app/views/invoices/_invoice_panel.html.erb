@@ -132,40 +132,38 @@
 
         </tr>
         </thead>
-
-        <tbody
         <% if invoice.project.current_task == invoice.id %>
-        class="current_sprint task_list">
-        <% else %>
-        >
+          <% current_sprint_string = 'current_sprint task_list' %>
         <% end %>
 
+        <tbody class="<%= current_sprint_string %>">
+
         <% invoice.tasks.each do |task| %>
-        <tr id="task_row_<%= task.id.to_s %>" onclick="open_task_action(<%= task.id.to_s %>)">
-          <td width="10">
-            <% if invoice.project.current_task == task %>
-              <span class="label label-default">Current Task</span>
-            <% elsif task.complete %>
-              <i class="fas fa-check fa-1x"></i>
-            <% end %>
-          </td>
-          <td>
-            <%= render 'invoice_items/task_actions', task: task, user: current_user %>
-            <span class="alert alert-success task-id">
+          <tr id="task_row_<%= task.id.to_s %>" onclick="open_task_action(<%= task.id.to_s %>)">
+            <td width="10">
+              <% if invoice.project.current_task == task %>
+                <span class="label label-default">Current Task</span>
+              <% elsif task.complete %>
+                <i class="fas fa-check fa-1x"></i>
+              <% end %>
+            </td>
+            <td>
+              <%= render 'invoice_items/task_actions', task: task, user: current_user %>
+              <span class="alert alert-success task-id">
               #task<%= task.invoice.sprint.to_s %><%= task.get_letter %>
             </span>
-            <%= task.description %>
-          </td>
-          <td>$<%= task.rate.to_f.prettify %>/hr</td>
-          <td><%= task.planned_hours.prettify %> hrs.</td>
-          <% if invoice.only_planned? %>
-            <td><%= task.planned_cost.money %></td>
-          <% else %>
-            <td><%= task.hours.prettify %> hrs.</td>
-            <td><%= task.total_cost.money %></td>
-          <% end %>
+              <%= task.description %>
+            </td>
+            <td>$<%= task.rate.to_f.prettify %>/hr</td>
+            <td><%= task.planned_hours.prettify %> hrs.</td>
+            <% if invoice.only_planned? %>
+              <td><%= task.planned_cost.money %></td>
+            <% else %>
+              <td><%= task.hours.prettify %> hrs.</td>
+              <td><%= task.total_cost.money %></td>
+            <% end %>
 
-        </tr>
+          </tr>
         <% end %>
 
         <tr>
@@ -266,7 +264,7 @@
         </span>
       <% end %>
       <span>
-        <strong>Projected Cost:</strong> $<%= invoice.sprint_planned_cost.money %>
+        <strong>Projected Cost:</strong> <%= invoice.sprint_planned_cost.money %>
       </span>
       <% unless invoice.only_planned? %>
         <span>

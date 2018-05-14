@@ -1,0 +1,12 @@
+<div class="well">
+  <h4>Select a Customer</h4>
+  <%= render('invoices/select_invoice_customer_form', invoice: invoice, estimate:estimate) %>
+</div>
+
+<%= render 'invoices/generate_printable_invoice',
+           invoice: invoice,
+           estimate: estimate,
+           display_send_btn: false,
+           display_pay_btn: true,
+           display_print_btn: false
+%>

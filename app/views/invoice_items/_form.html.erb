@@ -40,7 +40,7 @@
         <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save"></i></button>
         <% unless invoice_item.id.nil? %>
           <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
-                      invoice_item_path(invoice_item.invoice.id, invoice_item.id), method: :delete, data: {confirm: "Are you sure?"}, remote: true,
+                      invoice_item_path(invoice_item.id), method: :delete, data: {confirm: "Are you sure?"}, remote: true,
                       class: 'btn btn-sm btn-success', style: '' %>
         <% end %>
         <%= link_to '<i class="fas fa-times"></i>'.html_safe, cancel_task_update_path(invoice_item.invoice.id), :class => 'btn btn-sm btn-success', style: '', remote: true %>

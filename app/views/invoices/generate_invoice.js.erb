@@ -1,3 +1,15 @@
-$("#modal_target").html("<%= j render 'invoices/generate_printable_invoice', invoice: @invoice, estimate: @estimate %>");
+$("#modal_target").html("<%= j render 'invoices/generate_printable_invoice',
+                                      invoice: @invoice,
+                                      estimate: @estimate,
+                                      display_send_btn: true,
+                                      display_pay_btn: true,
+                                      display_print_btn: true,
+                                      customer: false,
+                                      customer_email: false,
+                                      display_payments: false %>");
 
-<%= render 'layouts/render_modal', title: 'Generate Invoice' %>
+<% if @estimate %>
+  <%= render 'layouts/render_modal', title: 'Estimate' %>
+<% else %>
+  <%= render 'layouts/render_modal', title: 'Invoice' %>
+<% end %>

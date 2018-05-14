@@ -1,6 +1,6 @@
-<%= render 'invoices/re-render_invoice_panel', invoice: @task.invoice %>
+<%= render 'invoices/re-render_invoice_panel', invoice: @invoice_item.invoice %>
 
-<% if @task.valid? %>
+<% if @invoice_item.valid? %>
   toastr.success('Task updated Successfully.');
 <% else %>
   <% @error_msgs.each do |error| %>

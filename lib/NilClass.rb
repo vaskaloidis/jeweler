@@ -10,4 +10,12 @@ class NilClass
   def money
     return '$0'
   end
+
+  def true?
+    return false
+  end
+
+  def to_b
+    return false
+  end
 end

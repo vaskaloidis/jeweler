@@ -14,10 +14,16 @@ class Float
   def hours
     result = self.prettify
     if result == 1
-      result = result.to_s + ' hr'
+      result = result.to_s + ' hr.'
     else
-      result = result.to_s + ' hrs'
+      result = result.to_s + ' hrs.'
     end
+    return result
+  end
+
+  def invoice_rate
+    result = self.prettify.to_s
+    result = '$' + result + ' /hr'
     return result
   end
 

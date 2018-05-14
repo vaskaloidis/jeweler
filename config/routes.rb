@@ -2,6 +2,13 @@ Rails.application.routes.draw do
 
   # Ajax
 
+  match '/send_invoice', to: 'invoices#send_invoice', via: [:post], as: 'send_invoice'
+  match '/review_customer_invoice', to: 'invoices#review_customer_invoice', via: [:post], as: 'review_customer_invoice'
+  get '/generate_customer_invoice/:invoice_id/:estimate', to: 'invoices#generate_customer_invoice', as: 'generate_customer_invoice'
+
+
+  get '/pay/:project_id', to: 'payments#unauthenticated_payment', as: 'pay'
+
   match '/new_charge_modal', to: 'charges#generate_modal', via: [:post], as: 'generate_charge_modal'
 
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
@@ -21,7 +28,6 @@ Rails.application.routes.draw do
   get '/remove_customer/:project_id/:user_id', to: 'project_customers#remove_customer_inline', as: 'remove_customer_inline'
   get '/remove_invitation/:invitation_id', to: 'invitations#remove_invitation_inline', as: 'remove_invitation_inline'
 
-  get '/send_invoice/:invoice_id/:estimate', to: 'invoices#send_invoice', as: 'send_invoice'
   get '/print_invoice/:invoice_id/:estimate', to: 'invoices#print_invoice', as: 'print_invoice'
 
   get '/edit_description/:invoice_id', to: 'invoices#edit_description', as: 'edit_invoice_description'
@@ -87,13 +93,14 @@ Rails.application.routes.draw do
   # Devise
   devise_for :users, :controllers => {:omniauth_callbacks => "omniauth_callbacks"}
 
-
   # Home Pages
   unauthenticated do
     root to: 'main#home'
+    get '/pay/:project_id', to: 'payments#unauthenticated_payment', via: 'pay'
   end
   authenticated do
     root :to => 'main#authenticated_home'
+    get '/pay/:project_id', to: 'payments#index', via: 'pay'
   end
 
 end

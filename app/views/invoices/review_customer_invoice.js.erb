@@ -1,0 +1,8 @@
+<% if @error_msgs.empty? %>
+$("#modal_target").html('<%= j render'invoices/review_invoice_customer', invoice: @invoice, estimate: @estimate, customer:@customer, invoice_note:@invoice_note, display_payments: @display_payments, payment_request_amount:@request_amount, customer_email:@customer_email, invitation:@invitation %>');
+<% else %>
+  <% @error_msgs.each do |error| %>
+    toastr.error('<%= error %>');
+  <% end %>
+  $("#modal_target").html('<%= j render'invoices/invoice_select_customer', invoice: @invoice, estimate: @estimate %>');
+<% end %>

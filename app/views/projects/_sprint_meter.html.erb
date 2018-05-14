@@ -1,11 +1,15 @@
 <script>
   function open_task_action(task_id) {
       var open_task = $('.open_task_action');
+      var this_task = $('#task_' + task_id);
+
+      if(this_task != open_task) {
+          this_task.addClass('open_task_action');
+          this_task.show('slide');
+      }
+
       open_task.removeClass('open_task_action');
       open_task.hide('slide');
-      var this_task = $('#task_' + task_id);
-      this_task.addClass('open_task_action');
-      this_task.show('slide');
 
       return false;
   }

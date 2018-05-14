@@ -6,7 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>JewelerCRM -  Print Bill</title>
+  <title>JewelerCRM - Print Bill</title>
 
   <%= csrf_meta_tags %>
 
@@ -59,11 +59,43 @@
 
   <% end %>
 
+  <script type="text/css">
+    body {
+      background: rgb(204,204,204);
+    }
+    .page-container {
+      background: white;
+      width: 21cm;
+      height: 29.7cm;
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 0.5cm;
+      box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+            margin: 0;
+            box-shadow: 0;
+    }
+    @media print {
+    div.a4 {
+
+      }
+    }
+
+
+
+  </script>
+
 </head>
 
-<body id="body">
+<body class="page-body boxed-container" id="body">
+<div class="page-container">
+  <div class="panel">
+    <div class="panel-body">
       <%= yield %>
+    </div>
+  </div>
+</div>
 </body>
+
 </html>
 
 <%#= console %>

@@ -1,0 +1,41 @@
+<div class="well">
+  <% if invitation %>
+    <% if estimate %>
+      <strong>Estimate Sent!</strong>
+      <h6>Project estimate and Jeweler project invitation sent.</h6>
+    <% else %>
+      <strong>Invoice Sent!</strong>
+      <h6>Project invoice and Jeweler project invitation sent.</h6>
+    <% end %>
+  <% else %>
+    <% if estimate %>
+      <strong>Estimate Sent!</strong>
+      <h6>Estimate sent.</h6>
+    <% else %>
+      <strong>Invoice Sent!</strong>
+      <h6>Invoice Sent</h6>
+    <% end %>
+  <% end %>
+  <% if payment_request_amount %>
+    <p>
+      <strong>Payment Request Amount: </strong><%= payment_request_amount %>
+    </p>
+  <% end %>
+  <% if invoice_note %>
+    <p>
+      <strong>Invoice Note: </strong><%= invoice_note %>
+    </p>
+  <% end %>
+</div>
+
+<%= render 'invoices/generate_printable_invoice',
+           invoice: invoice,
+           estimate: estimate,
+           display_send_btn: false,
+           display_pay_btn: true,
+           display_print_btn: false,
+           customer: @customer,
+           customer_email: @customer_email,
+           payment_request_amount: @request_amount,
+           invoice_note: @invoice_note
+%>

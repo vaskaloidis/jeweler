@@ -24,6 +24,7 @@ class ProjectCustomersController < ApplicationController
 
       if User.where(email: email).empty?
         logger.debug("User does not exist, (sending an invitation email): " + email)
+        # TODO: Implement Mailer with delayed job
         # UserInviteMailer.with(email: email, project: project.id).invite_user.deliver_later
         UserInviteMailer.with(email: email, project: project.id).invite_user.deliver_now
         # UserInviteMailer.invite_user(email, project.id).deliver

@@ -2,6 +2,23 @@
 /*
  *= require font-awesome
  */
+.jeweler-invoice-footer-url {
+    float: right;
+}
+.jeweler-invoice-logo > span {
+    color: #a0a0a0;
+    display: block;
+    font-size:.8em;
+}
+.jeweler-invoice-logo > img {
+    width:250px;
+    height:auto;
+}
+hr.invoince-review-split {
+    margin-top: 4px;
+    margin-bottom:4px;
+    color: #2a2a2a;
+}
 .invoices-sprint-tab {
  padding: 7px;
 }

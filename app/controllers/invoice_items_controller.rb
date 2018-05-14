@@ -180,8 +180,7 @@ class InvoiceItemsController < ApplicationController
 
       if @invoice_item.update(invoice_item_params)
 
-        # TODO: Figure out why we cannot create this event note
-        # Note.create_event(@task.invoice.project, 'task_updated', 'Updated: ' + @task.description)
+        # Note.create_event(@task.invoice.project, 'task_updated', 'Updated: ' + @task.description) # TODO: Create an event note here
 
         if @invoice_item.invalid?
           @invoice_item.errors.full_messages.each do |error|
@@ -239,7 +238,7 @@ class InvoiceItemsController < ApplicationController
   end
 
   def invoice_item_params
-    params.require(:invoice_item).permit(:invoice_id, :description, :hours, :deleted, :position, :planned_hours, :rate, :complete,)
+    params.require(:invoice_item).permit(:invoice_id, :invoice, :description, :hours, :deleted, :position, :planned_hours, :rate, :complete,)
   end
 
 end

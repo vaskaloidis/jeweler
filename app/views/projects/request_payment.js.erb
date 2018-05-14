@@ -1,4 +1,3 @@
-
 <% if @invoice.payment_due %>
   toastr.success('Payment Requested.');
 
@@ -6,6 +5,9 @@
   <%= render 'layouts/re-render_notifications', project:@invoice.project %>
   <%= render 'payments/re-render_payments_panel', project: @invoice.project, user: @user %>
   <%= render 'notes/re-render_timeline', notes: @invoice.project.sprint_notes, project: @invoice.project %>
+
+  $("#modal_target").html('<%= j render'invoices/invoice_select_customer', invoice: @invoice, estimate: false %>');
+  <%= render 'layouts/render_modal', title: 'Invoice' %>
 
 <% else %>
   toastr.error('You must report hours to request payment');

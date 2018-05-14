@@ -1,6 +1,21 @@
 #JewlerCRM
 A CRM for Programmers
 
+### Production Testing Locally
+```bash
+
+  r db:environment:set RAILS_ENV=production
+  DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production r db:reset && RAILS_ENV=production r s
+  RAILS_ENV=production r s
+```
+
+Then we change it back to dev env
+
+```bash
+  rails db:environment:set RAILS_ENV=development
+  RAILS_ENV=development r db:reset
+```
+
 ## Tasks
 - Implement GitHub Gem 
   - Load issues, 

@@ -12,66 +12,66 @@ Discussion.delete_all
 # Seed Tables
 
 # My User
-  u = User.new
-  u.email = 'vas.kaloidis@gmail.com'
-  u.password = 'password'
-  u.password_confirmation = 'password'
-  u.company = 'Blue Helmet Software'
-  u.first_name = 'Vas'
-  u.last_name = 'Kaloidis'
-  u.website_url = 'http://vkaloidis.herokuapp.com'
-  u.bio = 'A Java and Ruby on Rails developer, trying to rule the world.'
-  u.tagline = 'Ruby on Rails Developer'
-  u.location = 'Woodbury, CT'
-  u.image = Rails.root.join('app/assets/images/seeds/athf.jpg').open
-  u.confirm
-  u.save
+u = User.new
+u.email = 'vas.kaloidis@gmail.com'
+u.password = 'password'
+u.password_confirmation = 'password'
+u.company = 'Blue Helmet Software'
+u.first_name = 'Vas'
+u.last_name = 'Kaloidis'
+u.website_url = 'http://vkaloidis.herokuapp.com'
+u.bio = 'A Java and Ruby on Rails developer, trying to rule the world.'
+u.tagline = 'Ruby on Rails Developer'
+u.location = 'Woodbury, CT'
+u.image = Rails.root.join('app/assets/images/seeds/athf.jpg').open
+u.confirm
+u.save
 
 # 3 Generated Customers
-  c1 = User.new
-  c1.email = Faker::Internet.email
-  pass = Faker::Internet.password
-  c1.password = pass
-  c1.password_confirmation = pass
-  c1.company = 'Red Tail Software'
-  c1.first_name = Faker::Name.first_name
-  c1.last_name = Faker::Name.last_name
-  c1.website_url = Faker::Internet.url
-  c1.tagline = 'A Robot User'
-  c1.bio = Faker::ChuckNorris.fact
-  c1.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
-  c1.confirm
-  c1.save
+c1 = User.new
+c1.email = Faker::Internet.email
+pass = Faker::Internet.password
+c1.password = pass
+c1.password_confirmation = pass
+c1.company = 'Red Tail Software'
+c1.first_name = Faker::Name.first_name
+c1.last_name = Faker::Name.last_name
+c1.website_url = Faker::Internet.url
+c1.tagline = 'A Robot User'
+c1.bio = Faker::ChuckNorris.fact
+c1.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
+c1.confirm
+c1.save
 
-  c2 = User.new
-  c2.email = Faker::Internet.email
-  pass = Faker::Internet.password
-  c2.password = pass
-  c2.password_confirmation = pass
-  c2.company = 'Jim Bob Software Corporation'
-  c2.first_name = Faker::Name.first_name
-  c2.last_name = Faker::Name.last_name
-  c2.website_url = Faker::Internet.url
-  c2.tagline = 'Some User Tagline'
-  c2.bio = Faker::ChuckNorris.fact
-  c2.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
-  c2.confirm
-  c2.save
+c2 = User.new
+c2.email = Faker::Internet.email
+pass = Faker::Internet.password
+c2.password = pass
+c2.password_confirmation = pass
+c2.company = 'Jim Bob Software Corporation'
+c2.first_name = Faker::Name.first_name
+c2.last_name = Faker::Name.last_name
+c2.website_url = Faker::Internet.url
+c2.tagline = 'Some User Tagline'
+c2.bio = Faker::ChuckNorris.fact
+c2.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
+c2.confirm
+c2.save
 
-  c3 = User.new
-  c3.email = Faker::Internet.email
-  pass = Faker::Internet.password
-  c3.password = pass
-  c3.password_confirmation = pass
-  c3.company = 'Google Software Company'
-  c3.first_name = Faker::Name.first_name
-  c3.last_name = Faker::Name.last_name
-  c3.website_url = Faker::Internet.url
-  c3.tagline = 'I am Awesome'
-  c3.bio = Faker::ChuckNorris.fact
-  c3.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
-  c3.confirm
-  c3.save
+c3 = User.new
+c3.email = Faker::Internet.email
+pass = Faker::Internet.password
+c3.password = pass
+c3.password_confirmation = pass
+c3.company = 'Google Software Company'
+c3.first_name = Faker::Name.first_name
+c3.last_name = Faker::Name.last_name
+c3.website_url = Faker::Internet.url
+c3.tagline = 'I am Awesome'
+c3.bio = Faker::ChuckNorris.fact
+c3.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
+c3.confirm
+c3.save
 
 # pi = ProductImage.create!(:product => product)
 # pi.image.store!(File.open(File.join(Rails.root, 'test.jpg')))
@@ -79,100 +79,60 @@ Discussion.delete_all
 # product.save!
 
 # Owner Project
-  p = Project.new
-  p.name = 'Blue Helmet Software Website'
-  p.owner = u
-  p.language = 'Ruby on Rails'
-  p.demo_url = 'http://bluehelmet.herokuapp.com'
-  p.prod_url = 'http://bluehelmet.herokuapp.com'
-  p.github_url = 'https://github.com/vaskaloidis/jewlercrm'
-  p.description = 'A website for the Blue Helmet Software Company, written in Ruby on Rails, hosted on Heroku'
-  p.sprint_total = 8
-  p.sprint_current = 1
-  p.image = Rails.root.join('app/assets/images/seeds/bluehelmet.png').open
-  p.save
+p = Project.new
+p.name = 'Blue Helmet Software Website'
+p.owner = u
+p.language = 'Ruby on Rails'
+p.demo_url = 'http://bluehelmet.herokuapp.com'
+p.prod_url = 'http://bluehelmet.herokuapp.com'
+p.github_url = 'https://github.com/vaskaloidis/jewlercrm'
+p.description = 'A website for the Blue Helmet Software Company, written in Ruby on Rails, hosted on Heroku'
+p.sprint_total = 8
+p.sprint_current = 1
+p.image = Rails.root.join('app/assets/images/seeds/bluehelmet.png').open
+p.save
 
 
 # Project Customers
-  pc = ProjectCustomer.new
-  pc.user = c1
-  pc.project = p
-  pc.save
-  pc = ProjectCustomer.new
-  pc.user = c2
-  pc.project = p
-  pc.save
-  pc = ProjectCustomer.new
-  pc.user = c3
-  pc.project = p
-  pc.save
+pc = ProjectCustomer.new
+pc.user = c1
+pc.project = p
+pc.save
+pc = ProjectCustomer.new
+pc.user = c2
+pc.project = p
+pc.save
+pc = ProjectCustomer.new
+pc.user = c3
+pc.project = p
+pc.save
 
 # Invoice
-  sprint1 = Invoice.create(sprint: 1, description: 'Get the template purchased. Plan the web application design. Build the relational database.
+sprint1 = Invoice.create(sprint: 1, description: 'Get the template purchased. Plan the web application design. Build the relational database.
     Setup the code plumbing.', project: p)
-    InvoiceItem.create(invoice: sprint1, description: 'Research and Purchase the template.', planned_hours: rand(0..8), hours: 8, rate: 35)
-    InvoiceItem.create(invoice: sprint1, description: 'Design the web application.', planned_hours: rand(0..4), hours: 4, rate: 35)
-    InvoiceItem.create(invoice: sprint1, description: 'Design the relational database.', planned_hours: rand(0..5), hours: 5, rate: 35)
-    InvoiceItem.create(invoice: sprint1, description: 'Setup the plumbing for the rails project, after generating it.', planned_hours: rand(0..10), hours: 10, rate: 35)
-    Payment.create(invoice: sprint1, amount: (sprint1.sprint_cost.to_d / 2.0), payment_type: 'venmo', user: c1)
-    Payment.create(invoice: sprint1, amount: (sprint1.sprint_cost.to_d / 2.0), payment_type: 'venmo', user: c1)
+InvoiceItem.create(position: 0, invoice: sprint1, description: 'Research and Purchase the template.', planned_hours: rand(0..8), hours: 8, rate: 35)
+InvoiceItem.create(position: 1, invoice: sprint1, description: 'Design the web application.', planned_hours: rand(0..4), hours: 4, rate: 35)
+InvoiceItem.create(position: 2, invoice: sprint1, description: 'Design the relational database.', planned_hours: rand(0..5), hours: 5, rate: 35)
+InvoiceItem.create(position: 3, invoice: sprint1, description: 'Setup the plumbing for the rails project, after generating it.', planned_hours: rand(0..10), hours: 10, rate: 35)
 
-  sprint2 = Invoice.create(sprint: 2, description: 'Build the SASS system, and implement the Bootstrap template into Rails. Design the Gem configuration and
+sprint2 = Invoice.create(sprint: 2, description: 'Build the SASS system, and implement the Bootstrap template into Rails. Design the Gem configuration and
   build Gemfile..', project: p)
-    InvoiceItem.create(invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate:  35)
-    InvoiceItem.create(invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
-    InvoiceItem.create(invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
-    InvoiceItem.create(invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
+InvoiceItem.create(position: 0, invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+InvoiceItem.create(position: 1, invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+InvoiceItem.create(position: 2, invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+InvoiceItem.create(position: 3, invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 
-  sprint3 = Invoice.create(sprint: 3, description: 'Scaffold the database and build the relational data structure.', project: p)
-    InvoiceItem.create(invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate:  35)
-    InvoiceItem.create(invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
-    InvoiceItem.create(invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
-    InvoiceItem.create(invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..10), rate: 35)
+sprint3 = Invoice.create(sprint: 3, description: 'Scaffold the database and build the relational data structure.', project: p)
+InvoiceItem.create(position: 0, invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+InvoiceItem.create(position: 1, invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+InvoiceItem.create(position: 2, invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+InvoiceItem.create(position: 3, invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 
-  sprint4 = Invoice.create(sprint: 4, description: 'Implement the design into the project scaffold system.', project: p)
-    InvoiceItem.create(invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate:  35)
-    InvoiceItem.create(invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..5), rate: 35)
-    InvoiceItem.create(invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..5), rate: 35)
-    InvoiceItem.create(invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours:  rand(0..5), rate: 35)
-
-# Project Notes + Discussion
-  n = Note.new
-  n.note_type = 'project_update'
-  n.content = 'Project development is going well. The User interface portion of development has been started
-  because the backend was completed successfully.'
-  n.author = c1
-  n.project = p
-  n.save
-  Discussion.create(note: n, user: c1, content: Faker::ChuckNorris.fact)
-  Discussion.create(note: n, user: c2, content: Faker::ChuckNorris.fact)
-  Discussion.create(note: n, user: u, content: Faker::ChuckNorris.fact)
-  Discussion.create(note: n, user: c1, content: Faker::ChuckNorris.fact)
-  Discussion.create(note: n, user: c2, content: Faker::ChuckNorris.fact)
-
-  n = Note.new
-  n.note_type = 'note'
-  n.content = 'We had an issues with the frontend UI so we are switching Javascript frameworks to VueJS'
-  n.author = c1
-  n.project = p
-  n.save
-  Discussion.create(note: n, user: c3, content: Faker::ChuckNorris.fact)
-  Discussion.create(note: n, user: u, content: Faker::ChuckNorris.fact)
-  Discussion.create(note: n, user: c1, content: Faker::ChuckNorris.fact)
-
-  n = Note.new
-  n.note_type = 'demo'
-  n.content = 'http://bluehelmet.herokuapp.com'
-  n.author = c1
-  n.project = p
-  # f = Screencap::Fetcher.new(n.content)
-  # screenshot = f.fetch
-  # u.image = screenshot
-  # u.image = Rails.root.join('app/assets/images/seeds/screenshot.png').open
-  n.save
-  Discussion.create(note: n, user: c2, content: Faker::ChuckNorris.fact)
-  Discussion.create(note: n, user: u, content: Faker::ChuckNorris.fact)
-  Discussion.create(note: n, user: c1, content: Faker::ChuckNorris.fact)
+sprint4 = Invoice.create(sprint: 4, description: 'Implement the design into the project scaffold system.', project: p)
+InvoiceItem.create(position: 0, invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+InvoiceItem.create(position: 1, invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+InvoiceItem.create(position: 2, invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+InvoiceItem.create(position: 3, invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
 
 # Customer Projects
 p = Project.new

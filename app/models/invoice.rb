@@ -10,6 +10,22 @@ class Invoice < ApplicationRecord
 
   validates :sprint, presence: true
 
+  def closed?
+    if self.open
+      return false
+    else
+      return true
+    end
+  end
+
+  def open?
+    if self.open
+      return true
+    else
+      return false
+    end
+  end
+
   def max_position_int
     max_pos = self.invoice_items.maximum(:position)
     logger.debug("Max position: " + max_pos.to_s)
