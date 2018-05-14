@@ -26,82 +26,82 @@ module ApplicationHelper
 
   def self.note_event_action(note)
     case note.note_type
-      when 'commit'
-        'Committed Code'
-      when 'event'
-        case note.event_type
-          when 'task_created'
-            return 'Created a Task'
-          when 'task_updated'
-            return 'Updated a Task'
-          when 'task_deleted'
-            return 'Deleted a Task'
-          when 'sprint_opened'
-            return 'Opened a Sprint'
-          when 'sprint_closed'
-            return 'Closed a Sprint'
-          when 'hours_reported'
-            return 'Reported Hours'
-          when 'task_completed'
-            return 'Completed a Task'
-          when 'sprint_completed'
-            return 'Completed a Sprint'
-          when 'payment_request_cancelled'
-            return 'Cancelled a Payment Request'
-          when 'current_task_changed'
-            return 'Changed Current Task'
-          when 'current_sprint_changed'
-            return 'Changed the Current Sprint'
-          else
-            return ''
-        end
-      when 'project_update'
-        return 'Posted a Project Update'
-      when 'payment_request'
-        return 'Requested a Payment'
-      when 'payment'
-        'Made a Payment'
-      when 'note'
-        return 'Posted a Note'
-      when 'demo'
-        return 'Posted a Demo of ' + note.content
+    when 'commit'
+      'Committed Code'
+    when 'event'
+      case note.event_type
+      when 'task_created'
+        return 'Created a Task'
+      when 'task_updated'
+        return 'Updated a Task'
+      when 'task_deleted'
+        return 'Deleted a Task'
+      when 'sprint_opened'
+        return 'Opened a Sprint'
+      when 'sprint_closed'
+        return 'Closed a Sprint'
+      when 'hours_reported'
+        return 'Reported Hours'
+      when 'task_completed'
+        return 'Completed a Task'
+      when 'sprint_completed'
+        return 'Completed a Sprint'
+      when 'payment_request_cancelled'
+        return 'Cancelled a Payment Request'
+      when 'current_task_changed'
+        return 'Changed Current Task'
+      when 'current_sprint_changed'
+        return 'Changed the Current Sprint'
       else
         return ''
+      end
+    when 'project_update'
+      return 'Posted a Project Update'
+    when 'payment_request'
+      return 'Requested a Payment'
+    when 'payment'
+      'Made a Payment'
+    when 'note'
+      return 'Posted a Note'
+    when 'demo'
+      return 'Posted a Demo of ' + note.content
+    else
+      return ''
     end
   end
 
   def self.note_icon_header_section(note_type)
     case note_type
-      when 'project_update'
-        return '<div class="cbp_tmicon timeline-bg-warning">
+    when 'project_update'
+      return '<div class="cbp_tmicon timeline-bg-warning">
                   <i class="far fa-clock"></i>
                 </div>'
-      when 'event'
-        return '<div class="cbp_tmicon timeline-bg-info">
+    when 'event'
+      return '<div class="cbp_tmicon timeline-bg-info">
               <i class="far fa-clock"></i>
             </div>'
-      when 'note'
-        return '<div class="cbp_tmicon timeline-bg-success">
+    when 'note'
+      return '<div class="cbp_tmicon timeline-bg-success">
                   <i class="fas fa-sticky-note"></i>
                 </div>'
-      when 'demo'
-        return '<div class="cbp_tmicon timeline-bg-red">
+    when 'demo'
+      return '<div class="cbp_tmicon timeline-bg-red">
                   <i class="fa-binoculars"></i>
                 </div>'
-      when 'payment'
-        return ' <div class="cbp_tmicon timeline-bg-success">
+    when 'payment'
+      return ' <div class="cbp_tmicon timeline-bg-success">
                   <i class="fas fa-dollar-sign"></i>
                 </div>'
-      when 'payment_request'
-        return '<div class="cbp_tmicon timeline-bg-success">
+    when 'payment_request'
+      return '<div class="cbp_tmicon timeline-bg-success">
                   <i style="color:white !important" class="fas fa-hand-holding-usd white-icon"></i>
                 </div>'
-      when 'commit'
-        return '<div class="cbp_tmicon timeline-bg-danger">
+    when 'commit'
+      return '<div class="cbp_tmicon timeline-bg-danger">
                   <i class="fas fa-code-branch"></i>
                 </div>'
-      else
-        return '<div class="cbp_tmicon timeline-bg-success">
+    else
+      return '<div class="cbp_tmicon timeline-bg-success">
                   <i class="fas fa-sticky-note"></i>
                 </div>'
     end
@@ -109,43 +109,43 @@ module ApplicationHelper
 
   def self.note_icon_color(note_type)
     case note_type
-      when 'project_update'
-        return 'warning'
-      when 'event'
-        return 'info'
-      when 'note'
-        return 'success'
-      when 'demo'
-        return 'danger'
-      when 'payment'
-        return 'success'
-      when 'payment_request'
-        return 'success'
-      when 'commit'
-        return 'danger'
-      else
-        return 'success'
+    when 'project_update'
+      return 'warning'
+    when 'event'
+      return 'info'
+    when 'note'
+      return 'success'
+    when 'demo'
+      return 'danger'
+    when 'payment'
+      return 'success'
+    when 'payment_request'
+      return 'success'
+    when 'commit'
+      return 'danger'
+    else
+      return 'success'
     end
   end
 
   def self.note_icon(note_type)
     case note_type
-      when 'project_update'
-        return '<i class="far fa-clock"></i>'
-      when 'event'
-        return '<i class="far fa-clock"></i>'
-      when 'note'
-        return '<i class="fas fa-sticky-note"></i>'
-      when 'demo'
-        return '<i class="fa-binoculars"></i>'
-      when 'payment'
-        return '<i class="fas fa-dollar-sign"></i>'
-      when 'payment_request'
-        return '<i style="color:white !important" class="fas fa-hand-holding-usd white-icon"></i>'
-      when 'commit'
-        return '<i class="fas fa-code-branch"></i>'
-      else
-        return '<i class="fas fa-sticky-note"></i>'
+    when 'project_update'
+      return '<i class="far fa-clock"></i>'
+    when 'event'
+      return '<i class="far fa-clock"></i>'
+    when 'note'
+      return '<i class="fas fa-sticky-note"></i>'
+    when 'demo'
+      return '<i class="fa-binoculars"></i>'
+    when 'payment'
+      return '<i class="fas fa-dollar-sign"></i>'
+    when 'payment_request'
+      return '<i style="color:white !important" class="fas fa-hand-holding-usd white-icon"></i>'
+    when 'commit'
+      return '<i class="fas fa-code-branch"></i>'
+    else
+      return '<i class="fas fa-sticky-note"></i>'
     end
 
   end
@@ -249,11 +249,15 @@ module ApplicationHelper
   #       figure out why it was not working
   #       in another helper last time
 
-  def self.build_languages_dropdown
+  def self.build_languages_dropdown(selected)
     cat = self.dropdown_categories
     string = "<select class='form-control' name='project[language]' id='project_language' >"
     cat.each do |c|
-      string = string + "<option value='" + c + "'>" + self.category_pretty(c) + "</option>"
+      if c == selected
+        string = string + "<option selected value='" + c + "'>" + self.category_pretty(c) + "</option>"
+      else
+        string = string + "<option value='" + c + "'>" + self.category_pretty(c) + "</option>"
+      end
     end
     string = string + "</select>"
     return string
@@ -262,99 +266,99 @@ module ApplicationHelper
   def self.build_language_icon(category)
     devicon = ''
     case category.downcase
-      when "heroku"
-        devicon = 'devicon-heroku-plain-wordmark colored'
-      when "go"
-        devicon = 'devicon-go-line colored'
-      when "github"
-        devicon = 'devicon-github-plain-wordmark colored'
-      when "docker"
-        devicon = 'devicon-docker-plain-wordmark colored'
-      when "css"
-        devicon = 'devicon-css3-plain colored'
-      when "apache"
-        devicon = 'devicon-apache-plain-wordmark colored'
-      when "html"
-        devicon = 'devicon-html5-plain-wordmark colored'
-      when "bootstrap"
-        devicon = 'devicon-bootstrap-plain-wordmark colored'
-      when "java ee"
-      when "javafx"
-      when "java"
-        devicon = 'devicon-java-plain-wordmark colored'
-      when "jquery"
-        devicon = 'devicon-jquery-plain-wordmark colored'
-      when "mips"
-      when "c++"
-        devicon = 'devicon-cplusplus-plain colored'
-      when "laravel"
-        devicon = 'devicon-laravel-plain-wordmark colored'
-      when "linux"
-        devicon = 'devicon-linux-plain colored'
-      when "opengl"
-      when "sml"
-      when "javascript"
-        devicon = 'devicon-javascript-plain colored'
-      when "mongo db"
-        devicon = 'devicon-mongodb-plain-wordmark colored'
-      when "c"
-        devicon = 'devicon-c-line-wordmark colored'
-      when "yacc"
-      when "circuit"
-      when "php"
-        devicon = 'devicon-php-plain colored'
-      when "mysql"
-        devicon = 'devicon-mysql-plain-wordmark colored'
-      when "node js"
-        devicon = 'devicon-nodejs-plain colored'
-      when "photoshop"
-        devicon = 'devicon-photoshop-line colored'
-      when "rails"
-        devicon = 'devicon-rails-plain-wordmark colored'
-      when "postgres"
-        devicon = 'devicon-postgresql-plain-wordmark colored'
-      when "ruby"
-        devicon = 'devicon-ruby-plain-wordmark colored'
-      when "redis"
-        devicon = 'devicon-redis-plain-wordmark colored'
-      when "mac osx"
-        devicon = 'devicon-apple-original colored'
-      when "sass"
-        devicon = 'devicon-sass-original colored'
-      when "ubuntu"
-        devicon = 'devicon-ubuntu-plain-wordmark colored'
-      when "bower"
-        devicon = 'devicon-bower-plain-wordmark colored'
-      when "wordpress"
-        devicon = 'devicon-Bluehelmet-plain-wordmark colored'
-      when "css"
-        # devicon = 'devicon-css3-plain-wordmark colored'
-      when "hosted"
-        devicon = 'devicon-docker-plain-wordmark colored'
-      when "python"
-        devicon = 'devicon-python-plain-wordmark colored'
-      when "maven"
-      when "maven mojo"
-      when "composer"
-      when "mips"
-      when "gulp"
-        devicon = 'devicon-gulp-plain colored'
-      when "grunt"
-        devicon = 'devicon-grunt-line-wordmark colored'
-      when "phpstorm"
-        devicon = 'devicon-phpstorm-plain-wordmark colored'
-      when "react"
-        devicon = 'devicon-react-original-wordmark colored'
-      when "swift"
-        devicon = 'devicon-swift-plain-wordmark colored'
-      when "wordpress"
-        devicon = 'devicon-wordpress-plain-wordmark colored'
-      when "tomcat"
-        devicon = 'devicon-tomcat-line-wordmark colored'
-      when "redis"
-        devicon = 'devicon-redis-plain-wordmark colored'
-      when "travis"
-        devicon = 'devicon-travis-plain-wordmark colored'
+    when "heroku"
+      devicon = 'devicon-heroku-plain-wordmark colored'
+    when "go"
+      devicon = 'devicon-go-line colored'
+    when "github"
+      devicon = 'devicon-github-plain-wordmark colored'
+    when "docker"
+      devicon = 'devicon-docker-plain-wordmark colored'
+    when "css"
+      devicon = 'devicon-css3-plain colored'
+    when "apache"
+      devicon = 'devicon-apache-plain-wordmark colored'
+    when "html"
+      devicon = 'devicon-html5-plain-wordmark colored'
+    when "bootstrap"
+      devicon = 'devicon-bootstrap-plain-wordmark colored'
+    when "java ee"
+    when "javafx"
+    when "java"
+      devicon = 'devicon-java-plain-wordmark colored'
+    when "jquery"
+      devicon = 'devicon-jquery-plain-wordmark colored'
+    when "mips"
+    when "c++"
+      devicon = 'devicon-cplusplus-plain colored'
+    when "laravel"
+      devicon = 'devicon-laravel-plain-wordmark colored'
+    when "linux"
+      devicon = 'devicon-linux-plain colored'
+    when "opengl"
+    when "sml"
+    when "javascript"
+      devicon = 'devicon-javascript-plain colored'
+    when "mongo db"
+      devicon = 'devicon-mongodb-plain-wordmark colored'
+    when "c"
+      devicon = 'devicon-c-line-wordmark colored'
+    when "yacc"
+    when "circuit"
+    when "php"
+      devicon = 'devicon-php-plain colored'
+    when "mysql"
+      devicon = 'devicon-mysql-plain-wordmark colored'
+    when "node js"
+      devicon = 'devicon-nodejs-plain colored'
+    when "photoshop"
+      devicon = 'devicon-photoshop-line colored'
+    when "rails"
+      devicon = 'devicon-rails-plain-wordmark colored'
+    when "postgres"
+      devicon = 'devicon-postgresql-plain-wordmark colored'
+    when "ruby"
+      devicon = 'devicon-ruby-plain-wordmark colored'
+    when "redis"
+      devicon = 'devicon-redis-plain-wordmark colored'
+    when "mac osx"
+      devicon = 'devicon-apple-original colored'
+    when "sass"
+      devicon = 'devicon-sass-original colored'
+    when "ubuntu"
+      devicon = 'devicon-ubuntu-plain-wordmark colored'
+    when "bower"
+      devicon = 'devicon-bower-plain-wordmark colored'
+    when "wordpress"
+      devicon = 'devicon-Bluehelmet-plain-wordmark colored'
+    when "css"
+      # devicon = 'devicon-css3-plain-wordmark colored'
+    when "hosted"
+      devicon = 'devicon-docker-plain-wordmark colored'
+    when "python"
+      devicon = 'devicon-python-plain-wordmark colored'
+    when "maven"
+    when "maven mojo"
+    when "composer"
+    when "mips"
+    when "gulp"
+      devicon = 'devicon-gulp-plain colored'
+    when "grunt"
+      devicon = 'devicon-grunt-line-wordmark colored'
+    when "phpstorm"
+      devicon = 'devicon-phpstorm-plain-wordmark colored'
+    when "react"
+      devicon = 'devicon-react-original-wordmark colored'
+    when "swift"
+      devicon = 'devicon-swift-plain-wordmark colored'
+    when "wordpress"
+      devicon = 'devicon-wordpress-plain-wordmark colored'
+    when "tomcat"
+      devicon = 'devicon-tomcat-line-wordmark colored'
+    when "redis"
+      devicon = 'devicon-redis-plain-wordmark colored'
+    when "travis"
+      devicon = 'devicon-travis-plain-wordmark colored'
     end
 
     if !devicon.empty?

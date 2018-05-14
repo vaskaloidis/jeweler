@@ -46,7 +46,7 @@
             <%#= form.label :language, class: 'control-label' %>
             <%#= form.text_field :language, class: 'form-control' %>
             <label class="control-label" for="project_language">Language</label>
-            <%= ApplicationHelper.build_languages_dropdown.html_safe %>
+            <%= ApplicationHelper.build_languages_dropdown(project.language).html_safe %>
           </div>
         </div>
       </div>
