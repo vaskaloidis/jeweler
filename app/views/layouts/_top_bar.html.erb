@@ -6,8 +6,8 @@
     <!-- Navbar Brand -->
     <div class="navbar-brand">
       <a href="<%= root_url %>" class="logo">
-        <img src="<%= path_to_image 'jeweler-logo-full-white.png' %>" width="200" alt="" class="hidden-xs"/>
-        <img src="<%= path_to_image 'jeweler-logo-mini-small-white.png' %>" width="80" alt="" class="visible-xs"/>
+        <img src="<%= path_to_image 'jeweler-logo-full.png' %>" width="200" alt="" class="hidden-xs"/>
+        <img src="<%= path_to_image 'jeweler-logo-mini.png' %>" width="80" alt="" class="visible-xs"/>
       </a>
       <a href="#" data-toggle="settings-pane" data-animate="true">
         <i class="linecons-cog"></i>
@@ -41,33 +41,27 @@
 
     <div class="navbar-mobile-clear"></div>
 
-
     <ul class="navbar-nav">
       <!-- <li class="opened active"> -->
       <li>
         <a href="<%= root_url %>">
           <i class="fas fa-home"></i>
-          <span style="color:#9987c3" class="title">Home</span>
+          <span class="title">Home</span>
         </a>
       </li>
-    </ul>
-
-    <ul class="nav nav-userinfo navbar-right">
-      <li class="xs-left">
-        <a style="color:#9987c3" href="<%= new_user_registration_path %>">
+      <li>
+        <a href="<%= new_user_registration_path %>">
           <i class="fa-user"></i>
-          Register
+          <span class="title">Register</span>
         </a>
       </li>
-      <li class="xs-left">
-        <a style="color:#9987c3" href="<%= new_user_session_path %>">
+      <li>
+        <a href="<%= new_user_session_path %>">
           <i class="fa-lock"></i>
-          Login
+          <span class="title">Login</span>
         </a>
       </li>
     </ul>
-    <%#= link_to "Sign up", new_user_registration_path, :class => 'navbar-link' %>
-    <%#= link_to "Login", new_user_session_path, :class => 'navbar-link' %>
 
   </div>
 

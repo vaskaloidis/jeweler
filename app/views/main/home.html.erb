@@ -9,29 +9,53 @@
         <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
 
         <div id="logo" style="margin-top:20px; border:0px solid white">
-          <a href="<%= root_url %>" class="standard-logo" data-dark-logo="<%= image_path 'jeweler-logo-full-black.png' %>">
-            <img style="width:175px; height: auto;" src="<%= image_path 'jeweler-logo-full-white.png' %>" alt="Canvas Logo">
+          <a href="<%= root_url %>" class="standard-logo" data-dark-logo="<%= image_path 'jeweler-logo-full.png' %>">
+            <img style="width:auto; height: 40px;" src="<%= image_path 'jeweler-logo-full.png' %>" alt="Canvas Logo">
           </a>
-          <a href="<%= root_url %>" class="retina-logo" data-dark-logo="<%= image_path 'jeweler-logo-full-black.png' %>">
-            <img style="width:175px; height: auto;" src="<%= image_path 'jeweler-logo-full-white.png' %>" alt="Canvas Logo">
+          <a href="<%= root_url %>" class="retina-logo" data-dark-logo="<%= image_path 'jeweler-logo-full.png' %>">
+            <img style="width:auto; height: 40px;" src="<%= image_path 'jeweler-logo-full.png' %>" alt="Canvas Logo">
           </a>
         </div><!-- #logo end -->
 
         <nav id="primary-menu">
 
           <ul>
-            <li class="current"><a href="<%= root_url %>">
-              <div>Home</div>
-            </a></li>
+            <li class="current">
+              <a href="<%= root_url %>">
+                <div>Home</div>
+              </a>
+            </li>
+            <li>
+              <a href="<%= root_url %>">
+                <div>CRM</div>
+              </a>
+            </li>
+            <li>
+              <a href="<%= root_url %>">
+                <div>Invoicing</div>
+              </a>
+            </li>
+            <li>
+              <a href="<%= root_url %>">
+                <div>AGILE</div>
+              </a>
+            </li>
+            <li>
+              <a href="<%= root_url %>">
+                <div>Features</div>
+              </a>
+            </li>
+            <li>
+              <a href="<%= new_user_registration_path %>">
+                <div>Register</div>
+              </a>
+            </li>
+            <li>
+              <a href="<%= new_user_session_path %>">
+                <div>Login</div>
+              </a>
+            </li>
           </ul>
-
-          <div id="top-cart" class="nav-auth-links">
-            <a href="<%= new_user_registration_path %>"><i class="fas fa-user-plus"></i> </a>
-          </div>
-          <div id="top-search">
-            <a href="<%= new_user_session_path %>"><i class="fas fa-user-lock"></i></a>
-          </div>
-
         </nav><!-- #primary-menu end -->
 
       </div>
@@ -529,7 +553,9 @@
         <div class="col_half">
           Copyrights &copy; 2018 All Rights Reserved by Blue Helmet Software Company<br>
           <% #TODO: Write privacy policy / get a Terms of Use %>
-          <div class="copyright-links"><a href="#">Terms of Use</a> <% if false %> / <a href="#">Privacy Policy</a> <% end %></div>
+          <div class="copyright-links"><a href="#">Terms of Use</a>
+            <% if false %> / <a href="#">Privacy Policy</a>
+            <% end %></div>
         </div>
 
         <div class="col_half col_last tright">
@@ -541,38 +567,38 @@
 
             <!-- TODO: Build Social Media Presence -->
             <!--<a href="#" class="social-icon si-small si-borderless si-twitter">-->
-              <!--<i class="icon-twitter"></i>-->
-              <!--<i class="icon-twitter"></i>-->
+            <!--<i class="icon-twitter"></i>-->
+            <!--<i class="icon-twitter"></i>-->
             <!--</a>-->
 
             <!--<a href="#" class="social-icon si-small si-borderless si-gplus">-->
-              <!--<i class="icon-gplus"></i>-->
-              <!--<i class="icon-gplus"></i>-->
+            <!--<i class="icon-gplus"></i>-->
+            <!--<i class="icon-gplus"></i>-->
             <!--</a>-->
 
             <!--<a href="#" class="social-icon si-small si-borderless si-pinterest">-->
-              <!--<i class="icon-pinterest"></i>-->
-              <!--<i class="icon-pinterest"></i>-->
+            <!--<i class="icon-pinterest"></i>-->
+            <!--<i class="icon-pinterest"></i>-->
             <!--</a>-->
 
             <!--<a href="#" class="social-icon si-small si-borderless si-vimeo">-->
-              <!--<i class="icon-vimeo"></i>-->
-              <!--<i class="icon-vimeo"></i>-->
+            <!--<i class="icon-vimeo"></i>-->
+            <!--<i class="icon-vimeo"></i>-->
             <!--</a>-->
 
             <!--<a href="#" class="social-icon si-small si-borderless si-github">-->
-              <!--<i class="icon-github"></i>-->
-              <!--<i class="icon-github"></i>-->
+            <!--<i class="icon-github"></i>-->
+            <!--<i class="icon-github"></i>-->
             <!--</a>-->
 
             <!--<a href="#" class="social-icon si-small si-borderless si-yahoo">-->
-              <!--<i class="icon-yahoo"></i>-->
-              <!--<i class="icon-yahoo"></i>-->
+            <!--<i class="icon-yahoo"></i>-->
+            <!--<i class="icon-yahoo"></i>-->
             <!--</a>-->
 
             <!--<a href="#" class="social-icon si-small si-borderless si-linkedin">-->
-              <!--<i class="icon-linkedin"></i>-->
-              <!--<i class="icon-linkedin"></i>-->
+            <!--<i class="icon-linkedin"></i>-->
+            <!--<i class="icon-linkedin"></i>-->
             <!--</a>-->
           </div>
 

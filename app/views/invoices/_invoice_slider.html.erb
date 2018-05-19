@@ -56,9 +56,6 @@
               <i class="fa-wrench"></i> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-white" role="menu">
-              <li>
-                <a href="<%= invoice_path(invoice) %>">Edit</a>
-              </li>
               <li><%= link_to 'Generate Estimate', generate_invoice_path(invoice.id, 'true'), remote: true %></li>
               <% unless invoice.only_planned? %>
                 <li><%= link_to 'Generate Invoice', generate_invoice_path(invoice.id, 'false'), remote: true %></li>

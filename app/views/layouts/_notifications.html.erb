@@ -1,10 +1,10 @@
 <% if project.is_owner?(current_user) %>
-  <button type="button" class="btn btn-success btn-block text-left">
+  <a href="<%= project_project_customers_path(project.id) %>" class="btn btn-success btn-block text-left">
     Project Owner <i class="fa-check pull-right"></i>
-  </button>
+  </a>
 
   <%= link_to new_project_note_path(project.id), class: 'btn btn-success btn-block text-left', remote: true do %>
-    Create Sprint <%= project.current_sprint.sprint.to_s %> Note<i class="fas fa-sticky-note pull-right"></i>'
+    Create Sprint <%= project.current_sprint.sprint.to_s %> Note<i class="fas fa-sticky-note pull-right"></i>
   <% end %>
 
   <% if project.current_task.nil? %>
@@ -21,8 +21,8 @@
 
   <% unless project.payment_requests.empty? %>
     <div class="alert alert-danger">
-      Payment
-      Requested. <%= link_to '<strong>View Payment Requests</strong>'.html_safe, project_payments_path(project) %>
+      <i class="fas fa-2x fa-dollar-sign pull-right"></i>
+      Payment requested. <%= link_to '<strong>View Payment Requests</strong>'.html_safe, project_payments_path(project) %>
     </div>
   <% end %>
 

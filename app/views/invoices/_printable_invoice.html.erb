@@ -4,53 +4,48 @@
   <div class="invoice-header">
 
     <!-- TODO:Figure this out -->
-    <div style="display: none">
-      <% if estimate %>
-        <h2 class="pull-right">Estimate</h2>
-      <% else %>
-        <h2 class="pull-right">Invoice</h2>
-      <% end %>
-    </div>
-
-    <div style="display: block">
-      <% if invoice.payment_due %>
-        <% if payment_request_amount %>
-          <div class="alert alert-success">
-            <i class="fa-dollar-sign pull-right"></i>
-            A payment of <%= payment_request_amount %> has been requested
-          </div>
-        <% else %>
-          <div class="alert alert-success">
-            <i class="fa-dollar-sign pull-right"></i>
-            Payment Requested
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-
     <% if (defined? display_send_btn and display_send_btn) or (defined? display_print_btn and display_print_btn) or (defined? display_pay_btn and display_pay_btn) %>
       <div class="invoice-options hidden-print">
     <% end %>
 
+    <div class="margin-bottom-20">
+      <% if estimate %>
+        <h2>Estimate</h2>
+      <% else %>
+        <h2>Invoice</h2>
+      <% end %>
+    </div>
+
     <% if defined? display_send_btn %>
       <% if display_send_btn %>
-        <% send_btn = '<i class="fa-envelope-o"></i><span>Send</span>' %>
-        <%= link_to send_btn.html_safe,
-                    generate_customer_invoice_path(invoice.id, 'true'),
-                    remote: true,
-                    class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' %>
+        <% if estimate %>
+          <% send_btn = '<i class="fa-envelope-o"></i><span>Send Estimate</span>' %>
+          <%= link_to send_btn.html_safe,
+                      generate_customer_invoice_path(invoice.id, 'true'),
+                      remote: true,
+                      class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' %>
+        <% else %>
+          <% send_btn = '<i class="fa-envelope-o"></i><span>Send Invoice</span>' %>
+          <%= link_to send_btn.html_safe,
+                      generate_customer_invoice_path(invoice.id, 'false'),
+                      remote: true,
+                      class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' %>
+        <% end %>
       <% end %>
     <% end %>
 
     <% if defined? display_print_btn and display_print_btn %>
-      <% print_btn = '<i class="fa-print"></i><span>Print Estimate</span>' %>
-      <%= link_to print_btn.html_safe,
-                  print_invoice_path(invoice.id, 'true'),
-                  class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
-      <% print_btn = '<i class="fa-print"></i><span>Print Invoice</span>' %>
-      <%= link_to print_btn.html_safe,
-                  print_invoice_path(invoice.id, 'false'),
-                  class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+      <% if estimate %>
+        <% print_btn = '<i class="fa-print"></i><span>Print Estimate</span>' %>
+        <%= link_to print_btn.html_safe,
+                    print_invoice_path(invoice.id, 'true'),
+                    class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+      <% else %>
+        <% print_btn = '<i class="fa-print"></i><span>Print Invoice</span>' %>
+        <%= link_to print_btn.html_safe,
+                    print_invoice_path(invoice.id, 'false'),
+                    class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+      <% end %>
     <% end %>
 
     <% if defined? display_pay_btn and display_pay_btn %>
@@ -79,7 +74,19 @@
 
   <!-- Client and Payment Details -->
   <div class="invoice-details">
-
+    <% if invoice.payment_due %>
+      <% if payment_request_amount %>
+        <div class="alert alert-success">
+          <i class="fa-dollar-sign pull-right"></i>
+          A payment of <%= payment_request_amount.money %> has been requested
+        </div>
+      <% else %>
+        <div class="alert alert-success">
+          <i class="fa-dollar-sign pull-right"></i>
+          Payment Requested
+        </div>
+      <% end %>
+    <% end %>
     <% if !customer.nil? and customer %>
       <div class="invoice-client-info">
         <strong>Client</strong>
@@ -156,13 +163,13 @@
           <% end %>
         </td>
         <td><span class="alert alert-success task-id">#<%= task.task_id %></span><%= task.description %></td>
-        <td class="text-center"><%= task.rate.to_s %>$/hr.</td>
+        <td class="text-center">$<%= task.rate.to_s %>/hr.</td>
         <% if estimate %>
           <td class="text-center hidden-xs"><%= task.planned_hours.to_s %> hrs.</td>
-          <td class="text-center text-primary text-bold">$<%= task.planned_cost.to_s %></td>
+          <td class="text-center text-primary text-bold"><%= task.planned_cost.money %></td>
         <% else %>
           <td class="text-center hidden-xs"><%= task.hours.to_s %> hrs.</td>
-          <td class="text-right text-primary text-bold">$<%= task.total_cost.to_s %></td>
+          <td class="text-right text-primary text-bold"><%= task.total_cost.money %></td>
         <% end %>
 
       </tr>
@@ -201,9 +208,9 @@
 
       <hr/>
       <% if estimate %>
-        <span>Projected Cost: <strong>$<%= invoice.sprint_planned_cost.to_s %></strong></span>
+        <span>Projected Cost: <strong><%= invoice.sprint_planned_cost.money %></strong></span>
       <% else %>
-        <span>Grand Total: <strong>$<%= invoice.cost.to_s %></strong></span>
+        <span>Grand Total: <strong><%= invoice.cost.money %></strong></span>
       <% end %>
     </div>
   </div>
@@ -242,7 +249,7 @@
 
   <div class="jeweler-invoice-logo">
     <span>Generated by Jeweler, a crm for programmers.</span>
-    <%= image_tag 'jeweler-logo-full-white.png' %>
+    <%= image_tag 'jeweler-logo-full.png' %>
   </div>
   <div class="jeweler-invoice-footer-url">
     <span>www.jewelercrm.io</span>

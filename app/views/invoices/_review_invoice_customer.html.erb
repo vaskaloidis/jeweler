@@ -10,14 +10,14 @@
     <% end %>
   <% else %>
     <% if estimate %>
-      <h6>Send estimate to <%= customer_email %>?</h6>
+      <h6>Send estimate to <%= customer.email %>?</h6>
     <% else %>
-      <h6>Send invoice to <%= customer_email %>?</h6>
+      <h6>Send invoice to <%= customer.email %>?</h6>
     <% end %>
   <% end %>
   <% if payment_request_amount %>
     <p>
-      <strong>Payment Request Amount: </strong><%= payment_request_amount %>
+      <strong>Payment Request Amount: </strong><%= payment_request_amount.money %>
     </p>
   <% end %>
   <% if invoice_note %>
@@ -37,6 +37,8 @@
     <%= hidden_field_tag :invoice_id, invoice.id %>
     <%= hidden_field_tag :estimate, estimate.to_s %>
     <%= hidden_field_tag :invitation, invitation.to_s %>
+    <%= hidden_field_tag :invoice_note, invoice_note %>
+    <%= hidden_field_tag :payment_request_amount, payment_request_amount.to_s %>
 
     <%= submit_tag 'Send', class: 'btn btn-success' %>
   <% end %>

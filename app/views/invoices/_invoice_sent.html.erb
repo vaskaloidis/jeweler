@@ -18,7 +18,7 @@
   <% end %>
   <% if payment_request_amount %>
     <p>
-      <strong>Payment Request Amount: </strong><%= payment_request_amount %>
+      <strong>Payment Request Amount: </strong><%= payment_request_amount.money %>
     </p>
   <% end %>
   <% if invoice_note %>
@@ -26,6 +26,7 @@
       <strong>Invoice Note: </strong><%= invoice_note %>
     </p>
   <% end %>
+  <a href="#" onclick="$('#modal').modal('hide')" class="btn btn-success">Close</a>
 </div>
 
 <%= render 'invoices/generate_printable_invoice',

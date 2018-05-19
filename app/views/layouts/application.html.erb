@@ -50,13 +50,6 @@
 
 <body id="body">
 
-<script>
-    window.onload = function () {
-        var body = document.getElementsByTagName("BODY")[0];
-        body.classList.add('page-body');
-    };
-</script>
-
 <% if request.original_url.include?("users/sign_in") %>
   <script>
       window.onload = function () {
@@ -78,38 +71,14 @@
 <% end %>
 
 <div class="page-container">
-  <!-- TODO:Add JS script to check if window size < (Small-pre-defined-size), add class "sidebar-collapsed" to close sidebar by default -->
 
   <% if user_signed_in? %>
     <%= render 'layouts/sidebar' %>
   <% end %>
 
-  <script>
-      function resizeWindow(window_width) {
-          if ((window_width > 1200) && (window_width < 1680)) {
-              console.log('Collapse Sidebar');
-              if (!($('#sidebar').hasClass('collapsed'))) {
-                  $('#sidebar').addClass("collapsed");
-              }
-          }
-          else if ((window_width > 1680)) {
-              console.log('Show Sidebar');
-              if (($('#sidebar').hasClass('collapsed'))) {
-                  $('#sidebar').removeClass("collapsed");
-              }
-          }
-      }
-
-      jQuery(document).ready(function ($) {
-          resizeWindow($(window).width());
-      });
-
-      $(window).on('resize', function () {
-          // resizeWindow( $(window).width());
-      });
-  </script>
-
   <div class="main-content">
+
+    <div class="loader">Loading...</div>
 
     <% if !request.original_url.include?("users/sign_in") %>
       <% if user_signed_in? %>
@@ -121,33 +90,35 @@
         <%= render 'layouts/top_bar' %>
       <% end %>
     <% end %>
+
     <%= yield %>
+
+    <!-- Main Footer -->
+    <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
+    <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
+    <!-- Or class "fixed" to  always fix the footer to the end of page -->
+
+    <footer class="main-footer sticky footer-type-1">
+      <!--    <footer class="main-footer sticky footer-type-1">-->
+      <div class="footer-inner">
+
+        <div class="footer-text">
+          &copy; 2018
+          <strong>JewelerCRM</strong> - <a href="http://bluehelmet.software">Blue Helmet Software</a>
+        </div>
+
+        <div class="go-up">
+          <a href="#" rel="go-top">
+            <i class="fa-angle-up"></i>
+          </a>
+        </div>
+
+      </div>
+    </footer>
+
   </div>
 
 </div>
-
-<!-- Main Footer -->
-<!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
-<!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
-<!-- Or class "fixed" to  always fix the footer to the end of page -->
-<!-- TODO:Fix the footer bug on xs devices, stop hiding it -->
-<footer class="main-footer fixed footer-type-2 hidden-xs">
-
-  <div class="footer-inner">
-
-    <div class="footer-text">
-      &copy; 2018
-      <strong>JewelerCRM</strong> - <a href="http://bluehelmet.software">Blue Helmet Software</a>
-    </div>
-
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fa-angle-up"></i>
-      </a>
-    </div>
-
-  </div>
-</footer>
 
 <%#= render 'layouts/chat_sidebar' %>
 

@@ -40,7 +40,6 @@
 
 <body id="body">
 
-
 <script>
     window.onload = function () {
         var body = document.getElementsByTagName("BODY")[0];
@@ -59,9 +58,9 @@
 
 <%= yield %>
 
-<%= javascript_include_tag "home/jquery.js" %>
-<%= javascript_include_tag "home/plugins.js" %>
-<%= javascript_include_tag "home/functions.js" %>
+<%= javascript_include_tag 'home/jquery.js' %>
+<%= javascript_include_tag 'home/plugins.js' %>
+<%= javascript_include_tag 'home/functions.js' %>
 
 </body>
 </html>

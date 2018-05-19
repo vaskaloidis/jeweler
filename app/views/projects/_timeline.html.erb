@@ -26,40 +26,21 @@
     </sprint>
   <% end %>
   <br>
+  <%
+    if defined? query
+      logger.debug("Timeline Query: " + query)
+    end
+  %>
   <% Note.note_types.each do |type| %>
     <span>
       <% if defined? query %>
-        <% if query.downcase == type %>
-          <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
-        <% else %>
-          <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success', remote: true %>
-        <% end %>
-      <% else %>
-
-          <% if type == 'all' %>
+        <% if ApplicationHelper.name_pretty(query) == ApplicationHelper.name_pretty(type) %>
           <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, type), class: 'btn btn-sm btn-success disabled', remote: true %>
         <% else %>
           <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, type), class: 'btn btn-sm btn-success', remote: true %>
         <% end %>
-
-        <% if false %>
-          <% case type %>
-              <% when 'commit' %>
-                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
-              <% when 'note' %>
-                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
-              <% when 'payment' %>
-                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
-              <% when 'payment_request' %>
-                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
-              <% when 'project_update' %>
-                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
-              <% when 'demo' %>
-                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success disabled', remote: true %>
-              <% else %>
-                <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, ApplicationHelper.uglify(type)), class: 'btn btn-sm btn-success', remote: true %>
-            <% end %>
-          <% end %>
+      <% else %>
+        <%= link_to ApplicationHelper.name_pretty(type), note_query_path(project.id, sprint_query, type), class: 'btn btn-sm btn-success', remote: true %>
       <% end %>
     </span>
   <% end %>

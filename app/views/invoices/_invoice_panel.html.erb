@@ -83,7 +83,7 @@
           </button>
           <ul class="dropdown-menu pull-left dropdown-white" role="menu">
             <li>
-              <a href="<%= invoice_path(invoice) %>">Edit Sprint</a>
+              <a href="#" onclick="$('#invoice_bar_graph').toggle('slide'); return false">Toggle Cost Chart</a>
             </li>
             <% unless invoice.is_current? %>
               <li>
@@ -245,22 +245,25 @@
     <% end %>
 
     <div class="invoice-totals pull-right well well-sm">
+      <span>
+        <strong>Sprint <%= invoice.sprint.to_s %></strong>
+      </span>
       <% if invoice.only_planned? %>
         <span>
           <strong>No Hours Reported</strong>
         </span>
       <% end %>
-      <% if invoice.sprint_cost > invoice.sprint_payments %>
-        <span>
-          <strong>Balance:</strong> -<%= (invoice.sprint_cost - invoice.sprint_payments).money %>
+      <% if invoice.balance > 0 %>
+        <span class="color-red">
+          <strong>Customer Balance:</strong> +<%= invoice.balance.money %>
         </span>
-      <% elsif invoice.sprint_cost == invoice.sprint_payments %>
-        <span>
-          <strong>Balance:</strong> <%= (invoice.sprint_cost - invoice.sprint_payments).money %>
+      <% elsif invoice.balance == 0 %>
+        <span class="color-green">
+         <strong>Customer Balance:</strong> <%= invoice.balance.money %>
         </span>
-      <% elsif invoice.sprint_cost <= invoice.sprint_payments %>
-        <span>
-         <strong>Balance:</strong> +<%= (invoice.sprint_cost - invoice.sprint_payments).money %>
+      <% elsif invoice.balance < 0 %>
+        <span class="color-green">
+         <strong>Customer Balance:</strong> -<%= invoice.balance.money %>
         </span>
       <% end %>
       <span>
