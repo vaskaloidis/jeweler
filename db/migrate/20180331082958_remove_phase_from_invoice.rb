@@ -1,5 +1,5 @@
 class RemovePhaseFromInvoice < ActiveRecord::Migration[5.1]
   def change
-    remove_column :invoices, :phase
+    # remove_column :invoices, :phase
   end
 end
