@@ -13,6 +13,10 @@ module ApplicationHelper
   end
 
   def self.name_pretty(pretty_name)
+    return pretty_name.titleize
+  end
+
+  def self.name_pretty2(pretty_name)
     pretty_name.gsub! '_', ' '
     pretty_name.capitalize!
     return pretty_name
