@@ -20,6 +20,10 @@ Rails.application.configure do
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  config.action_mailer.default_url_options = {:host => "jeweler-staging-server.herokuapp.com"}
+  config.action_mailer.raise_delivery_errors = true
+
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.

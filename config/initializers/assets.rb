@@ -35,7 +35,7 @@ Rails.application.config.assets.precompile += %w( fontawesome.css )
 # Rails.application.config.assets.precompile += %w( less/xenon-components.less )
 # Rails.application.config.assets.precompile += %w( less/xenon-skins.less )
 
-Rails.application.config.assets.precompile += %w( jeweler-logo-full-black.png jeweler-logo-full-white.png )
+Rails.application.config.assets.precompile += %w( jeweler-logo-full.png jeweler-logo-mini.png )
 
 Rails.application.config.assets.precompile += %w( bootstrap.css )
 Rails.application.config.assets.precompile += %w( xenon-core.css )
