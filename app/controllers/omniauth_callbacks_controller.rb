@@ -14,7 +14,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
                               })
     end
 
-    redirect_to root_path, flash: 'You have connected with Stripe succesfully.'
+    redirect_to root_path, notice: 'You have connected with Stripe succesfully.'
 
   end
 
