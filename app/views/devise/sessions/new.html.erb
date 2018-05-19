@@ -4,18 +4,14 @@
 
     <div class="col-sm-6">
 
-      <!-- Errors container -->
-      <div class="errors-container">
-
-
-      </div>
+      <div class="errors-container"></div>
 
         <%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => 'login-form', :role => 'form'}) do |f| %>
           <!--<form method="post" role="form" id="login" class="login-form fade-in-effect">-->
 
             <div class="login-header">
               <a href="<%= root_url %>" class="logo">
-                <img src="<%= image_path 'jeweler-logo-mini-small-white.png' %>" alt="" width="80"/>
+                <img src="<%= image_path 'jeweler-logo-mini.png' %>" alt="" width="80"/>
               </a><br>
               <h3 class="muted">Login</h3>
             </div>
