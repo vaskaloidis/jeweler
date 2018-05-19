@@ -14,10 +14,9 @@ gem 'stripe'
 gem 'omniauth-stripe-connect'
 gem 'pg'
 gem 'puma', '~> 3.11'
-# gem 'github_api'
+gem 'github_api'
 gem 'devise'
 gem 'carrierwave', '~> 1.0'
-gem 'rolify'
 gem 'cancancan', '~> 2.0'
 gem 'json'
 gem 'screencap'
@@ -34,10 +33,12 @@ gem 'yui-compressor'
 gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
+gem 'rollbar'
+gem 'premailer-rails'
+# TODO: Get Bootsnap working again (crashing)
 # gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'bootsnap', require: false
-gem 'rollbar'
-
+# Debugging Memory
 # gem 'rack-mini-profiler'
 # gem 'memory_profiler'
 # gem 'flamegraph'
