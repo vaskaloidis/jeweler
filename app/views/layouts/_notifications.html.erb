@@ -22,7 +22,8 @@
   <% unless project.payment_requests.empty? %>
     <div class="alert alert-danger">
       <i class="fas fa-2x fa-dollar-sign pull-right"></i>
-      Payment requested. <%= link_to '<strong>View Payment Requests</strong>'.html_safe, project_payments_path(project) %>
+      Payment
+      requested. <%= link_to '<strong>View Payment Requests</strong>'.html_safe, project_payments_path(project) %>
     </div>
   <% end %>
 
@@ -40,15 +41,12 @@
       <i class="fab fa-2x fa-github pull-right"></i>
       Please Connect Jewler with GitHub, <%= link_to 'Here', authorize_github_path %>
     </div>
-  <% end %>
-
-  <% unless ApplicationHelper.github_hook_configured?(project) %>
+  <% elsif !ApplicationHelper.github_hook_configured?(project) %>
     <div class="alert alert-danger">
-      <i class="fab fa-github pull-right"></i>
-      You need to add Jewler GitHub Webhook. Add it <%= link_to 'Here', authorize_github_path %>.
+      <i class="fab fa-2x fa-github pull-right"></i>
+      You need to add Jewler GitHub Webhook. Add it <%= link_to 'Here', install_github_webhook_path(project.id), remote: true %>.
     </div>
   <% end %>
-
 
 <% elsif project.is_customer(current_user) %>
 

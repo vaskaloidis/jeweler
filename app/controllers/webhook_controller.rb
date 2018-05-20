@@ -5,6 +5,8 @@ class WebhookController < ApplicationController
 
   respond_to :json, :html
 
+  # Webhook for GitHub Push Events
+  # TODO: Move this to a delayed job possibly
   def hook
     logger.debug "GitHub Webhook Executed!"
     payload = JSON.parse(request.body.read)
@@ -87,26 +89,17 @@ class WebhookController < ApplicationController
 
   end
 
-  def configure_webhook
-    user = User.find(params[:user_id])
-    token = user.oauth
-
-    gh = Github.new oauth: token
-
-    github = Github.new oauth: project.owner.oauth
-    logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
-    logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
-    repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
-
-  end
-
+  # Save Authenticated GitHub user Oauth Token
   def save_oath
     token = params[:code]
 
-    puts 'Save Oath Token: ' + token.to_s
+    puts 'Save GitHub Oath Token: ' + token.to_s
 
     user = User.find(current_user.id)
     user.oauth = token
+
+    # TODO:Implement this here also
+    # ApplicationHelper.install_github_webhook(@project)
 
     respond_to do |format|
       if user.save!
@@ -127,6 +120,16 @@ class WebhookController < ApplicationController
       format.html { redirect_to github.authorize_url }
     end
 
+  end
+
+  def install_webhook
+    @project = Project.find(params[:project_id])
+
+    ApplicationHelper.install_github_webhook(@project)
+
+    respond_to do |format|
+      format.js
+    end
   end
 
 

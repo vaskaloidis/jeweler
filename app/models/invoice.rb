@@ -85,7 +85,7 @@ class Invoice < ApplicationRecord
   end
 
   def balance
-    return (self.sprint_cost - self.sprint_payments)
+    return (self.sprint_payments - self.sprint_cost)
   end
 
   def sprint_complete?

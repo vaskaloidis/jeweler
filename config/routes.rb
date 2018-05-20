@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   # Ajax
 
+  get '/install_github_webhook/:project_id', to: 'webhook#install_webhook', as: 'install_github_webhook'
+
   match '/send_invoice', to: 'invoices#send_invoice', via: [:post], as: 'send_invoice'
   match '/review_customer_invoice', to: 'invoices#review_customer_invoice', via: [:post], as: 'review_customer_invoice'
   get '/generate_customer_invoice/:invoice_id/:estimate', to: 'invoices#generate_customer_invoice', as: 'generate_customer_invoice'
