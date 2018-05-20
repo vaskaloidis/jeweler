@@ -41,6 +41,7 @@ gem 'premailer-rails'
 
 gem 'uglifier', '>= 1.3.0'
 gem 'foreman'
+gem 'faker'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
@@ -48,7 +49,6 @@ group :production do
 end
 group :development, :test do
   gem 'dotenv-rails'
-  gem 'faker'
   gem 'capybara'
   gem 'better_errors'
   gem 'launchy'
