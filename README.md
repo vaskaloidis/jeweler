@@ -43,3 +43,14 @@ bundle install
 
 rails db:setup
 ```
+
+### Heroku Configs
+```
+WEB_CONCURRENCY="1"
+RAILS_MAX_THREADS="5"
+RAILS_SERVE_STATIC_FILES="enabled"
+RUBY_GC_HEAP_GROWTH_FACTOR="1.03"
+LANG="en_US.UTF-8"
+PORT="80"
+RAILS_LOG_TO_STDOUT="enabled"
+```

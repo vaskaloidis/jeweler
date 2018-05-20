@@ -45,7 +45,7 @@ gem 'premailer-rails'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
-  gem 'rails_12factor'
+  # gem 'rails_12factor'
   gem 'foreman'
   gem 'uglifier', '>= 1.3.0'
   gem 'puma_worker_killer'

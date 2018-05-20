@@ -1,14 +1,18 @@
-development: &default
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
   database: jewlercrm-dev
   adapter: postgresql
   pool: 10
   host: localhost
   username: postgres
   password: postgres
-
-development:
-  <<: *default
-  database: jewlercrm-dev
 
 test:
   <<: *default
@@ -23,4 +27,4 @@ production:
   url: <%= ENV['DATABASE_URL'] %>
   database: jeweler-staging-server_production
   username: jeweler-staging-server
-  password: <%= ENV['JEWELER-STAGING-SERVER_DATABASE_PASSWORD'] %>
+  password: <%= ENV['JEWELER-STAGING_DATABASE_PASSWORD'] %>
