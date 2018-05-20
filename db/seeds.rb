@@ -2,11 +2,11 @@
 require 'faker'
 
 # Clear Table Data
-User.delete_all
-Project.delete_all
-ProjectCustomer.delete_all
-Note.delete_all
-Discussion.delete_all
+# User.delete_all
+# Project.delete_all
+# ProjectCustomer.delete_all
+# Note.delete_all
+# Discussion.delete_all
 
 # Seed Tables
 
