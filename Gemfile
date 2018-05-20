@@ -38,17 +38,13 @@ gem 'premailer-rails'
 # TODO: Get Bootsnap working again (crashing)
 # gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'bootsnap', require: false
-# Debugging Memory
-# gem 'rack-mini-profiler'
-# gem 'memory_profiler'
-# gem 'flamegraph'
+
+gem 'uglifier', '>= 1.3.0'
+gem 'foreman'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
   # gem 'rails_12factor'
-  gem 'foreman'
-  gem 'uglifier', '>= 1.3.0'
-  gem 'puma_worker_killer'
 end
 group :development, :test do
   gem 'dotenv-rails'
@@ -59,6 +55,10 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 end
 group :development do
+  gem 'rack-mini-profiler'
+  gem 'memory_profiler'
+  gem 'flamegraph'
+
   gem 'stackprof'
   gem 'derailed_benchmarks'
   gem 'pry-rails'
