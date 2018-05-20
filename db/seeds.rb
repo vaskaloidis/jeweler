@@ -1,6 +1,5 @@
 # Seeds
 require 'faker'
-require 'screencap'
 
 # Clear Table Data
 User.delete_all
