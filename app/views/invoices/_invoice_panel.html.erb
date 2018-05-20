@@ -253,18 +253,23 @@
           <strong>No Hours Reported</strong>
         </span>
       <% end %>
-      <% if invoice.balance > 0 %>
-        <span class="color-red">
+
+      <% if invoice.payments.empty? %>
+        <span><strong>No Payments Made</strong></span>
+      <% else %>
+        <% if invoice.balance > 0 %>
+        <span class="color-green">
           <strong>Customer Balance:</strong> +<%= invoice.balance.money %>
         </span>
-      <% elsif invoice.balance == 0 %>
+        <% elsif invoice.balance == 0 %>
         <span class="color-green">
          <strong>Customer Balance:</strong> <%= invoice.balance.money %>
         </span>
-      <% elsif invoice.balance < 0 %>
-        <span class="color-green">
-         <strong>Customer Balance:</strong> -<%= invoice.balance.money %>
+        <% elsif invoice.balance < 0 %>
+        <span class="color-red">
+         <strong>Customer Balance:</strong> <%= invoice.balance.money %>
         </span>
+        <% end %>
       <% end %>
       <span>
         <strong>Projected Cost:</strong> <%= invoice.sprint_planned_cost.money %>

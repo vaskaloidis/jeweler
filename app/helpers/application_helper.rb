@@ -185,9 +185,14 @@ module ApplicationHelper
   end
 
   def self.github_object(project)
-    github = Github.new oauth: project.owner.oauth
+
+    # github = Github.new oauth: project.owner.oauth
+
+    github = Github.new basic_auth: 'vaskaloidis:Godzilla1!'
+
     # logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
     # logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
+    #
     return github
   end
 
@@ -195,20 +200,44 @@ module ApplicationHelper
     begin
       gh = self.github_object(project)
       hooks = gh.repos.hooks.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
-
-    rescue
-      # logger.error("ERROR - Getting Github Repo Hooks")
-      # return false
-      return true # TODO: Finish this feature
-    end
-
-    if hooks.empty?
+      hooks.each do |hook|
+        if hook.config.url == ENV['GITHUB_HOOK_URL'] and hook.config.content_type == 'json'
+          return true
+        end
+      end
       return false
-    else
-      return true
+    rescue => e
+      Rails.logger.error 'Github Hook Error: ' + e.message
+      e.backtrace.each {|line| Rails.logger.error line}
     end
   end
 
+  def self.install_github_webhook(project)
+    begin
+      unless ApplicationHelper.github_hook_configured?(project)
+
+        Rails.logger.debug 'GITHUB_HOOK_URL: ' + ENV['GITHUB_HOOK_URL']
+
+        new_hook = {
+            name: "web",
+            active: true,
+            config: {
+                url: ENV['GITHUB_HOOK_URL'],
+                content_type: "json"
+            }
+        }
+
+        Rails.logger.debug new_hook
+
+        github = ApplicationHelper.github_object project
+        github.repos.hooks.create ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project), new_hook
+
+      end
+    rescue => e
+      Rails.logger.error 'Github Hook Error: ' + e.message
+      e.backtrace.each {|line| Rails.logger.error line}
+    end
+  end
 
   def self.github_user(project)
     uri = URI(project.github_url)
