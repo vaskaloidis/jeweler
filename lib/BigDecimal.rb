@@ -30,7 +30,7 @@ class BigDecimal
   def money
     require 'action_view/helpers/number_helper'
     result = self.prettify
-    result = number_to_currency(result).to_s
+    result = ActionView::Base.new.number_to_currency(result).to_s
     return result
   end
 
