@@ -14,10 +14,26 @@ class User < ApplicationRecord
   validates :first_name, :presence => true
   validates :last_name, :presence => true
 
-  # Include default devise modules. Others available are: :timeoutable and :omniauthable
+  # Include default devise modules. Others available are: :timeoutable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :lockable, :confirmable, :omniauthable
+
+  def self.get_account(email)
+    if self.account_exists? email
+      return self.where(email: email).first
+    else
+      return false
+    end
+  end
+
+  def self.account_exists?(email)
+    unless self.where(email: email).empty?
+      return true
+    else
+      return false
+    end
+  end
 
   def full_name
     return self.first_name + ' ' + self.last_name
@@ -40,13 +56,13 @@ class User < ApplicationRecord
   end
 
   # class << self
-    def self.current_user=(user)
-      Thread.current[:current_user] = user
-    end
+  def self.current_user=(user)
+    Thread.current[:current_user] = user
+  end
 
-    def self.current_user
-      Thread.current[:current_user]
-    end
+  def self.current_user
+    Thread.current[:current_user]
+  end
   # end
 
 end

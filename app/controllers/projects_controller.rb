@@ -160,7 +160,7 @@ class ProjectsController < ApplicationController
   end
 
   def verify_customer
-    unless @project.is_customer(current_user) or @project.is_owner?(current_user)
+    unless @project.is_customer?(current_user) or @project.is_owner?(current_user)
       flash[:error] = "You must be a member of this project to view it"
       redirect_to projects_url # halts request cycle
     end
