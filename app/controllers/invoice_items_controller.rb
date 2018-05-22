@@ -11,30 +11,21 @@ class InvoiceItemsController < ApplicationController
     @task.save
     @task.reload
 
-    logger.debug("Setting Task Complete, ID: " + @task.id.to_s)
-
     # Select Next Task Algorithm
     if @task.is_current?
-      logger.debug("** Current Task")
       @task.invoice.project.current_task = nil
       @task.invoice.project.save
       @next_task = false
-      logger.debug("@task.invoice.incomplete_tasks.empty? " + @task.invoice.incomplete_tasks.empty?.to_s)
-      logger.debug("!@task.invoice.project.current_task.nil? " + (!@task.invoice.project.current_task.nil?).to_s)
       until !@task.invoice.project.current_task.nil? or @task.invoice.incomplete_tasks.empty?
-        logger.debug("** Loop")
         @task.invoice.tasks.each do |task|
           if @next_task
-            logger.debug("** Next Task")
             if task.complete == false
-              logger.debug("** Task Not Complete. Let's use this. ")
               @task.invoice.project.current_task = task
               @task.invoice.project.save
               @task.invoice.project.reload
               break
             end
           elsif @task == task && !@next_task
-            logger.debug("** Found Current Task")
             @next_task = true
           end
         end

@@ -6,8 +6,7 @@ class ProjectCustomersController < ApplicationController
 
   def create_customer_inline
     logger.debug("Creating Customer AJAX")
-    # TODO: Ma\ybe move this Invitation feature to settings (Invite existing Jeweler users, or simply add them)
-    invite_feature = false
+    # TODO: Maybe move this Invitation feature to settings (Invite existing Jeweler users, or simply add them)
 
     email = params[:email]
     @email = email
@@ -34,17 +33,15 @@ class ProjectCustomersController < ApplicationController
         @user_invited = false
       end
 
-      if invite_feature
-        user = User.where(email: email).first
+      user = User.where(email: email).first
 
-        logger.debug("Adding Customer to Project ID: " + project.id.to_s + ". Customer ID: " + user.id.to_s + " / EMAIL: " + email)
+      logger.debug("Adding Customer to Project ID: " + project.id.to_s + ". Customer ID: " + user.id.to_s + " / EMAIL: " + email)
 
-        pc = ProjectCustomer.new
-        pc.project = project
-        pc.user = user
-        pc.save
-        @save = pc
-      end
+      pc = ProjectCustomer.new
+      pc.project = project
+      pc.user = user
+      pc.save
+      @save = pc
 
       project.invitations.reload
     else
@@ -143,6 +140,7 @@ class ProjectCustomersController < ApplicationController
   end
 
   private
+
   def verify_owner
     # Create ProjectCustomer
     if @project_customer.nil?

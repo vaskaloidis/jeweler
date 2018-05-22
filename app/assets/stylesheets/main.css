@@ -2,11 +2,19 @@
 /*
  *= require font-awesome
  */
+
+.badge.badge-roundless.badge-danger,
+.badge.badge-roundless.badge-success{
+    font-weight: 400;
+}
 .color-red, .color-red > strong {
     color: darkred !important;
 }
 .color-green, .color-green > strong {
     color: green !important;
+}
+li.opened.active.expanded.has-sub > ul > li > a {
+    white-space: nowrap;
 }
 ul.main-menu > li > a {
     white-space: nowrap;
@@ -254,7 +262,8 @@ i.fas.fa-ban.pull-right {
 }
 
 ul.settings_sprint_balance > li > span.badge {
-    font-size: 1.1em;
+    font-size: 1.0em;
+    letter-spacing: .5px;
 }
 
 .payment_form_item > select {

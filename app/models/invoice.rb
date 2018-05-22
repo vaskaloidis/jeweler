@@ -53,7 +53,7 @@ class Invoice < ApplicationRecord
   end
 
   def planned_hours
-    return self.sprint_planned_hours
+    return self.invoice_items.where(deleted: false).sum(:planned_hours)
   end
 
   def current_task
@@ -85,7 +85,7 @@ class Invoice < ApplicationRecord
   end
 
   def balance
-    return (self.sprint_payments - self.sprint_cost)
+    return (self.sprint_payments - self.cost)
   end
 
   def sprint_complete?
@@ -109,10 +109,6 @@ class Invoice < ApplicationRecord
   end
 
   def cost
-    return self.sprint_cost
-  end
-
-  def sprint_cost
     total_cost = 0.00
     self.tasks.each do |item|
       unless item.hours.nil?
@@ -122,7 +118,7 @@ class Invoice < ApplicationRecord
     return total_cost
   end
 
-  def sprint_planned_cost
+  def planned_cost
     total = 0.00
     self.tasks.each do |item|
       unless item.planned_hours.nil?
@@ -132,16 +128,25 @@ class Invoice < ApplicationRecord
     return total
   end
 
-  def sprint_hours
+  def hours
     return self.invoice_items.where(deleted: false).sum(:hours)
   end
 
-  def hours
-    return self.sprint_hours
+  def planned_hours
+    return self.invoice_items.where(deleted: false).sum(:planned_hours)
   end
 
-  def sprint_planned_hours
-    return self.invoice_items.where(deleted: false).sum(:planned_hours)
+  def average_hours
+    tasks = self.invoice_items.where(deleted: false)
+    if tasks.empty? or tasks.count==0
+      return 0
+    else
+      sum = 0.0
+      tasks.each do |task|
+        sum = sum + task.hours
+      end
+      return (sum/tasks.count)
+    end
   end
 
   def only_planned?

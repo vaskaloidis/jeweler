@@ -4,7 +4,18 @@
 
     <div class="col-sm-6">
 
-      <div class="errors-container"></div>
+      <div class="errors-container">
+        <% if notice %>
+          <div class="alert alert-success">
+             <%= notice %>
+          </div>
+        <% end %>
+        <% if alert %>
+          <div class="alert alert-danger">
+            <%= alert %>
+          </div>
+        <% end %>
+      </div>
 
         <%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => 'login-form', :role => 'form'}) do |f| %>
           <!--<form method="post" role="form" id="login" class="login-form fade-in-effect">-->
@@ -44,7 +55,6 @@
               </div>
 
             <% end %>
-
 
             <%= render "devise/shared/links" %>
 
