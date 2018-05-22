@@ -235,7 +235,7 @@
       </div>
     <% end %>
 
-    <% if invoice.project.is_customer(current_user) %>
+    <% if invoice.project.is_customer?(current_user) %>
       <div>
         <div style="display:none" id="sprint_payment_inline_<%= invoice.id.to_s %>">
           <%= render 'invoices/sprint_payment_form', invoice: invoice %>

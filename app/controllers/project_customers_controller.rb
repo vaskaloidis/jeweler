@@ -12,30 +12,34 @@ class ProjectCustomersController < ApplicationController
     @email = email
     project = Project.find(params[:project_id])
 
-    if project.invitations.where(email: email).empty?
-      @invitation_exists = false
-
-      @invitation = Invitation.new
-      @invitation.project = project
-      @invitation.email = email
-      @invitation.save
-      # @save = project.invitations.create(email: email)
-
-      if User.where(email: email).empty?
-        logger.debug("User does not exist, (sending an invitation email): " + email)
-        # TODO: Implement Mailer with delayed job
-        # UserInviteMailer.with(email: email, project: project.id).invite_user.deliver_later
-        UserInviteMailer.with(email: email, project: project.id).invite_user.deliver_now
-        # UserInviteMailer.invite_user(email, project.id).deliver
-        @user_invited = true
-      else
-        logger.debug("User exists (no invitation email): " + email)
-        @user_invited = false
-      end
-
-      project.invitations.reload
+    # Check if User is already a member of this project
+    if project.is_customer? email
+      @already_customer = true
     else
-      @invitation_exists = true
+      @already_customer = false
+      # Check if Invitation exists already
+      if project.invitations.where(email: email).empty?
+        @invitation_exists = false
+
+        @invitation = Invitation.new
+        @invitation.project = project
+        @invitation.email = email
+        @invitation.save
+
+        if User.account_exists? email
+          logger.debug("User does not exist, (sending an invitation email): " + email)
+          # TODO: Implement Mailer with delayed job
+          UserInviteMailer.with(email: email, project: project.id).invite_user.deliver_now
+          @user_invited = true
+        else
+          logger.debug("User exists (no invitation email): " + email)
+          @user_invited = false
+        end
+
+        project.invitations.reload
+      else
+        @invitation_exists = true
+      end
     end
     @project = project
 

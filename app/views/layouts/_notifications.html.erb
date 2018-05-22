@@ -47,7 +47,7 @@
     </div>
   <% end %>
 
-<% elsif project.is_customer(current_user) %>
+<% elsif project.is_customer?(current_user) %>
 
   <button type="button" class="btn btn-success btn-block text-left">
     Project Member <i class="fa-check pull-right"></i>

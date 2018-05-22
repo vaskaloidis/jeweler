@@ -1,17 +1,17 @@
-<% unless @invitation_exists %>
-
-  <% if @user_invited %>
-    toastr.success('Jewler Account Does Not Exist. Customer Invitation Email Sent To <%= @email %>');
-  <% end %>
-
-  <% if @invitation.valid? %>
-    toastr.success('Invitation Sent to <%= @email %>');
+<% unless @already_customer %>
+  <% unless @invitation_exists %>
+    <% if @user_invited %>
+      toastr.success('We invited <%= @email %> to join Jeweler. They will see your project invitation after they sign-up for Jeweler.');
+    <% elsif @invitation.valid? %>
+      toastr.success('<%= @project.name %> invitation sent to <%= @email %>.');
+    <% else %>
+      toastr.error('Error adding Customer to project <%= @email %>. Contact Jeweler Support.');
+    <% end %>
   <% else %>
-    toastr.error('Error adding Customer to project <%= @email %>');
+    toastr.error('User <%= @email %> was already invited!');
   <% end %>
-
-  $('#customers_container').html('<%= j render 'projects/customers', project: @project %>');
-
 <% else %>
-  toastr.error('User <%= @email %> was already invited!');
+  toastr.error('User <%= @email %> is already a member of this projectd!');
 <% end %>
+
+$('#customers_container').html('<%= j render 'projects/customers', project: @project %>');

@@ -75,12 +75,24 @@ class Project < ApplicationRecord
     end
   end
 
-
-  def is_customer(user = nil)
-    if self.customers.include?(user)
-      return true
+  def is_customer?(user)
+    if user.instance_of? String
+      user = User.get_account user
+      if user
+        if self.customers.include?(user)
+          return true
+        else
+          return false
+        end
+      else
+        return false
+      end
     else
-      return false
+      if self.customers.include?(user)
+        return true
+      else
+        return false
+      end
     end
   end
 
@@ -88,6 +100,7 @@ class Project < ApplicationRecord
     return self.total_balance
   end
 
+  # TODO: Replace ths with balance (refactor project-wide)
   def total_balance
     unless self.total_cost.nil? or self.total_payment.nil?
       return (self.total_payment - self.total_cost)
@@ -256,7 +269,7 @@ class Project < ApplicationRecord
   def non_customers
     nc = Array.new
     User.all do |u|
-      unless self.is_customer(current_user)
+      unless self.is_customer?(current_user)
         nc << u
       end
     end
