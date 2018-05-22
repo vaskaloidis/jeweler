@@ -51,6 +51,8 @@ function resizable(breakpoint)
 	// Tablet Screen Specific Script
 	if(isxs())
 	{
+        public_vars.$sidebarMenu.addClass('collapsed');
+        ps_destroy();
 	}
 
 
