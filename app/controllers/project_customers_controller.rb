@@ -33,16 +33,6 @@ class ProjectCustomersController < ApplicationController
         @user_invited = false
       end
 
-      user = User.where(email: email).first
-
-      logger.debug("Adding Customer to Project ID: " + project.id.to_s + ". Customer ID: " + user.id.to_s + " / EMAIL: " + email)
-
-      pc = ProjectCustomer.new
-      pc.project = project
-      pc.user = user
-      pc.save
-      @save = pc
-
       project.invitations.reload
     else
       @invitation_exists = true
