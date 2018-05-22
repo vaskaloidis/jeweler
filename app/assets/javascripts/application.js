@@ -13,7 +13,6 @@
 //= require rails-ujs
 //  require activestorage
 
-
 $('.load-spinner').bind('ajax:beforeSend', function () {
     $('#loader-2').show();
     $('body').addClass('page-loading-overlay');

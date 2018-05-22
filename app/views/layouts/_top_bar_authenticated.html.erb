@@ -1,4 +1,4 @@
-<nav class="hidden-sm hidden-xs navbar user-info-navbar" role="navigation">
+<nav class="hidden-xs navbar user-info-navbar" role="navigation">
 
   <ul class="user-info-menu left-links list-inline list-unstyled">
 
@@ -29,7 +29,7 @@
         document.getElementById("notifications_count_1").textContent = count;
     </script>
 
-    <li class="hidden-sm hidden-xs">
+    <li class="hidden-xs">
       <a href="#" data-toggle="sidebar">
         <i class="fa-bars"></i>
       </a>
@@ -39,19 +39,17 @@
       <li>
         <a href="<%= project_path(@project) %>">
           <i class="fas fa-home"></i>
-          <span class="title"><%= truncate(@project.name, :length => 15) %></span>
+<!--          <span class="title"><%##= truncate(@project.name, :length => 15) %></span>-->
         </a>
       </li>
       <li>
         <a href="<%= project_invoices_path(@project) %>">
           <i class="fas fa-paper-plane"></i>
-          <span class="title">Sprints</span>
         </a>
       </li>
       <li>
         <a href="<%= project_project_customers_path(@project) %>">
           <i class="fas fa-user"></i>
-          <span class="title">Customers</span>
         </a>
       </li>
       <% if false %>
@@ -73,7 +71,7 @@
         <% end %>
       <% end %>
       <li>
-        <%= link_to '<i class="fas fa-money-bill-alt"></i> Payments'.html_safe, project_payments_path(@project.id) %>
+        <%= link_to '<i class="fas fa-money-bill-alt"></i>'.html_safe, project_payments_path(@project.id) %>
       </li>
     <% end %>
 
@@ -96,7 +94,7 @@
     <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
       <% if defined? @project %>
         <li>
-          <%= link_to '<i class="fas fa-sticky-note"></i> New Note'.html_safe,
+          <%= link_to '<i class="fas fa-sticky-note"></i>'.html_safe,
                       create_note_modal_path(@project.id),
                       remote: true %>
         </li>
@@ -132,7 +130,7 @@
           <% if defined? @project %>
             <li>
               <%= link_to create_note_modal_path(@project.id), remote: true do %>
-                <i class="fas fa-sticky-note"></i> <span class="hide-xs hide-sm">New Note</span>
+                <i class="fas fa-sticky-note"></i> New Note
               <% end %>
             </li>
           <% end %>

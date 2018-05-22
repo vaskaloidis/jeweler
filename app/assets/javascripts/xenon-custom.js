@@ -1130,15 +1130,10 @@ function setup_sidebar_menu()
 
 		$items_with_subs.filter('.active').addClass('expanded');
 
-        if ((($(window).width() > 1200) && ($(window).width() < 1680)) && (public_vars.$sidebarMenu.hasClass('collapsed') == false))
+        if (($(window).width() < 1600) && (public_vars.$sidebarMenu.hasClass('collapsed') == false))
         {
-            $(window).on('resize', function()
-            {
-                if (($(window).width() > 1200) && ($(window).width() < 1680)) {
-                    public_vars.$sidebarMenu.addClass('collapsed');
-                    ps_destroy();
-                }
-            });
+            public_vars.$sidebarMenu.addClass('collapsed');
+            ps_destroy();
         } else if(is('largescreen') && public_vars.$sidebarMenu.hasClass('collapsed') == false)
 		{
 			$(window).on('resize', function()
