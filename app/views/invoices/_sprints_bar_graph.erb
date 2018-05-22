@@ -1,167 +1,161 @@
-<div class="row">
-  <script type="text/javascript">
-      jQuery(document).ready(function ($) {
-          var i = 0;
-          var line_chart_data_source = [
-              <% project.invoices.each_with_index do |invoice, index| %>
-              {
-                  id: ++i,
-                  planned_hours: <%= invoice.planned_hours.to_s %>,
-                  hours: <%= invoice.hours.to_s %>
-              }<% if index != project.invoices.size %>, <% end %>
-              <% end %>
-          ];
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        var i = 0;
+        var line_chart_data_source = [
+            <% project.invoices.each_with_index do |invoice, index| %>
+            {
+                id: ++i,
+                planned_hours: <%= invoice.planned_hours.to_s %>,
+                hours: <%= invoice.hours.to_s %>
+            }<% if index != project.invoices.size %>, <% end %>
+            <% end %>
+        ];
 
-          <%
-          if project.max_hours >= project.max_planned_hours
-            max_hours = project.max_hours
-          else
-            max_hours = project.max_planned_hours
-          end
-          %>
-          $("#pageviews-visitors-chart").dxChart({
-              dataSource: line_chart_data_source,
-              commonSeriesSettings: {
-                  argumentField: "id",
-                  point: {visible: true, size: 5, hoverStyle: {size: 7, border: 0, color: 'inherit'}},
-                  line: {width: 1, hoverStyle: {width: 1}}
-              },
-              series: [
-                  {valueField: "planned_hours", name: "Estimated Hours", color: "#68b828"},
-                  {valueField: "hours", name: "Hours", color: "#eeeeee"},
-              ],
-              legend: {
-                  position: 'inside',
-                  paddingLeftRight: 5
-              },
-              commonAxisSettings: {
-                  label: {
-                      visible: false
-                  },
-                  grid: {
-                      visible: true,
-                      color: '#f9f9f9'
-                  }
-              },
-              valueAxis: {
-                  max: <%= (max_hours * 2).to_s %>
-              },
-              argumentAxis: {
-                  valueMarginsEnabled: false
-              },
-          });
-          var y = 0;
-          $("#server-uptime-chart").dxChart({
-              dataSource: [
-                  <% project.sprints.each_with_index do |invoice, index| %>
-                  {
-                      id: ++y,
-                      payment: <%= invoice.total_payments.to_s %>
-                  }<% if index != project.invoices.size %>, <% end %>
-                  <% end %>
-              ],
-
-              series: {
-                  argumentField: "id",
-                  valueField: "payment",
-                  name: "Payments",
-                  type: "bar",
-                  color: '#7c38bc'
-              },
-              commonAxisSettings: {
-                  label: {
-                      visible: false
-                  },
-                  grid: {
-                      visible: false
-                  }
-              },
-              legend: {
-                  visible: false
-              },
-              argumentAxis: {
-                  valueMarginsEnabled: true
-              },
-              valueAxis: {
-                  max: <%= project.max_payment %>
-              },
-              equalBarWidth: {
-                  width: 11
-              }
-          });
-
-
-          // Average Sales Chart
-          var doughnut1_data_source = [
-              {region: "Asia", val: 4119626293},
-              {region: "Africa", val: 1012956064},
-              {region: "Northern America", val: 344124520},
-              {region: "Latin America and the Caribbean", val: 590946440},
-              {region: "Europe", val: 727082222},
-              {region: "Oceania", val: 35104756},
-              {region: "Oceania 1", val: 727082222},
-              {region: "Oceania 3", val: 727082222},
-              {region: "Oceania 4", val: 727082222},
-              {region: "Oceania 5", val: 727082222},
-          ], timer;
-
-          $("#sales-avg-chart div").dxPieChart({
-              dataSource: doughnut1_data_source,
-              tooltip: {
-                  enabled: false,
-                  format: "millions",
-                  customizeText: function () {
-                      return this.argumentText + "<br/>" + this.valueText;
-                  }
-              },
-              size: {
-                  height: 90
-              },
-              legend: {
-                  visible: false
-              },
-              series: [{
-                  type: "doughnut",
-                  argumentField: "region"
-              }],
-              palette: ['#5e9b4c', '#6ca959', '#b9f5a6'],
-          });
-      });
+        <%
+        if project.max_hours >= project.max_planned_hours
+          max_hours = project.max_hours
+        else
+          max_hours = project.max_planned_hours
+        end
+        %>
+        $("#hours_vs_reported_chart").dxChart({
+            dataSource: line_chart_data_source,
+            tooltip: {
+                enabled: true
+            },
+            commonSeriesSettings: {
+                argumentField: "id",
+                point: {visible: true, size: 5, hoverStyle: {size: 7, border: 0, color: 'inherit'}},
+                line: {width: 1, hoverStyle: {width: 1}}
+            },
+            series: [
+                {valueField: "planned_hours", name: "Estimated Hours", color: "#68b828"},
+                {valueField: "hours", name: "Hours", color: "#eeeeee"},
+            ],
+            legend: {
+                position: 'inside',
+                paddingLeftRight: 5
+            },
+            commonAxisSettings: {
+                label: {
+                    visible: false
+                },
+                grid: {
+                    visible: true,
+                    color: '#f9f9f9'
+                }
+            },
+            valueAxis: {
+                max: <%= (max_hours * 2).to_s %>
+            },
+            argumentAxis: {
+                valueMarginsEnabled: false
+            }
+        });
+        var y = 0;
+        $("#sprint_payments_chart").dxChart({
+            dataSource: [
+                <% project.sprints.each_with_index do |invoice, index| %>
+                {
+                    id: ++y,
+                    payment: <%= invoice.total_payments.to_s %>
+                }<% if index != project.invoices.size %>, <% end %>
+                <% end %>
+            ],
+            tooltip: {
+                enabled: true
+            },
+            series: {
+                argumentField: "id",
+                valueField: "payment",
+                name: "Payments",
+                type: "bar",
+                color: '#7c38bc'
+            },
+            commonAxisSettings: {
+                label: {
+                    visible: false
+                },
+                grid: {
+                    visible: false
+                }
+            },
+            legend: {
+                visible: false
+            },
+            argumentAxis: {
+                valueMarginsEnabled: true
+            },
+            valueAxis: {
+                max: <%= project.max_payment %>
+            },
+            equalBarWidth: {
+                width: 11
+            }
+        });
 
 
-  </script>
-</div>
+        // Sprint Length
+        var doughnut1_data_source = [
+            <% project.invoices.each_with_index do |invoice, index| %>
+            {sprint: "sprint<%= invoice.sprint.to_s %>", val: <%= invoice.planned_hours.to_s %>},
+            <% end %>
+        ], timer;
+
+        $("#sprint_length_chart").dxPieChart({
+            dataSource: doughnut1_data_source,
+            tooltip: {
+                enabled: true
+            },
+            title: 'Sprint Length',
+            size: {
+                height: 90
+            },
+            legend: {
+                visible: true
+            },
+            series: [{
+                type: "doughnut",
+                argumentField: "sprint"
+            }],
+            palette: ['#5e9b4c', '#6ca959', '#b9f5a6'],
+        });
+
+    });
+
+
+</script>
 
 <div class="row">
   <div class="col-sm-3">
 
-    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="99.9" data-suffix="%" data-duration="2">
+    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.sprint_total.to_s %>" data-suffix="" data-duration="2">
       <div class="xe-icon">
-        <i class="linecons-cloud"></i>
+        <i class="fa fa-paper-plane"></i>
       </div>
       <div class="xe-label">
-        <strong class="num">0.0%</strong>
-        <span>Server uptime</span>
+        <strong class="num"><%= project.sprint_total.to_s %></strong>
+        <span>Sprints</span>
       </div>
     </div>
 
-    <div class="xe-widget xe-counter xe-counter-purple" data-count=".num" data-from="1" data-to="117" data-suffix="k" data-duration="3" data-easing="false">
+    <div class="xe-widget xe-counter xe-counter-purple" data-count=".num" data-from="0" data-to="<%= project.tasks.count.to_s %>" data-suffix="" data-duration="3" data-easing="false">
       <div class="xe-icon">
-        <i class="linecons-user"></i>
+        <i class="fa fa-check"></i>
       </div>
       <div class="xe-label">
-        <strong class="num">1k</strong>
-        <span>Users Total</span>
+        <strong class="num"><%= project.tasks.count.to_s %></strong>
+        <span>Tasks</span>
       </div>
     </div>
 
-    <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1000" data-to="2470" data-duration="4" data-easing="true">
+    <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="0" data-to="<%= project.payments.count.to_s %>" data-duration="4" data-easing="true">
       <div class="xe-icon">
-        <i class="linecons-camera"></i>
+        <i class="fa fa-dollar-sign"></i>
       </div>
       <div class="xe-label">
-        <strong class="num">1000</strong>
-        <span>New Daily Photos</span>
+        <strong class="num"><%= project.payments.count.to_s %></strong>
+        <span>Payments</span>
       </div>
     </div>
 
@@ -170,10 +164,13 @@
 
     <div class="chart-item-bg">
       <div class="chart-label">
-        <div class="h3 text-secondary text-bold" data-count="this" data-from="0.00" data-to="14.85" data-suffix="%" data-duration="1">0.00%</div>
-        <span class="text-medium text-muted">More visitors</span>
+        <% task_avg = project.average_task_hours(0).to_s %>
+        <div class="h3 text-secondary text-bold" data-count="this" data-from="0.00" data-to="<%= task_avg %>" data-suffix=" hrs." data-duration="4"><%= task_avg %>
+          hrs.
+        </div>
+        <span class="text-medium text-muted">Avg. Task Length</span>
       </div>
-      <div id="pageviews-visitors-chart" style="height: 298px;"></div>
+      <div id="hours_vs_reported_chart" style="height: 298px;"></div>
     </div>
 
   </div>
@@ -181,18 +178,21 @@
 
     <div class="chart-item-bg">
       <div class="chart-label chart-label-small">
-        <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="95.8" data-suffix="%" data-duration="1.5">0.00%</div>
-        <span class="text-small text-upper text-muted">Current Server Uptime</span>
+        <% avg_payment = project.average_payment(0).to_s %>
+        <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="<%= avg_payment %>" data-prefix="$" data-duration="1.5">$<%= avg_payment %></div>
+        <span class="text-small text-upper text-muted">Avg. Payment</span>
       </div>
-      <div id="server-uptime-chart" style="height: 134px;"></div>
+      <div id="sprint_payments_chart" style="height: 134px;"></div>
     </div>
 
     <div class="chart-item-bg">
       <div class="chart-label chart-label-small">
-        <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="320.45" data-decimal="," data-duration="2">0</div>
-        <span class="text-small text-upper text-muted">Avg. of Sales</span>
+        <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="<%= project.average_sprint_hours.to_s %>" data-suffix=" hrs." data-duration="2"><%= project.average_sprint_hours.to_s %>
+          hrs.
+        </div>
+        <span class="text-small text-upper text-muted">Avg. Sprint Length</span>
       </div>
-      <div id="sales-avg-chart" style="height: 134px; position: relative;">
+      <div id="sprint_length_chart" style="height: 134px; position: relative;">
         <div style="position: absolute; top: 25px; right: 0; left: 40%; bottom: 0"></div>
       </div>
     </div>

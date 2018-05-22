@@ -22,7 +22,6 @@
   <%= javascript_include_tag 'toastr/toastr.min.js' %>
   <%= javascript_include_tag 'xenon-custom.js' %>
 
-
   <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:400,700,400italic" %>
   <%= stylesheet_link_tag "fonts/linecons/css/linecons.css" %>
   <%= stylesheet_link_tag "fontawesome.css" %>
@@ -60,6 +59,7 @@
   </script>
 <% end %>
 
+<%# TODO: Add a setting to render payments pane or not %>
 <% if false %>
   <% if controller_name == 'projects' and action_name == 'show' %>
     <% if @project.is_owner?(current_user) %>
@@ -97,24 +97,21 @@
     <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
     <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
     <!-- Or class "fixed" to  always fix the footer to the end of page -->
-
-    <footer class="main-footer sticky footer-type-1">
-      <!--    <footer class="main-footer sticky footer-type-1">-->
-      <div class="footer-inner">
-
-        <div class="footer-text">
-          &copy; 2018
-          <strong>JewelerCRM</strong> - <a href="http://bluehelmet.software">Blue Helmet Software</a>
+    <% if !request.original_url.include?("users/sign_in") %>
+      <footer class="main-footer sticky footer-type-1">
+        <!--    <footer class="main-footer sticky footer-type-1">-->
+        <div class="footer-inner">
+          <div class="footer-text">
+            &copy; 2018 <strong>JewelerCRM</strong> - <a href="http://bluehelmet.software">Blue Helmet Software</a>
+          </div>
+          <div class="go-up">
+            <a href="#" rel="go-top">
+              <i class="fa-angle-up"></i>
+            </a>
+          </div>
         </div>
-
-        <div class="go-up">
-          <a href="#" rel="go-top">
-            <i class="fa-angle-up"></i>
-          </a>
-        </div>
-
-      </div>
-    </footer>
+      </footer>
+    <% end %>
 
   </div>
 

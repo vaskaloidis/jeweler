@@ -15,24 +15,24 @@
   <% if project.current_sprint.only_planned? %>
 
     <div class="col-xs-12 col-sm-6 col-lg-3" data-animate="true">
-      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_planned_cost.to_s %>" data-prefix="$" data-duration="2">
+      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.planned_cost.to_s %>" data-prefix="$" data-duration="2">
         <div class="xe-icon">
           <i class="fas fa-dollar-sign"></i>
         </div>
         <div class="xe-label">
-          <strong class="num">$<%= project.current_sprint.sprint_planned_cost.to_s %></strong>
+          <strong class="num">$<%= project.current_sprint.planned_cost.to_s %></strong>
           <span>Sprint <%= project.sprint_current.to_s %> Projected Revenue</span>
         </div>
       </div>
     </div>
 
     <div data-toggle="settings-pane" data-animate="true" class="col-xs-12 col-sm-6 col-lg-3">
-      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_planned_hours.to_s %>" data-suffix=" Hours" data-duration="2">
+      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.planned_hours.to_s %>" data-suffix=" Hours" data-duration="2">
         <div class="xe-icon">
           <i class="far fa-clock"></i>
         </div>
         <div class="xe-label">
-          <strong class="num"><%= project.current_sprint.sprint_planned_hours.to_s %> Hours</strong>
+          <strong class="num"><%= project.current_sprint.planned_hours.to_s %> Hours</strong>
           <span>Sprint <%= project.sprint_current.to_s %> Projected Duration</span>
         </div>
       </div>
@@ -41,12 +41,12 @@
   <% else %>
 
     <div data-toggle="settings-pane" data-animate="true" class="col-xs-12 col-sm-6 col-lg-3">
-      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_cost.to_s %>" data-prefix=" $" data-duration="2">
+      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.cost.to_s %>" data-prefix=" $" data-duration="2">
         <div class="xe-icon">
           <i class="fas fa-dollar-sign"></i>
         </div>
         <div class="xe-label">
-          <strong class="num">$<%= project.current_sprint.sprint_cost.to_s %></strong>
+          <strong class="num">$<%= project.current_sprint.cost.to_s %></strong>
           <span>Sprint <%= project.sprint_current.to_s %> Billed</span>
         </div>
       </div>

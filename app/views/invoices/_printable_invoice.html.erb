@@ -122,9 +122,9 @@
       <ul class="list-unstyled">
         <li class="upper">Sprint <strong><%= invoice.sprint.to_s %></strong></li>
         <li><strong>Tasks: </strong><%= invoice.tasks.size.to_s %></li>
-        <li><strong>Estimated Hours: </strong><%= invoice.sprint_planned_hours.to_s %> hrs.</li>
+        <li><strong>Estimated Hours: </strong><%= invoice.planned_hours.to_s %> hrs.</li>
         <% unless estimate %>
-          <li><strong>Reported Hours: </strong><%= invoice.sprint_hours.to_s %> hrs.</li>
+          <li><strong>Reported Hours: </strong><%= invoice.hours.to_s %> hrs.</li>
         <% end %>
         <% if invoice_note %>
           <li><strong>Note: </strong><%= invoice_note %></li>
@@ -179,11 +179,11 @@
       <td></td>
       <td></td>
       <% if estimate %>
-        <td class="text-center hidden-xs"><%= invoice.sprint_planned_hours %> hrs.</td>
-        <td class="text-center text-primary text-bold"><%= invoice.sprint_planned_cost.money %></td>
+        <td class="text-center hidden-xs"><%= invoice.planned_hours %> hrs.</td>
+        <td class="text-center text-primary text-bold"><%= invoice.planned_cost.money %></td>
       <% else %>
-        <td class="text-center hidden-xs"><%= invoice.sprint_hours.to_s %> hrs.</td>
-        <td class="text-right text-primary text-bold"><%= invoice.sprint_cost.money %></td>
+        <td class="text-center hidden-xs"><%= invoice.hours.to_s %> hrs.</td>
+        <td class="text-right text-primary text-bold"><%= invoice.cost.money %></td>
       <% end %>
     </tr>
     </tbody>
@@ -208,7 +208,7 @@
 
       <hr/>
       <% if estimate %>
-        <span>Projected Cost: <strong><%= invoice.sprint_planned_cost.money %></strong></span>
+        <span>Projected Cost: <strong><%= invoice.planned_cost.money %></strong></span>
       <% else %>
         <span>Grand Total: <strong><%= invoice.cost.money %></strong></span>
       <% end %>

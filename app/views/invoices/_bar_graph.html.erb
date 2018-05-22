@@ -6,7 +6,7 @@
                 <% project.invoices.each_with_index do |invoice, index| %>
                   {
                       sprint: "Sprint <%= invoice.sprint.to_s %>",
-                      estimated_cost: <%= invoice.sprint_planned_cost.to_s %>,
+                      estimated_cost: <%= invoice.planned_cost.to_s %>,
                       cost: <%= invoice.cost.to_s %>
                   } <% if index != project.invoices.size %>, <% end %>
                 <% end %>

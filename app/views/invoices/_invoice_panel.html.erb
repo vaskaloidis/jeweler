@@ -179,12 +179,12 @@
             <% end %>
           </th>
           <th><strong>Total:</strong></th>
-          <th><%= invoice.sprint_planned_hours.prettify %> hrs.</th>
+          <th><%= invoice.planned_hours.prettify %> hrs.</th>
           <% if invoice.only_planned? %>
-            <td><%= invoice.sprint_planned_cost.money %></td>
+            <td><%= invoice.planned_cost.money %></td>
           <% else %>
-            <td><%= invoice.sprint_hours.prettify %> hrs.</td>
-            <td><%= invoice.sprint_cost.money %></td>
+            <td><%= invoice.hours.prettify %> hrs.</td>
+            <td><%= invoice.cost.money %></td>
           <% end %>
         </tr>
         </tbody>
@@ -272,11 +272,11 @@
         <% end %>
       <% end %>
       <span>
-        <strong>Projected Cost:</strong> <%= invoice.sprint_planned_cost.money %>
+        <strong>Projected Cost:</strong> <%= invoice.planned_cost.money %>
       </span>
       <% unless invoice.only_planned? %>
         <span>
-          <strong>Cost:</strong> <%= invoice.sprint_cost.money %>
+          <strong>Cost:</strong> <%= invoice.cost.money %>
         </span>
       <% end %>
     </div>

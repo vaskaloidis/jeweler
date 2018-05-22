@@ -1,10 +1,3 @@
-<%
-  # TODO:Get rid of this, we already have a invoice.payment_total method built
-  payment_total = 0
-  invoice.payments.each do |payment|
-    payment_total = payment_total + payment.amount
-  end
-%>
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="panel-title">
@@ -31,12 +24,12 @@
         <% else %>
           <div class="label label-danger">Sprint Closed</div>
         <% end %>
-        <% if payment_total != 0 %>
+        <% if invoice.total_payments != 0 %>
           <div class="label label-success"><strong>Payment: </strong> <%= payment_total.money %></div>
         <% end %>
-        <div class="label label-info"><Strong>Cost: </Strong> <%= invoice.sprint_cost.money %></div>
-        <div class="label label-default"><Strong>Projected: </Strong> <%= invoice.sprint_planned_hours.hours %></div>
-        <div class="label label-default"><Strong>Completed: </Strong> <%= invoice.sprint_hours.hours %></div>
+        <div class="label label-info"><Strong>Cost: </Strong> <%= invoice.cost.money %></div>
+        <div class="label label-default"><Strong>Projected: </Strong> <%= invoice.planned_hours.hours %></div>
+        <div class="label label-default"><Strong>Completed: </Strong> <%= invoice.hours.hours %></div>
       </div>
     </div>
     <div class="panel-options">
@@ -128,12 +121,12 @@
           <tr>
             <th></th>
             <th><strong>Total:</strong></th>
-            <th><%= invoice.sprint_planned_hours.invoice_rate %></th>
+            <th><%= invoice.planned_hours.invoice_rate %></th>
             <% unless invoice.only_planned? %>
-              <th><%= invoice.sprint_hours.hours %></th>
-              <th><%= invoice.sprint_cost.money %></th>
+              <th><%= invoice.hours.hours %></th>
+              <th><%= invoice.cost.money %></th>
             <% else %>
-              <th><%= invoice.sprint_planned_cost.money %></th>
+              <th><%= invoice.planned_cost.money %></th>
             <% end %>
           </tr>
           </tbody>
@@ -154,7 +147,7 @@
               <td></td>
               <td></td>
               <td><strong>Payment Total:</strong></td>
-              <td><%= payment_total.money %></td>
+              <td><%= invoice.total_payments.money %></td>
             </tr>
             </tbody>
           </table>

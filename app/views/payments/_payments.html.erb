@@ -4,32 +4,29 @@
   </div>
   <div class="panel-body">
     <div class="row">
-    </div>
-    <div class="row">
 
       <div class="col-xs-12 col-md-6">
         <ul class="settings_sprint_balance list-group list-group-minimal">
           <h2>Sprint Balances</h2>
           <% unless project.invoices.empty? %>
             <% project.invoices.order('sprint::integer ASC').each do |invoice| %>
-              <% if invoice.balance > 0 %>
+              <% if invoice.balance < 0 %>
                 <li class="list-group-item">
-                      <span>
-                          Sprint <%= invoice.sprint.to_s %>
+                      <span>Sprint <%= invoice.sprint.to_s %>
                         <% if invoice.is_current? %>
-                            <strong>(current)</strong>
-                          <% end %>
+                          <strong>(current)</strong>
+                        <% end %>
                       </span>
-                  <span class="badge badge-roundless badge-danger"><%= ApplicationHelper.money invoice.balance.to_s %></span>
+                  <span class="badge badge-roundless badge-danger"><%= invoice.balance.money %></span>
                 </li>
               <% end %>
             <% end %>
             <li class="list-group-item">
               <span><strong>Total:</strong> </span>
-              <% if project.balance > 0 %>
-                <span class="badge badge-roundless badge-success">+<%= ApplicationHelper.money project.balance.to_s %></span>
+              <% if project.balance < 0 %>
+                <span class="badge badge-roundless badge-danger"><%= project.balance.money %></span>
               <% else %>
-                <span class="badge badge-roundless badge-danger">-<%= ApplicationHelper.money project.balance.to_s %></span>
+                <span class="badge badge-roundless badge-success">+<%= project.balance.money %></span>
               <% end %>
             </li>
           <% else %>
@@ -49,10 +46,9 @@
                 <% if invoice == 0 %>
                   Balance (None)
                   <% elsifif invoice.balance > 0 %>
-                  Balance: +
-                  <% ApplicationHelper.money invoice.balance.to_s %>
+                  Balance: +<%= invoice.balance.money %>
                 <% else %>
-                  Balance: -<%= ApplicationHelper.money invoice.balance.to_s %>
+                  Balance: <%= invoice.balance.money %>
                 <% end %>
                 <% if project.is_owner?(current_user) %>
                   <% payment_request_btn = '<span style="" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>' %>
@@ -71,19 +67,18 @@
 
     <div class="row">
       <div class="col-xs-12 col-md-6">
-        <% if current_user.stripe_account_id.nil? %>
+        <% if project.owner.stripe_account_id.nil? %>
           <div class="alert alert-danger">
             <i style="padding-left: 6px" class="fab fa-2x fa-stripe pull-right"></i>
             <% if project.is_owner? %>
-            To receive payments, you
-            must <%= link_to 'connect with Stripe'.html_safe, root_url + 'users/auth/stripe_connect', class: '' %>
-              <% else %>
-              To receive payments, the project owner must connect his Stripe account. Notify project woner.
+              To receive payments, <%= link_to 'connect Jeweler with Stripe', root_url + 'users/auth/stripe_connect' %>
+            <% else %>
+              To receive payments, the project owner must connect his Stripe account. Notify project owner.
             <% end %>
           </div>
         <% else %>
           <% if project.is_owner? %>
-            <%#= render 'invoices/admin_payment_form', project: project, display_balances: false %>
+            <%#= render 'invoices/admin_payment_form', project: project, display_balances: false #TODO:Add a setting to allow admins to add payments %>
             <%= render 'invoices/fee_notice' %>
           <% else %>
             <%= render 'invoices/payment_form', project: project, display_balances: false %>
@@ -100,7 +95,7 @@
                 <strong>Payment: </strong> Sprint <%= payment.invoice.sprint.to_s %><br>
                 <%= payment.user.full_name %><br>
 
-                <%= ApplicationHelper.money(payment.amount.to_s) %>
+                <%= payment.amount.money %>
                 <% unless payment.payment_type.nil? %>
                   <strong><%= payment.payment_type.to_s %></strong>
                 <% end %>

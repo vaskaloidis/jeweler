@@ -90,7 +90,7 @@ class Project < ApplicationRecord
 
   def total_balance
     unless self.total_cost.nil? or self.total_payment.nil?
-      return (self.total_cost - self.total_payment)
+      return (self.total_payment - self.total_cost)
     else
       return 0
     end
@@ -99,15 +99,64 @@ class Project < ApplicationRecord
   def total_hours
     total = 0.0
     self.invoices.each do |invoice|
-      total = total + invoice.sprint_hours
+      total = total + invoice.hours
     end
     return total
+  end
+
+  def sprint_hours
+    return total_hours
+  end
+
+  def average_sprint_hours(precision = 2)
+    invoices = self.invoices
+    if invoices.empty? or invoices.count == 0 or invoices.nil?
+      return 0
+    else
+      sum = 0.0
+      invoices.each do |invoice|
+        sum = sum + invoice.hours
+      end
+      return (sum / invoices.count).round(precision, :banker)
+    end
+  end
+
+  def task_hours
+    unless self.tasks.empty? or self.tasks.sum(:hours).nil?
+      return self.tasks.sum(:hours)
+    else
+      return 0
+    end
+  end
+
+  def average_task_hours(precision = 2)
+    unless self.tasks.empty? or self.tasks.average(:hours).nil?
+      return self.tasks.average(:hours).round(precision, :banker)
+    else
+      return 0
+    end
+  end
+
+  def average_task_planned_hours(precision = 2)
+    unless self.tasks.empty? or self.tasks.average(:planned_hours).nil?
+      return self.tasks.average(:planned_hours).round(precision, :banker)
+    else
+      return 0
+    end
+  end
+
+  def average_payment(precision = 2)
+    unless self.payments.empty? or self.ayments.average(:amount).nil?
+      return self.payments.average(:amount).round(precision, :banker)
+    else
+      return 0
+    end
   end
 
   def total_cost
     total = 0.0
     self.invoices.each do |invoice|
-      total = total + invoice.sprint_cost
+      total = total + invoice.cost
     end
     return total
   end
@@ -125,7 +174,7 @@ class Project < ApplicationRecord
   def total_planned_hours
     total = 0.0
     self.invoices.each do |invoice|
-      total = total + invoice.sprint_planned_hours
+      total = total + invoice.planned_hours
     end
     return total
   end
@@ -133,7 +182,7 @@ class Project < ApplicationRecord
   def total_planned_cost
     total = 0.0
     self.invoices.each do |invoice|
-      total = total + invoice.sprint_planned_cost
+      total = total + invoice.planned_cost
     end
     return total
   end

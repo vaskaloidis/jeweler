@@ -1,2 +1,15 @@
+<%#TODO: Convert these to toastr, and make the toastr sticky %>
+<% if notice %>
+  <script>
+      toastr.success('<%= notice %>');
+  </script>
+<% end %>
+<% if alert %>
+  <script>
+      toastr.success('<%= alert %>');
+  </script>
+<% end %>
+
+
 <!--<div class="top-notifications">-->
 <!--</div>-->

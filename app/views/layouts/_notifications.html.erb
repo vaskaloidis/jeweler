@@ -36,12 +36,11 @@
   <% end %>
 
   <% if (current_user.oauth.nil? or current_user.oauth == '') %>
-    <% gh_url = 'https://github.com/login/oauth/authorize?client_id=' + ENV['GITHUB_CLIENT_ID'] %>
     <div class="alert alert-danger">
       <i class="fab fa-2x fa-github pull-right"></i>
       Please Connect Jewler with GitHub, <%= link_to 'Here', authorize_github_path %>
     </div>
-  <% elsif !ApplicationHelper.github_hook_configured?(project) %>
+  <% elsif !GitHubApp.github_hook_configured?(project) %>
     <div class="alert alert-danger">
       <i class="fab fa-2x fa-github pull-right"></i>
       You need to add Jewler GitHub Webhook. Add it <%= link_to 'Here', install_github_webhook_path(project.id), remote: true %>.

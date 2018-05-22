@@ -1,12 +1,12 @@
 class User < ApplicationRecord
-  has_many :owner_projects, class_name: 'Project', inverse_of: 'owner'
-  has_many :notes, class_name: 'Note', inverse_of: 'author'
-  has_many :project_customers
-  has_many :customer_projects, :source => :project, :through => :project_customers
+  has_many :owner_projects, class_name: 'Project', inverse_of: 'owner', dependent: :destroy
+  has_many :notes, class_name: 'Note', inverse_of: 'author', dependent: :destroy
+  has_many :project_customers, dependent: :destroy
+  has_many :customer_projects, :source => :project, :through => :project_customers, dependent: :destroy
 
   mount_uploader :image, AvatarUploader
 
-  has_many :payments
+  has_many :payments, dependent: :nullify
 
   accepts_nested_attributes_for :customer_projects
   accepts_nested_attributes_for :owner_projects

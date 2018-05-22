@@ -18,25 +18,83 @@ class WebhookController < ApplicationController
     unless commits.nil?
       commits.each do |commit|
 
-        logger.debug("Iterating over commit")
-
         sha = commit["id"]
 
         logger.debug("Commit SHA: " + sha.to_s)
 
-        message = commit["message"]
+        commit_message = commit["message"]
+
+        hide_message = false
+        custom_message = false
+        commands = commit_message.split('#jeweler')
+
+        commands.each_with_index do |command, count|
+          unless count == 0
+            pounds = command.split('#')
+            second = pounds.second
+            third = pounds.third
+            fourth = pounds.fourth
+
+            if second.starts_with?('task')
+              sprint = second
+              sprint.slice! 'task'
+              task = sprint.slice!(sprint.size - 1...sprint.size)
+
+              if third == 'complete' or third == 'completed' or third == 'finished'
+
+              elsif third == 'current'
+
+              elsif third == 'hours'
+
+              elsif third == 'estimate'
+
+              elsif third == 'incomplete'
+
+              elsif third == 'in-progress' or third == 'started'
+              elsif third == 'testing'
+              elsif third == 'reviewing' or third == 'review'
+              end
+            elsif second.starts_with?('sprint')
+              sprint = second
+              sprint.slice! 'sprint'
+              if third == 'current'
+
+              elsif third == 'open'
+
+              elsif third == 'close'
+
+              elsif third == 'request-payment'
+
+              elsif third == 'send-invoice'
+
+              elsif third == 'send-estimate'
+
+              end
+            elsif second == 'commit'
+
+              if third == 'hide-message'
+                hide_message = true
+              elsif third == 'message'
+                custom_message = fourth
+              end
+
+
+            end
+
+          end
+        end
 
         diff_url = payload["compare"]
         # message = message + '<br><a href="' + payload["compare"] + '">View Commit</a>'
 
         unless commit["added"].empty?
-          message = message + '<br> <strong>Added:</strong><br>'
+          message = message + '<br> <strong>Files Added:</strong><br>'
           commit["added"].each do |file|
             message = message + file + '<br>'
           end
         end
         unless commit["removed"].empty?
-          message = message + '<br> <strong>Removed:</strong><br>'
+          message = message + '<br> <strong>Files Removed:</strong><br>'
           commit["removed"].each do |file|
             message = message + file + '<br>'
           end
@@ -111,13 +169,12 @@ class WebhookController < ApplicationController
   end
 
   def authorize_account
-    github = Github.new client_id: ENV['GITHUB_CLIENT_ID'], client_secret: ENV['GITHUB_CLIENT_SECRET']
-    github.authorize_url scope: 'repo admin:repo_hook write:repo_hook read:repo_hook admin:org_hook notifications'
+    gha = GitHubApp.new
 
-    logger.debug("Github Auth URL: " + github.authorize_url)
+    logger.debug("Github Auth URL: " + gha.authorization_url)
 
     respond_to do |format|
-      format.html { redirect_to github.authorize_url }
+      format.html {redirect_to gha.authorization_url}
     end
 
   end
@@ -125,34 +182,12 @@ class WebhookController < ApplicationController
   def install_webhook
     @project = Project.find(params[:project_id])
 
-    ApplicationHelper.install_github_webhook(@project)
+    gha = GitHubApp.new @project
+    gha.install_github_webhook
 
     respond_to do |format|
       format.js
     end
   end
 
-
-  private
-  def save_webhook_params(params)
-    @params = params
-
-    #slice and dice
-    webhook_id = @params[:webhook_id]
-    puts "WEBHOOK ID #{webhook_id}"
-
-    from = @params[:message_data][:addresses][:from][:email]
-    puts "FROM #{from}"
-
-    to = @params[:message_data][:addresses][:to][0][:email]
-    puts "TO #{to}"
-
-    body = @params[:message_data][:bodies][0][:content]
-    puts "BODY #{body}"
-
-    received = @params[:message_data][:date_received]
-    date_format = Time.at(received).to_datetime
-    puts "DATE #{date_format}"
-
-  end
 end

@@ -1,37 +1,67 @@
 <h2>Jeweler Commit Codes</h2>
 <p>
-  We always start with
+  Jeweler Commit Codes can be placed at the end of Git commit messages to execute various actions in Jeweler. Commit codes always start with
 <pre>#jeweler</pre>
-<hr>
-<strong>Always put the commit code LAST in commit message!</strong><br>
 
-To report hours or complete a task, we first specify the task (Click the task to get it's ID), in this format (sprint_number + task_letter). So for Sprint 4, Task A:
-<br>
+<span>You can string them together like this:</span>
+<pre>#jeweler#task4a#complete #jeweler#task4a#hours#5 #jeweler#task4a#estimate#3 #jeweler#task4b#current</pre>
+<h3>Tasks</h3>
+Task commit codes start with the Task ID. Example: #task4a
 <pre>
   #jeweler#task4a
 </pre>
-To complete a task, we simply add #complete
+To complete a task:
 <pre>
   #jeweler#task#4a#complete
 </pre>
-To report 3 hours for this task:
+To report hours for a task:
 <pre>
-  #jeweler#task#4a#hours#3
+  #jeweler#task4a#hours#(hours)
+  <strong>Example:</strong> #jeweler#task4a#hours#3
 </pre>
-To change the estimated hours for this task to 3:
+To report estimated task hours:
 <pre>
-  #jeweler#task#4a#estimated-hours#3
+  #jeweler#task4a#estimate#(estimated-hours)
+  <strong>Example:</strong> #jeweler#task4a#estimate#2
 </pre>
-To specify a different commit message:
+Set current task
 <pre>
-  #jeweler#commit#message#type your message here
+  #jeweler#task4a#current
+</pre>
+To complete, or incomplete a task
+<pre>
+  #jeweler#task4a#complete
+  #jeweler#task4a#incomplete
+</pre>
+
+<h3>Sprint</h3>
+Set current sprint
+<pre>
+  #jeweler#sprint4#current
+</pre>
+Open and close a sprint
+<pre>
+  #jeweler#sprint4#open
+  #jeweler#sprint4#close
+</pre>
+Request payment for a sprint, or cancel a payment-request
+<pre>
+  #jeweler#sprint4#request-payment
+  #jeweler#sprint3#cancel-payment-request
+</pre>
+Send invoice or estimate
+<pre>
+  #jeweler#sprint4#send-invoice
+  #jeweler#sprint4#send-estimate
+</pre>
+
+<h3>Commit</h3>
+To specify a different commit message to be displayed in the Jeweler note (rather than the commit message):
+<pre>
+  #jeweler#commit#message#(your-message-here)
 </pre>
 To hide the commit message entirely:
 <pre>
-  #jeweler#commit#message-hide
-</pre>
-To request a sprint payment (example for sprint 3):
-<pre>
-  #jeweler#sprint#3#request-payment
+  #jeweler#commit#hide-message
 </pre>
 </p>

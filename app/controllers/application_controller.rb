@@ -26,8 +26,8 @@ class ApplicationController < ActionController::Base
     unless Rails.env.production?
       require 'dotenv/load'
     end
-    # require 'colorize'
     require 'action_view'
+    # require 'colorize'
     require Rails.root.join('lib','Float.rb')
     require Rails.root.join('lib','Double.rb')
     require Rails.root.join('lib','BigDecimal.rb')
