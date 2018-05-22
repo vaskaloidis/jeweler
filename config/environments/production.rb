@@ -1,14 +1,14 @@
 Rails.application.configure do
 
   # config.less.paths << "#{Rails.root}/app/assets/stylesheets"
-  config.assets.compile = true
-  config.assets.compress = true
-  config.assets.digest = true
-  config.assets.debug = true
-  config.assets.js_compressor = :uglifier
-  # config.assets.css_compressor = :yui
-  # config.assets.css_compressor = :sass
-  # config.less.paths << "#{Rails.root}/app/assets/css/less"
+  # config.assets.compile = true
+  # config.assets.compress = true
+  # config.assets.digest = true
+  # config.assets.debug = true
+  # config.assets.js_compressor = :uglifier
+  # # config.assets.css_compressor = :yui
+  # # config.assets.css_compressor = :sass
+  # # config.less.paths << "#{Rails.root}/app/assets/css/less"
 
   config.read_encrypted_secrets = true
 
@@ -22,7 +22,6 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {:host => "jeweler-staging.herokuapp.com"}
   config.action_mailer.raise_delivery_errors = true
 
-
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -32,7 +31,7 @@ Rails.application.configure do
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
-  config.eager_load = true
+  config.eager_load = false
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
@@ -99,12 +98,6 @@ Rails.application.configure do
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
-
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

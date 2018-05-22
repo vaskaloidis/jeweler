@@ -17,8 +17,8 @@ require 'carrierwave/orm/activerecord'
 module JewlerCRM
   class Application < Rails::Application
     # TODO: We load these already in application_controller before_action. Remove one of them
-    config.autoload_paths += %W(#{config.root}/lib)
-    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+    # config.autoload_paths += %W(#{config.root}/lib)
+    # config.autoload_paths += Dir["#{config.root}/lib/**/"]
 
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
