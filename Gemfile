@@ -34,7 +34,10 @@ gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
 gem 'rollbar'
-gem 'premailer-rails'
+gem 'premailer-rails' #TODO: Implement Styled Mailers
+gem 'business_process'
+gem 'virtus'
+
 # TODO: Get Bootsnap working again (crashing)
 # gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'bootsnap', require: false
@@ -48,6 +51,7 @@ group :production do
   # gem 'rails_12factor'
 end
 group :development, :test do
+  gem 'skylight'
   gem 'dotenv-rails'
   gem 'capybara'
   gem 'better_errors'
