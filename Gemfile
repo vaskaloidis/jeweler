@@ -35,8 +35,11 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
 gem 'rollbar'
 gem 'premailer-rails' #TODO: Implement Styled Mailers
-gem 'business_process'
-gem 'virtus'
+
+# Refactoring / Service Objects / Patterns
+# gem 'rails-patterns'
+# gem 'business_process'
+# gem 'virtus'
 
 # TODO: Get Bootsnap working again (crashing)
 # gem 'bootsnap', '>= 1.1.0', require: false
