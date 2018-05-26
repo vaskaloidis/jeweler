@@ -20,15 +20,13 @@ gem 'carrierwave', '~> 1.0'
 gem 'cancancan', '~> 2.0'
 gem 'json'
 gem 'screencap'
-gem 'simple_form'
+gem 'simple_form' #TODO: Evaluate if we use this
 gem 'font-awesome-rails'
 gem 'redcarpet'
 gem 'yaml_db'
 gem 'jquery-ui-rails'
 gem 'jquery-rails'
 gem 'rails-ujs'
-# gem 'sass-rails', '~> 5.0'
-# gem 'sass-rails', '~> 3.2.3'
 gem 'yui-compressor'
 gem 'therubyracer' # Ruby
 gem 'coffee-rails', '~> 4.2'
@@ -45,16 +43,20 @@ gem 'premailer-rails' #TODO: Implement Styled Mailers
 # gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'bootsnap', require: false
 
-gem 'uglifier', '>= 1.3.0'
-gem 'foreman'
-gem 'faker'
+# Memory Testing
+gem 'skylight'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
-  # gem 'rails_12factor'
+  gem 'rails_12factor'
+  gem 'uglifier', '>= 1.3.0'
+  gem 'foreman'
 end
 group :development, :test do
-  gem 'skylight'
+  gem 'capybara-email'
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
+  gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
   gem 'dotenv-rails'
   gem 'capybara'
   gem 'better_errors'
@@ -62,27 +64,24 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 end
 group :development do
-  gem 'rack-mini-profiler'
-  gem 'memory_profiler'
-  gem 'flamegraph'
-
-  gem 'stackprof'
-  gem 'derailed_benchmarks'
   gem 'pry-rails'
   gem 'web-console', '>= 3.3.0' # Add to page: <%= console %>
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'binding_of_caller'
+  # Memory
+  gem 'rack-mini-profiler'
+  # gem 'memory_profiler'
+  # gem 'flamegraph'
+  # gem 'stackprof'
+  # gem 'derailed_benchmarks'
 end
 group :test do
-  # gem 'rspec'
-  # gem 'rspec-rails', '~> 3.7'
   gem 'database_cleaner'
-  gem 'factory_bot'
-  gem 'factory_bot_rails'
   gem 'shoulda-matchers', '~> 3.1'
-  gem 'simplecov', require: false, group: :test
+  gem 'simplecov', require: false
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'minitest-reporters'
 end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

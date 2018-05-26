@@ -24,7 +24,7 @@
           <%#= f.email_field :email, autofocus: true, autocomplete: "email" %>
 
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="field-1">Email</label>
+            <label class="col-sm-2 control-label" for="user_email">Email</label>
             <div class="col-sm-10">
               <div class="input-group">
 											<span class="input-group-addon">
@@ -38,7 +38,7 @@
           <div class="form-group-separator"></div>
 
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="field-2">Password</label>
+            <label class="col-sm-2 control-label" for="user_password">Password</label>
 
             <div class="col-sm-10">
               <input type="password" id="user_password" name="user[password]" class="form-control" placeholder="">
@@ -53,21 +53,21 @@
           <div class="form-group-separator"></div>
 
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="field-1">First Name</label>
+            <label class="col-sm-2 control-label" for="user_first_name">First Name</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="user_first_name" name="user[first_name]" placeholder="">
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="field-1">Last Name</label>
+            <label class="col-sm-2 control-label" for="user_last_name">Last Name</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="user_last_name" name="user[last_name]" placeholder="">
             </div>
           </div>
 
           <div class="form-group">
-            <button type="submit" class="btn btn-success text-left">
+            <button type="submit" id="registration_submit_btn" class="btn btn-success text-left">
               <i class="fa-lock"></i>
               Register
             </button>
