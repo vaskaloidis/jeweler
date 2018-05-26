@@ -25,9 +25,9 @@ module JewlerCRM
     # TODO: Update this with Rails version once we update to 5.2
 
     config.generators do |g|
-      # g.factory_bot dir: 'test/factories'
+      g.factory_bot dir: 'test/factories'
       # g.test_framework :rspec, :fixture => true
-      g.test_framework  :test_unit, fixture: true
+      g.test_framework  :test_unit, fixture: false
     end
 
 
