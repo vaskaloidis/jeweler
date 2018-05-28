@@ -32,7 +32,7 @@ Rails.application.configure do
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
   # NOTE: This overloads Heroku Memory! R14 Errors.
-  config.eager_load = false
+  config.eager_load = false #TODO:  Possibly enable this after we test if n+1 queries are the memory issue
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -10,29 +12,30 @@ ruby '2.5.1'
 gem 'rails', '~> 5.2.0'
 # gem 'activestorage', github: 'rails/activestorage'
 # gem 'platform-api' # Heroku
-gem 'stripe'
+gem 'cancancan', '~> 2.0'
+gem 'carrierwave', '~> 1.0'
+gem 'coffee-rails', '~> 4.2'
+gem 'devise'
+gem 'font-awesome-rails'
+gem 'github_api'
+gem 'jbuilder', '~> 2.5'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'json'
 gem 'omniauth-stripe-connect'
 gem 'pg'
+gem 'premailer-rails' #TODO: Implement Styled Mailers
 gem 'puma', '~> 3.11'
-gem 'github_api'
-gem 'devise'
-gem 'carrierwave', '~> 1.0'
-gem 'cancancan', '~> 2.0'
-gem 'json'
+gem 'rails-ujs'
+gem 'redcarpet'
+gem 'rollbar'
 gem 'screencap'
 gem 'simple_form' #TODO: Evaluate if we use this
-gem 'font-awesome-rails'
-gem 'redcarpet'
-gem 'yaml_db'
-gem 'jquery-ui-rails'
-gem 'jquery-rails'
-gem 'rails-ujs'
-gem 'yui-compressor'
+gem 'stripe'
 gem 'therubyracer' # Ruby
-gem 'coffee-rails', '~> 4.2'
-gem 'jbuilder', '~> 2.5'
-gem 'rollbar'
-gem 'premailer-rails' #TODO: Implement Styled Mailers
+gem 'time_for_a_boolean', '~> 0.2.0'
+gem 'yaml_db'
+gem 'yui-compressor'
 
 # Refactoring / Service Objects / Patterns
 # gem 'rails-patterns'
@@ -48,40 +51,44 @@ gem 'skylight'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
+  gem 'foreman'
   gem 'rails_12factor'
   gem 'uglifier', '>= 1.3.0'
-  gem 'foreman'
+end
+group :test do
+  gem 'capybara'
+  gem 'chromedriver-helper'
+  gem 'database_cleaner'
+  gem 'minitest-reporters'
+  gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 3.1'
+  gem 'simplecov', require: false
 end
 group :development, :test do
+  gem 'better_errors'
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'capybara-email'
+  gem 'coveralls', require: false
+  gem 'dotenv-rails'
   gem 'factory_bot'
   gem 'factory_bot_rails'
   gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
-  gem 'dotenv-rails'
-  gem 'capybara'
-  gem 'better_errors'
   gem 'launchy'
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'rubocop', '~> 0.56.0', require: false
 end
 group :development do
+  gem 'binding_of_caller'
+  gem 'bundler-audit' # TODO: Security Audit Gems
   gem 'pry-rails'
-  gem 'web-console', '>= 3.3.0' # Add to page: <%= console %>
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'binding_of_caller'
+  gem 'web-console', '>= 3.3.0' # Add to page: <%= console %>
   # Memory
+  gem 'bullet'
   gem 'rack-mini-profiler'
   # gem 'memory_profiler'
   # gem 'flamegraph'
   # gem 'stackprof'
   # gem 'derailed_benchmarks'
-end
-group :test do
-  gem 'database_cleaner'
-  gem 'shoulda-matchers', '~> 3.1'
-  gem 'simplecov', require: false
-  gem 'selenium-webdriver'
-  gem 'chromedriver-helper'
-  gem 'minitest-reporters'
 end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

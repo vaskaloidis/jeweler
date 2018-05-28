@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Seeds
 require 'faker'
 
@@ -8,8 +10,6 @@ require 'faker'
 # Note.delete_all
 # Discussion.delete_all
 
-# Seed Tables
-
 # My User
 u = User.new
 u.email = 'vas.kaloidis@gmail.com'
@@ -19,7 +19,6 @@ u.company = 'Blue Helmet Software'
 u.first_name = 'Vas'
 u.last_name = 'Kaloidis'
 u.website_url = 'http://vkaloidis.herokuapp.com'
-u.bio = 'A Java and Ruby on Rails developer, trying to rule the world.'
 u.tagline = 'Ruby on Rails Developer'
 u.location = 'Woodbury, CT'
 u.image = Rails.root.join('app/assets/images/seeds/athf.jpg').open
@@ -37,11 +36,9 @@ c1.first_name = Faker::Name.first_name
 c1.last_name = Faker::Name.last_name
 c1.website_url = Faker::Internet.url
 c1.tagline = 'A Robot User'
-c1.bio = Faker::ChuckNorris.fact
 c1.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
 c1.confirm
 c1.save
-
 c2 = User.new
 c2.email = Faker::Internet.email
 pass = Faker::Internet.password
@@ -52,11 +49,9 @@ c2.first_name = Faker::Name.first_name
 c2.last_name = Faker::Name.last_name
 c2.website_url = Faker::Internet.url
 c2.tagline = 'Some User Tagline'
-c2.bio = Faker::ChuckNorris.fact
 c2.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
 c2.confirm
 c2.save
-
 c3 = User.new
 c3.email = Faker::Internet.email
 pass = Faker::Internet.password
@@ -67,15 +62,9 @@ c3.first_name = Faker::Name.first_name
 c3.last_name = Faker::Name.last_name
 c3.website_url = Faker::Internet.url
 c3.tagline = 'I am Awesome'
-c3.bio = Faker::ChuckNorris.fact
 c3.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
 c3.confirm
 c3.save
-
-# pi = ProductImage.create!(:product => product)
-# pi.image.store!(File.open(File.join(Rails.root, 'test.jpg')))
-# product.product_images << pi
-# product.save!
 
 # Owner Project
 p = Project.new
@@ -90,7 +79,6 @@ p.sprint_total = 8
 p.sprint_current = 1
 p.image = Rails.root.join('app/assets/images/seeds/bluehelmet.png').open
 p.save
-
 
 # Project Customers
 pc = ProjectCustomer.new

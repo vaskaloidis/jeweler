@@ -13,7 +13,7 @@ class UserTest < ActiveSupport::TestCase
   test 'invalid without name' do
     user = build(:invalid_name_user)
     refute user.valid?, 'user is valid without a name'
-    assert_not_nil user.errors[:first_name], 'we are not getting an error about the first_name missing'
+    assert_not_nil user.errors[:first_name], 'first_name valid'
   end
 
   test 'invalid without email' do
