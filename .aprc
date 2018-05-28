@@ -1,0 +1,8 @@
+AwesomePrint.defaults = {
+  color: {
+    hash:  :pale,
+    class: :white
+  },
+  indent: -2,
+  sort_keys: true
+}

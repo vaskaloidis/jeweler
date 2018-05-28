@@ -1,12 +1,11 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy]
-  before_action :verify_invoices_exist, only: [:show, :edit, :update, :destroy]
+  before_action :verify_invoices_exist, only: [:edit, :update]
   before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
   respond_to :html, :js, only: [:request_payment]
 
   def commit_codes_modal
-
     respond_to do |format|
       format.js
     end
@@ -59,13 +58,11 @@ class ProjectsController < ApplicationController
   def show
     # require 'redcarpet'
 
-    gh_url = @project.github_url
-
-    if gh_url.ends_with? '/'
-      gh_url = gh_url + 'master/README.md'
-    else
-      gh_url = gh_url + '/master/README.md'
-    end
+    gh_url = if @project.github_url.ends_with? '/'
+               @project.github_url + 'master/README.md'
+             else
+               @project.github_url + '/master/README.md'
+             end
 
     gh_url.sub! 'github.com', 'raw.githubusercontent.com'
 
@@ -101,8 +98,10 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(project_params)
-    @project.owner = current_user
+    @project = current_user.owner_projects.create(project_params)
+    # @project = Project.new(project_params)
+    # @project.owner = current_user
+
 
     respond_to do |format|
       if @project.save
@@ -173,65 +172,51 @@ class ProjectsController < ApplicationController
 
 
   def sync_github(project, user)
-    # TODO: Add a setting to enable / disable Github_Sync
+    return unless false # TODO: Add a setting to enable / disable Github_Sync
+    return unless project.is_owner?(user) and !project.owner.oauth.nil?
+    begin
+      github = Github.new oauth: project.owner.oauth
+      logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
+      logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
+      repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
+      repos.each do |commit|
+        next unless Note.where(project: project, git_commit_id: sha).empty?
+        sha = commit.sha
+        note = Note.new
+        note.author = project.owner
+        note.note_type = 'commit'
+        note.git_commit_id = sha
+        note.sync = true
+        note.project = project
+        note.content = commit.commit.message.to_s + ' - ' + commit.commit.author.name.to_s
 
-    if false
-      unless project.owner.oauth.nil?
-        if project.is_owner?(user)
-          begin
-            github = Github.new oauth: project.owner.oauth
-            logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
-            logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
-            repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
-            repos.each do |commit|
-              sha = commit.sha
-              if Note.where(project: project, git_commit_id: sha).empty?
-                note = Note.new
-                note.author = project.owner
-                note.note_type = 'commit'
-                note.git_commit_id = sha
-                note.sync = true
-                note.project = project
-                note.content = commit.commit.message.to_s + ' - ' + commit.commit.author.name.to_s
-
-                unless project.current_sprint.nil?
-                  note.invoice = project.current_sprint
-                end
-                unless project.current_task.nil?
-                  note.invoice_item = project.current_task
-                end
-
-                note.created_at = commit.commit.committer.date
-                note.save
-                puts 'Note Created for Commit Sync, SHA: ' + commit.sha
-              end
-            end
-          rescue Exception
-            logger.error("Error syncing Github Repo")
-            logger.error
-          end
+        unless project.current_sprint.nil?
+          note.invoice = project.current_sprint
         end
+        unless project.current_task.nil?
+          note.invoice_item = project.current_task
+        end
+
+        note.created_at = commit.commit.committer.date
+        note.save
+        puts 'Note Created for Commit Sync, SHA: ' + commit.sha
       end
+    rescue Exception
+      logger.error("Error syncing Github Repo")
+      logger.error
     end
   end
 
   def verify_invoices_exist
-    # Require Each Sprint_Total Invoice Exists
+    # TODO: Verify this is not making an extra useless Sprint
     total_sprint_count = @project.sprint_total + 1
     total_sprint_count.times do |sprint|
-      if @project.get_sprint(sprint).nil? and sprint != 0
-        invoice = Invoice.new
-        invoice.project = @project
-        invoice.sprint = sprint
-
-        if @project.sprint_current == sprint
-          invoice.open = true
-        else
-          invoice.open = false
-        end
-
-        invoice.save
-      end
+      next unless @project.get_sprint(sprint).nil? and sprint != 0
+      invoice = Invoice.new
+      invoice.project = @project
+      invoice.sprint = sprint
+      invoice.open = @project.sprint_current == sprint
+      invoice.save
     end
   end
 
