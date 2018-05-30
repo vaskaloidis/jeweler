@@ -40,7 +40,7 @@
         <%= project.owner.company %>
       </li>
     <% end %>
-    <% unless project.is_owner?(current_user) %>
+    <% unless project.owner?(current_user) %>
       <li>
         <a href="<%= project_payments_path(@project.id) %>">
           <i class="fas fa-money-bill-alt"></i>
@@ -78,7 +78,7 @@
         <strong>Production:</strong> <%= project.prod_url %>
       </a>
     </li>
-    <% if project.is_owner?(current_user) %>
+    <% if project.owner?(current_user) %>
       <li>
         <a href="<%= edit_project_path(project) %>">
           <i class="fas fa-cogs"></i>

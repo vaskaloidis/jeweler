@@ -130,10 +130,10 @@ class WebhookController < ApplicationController
           note.commit_diff_path = diff_url.to_s
         end
         unless @project.current_sprint.nil?
-          note.invoice = @project.current_sprint
+          note.sprint = @project.current_sprint
         end
         unless @project.current_task.nil?
-          note.invoice_item = @project.current_task
+          note.task = @project.current_task
         end
 
         note.save

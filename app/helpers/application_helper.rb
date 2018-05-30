@@ -174,7 +174,7 @@ module ApplicationHelper
   def self.display_project_nav?(controller_name, action_name)
 
     if (controller_name == 'projects' and action_name != 'index' and action_name != 'new') or
-        (controller_name == 'invoices') or
+        (controller_name == 'sprint_ids') or
         (controller_name == 'project_customers') or
         (controller_name == 'payments' and action_name == 'index')
       return true

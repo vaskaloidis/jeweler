@@ -1,12 +1,12 @@
-<% if @invoice.payment_due %>
+<% if @sprint.payment_due %>
   toastr.success('Payment Requested.');
 
-  <%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
-  <%= render 'layouts/re-render_notifications', project:@invoice.project %>
-  <%= render 'payments/re-render_payments_panel', project: @invoice.project, user: @user %>
-  <%= render 'notes/re-render_timeline', notes: @invoice.project.sprint_notes, project: @invoice.project %>
+  <%= render 'sprints/re-render_sprint_panel', sprint: @sprint %>
+  <%= render 'layouts/re-render_notifications', project:@sprint.project %>
+  <%= render 'payments/re-render_payments_panel', project: @sprint.project, user: @user %>
+  <%= render 'notes/re-render_timeline', notes: @sprint.project.sprint_notes, project: @sprint.project %>
 
-  $("#modal_target").html('<%= j render'invoices/invoice_select_customer', invoice: @invoice, estimate: false %>');
+  $("#modal_target").html('<%= j render'sprints/invoice_select_customer', sprint: @sprint, estimate: false %>');
   <%= render 'layouts/render_modal', title: 'Invoice' %>
 
 <% else %>

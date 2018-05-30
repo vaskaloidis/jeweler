@@ -1,0 +1,200 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <h4 class="panel-title">
+        Sprint <%= sprint.to_s %>
+        <span id="sprint_<%= sprint.sprint.to_s %>_description" class="description">
+        <% if sprint.description.nil? and sprint.project.owner?(current_user) %>
+          <%= link_to 'Add Description', edit_sprint_description_path(sprint.id), remote: true %>
+        <% else %>
+          - <%= sprint.description %>
+            <% if sprint.project.owner?(current_user) %>
+              <%= link_to '(Edit)', edit_sprint_description_path(sprint.id), remote: true %>
+            <% end %>
+        <% end %>
+        </span>
+      </h4>
+      <div>
+        <% if sprint.open? %>
+          <% if @project.sprint_current == sprint.sprint %>
+            <div class="label label-success">Current Sprint</div>
+          <% else %>
+            <div class="label label-success">Sprint Open</div>
+          <% end %>
+        <% else %>
+          <div class="label label-danger">Sprint Closed</div>
+        <% end %>
+        <% if sprint.total_payments != 0 %>
+          <div class="label label-success"><strong>Payment: </strong> <%= payment_total.money %></div>
+        <% end %>
+        <div class="label label-info"><Strong>Cost: </Strong> <%= sprint.cost.money %></div>
+        <div class="label label-default"><Strong>Projected: </Strong> <%= sprint.planned_hours.hours %></div>
+        <div class="label label-default"><Strong>Completed: </Strong> <%= sprint.hours.hours %></div>
+      </div>
+    </div>
+    <div class="panel-options">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="#sprint_<%= sprint %>_tab-1" data-toggle="tab" aria-expanded="false">Overview</a>
+        </li>
+        <li class="">
+          <a href="#sprint_<%= sprint %>_tab-2" data-toggle="tab" aria-expanded="false">Commits</a>
+        </li>
+        <li class="">
+          <a href="#sprint_<%= sprint %>_tab-3" data-toggle="tab" aria-expanded="false">Events</a>
+        </li>
+        <% if @project.owner?(current_user) %>
+          <div class="btn-group">
+            <button type="button" class="btn btn-gray dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <i class="fa-wrench"></i> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-white" role="menu">
+              <li><%= link_to 'Generate Estimate', generate_invoice_path(sprint.id, 'true'), remote: true %></li>
+              <% unless sprint.only_planned? %>
+                <li><%= link_to 'Generate Invoice', generate_invoice_path(sprint.id, 'false'), remote: true %></li>
+              <% end %>
+              <li>
+                <% if sprint.payment_due? %>
+                  <%= link_to 'Payment Requested'.html_safe,
+                              cancel_request_payment_path(sprint.id),
+                              class: 'btn btn-sm btn-warning payment-requested-btn',
+                              remote: true %>
+                <% else %>
+                  <%= link_to 'Request Pay'.html_safe,
+                              request_payment_path(sprint.id),
+                              class: 'btn btn-sm btn-success payment-request-btn',
+                              remote: true %>
+                <% end %>
+              </li>
+              <li>
+                <a href="#">Set Current Sprint</a>
+              </li>
+              <li>
+                <% unless sprint.current? %>
+                  <% if sprint.open? %>
+                    <%= link_to 'Close Sprint', close_sprint_path(sprint.id), remote: true, data: {confirm: 'Are you sure you want to close sprint ' + sprint.sprint.to_s + '?'} %>
+                  <% else %>
+                    <%= link_to 'Open Sprint', open_sprint_path(sprint.id), remote: true, data: {confirm: 'Are you sure you want to open sprint ' + sprint.sprint.to_s + '?'} %>
+                  <% end %>
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="tab-content">
+
+      <div class="tab-pane active" id="sprint_<%= sprint %>_tab-1">
+        <strong>Description: </strong> <%= sprint.description %><br>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Task</th>
+            <th>Rate</th>
+            <th>Estimated Hours</th>
+            <% unless sprint.only_planned? %>
+              <td>Hours</td>
+              <td>Cost</td>
+            <% else %>
+              <td>Projected Cost</td>
+            <% end %>
+          </tr>
+          </thead>
+          <tbody>
+          <% sprint.tasks.each do |task| %>
+            <tr>
+              <td><%= task.description %></td>
+              <td><%= task.rate.sprint_rate %></td>
+              <td><%= task.planned_hours.hours %></td>
+              <% unless sprint.only_planned? %>
+                <td><%= task.hours.hours %></td>
+                <td><%= task.total_cost.money %></td>
+              <% else %>
+                <td><%= task.planned_cost.money %></td>
+              <% end %>
+            </tr>
+          <% end %>
+          <tr>
+            <th></th>
+            <th><strong>Total:</strong></th>
+            <th><%= sprint.planned_hours.sprint_rate %></th>
+            <% unless sprint.only_planned? %>
+              <th><%= sprint.hours.hours %></th>
+              <th><%= sprint.cost.money %></th>
+            <% else %>
+              <th><%= sprint.planned_cost.money %></th>
+            <% end %>
+          </tr>
+          </tbody>
+        </table>
+
+        <% unless sprint.payments.empty? %>
+          <table class="table table-condensed">
+            <tbody>
+            <% sprint.payments.each do |payment| %>
+              <tr>
+                <td><%= payment.amount.money %></td>
+                <td><%= payment.payment_type %></td>
+                <td><%= payment.user.full_name %></td>
+                <td><%= payment.created_at.strftime("%d %b. %Y") %> </td>
+              </tr>
+            <% end %>
+            <tr>
+              <td></td>
+              <td></td>
+              <td><strong>Payment Total:</strong></td>
+              <td><%= sprint.total_payments.money %></td>
+            </tr>
+            </tbody>
+          </table>
+        <% end %>
+
+      </div>
+
+      <div class="tab-pane" id="sprint_<%= sprint %>_tab-1">
+        <div class="col-xs-12">
+          <% sprint.tasks.each do |task| %>
+            <div class="row">
+              <strong>Task: </strong> <%= task.description %>
+              <% sprint.commits.each do |commit| %>
+                <div style="border:1px solid black; margin-left:15px" class="row">
+                  <%= truncate(commit.git_commit_id, length: 10) %> <%= truncate(commit.content.html_safe, length: 100) %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="row">
+            <% if 1 == 2 #TODO: Finish getting commits without Tasks %>
+              <% sprint.commits.where("id not in (select task_id from notes)").each do |commit| %>
+                <div class="row">
+                  <%= truncate(commit.git_commit_id, length: 10) %> <%= truncate(commit.content.html_safe, length: 100) %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="sprint_<%= sprint %>_tab-2">
+        <div class="col-xs-12">
+          <%= render 'sprints/sprint_sortable_commits', sprint: sprint %>
+        </div>
+      </div>
+
+      <% if @project.owner?(current_user) %>
+        <div class="tab-pane" id="sprint_<%= sprint %>_tab-3">
+          <h3>Events</h3>
+          <% @project.events.each do |event| %>
+            <%= event.author.first_name + ' ' + event.author.last_name + ' ' + event.content + ' on ' + event.created_at.to_s %>
+            <br>
+          <% end %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>

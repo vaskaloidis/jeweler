@@ -39,12 +39,12 @@
 
         </div>
         <div class="row">
-          <% if project.is_owner? %>
+          <% if project.owner? %>
               <h4>Add Payment</h4>
-            <%= render 'invoices/admin_payment_form', project: project, display_balances: false %>
+            <%= render 'sprints/admin_payment_form', project: project, display_balances: false %>
           <% else %>
               <h4>Make Payment</h4>
-            <%= render 'invoices/payment_form', project: project, display_balances: false %>
+            <%= render 'sprints/payment_form', project: project, display_balances: false %>
           <% end %>
         </div>
 
@@ -59,17 +59,17 @@
 
           <div>
             <ul class="settings_sprint_balance list-group list-group-minimal">
-              <% unless project.invoices.empty? %>
-                <% project.invoices.order('sprint::integer ASC').each do |invoice| %>
-                  <% if invoice.balance > 0 %>
+              <% unless project.sprints.empty? %>
+                <% project.sprints.order('sprint::integer ASC').each do |sprint| %>
+                  <% if sprint.balance > 0 %>
                     <li class="list-group-item">
                       <span>
-                          Sprint <%= invoice.sprint.to_s %>
-                        <% if invoice.is_current? %>
+                          Sprint <%= sprint.sprint.to_s %>
+                        <% if sprint.current? %>
                             <strong>(current)</strong>
                           <% end %>
                       </span>
-                      <span class="badge badge-roundless badge-danger">$<%= invoice.balance.to_s %></span>
+                      <span class="badge badge-roundless badge-danger">$<%= sprint.balance.to_s %></span>
                     </li>
                   <% end %>
                 <% end %>
@@ -107,7 +107,7 @@
                   <div style="padding-right:15px">
                     <i class="fas fa-dollar-sign pull-right"></i>
                     <strong>Payment: </strong>
-                    Sprint <%= payment.invoice.sprint.to_s %> <%= payment.user.full_name %>
+                    Sprint <%= payment.sprint.sprint.to_s %> <%= payment.user.full_name %>
                     - $<%= payment.amount.to_s %> (<%= payment.payment_type.to_s %>) - <%= payment.payment_note.to_s %>
                   </div>
                 </div>
@@ -130,21 +130,21 @@
 
           <div>
             <% unless project.payment_requests.empty? %>
-              <% project.payment_requests.each do |invoice| %>
-                <div id="request_payment_notification_sprint_<%= invoice.id.to_s %>" class="alert alert-danger">
+              <% project.payment_requests.each do |sprint| %>
+                <div id="request_payment_notification_sprint_<%= sprint.id.to_s %>" class="alert alert-danger">
                   <div style="color: white; padding-right:15px">
-                    Payment Requested For Sprint <%= invoice.sprint.to_s %>.
-                    <% if invoice == 0 %>
+                    Payment Requested For Sprint <%= sprint.sprint.to_s %>.
+                    <% if sprint == 0 %>
                       Balance (None)
-                    <% elsifif invoice.balance > 0 %>
-                      Balance: $+<% invoice.balance.to_s %>
+                    <% elsifif sprint.balance > 0 %>
+                      Balance: $+<% sprint.balance.to_s %>
                       <% else %>
-                      Balance: $-<%= invoice.balance.to_s %>
+                      Balance: $-<%= sprint.balance.to_s %>
                       <% end %>
-                    <% if project.is_owner?(user) %>
+                    <% if project.owner?(user) %>
                       <% payment_request_btn = '<span style="color:white" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>' %>
                       <%= link_to payment_request_btn.html_safe,
-                                  cancel_request_payment_path(invoice.id),
+                                  cancel_request_payment_path(sprint.id),
                                   remote: true %>
                     <% end %>
                   </div>

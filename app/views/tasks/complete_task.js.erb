@@ -1,0 +1,22 @@
+<% if @task.valid? %>
+
+  <%= render 'sprints/re-render_sprint_panel', sprint: @sprint %>
+  <%= render 'notes/re-render_timeline', notes: @sprint.project.sprint_notes, project: @sprint.project %>
+  <%= render 'layouts/re-render_notifications', project:@sprint.project %>
+
+  $('#sprint_gauge_container').animate({
+      width: '0'
+  });
+
+  $('#sprint_gauge_container').animate({
+      width: '<%= ApplicationHelper.sprint_percent(@sprint.project) %>%'
+  });
+
+  <% if @sprint.sprint_complete? %>
+    toastr.success('Sprint Complete. Congragulations!!');
+  <% else %>
+    toastr.success('Task Complete.')
+  <% end %>
+<% else %>
+  toastr.error('Task could not be completed. (Error. We are working to fix this)');
+<% end %>

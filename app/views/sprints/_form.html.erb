@@ -1,0 +1,28 @@
+<%= form_with(model: sprint, local: true, class: 'form-horizontal') do |form| %>
+  <% if sprint.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(sprint.errors.count, "error") %> prohibited this sprint from being saved:</h2>
+
+      <ul>
+      <% sprint.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :payment_due_date %>
+    <%= form.date_select :payment_due_date, class: 'form-control' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Save', class: 'btn btn-success' %>
+    <%= link_to 'Cancel', sprint_path(sprint), class: 'btn btn-primary' %>
+  </div>
+<% end %>

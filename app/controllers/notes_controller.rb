@@ -78,11 +78,11 @@ class NotesController < ApplicationController
     @note.note_type = 'note'
 
     unless @note.project.current_sprint.nil?
-      @note.invoice = @note.project.current_sprint
+      @note.sprint = @note.project.current_sprint
     end
 
     unless @note.project.current_task.nil?
-      @note.invoice_item = @note.project.current_task
+      @note.task = @note.project.current_task
     end
 
     respond_to do |format|
@@ -102,11 +102,11 @@ class NotesController < ApplicationController
 
     project = @note.project
     unless project.current_sprint.nil?
-      @note.invoice = project.current_sprint
+      @note.sprint = project.current_sprint
     end
 
     unless project.current_task.nil?
-      @note.invoice_item = project.current_task
+      @note.task = project.current_task
     end
 
     if @note.note_type == 'demo'

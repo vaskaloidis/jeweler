@@ -7,16 +7,16 @@ class Note < ApplicationRecord
   has_many :discussions, dependent: :destroy
   belongs_to :author, :class_name => 'User', :foreign_key => 'user_id', inverse_of: 'notes', required: true
 
-  belongs_to :invoice, optional: true
-  belongs_to :invoice_item, optional: true
+  belongs_to :sprint, optional: true
+  belongs_to :task, optional: true
 
   mount_uploader :image, AvatarUploader
 
-  accepts_nested_attributes_for :invoice
-  accepts_nested_attributes_for :invoice_item
+  accepts_nested_attributes_for :sprint
+  accepts_nested_attributes_for :task
 
   def self.note_types
-    note_types = Array.new
+    note_types = []
     note_types << 'all'
     note_types << 'note'
     note_types << 'project_update'
@@ -25,11 +25,11 @@ class Note < ApplicationRecord
     note_types << 'payment'
     note_types << 'payment_request'
     note_types << 'event'
-    return note_types
+    note_types
   end
 
-  def self.create_payment(invoice, current_user, payment_amount)
-    project = invoice.project
+  def self.create_payment(sprint, current_user, payment_amount)
+    project = sprint.project
 
     note = Note.new
     note.note_type = 'payment'
@@ -37,14 +37,14 @@ class Note < ApplicationRecord
     note.project = project
 
     unless project.current_sprint.nil?
-      note.invoice = project.current_sprint
+      note.sprint = project.current_sprint
     end
 
     unless project.current_task.nil?
-      note.invoice_item = project.current_task
+      note.task = project.current_task
     end
 
-    note.content = '$' + payment_amount.to_s + ' Payment for Sprint ' + invoice.sprint.to_s
+    note.content = '$' + payment_amount.to_s + ' Payment for Sprint ' + sprint.sprint.to_s
     note.save
 
     if note.invalid?
@@ -54,8 +54,8 @@ class Note < ApplicationRecord
     return note
   end
 
-  def self.create_payment_request(invoice, current_user)
-    project = invoice.project
+  def self.create_payment_request(sprint, current_user)
+    project = sprint.project
 
     note = Note.new
     note.note_type = 'payment_request'
@@ -63,14 +63,14 @@ class Note < ApplicationRecord
     note.project = project
 
     unless project.current_sprint.nil?
-      note.invoice = project.current_sprint
+      note.sprint = project.current_sprint
     end
 
     unless project.current_task.nil?
-      note.invoice_item = project.current_task
+      note.task = project.current_task
     end
 
-    note.content = 'Sprint ' + invoice.sprint.to_s + ' Payment Requested'
+    note.content = 'Sprint ' + sprint.sprint.to_s + ' Payment Requested'
     note.save
 
     if note.invalid?
@@ -80,7 +80,7 @@ class Note < ApplicationRecord
     return note
   end
 
-  def self.create_event(project, event_type, message, invoice = nil)
+  def self.create_event(project, event_type, message, sprint = nil)
     begin
       note = Note.new
       note.note_type = 'event'
@@ -91,21 +91,21 @@ class Note < ApplicationRecord
         note.project = project
       end
 
-      if invoice.nil?
+      if sprint.nil?
         unless project.current_sprint.nil?
-          note.invoice = project.current_sprint
+          note.sprint = project.current_sprint
         end
         unless project.current_task.nil?
-          note.invoice_item = project.current_task
+          note.task = project.current_task
         end
       else
-        note.invoice = invoice
-        if project.current_sprint = invoice
-          note.invoice_item = invoice.current_task
+        note.sprint = sprint
+        if project.current_sprint = sprint
+          note.task = sprint.current_task
         end
       end
 
-      # note.content = 'Sprint ' + note.invoice.sprint.to_s + ' - ' + message
+      # note.content = 'Sprint ' + note.sprint.sprint.to_s + ' - ' + message
       note.content = message
 
       note.save
@@ -133,14 +133,14 @@ class Note < ApplicationRecord
     end
 
     unless project.current_sprint.nil?
-      note.invoice = project.current_sprint
+      note.sprint = project.current_sprint
     end
 
     unless project.current_task.nil?
-      note.invoice_item = project.current_task
+      note.task = project.current_task
     end
 
-    # note.content = 'Sprint ' + note.invoice.sprint.to_s + ' - ' + message
+    # note.content = 'Sprint ' + note.sprint.sprint.to_s + ' - ' + message
     note.content = message
 
     note.save
@@ -163,11 +163,11 @@ class Note < ApplicationRecord
     end
 
     unless project.current_sprint.nil?
-      note.invoice = project.current_sprint
+      note.sprint = project.current_sprint
     end
 
     unless project.current_task.nil?
-      note.invoice_item = project.current_task
+      note.task = project.current_task
     end
 
     note.content = message

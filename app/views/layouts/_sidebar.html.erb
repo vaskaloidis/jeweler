@@ -67,7 +67,7 @@
           </li>
           <li>
             <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
-              <% if @project.is_owner?(current_user) %>
+              <% if @project.owner?(current_user) %>
                 <%= link_to '<i class="fas fa-sticky-note"></i> New Note'.html_safe,
                             create_note_modal_path(@project.id),
                             remote: true %>
@@ -85,7 +85,7 @@
             <% end %>
           </li>
           <li class="logout-link">
-            <% if defined? @project and @project.is_owner?(current_user) %>
+            <% if defined? @project and @project.owner?(current_user) %>
               <%= link_to '<i class="fas fa-cogs sidebar-icon"></i>'.html_safe, edit_project_path(@project) %>
             <% else %>
               <%= link_to('<i class="fa-power-off"></i>'.html_safe, destroy_user_session_path, method: :delete) %>
@@ -117,7 +117,7 @@
               </a>
             </li>
             <li>
-              <a href="<%= project_invoices_path(@project) %>">
+              <a href="<%= project_sprints_path(@project) %>">
                 <i class="fas fa-paper-plane"></i>
                 <span class="title">Sprints & Invoices</span>
               </a>
@@ -138,7 +138,7 @@
                   <span class="title">Readme</span>
                 </a>
               </li>
-              <% unless @project.is_owner?(current_user) %>
+              <% unless @project.owner?(current_user) %>
                 <li>
                   <a href="#settings" data-toggle="tab" data-animate="true">
                     <i class="fas fa-cogs"></i>
@@ -147,7 +147,7 @@
                 </li>
               <% end %>
             <% end %>
-            <% if @project.is_owner?(current_user) %>
+            <% if @project.owner?(current_user) %>
               <li>
                 <a href="<%= edit_project_path(@project) %>">
                   <i class="fas fa-cogs"></i>

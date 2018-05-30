@@ -5,7 +5,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
-        <%= render 'invoices/invoice_slider', invoice: project.current_sprint, sprint: project.current_sprint.sprint  %>
+        <%= render 'sprints/sprint_slider', sprint: project.current_sprint, sprint: project.current_sprint.sprint  %>
       </div>
     </div>
   </div>
@@ -18,9 +18,9 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
-        <% project.invoices.order('sprint ASC').each_with_index do |invoice, count| %>
+        <% project.sprints.order('sprint ASC').each_with_index do |sprint, count| %>
           <% if count > project.current_sprint.sprint %>
-            <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint %>
+            <%= render 'sprints/sprint_slider', sprint: sprint, sprint: sprint.sprint %>
           <% end %>
         <% end %>
       </div>
@@ -35,9 +35,9 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
-        <% project.invoices.order('sprint ASC').each_with_index do |invoice, count| %>
+        <% project.sprints.order('sprint ASC').each_with_index do |sprint, count| %>
           <% if count < project.current_sprint.sprint %>
-            <%= render 'invoices/invoice_slider', invoice: invoice, sprint: invoice.sprint  %>
+            <%= render 'sprints/sprint_slider', sprint: sprint, sprint: sprint.sprint  %>
           <% end %>
         <% end %>
       </div>

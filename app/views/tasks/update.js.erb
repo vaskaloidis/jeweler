@@ -1,0 +1,9 @@
+<%= render 'sprints/re-render_sprint_panel', sprint: @task.sprint %>
+
+<% if @errors.empty? %>
+  toastr.success('Task updated Successfully.');
+<% else %>
+  <% @errors.each do |error| %>
+    toastr.error('Error creating Task: <%=  error %>');
+  <% end %>
+<% end %>

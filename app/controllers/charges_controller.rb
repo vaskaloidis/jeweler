@@ -11,10 +11,10 @@ class ChargesController < ApplicationController
     @amount = params[:charge_amount]
     # @amount = params[:amount]
     @amount = @amount.to_d
-    @invoice = Invoice.find(params[:invoice_id])
+    @sprint = Sprint.find(params[:sprint_id])
 
 
-    if ApplicationHelper.is_number?(params[:charge_amount]) and ApplicationHelper.is_number?(params[:invoice_id])
+    if ApplicationHelper.is_number?(params[:charge_amount]) and ApplicationHelper.is_number?(params[:sprint_id])
       unless @owner.stripe_account_id.nil?
         if params[:payment_note] != 'Payment Note'
           @payment_note = params[:payment_note]
@@ -46,10 +46,10 @@ class ChargesController < ApplicationController
     @amount = params[:charge_amount]
     # @amount = params[:amount]
     @amount = @amount.to_d
-    @invoice = Invoice.find(params[:invoice_id])
+    @sprint = Sprint.find(params[:sprint_id])
 
 
-    if ApplicationHelper.is_number?(params[:charge_amount]) and ApplicationHelper.is_number?(params[:invoice_id])
+    if ApplicationHelper.is_number?(params[:charge_amount]) and ApplicationHelper.is_number?(params[:sprint_id])
       unless @owner.stripe_account_id.nil?
         if params[:payment_note] != 'Payment Note'
           @payment_note = params[:payment_note]
@@ -84,7 +84,7 @@ class ChargesController < ApplicationController
 
       @payment = Payment.new
       @payment.amount = params[:charge_amount]
-      @payment.invoice = Invoice.find(params[:invoice_id])
+      @payment.sprint = Sprint.find(params[:sprint_id])
       @payment.user = User.find(params[:customer_id])
       # @payment.type = params[:payment_type]
       if params[:payment_note] != 'Payment Note'
@@ -111,17 +111,17 @@ class ChargesController < ApplicationController
             }
         )
         if charge.valid?
-          Note.create_payment(@payment.invoice, current_user, @payment.amount) # TODO: Add an image or object to this note (not just a sentence)
+          Note.create_payment(@payment.sprint, current_user, @payment.amount) # TODO: Add an image or object to this note (not just a sentence)
         else
           charge.errors.full_messages do |error|
             logger.error('Error creating Stripe Charge: ' + error)
             @error_msgs << error
           end
         end
-        if @payment.invoice.payment_due?
-          @payment.invoice.payment_due = false
-          @payment.invoice.save
-          @payment.invoice.reload
+        if @payment.sprint.payment_due?
+          @payment.sprint.payment_due = false
+          @payment.sprint.save
+          @payment.sprint.reload
         end
       else
         @payment.errors.full_messages.each do |error|

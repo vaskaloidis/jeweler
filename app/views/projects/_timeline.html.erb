@@ -61,7 +61,7 @@
     </li>
   <% else %>
 
-    <% notes.each_with_index do |note, count| %>
+    <% notes.includes(:discussions, :task, :author).each_with_index do |note, count| %>
 
       <%
         if count == 0

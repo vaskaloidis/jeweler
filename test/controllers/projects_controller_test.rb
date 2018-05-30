@@ -5,49 +5,67 @@ require 'test_helper'
 class ProjectsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  # Setup runs before EVERY test
   setup do
-    @project = create(:project)
+    @user = create(:user)
+    sign_in @user
+
+    @project = create(:project_with_sprints)
   end
 
   test 'should get index' do
     get projects_url
-    assert_response :success
+    assert_response :success, @response.body.to_s
   end
 
   test 'should get new' do
     get new_project_url
-    assert_response :success
+    assert_response :success, @response.body.to_s
   end
 
-  test 'should create project' do
+  test 'should create project and corresponding sprints' do
+    new_project = attributes_for(:new_project)
     assert_difference('Project.count') do
-      post projects_url, params: { project: attributes_for(:project) }
+      post projects_url, params: { project: new_project }
     end
 
-    assert_redirected_to project_url(Project.last)
+    project = Project.last
+    assert project and project.valid?
+
+    assert_redirected_to project_url(project)
+    assert_equal(project.name, new_project[:name])
+    assert_equal(project.description, new_project[:description])
+    assert_equal(project.language, new_project[:language])
+    assert_equal(project.github_url, new_project[:github_url])
+
+    project.sprints.each do |sprint, index|
+      assert_equal sprint.sprint, (index+1)
+    end
+
   end
 
   test 'should show project' do
     get project_url(@project)
-    assert_response :success
+    assert_response :success, @response.body.to_s
   end
 
   test 'should get edit' do
     get edit_project_url(@project)
-    assert_response :success
+    assert_response :success, @response.body.to_s
   end
 
   test 'should update project' do
-    project_update = {
-      name: Faker::App.name,
-      language: Faker::ProgrammingLanguage.name,
-      description: Faker::ChuckNorris.rand
-    }
+    project_update = attributes_for(:update_project)
 
     patch project_url(@project), params: { project: project_update }
-    assert_redirected_to project_url(@project)
+    # assert_redirected_to project_url(@project), @response.body.to_s
 
-    assert(@project.to_a - project_update.to_a).empty?
+    @project.reload
+    # @project = Project.find(@project)
+
+    assert_equal(project_update[:name], @project.name)
+    assert_equal(project_update[:description], @project.description)
+    assert_equal(project_update[:language], @project.language)
   end
 
   test 'should destroy project' do
@@ -55,6 +73,11 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       delete project_url(@project)
     end
 
-    assert_redirected_to projects_url
+    assert_redirected_to projects_url, @response.body.to_s
+  end
+
+  private
+  def save_response_to_file(response)
+    File.open("response.txt", "w") { |file| file.write response.body.to_s }
   end
 end

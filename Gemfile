@@ -38,9 +38,9 @@ gem 'yaml_db'
 gem 'yui-compressor'
 
 # Refactoring / Service Objects / Patterns
-# gem 'rails-patterns'
+gem 'rails-patterns'
 # gem 'business_process'
-# gem 'virtus'
+gem 'virtus'
 
 # TODO: Get Bootsnap working again (crashing)
 # gem 'bootsnap', '>= 1.1.0', require: false
@@ -56,16 +56,17 @@ group :production do
   gem 'uglifier', '>= 1.3.0'
 end
 group :test do
+  gem 'minitest-around'
   gem 'capybara'
   gem 'chromedriver-helper'
   gem 'database_cleaner'
   gem 'minitest-reporters'
   gem 'selenium-webdriver'
-  gem 'shoulda-matchers', '~> 3.1'
+  gem 'shoulda', '~> 3.5'
+  gem 'shoulda-matchers', '~> 2.0'
   gem 'simplecov', require: false
 end
 group :development, :test do
-  gem 'better_errors'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'capybara-email'
   gem 'coveralls', require: false
@@ -77,6 +78,7 @@ group :development, :test do
   gem 'rubocop', '~> 0.56.0', require: false
 end
 group :development do
+  gem 'better_errors'
   gem 'binding_of_caller'
   gem 'bundler-audit' # TODO: Security Audit Gems
   gem 'pry-rails'

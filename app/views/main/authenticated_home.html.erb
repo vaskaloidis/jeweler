@@ -41,9 +41,9 @@
                     <span class="alert alert-success">Total Billed: <%= project.total_cost.money %></span>
                     <span class="alert alert-success">Billed Hours: <%= project.total_hours.prettify %> hrs</span>
                     <span class="alert alert-warning">Total Payment: <%= project.total_payment.money %></span>
-                    <% if project.total_balance > 0 %>
-                      <% total_balance = total_balance + project.total_balance %>
-                      <span class="alert alert-danger">Balance: <%= project.total_balance.money %></span>
+                    <% if project.balance > 0 %>
+                      <% total_balance = total_balance + project.balance %>
+                      <span class="alert alert-danger">Balance: <%= project.balance.money %></span>
                     <% end %>
                     <% total_payment = total_payment + project.total_payment %>
                     <% total_cost = total_cost + project.total_cost %>
@@ -110,10 +110,10 @@
               </a>
               <% unless project.payment_requests.empty? %>
                 <p>
-                  <% project.payment_requests.each do |invoice| %>
+                  <% project.payment_requests.each do |sprint| %>
                   <div class="alert alert-success">
-                    Payment Requested For Sprint <%= invoice.sprint.to_s %>
-                    <%= link_to '<strong>Make Payment</strong>'.html_safe, project_payments_path(invoice.project.id) %>
+                    Payment Requested For Sprint <%= sprint.sprint.to_s %>
+                    <%= link_to '<strong>Make Payment</strong>'.html_safe, project_payments_path(sprint.project.id) %>
                   </div>
                 <% end %>
                 </p>

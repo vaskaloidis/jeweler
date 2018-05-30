@@ -21,7 +21,7 @@ class Float
     return result
   end
 
-  def invoice_rate
+  def sprint_rate
     result = self.prettify.to_s
     result = '$' + result + ' /hr'
     return result

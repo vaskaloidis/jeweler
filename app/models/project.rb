@@ -1,24 +1,26 @@
+# frozen_string_literal: true
+
 class Project < ApplicationRecord
-  belongs_to :owner, :class_name => 'User', :foreign_key => 'user_id', inverse_of: 'owner_projects', required: true
+  belongs_to :owner, class_name: 'User', foreign_key: 'user_id', inverse_of: 'owner_projects', required: true
   has_many :project_customers
-  has_many :customers, :through => :project_customers, :source => :user
+  has_many :customers, through: :project_customers, source: :user
   has_many :notes
 
-  belongs_to :current_task, :class_name => 'InvoiceItem', :foreign_key => 'invoice_item_id', inverse_of: 'project', optional: true
+  belongs_to :current_task, class_name: 'Task', foreign_key: 'task_id', inverse_of: 'project', optional: true
 
-  has_many :invoices
-  has_many :invoice_items
-  has_many :tasks, :through => :invoices, :source => :invoice_items
-  has_many :payments, :through => :invoices
+  has_many :sprints, -> {order 'sprint'}
+  has_many :tasks
+  has_many :tasks, through: :sprints, source: :tasks
+  has_many :payments, through: :sprints
   has_many :invitations
 
   mount_uploader :image, AvatarUploader
 
   accepts_nested_attributes_for :customers
   accepts_nested_attributes_for :owner
-  accepts_nested_attributes_for :invoices
+  accepts_nested_attributes_for :sprints
   accepts_nested_attributes_for :current_task
-  accepts_nested_attributes_for :invoice_items
+  accepts_nested_attributes_for :tasks
   accepts_nested_attributes_for :notes
   accepts_nested_attributes_for :invitations
 
@@ -27,190 +29,149 @@ class Project < ApplicationRecord
   validates :name, presence: true
   validates :github_url, presence: true, uniqueness: true
 
-  def sprints
-    return self.invoices.order('sprint::integer ASC')
-  end
-
   # Create an Event
-  # Event Types: :task_created, :task_updated, :task_deleted, :sprint_opened, :sprint_closed, :hours_reported,
-  #              :task_completed, :sprint_completed, :current_task_changed, :current_sprint_changed,
-  #              :payment_request_cancelled]
   def create_event(event_type, message)
     Note.create_event(self, event_type, message)
   end
 
   def sprint_events
-    return self.current_sprint.notes.where(note_type: [:event]).order('created_at DESC').all
+    current_sprint.notes.where(note_type: [:event]).order('created_at DESC').all
   end
 
   def events
-    return self.sprint_events
+    sprint_events
   end
 
   def home_page_notes
-    return self.sprint_notes
+    sprint_notes
   end
 
   def sprint_notes
-    default_notes = self.current_sprint.notes.where(note_type: [:note, :commit, :project_update, :payment, :payment_request, :demo]).order('created_at DESC').all
+    default_notes = current_sprint.notes.where(note_type: %i[note commit project_update payment payment_request demo]).order('created_at DESC').all
     if default_notes.empty?
-      default_notes = self.current_sprint.notes.order('created_at DESC').all
+      default_notes = current_sprint.notes.order('created_at DESC').all
     end
-    return default_notes
+    default_notes
   end
 
-  def is_owner?(user = nil)
-    if user.nil?
-      if User.current_user == self.owner
-        return true
-      else
-        return false
-      end
-    else
-      if self.owner == user
-        return true
-      else
-        return false
-      end
-    end
+  def owner?(user)
+    owner == user
   end
 
-  def is_customer?(user)
+  def customer?(user)
     if user.instance_of? String
       user = User.get_account user
       if user
-        if self.customers.include?(user)
-          return true
-        else
-          return false
-        end
+        customers.include?(user)
       else
         return false
       end
     else
-      if self.customers.include?(user)
-        return true
-      else
-        return false
-      end
+      customers.include?(user)
     end
   end
 
   def balance
-    return self.total_balance
-  end
-
-  # TODO: Replace ths with balance (refactor project-wide)
-  def total_balance
-    unless self.total_cost.nil? or self.total_payment.nil?
-      return (self.total_payment - self.total_cost)
+    if !total_cost.nil? && !total_payment.nil?
+      total_payment - total_cost
     else
-      return 0
+      0
     end
   end
 
   def total_hours
     total = 0.0
-    self.invoices.each do |invoice|
-      total = total + invoice.hours
+    sprints.includes(:tasks).pluck(:hours).each do |hours|
+      total += hours unless hours.nil?
     end
-    return total
+    total
   end
 
   def sprint_hours
-    return total_hours
+    total_hours
   end
 
   def average_sprint_hours(precision = 2)
-    invoices = self.invoices
-    if invoices.empty? or invoices.count == 0 or invoices.nil?
-      return 0
-    else
-      sum = 0.0
-      invoices.each do |invoice|
-        sum = sum + invoice.hours
-      end
-      return (sum / invoices.count).round(precision, :banker)
+    return 0 if sprints.empty? || sprints.count.zero? || sprints.nil?
+    sum = 0.0
+    sprints.pluck(:hours).each do |sprint|
+      sum += sprint.hours
     end
+    (sum / sprints.count).round(precision, :banker)
   end
 
   def task_hours
-    unless self.tasks.empty? or self.tasks.sum(:hours).nil?
-      return self.tasks.sum(:hours)
+    if tasks.empty? || tasks.sum(:hours).nil?
+      0
     else
-      return 0
+      tasks.sum(:hours)
     end
   end
 
   def average_task_hours(precision = 2)
-    unless self.tasks.empty? or self.tasks.average(:hours).nil?
-      return self.tasks.average(:hours).round(precision, :banker)
+    if tasks.empty? || tasks.average(:hours).nil?
+      0
     else
-      return 0
+      tasks.average(:hours).round(precision, :banker)
     end
   end
 
   def average_task_planned_hours(precision = 2)
-    unless self.tasks.empty? or self.tasks.average(:planned_hours).nil?
-      return self.tasks.average(:planned_hours).round(precision, :banker)
+    if tasks.empty? || tasks.average(:planned_hours).nil?
+      0
     else
-      return 0
+      tasks.average(:planned_hours).round(precision, :banker)
     end
   end
 
   def average_payment(precision = 2)
-    unless self.payments.empty? or self.ayments.average(:amount).nil?
-      return self.payments.average(:amount).round(precision, :banker)
+    if payments.empty? || ayments.average(:amount).nil?
+      0
     else
-      return 0
+      payments.average(:amount).round(precision, :banker)
     end
   end
 
   def total_cost
     total = 0.0
-    self.invoices.each do |invoice|
-      total = total + invoice.cost
+    sprints.each do |sprint|
+      total += sprint.cost
     end
-    return total
+    total
   end
 
   def total_payment
     total = 0.0
-    self.invoices.each do |invoice|
-      invoice.payments.each do |payment|
-        total = total + payment.amount
+    sprints.each do |sprint|
+      sprint.payments.pluck(:amount).each do |payment|
+        total += payment.amount
       end
     end
-    return total
+    total
   end
 
   def total_planned_hours
     total = 0.0
-    self.invoices.each do |invoice|
-      total = total + invoice.planned_hours
+    sprints.each do |sprint|
+      total += sprint.planned_hours
     end
-    return total
+    total
   end
 
   def total_planned_cost
     total = 0.0
-    self.invoices.each do |invoice|
-      total = total + invoice.planned_cost
+    sprints.includes(:tasks).each do |sprint|
+      total += sprint.planned_cost
     end
-    return total
+    total
   end
 
   def get_sprint(number)
-    invoices = self.invoices.where(sprint: number)
-    if invoices.empty?
-      return nil
-    else
-      return invoices.first
-    end
+    sprints.where(sprint: number).first
   end
 
   def current_sprint=(sprint)
-    self.sprint_current = sprint.sprint
+    sprint_current = sprint.sprint
 
     unless sprint.open?
       sprint.open = true
@@ -219,42 +180,29 @@ class Project < ApplicationRecord
     end
 
     if sprint.invalid?
-      logger.error("Error opening Sprint, while setting current sprint (changing sprint) on project ID: " + self.id.to_s);
+      logger.error('Error opening Sprint, while setting current sprint (changing sprint) on project ID: ' + id.to_s)
     end
 
-    if self.invalid?
-      logger.error("Error changing current sprint on project ID: " + self.id.to_s)
+    if invalid?
+      logger.error('Error changing current sprint on project ID: ' + id.to_s)
     end
 
-    return self.save
+    save
   end
 
   def current_sprint
-    this_sprint_invoice = self.invoices.where(sprint: self.sprint_current)
-    if this_sprint_invoice.empty?
-      return nil
-    else
-      return this_sprint_invoice.first
-    end
+    get_sprint(sprint_current)
   end
 
   def payment_requests
-    invoices = Array.new
-    self.invoices.each do |invoice|
-      if invoice.payment_due == true
-        invoices << invoice
-      end
-    end
-    return invoices
+    sprints.where(payment_due: true)
   end
 
   def payment_requested?
-    self.invoices.each do |x|
-      if x.payment_due == true
-        return true
-      end
+    sprints.each do |x|
+      true if x.payment_due
     end
-    return false
+    false
   end
 
   def create_note(note_type, note_content)
@@ -267,44 +215,34 @@ class Project < ApplicationRecord
   end
 
   def non_customers
-    nc = Array.new
+    nc = []
     User.all do |u|
-      unless self.is_customer?(current_user)
-        nc << u
-      end
+      nc << u unless customer?(current_user)
     end
-    return nc
+    nc
   end
 
   def max_planned_hours
     max = 0.00
-    self.invoices.each do |i|
-      if max < i.planned_hours
-        max = i.planned_hours
-      end
+    sprints.each do |i|
+      max = i.planned_hours if max < i.planned_hours
     end
-    return max
+    max
   end
 
   def max_hours
     max = 0.00
-    self.invoices.each do |i|
-      if max < i.hours
-        max = i.hours
-      end
+    sprints.each do |i|
+      max = i.hours if max < i.hours
     end
-    return max
+    max
   end
 
   def max_payment
     max = 0.00
-    self.payments.each do |p|
-      if p.amount > max
-        max = p.amount
-      end
+    payments.each do |p|
+      max = p.amount if p.amount > max
     end
-    return max
+    max
   end
-
-
 end

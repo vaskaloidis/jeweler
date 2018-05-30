@@ -1,0 +1,19 @@
+<%= render 'sprints/re-render_sprint_panel', sprint: @sprint %>
+<%= render 'sprints/re-render_sprint_panel', sprint: @old_sprint %>
+
+<%= render 'notes/re-render_timeline', notes: @sprint.project.sprint_notes, project:@sprint.project %>
+<%= render 'payments/re-render_payments_panel', project: @sprint.project, user: current_user %>
+<%= render 'layouts/re-render_notifications', project: @sprint.project %>
+
+toastr.success('Sprint Changed To <%= @sprint.sprint.to_s %> From <%= @old_sprint.sprint.to_s %> ');
+
+$('#sprint_gauge_container').animate({
+    width: '0'
+});
+
+$('#sprint_gauge_container').animate({
+    width: '<%= ApplicationHelper.sprint_percent(@sprint.project) %>%'
+});
+
+
+// sprint.where(project: @project, sprint: count).first, sprint: count
