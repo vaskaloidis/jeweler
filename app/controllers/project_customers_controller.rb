@@ -13,7 +13,7 @@ class ProjectCustomersController < ApplicationController
     project = Project.find(params[:project_id])
 
     # Check if User is already a member of this project
-    if project.is_customer? email
+    if project.customer? email
       @already_customer = true
     else
       @already_customer = false

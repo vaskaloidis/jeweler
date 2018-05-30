@@ -1,5 +1,5 @@
 <% if @error_msgs.empty? %>
-  $('#modal_target').html('<%= j render 'charges/charge_form', project: @project, invoice: @invoice, amount:@amount, customer: @customer, payment_note:@payment_note %>');
+  $('#modal_target').html('<%= j render 'charges/charge_form', project: @project, sprint_id: @sprint, amount:@amount, customer: @customer, payment_note:@payment_note %>');
   <%= render 'layouts/render_modal', title: 'Make Payment', display_close: true %>
 <% else %>
   <% @error_msgs.each do |error| %>

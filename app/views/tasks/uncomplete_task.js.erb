@@ -1,0 +1,18 @@
+<% if @task.valid? %>
+
+  <%= render 'sprints/re-render_sprint_panel', sprint: @sprint %>
+
+  console.log(<%= ApplicationHelper.sprint_percent(@sprint.project) %>);
+
+  $('#sprint_gauge_container').animate({
+      width: '0'
+  });
+
+  $('#sprint_gauge_container').animate({
+      width: '<%= ApplicationHelper.sprint_percent(@sprint.project) %>%'
+  });
+
+  toastr.success('Task Un-Completed');
+<% else %>
+  toastr.error('Your Task Could Not Be Completed');
+<% end %>

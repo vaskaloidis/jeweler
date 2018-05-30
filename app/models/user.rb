@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_many :owner_projects, class_name: 'Project', inverse_of: 'owner', dependent: :destroy
   has_many :notes, class_name: 'Note', inverse_of: 'author', dependent: :destroy
   has_many :project_customers, dependent: :destroy
-  has_many :customer_projects, :source => :project, :through => :project_customers, dependent: :destroy
+  has_many :customer_projects, source: :project, through: :project_customers, dependent: :destroy
 
   mount_uploader :image, AvatarUploader
 

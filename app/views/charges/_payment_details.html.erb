@@ -2,7 +2,7 @@
   <div class="col-xs-12">
     <% if errors.empty? %>
       <div class="alert alert-success">
-        Payment of <%= payment.amount.money.to_s %> for Sprint <%= payment.invoice.sprint.to_s %> made succesfully.
+        Payment of <%= payment.amount.money.to_s %> for Sprint <%= payment.sprint.sprint.to_s %> made succesfully.
       </div>
     <% else %>
       <% errors.each do |error| %>
@@ -16,11 +16,11 @@
 
 <div class="row">
   <div class="col-xs-6">
-    <div style="float:left;text-align:left;margin-top:5px;" class="invoice-totals">
-      <div style="float:left;text-align: left" class="invoice-subtotals-totals">
+    <div style="float:left;text-align:left;margin-top:5px;" class="sprint-totals">
+      <div style="float:left;text-align: left" class="sprint-subtotals-totals">
         <div style="margin-bottom:5px;" class="well">
           <span><strong>Payment Info</strong></span><br>
-          <span>Sprint: <strong><%= payment.invoice.sprint.to_s %></strong></span><br>
+          <span>Sprint: <strong><%= payment.sprint.sprint.to_s %></strong></span><br>
           <span>Payment: <strong><%= payment.amount.money %></strong></span><br>
         </div>
       </div>

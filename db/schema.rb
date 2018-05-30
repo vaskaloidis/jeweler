@@ -20,23 +20,23 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
     t.index ["project_id"], name: "index_invitations_on_project_id"
   end
 
-  create_table "invoice_items", force: :cascade do |t|
+  create_table "tasks", force: :cascade do |t|
     t.text "description"
     t.decimal "hours"
     t.decimal "rate", default: "0.0"
     t.string "item_type"
     t.boolean "complete", default: false
-    t.bigint "invoice_id"
+    t.bigint "sprint_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "planned_hours"
     t.integer "position", null: false
     t.boolean "deleted", default: false
-    t.index ["invoice_id"], name: "index_invoice_items_on_invoice_id"
-    t.index ["position"], name: "index_invoice_items_on_position"
+    t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
+    t.index ["position"], name: "index_tasks_on_position"
   end
 
-  create_table "invoices", force: :cascade do |t|
+  create_table "sprints", force: :cascade do |t|
     t.date "payment_due_date"
     t.boolean "payment_due", default: false
     t.text "description"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
     t.datetime "updated_at", null: false
     t.boolean "open", default: false
     t.integer "sprint"
-    t.index ["project_id"], name: "index_invoices_on_project_id"
+    t.index ["project_id"], name: "index_sprints_on_project_id"
   end
 
   create_table "notes", force: :cascade do |t|
@@ -58,12 +58,12 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
     t.datetime "updated_at", null: false
     t.string "image"
     t.boolean "sync", default: false
-    t.bigint "invoice_id"
-    t.bigint "invoice_item_id"
+    t.bigint "sprint_id"
+    t.bigint "task_id"
     t.string "commit_diff_path"
     t.integer "event_type"
-    t.index ["invoice_id"], name: "index_notes_on_invoice_id"
-    t.index ["invoice_item_id"], name: "index_notes_on_invoice_item_id"
+    t.index ["sprint_id"], name: "index_notes_on_sprint_id"
+    t.index ["task_id"], name: "index_notes_on_task_id"
     t.index ["project_id"], name: "index_notes_on_project_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
@@ -73,11 +73,11 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
     t.string "payment_identifier"
     t.string "payment_note"
     t.decimal "amount"
-    t.bigint "invoice_id"
+    t.bigint "sprint_id"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["invoice_id"], name: "index_payments_on_invoice_id"
+    t.index ["sprint_id"], name: "index_payments_on_sprint_id"
     t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
@@ -106,13 +106,13 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
     t.datetime "updated_at", null: false
     t.string "github_branch", default: "master"
     t.string "image"
-    t.bigint "invoice_item_id"
+    t.bigint "task_id"
     t.integer "sprint_total"
     t.integer "sprint_current"
     t.string "heroku_token"
     t.string "google_analytics_tracking_code"
     t.index ["github_url"], name: "index_projects_on_github_url", unique: true
-    t.index ["invoice_item_id"], name: "index_projects_on_invoice_item_id"
+    t.index ["task_id"], name: "index_projects_on_task_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
@@ -157,8 +157,8 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
   add_foreign_key "discussions", "notes"
   add_foreign_key "discussions", "users"
   add_foreign_key "invitations", "projects"
-  add_foreign_key "notes", "invoice_items"
-  add_foreign_key "notes", "invoices"
+  add_foreign_key "notes", "tasks"
+  add_foreign_key "notes", "sprints"
   add_foreign_key "notes", "projects"
   add_foreign_key "notes", "users"
 end

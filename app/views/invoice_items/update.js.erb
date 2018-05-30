@@ -1,9 +1,0 @@
-<%= render 'invoices/re-render_invoice_panel', invoice: @invoice_item.invoice %>
-
-<% if @invoice_item.valid? %>
-  toastr.success('Task updated Successfully.');
-<% else %>
-  <% @error_msgs.each do |error| %>
-    toastr.error('Error creating Task: <%=  error %>');
-  <% end %>
-<% end %>

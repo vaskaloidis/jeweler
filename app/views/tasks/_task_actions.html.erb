@@ -1,0 +1,53 @@
+<span id="task_<%= task.id.to_s %>" class="task-actions">
+  <% if task.sprint.open? or task.sprint.current? %>
+    <% if task.current? %>
+      <% if task.sprint.project.owner?(user) %>
+          <% if task.complete %>
+            <%= link_to 'Incomplete',
+                        uncomplete_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-primary' %>
+          <% else %>
+            <%= link_to 'Complete',
+                        complete_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-primary' %>
+          <% end %>
+        <%= link_to '<i class="far fa-edit"></i>'.html_safe,
+                    edit_task_path(task.id), remote: true,
+                    class: 'btn btn-sm btn-primary' %>
+        <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe,
+                    task_path(task.id),
+                    remote: true, method: :delete,
+                    data: {confirm: "Are you sure?"},
+                    class: 'btn btn-sm btn-primary' %>
+      <% end %>
+    <% else %>
+      <% if task.sprint.project.owner?(user) %>
+            <%= link_to 'Current Task',
+                        set_current_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-primary' %>
+        <% if task.complete %>
+            <%= link_to 'Incomplete',
+                        uncomplete_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-primary' %>
+          <% else %>
+            <%= link_to 'Complete',
+                        complete_task_path(task.id), remote: true,
+                        class: 'btn btn-sm btn-primary' %>
+          <% end %>
+        <%= link_to '<i class="far fa-edit"></i>'.html_safe,
+                    edit_task_path(task.id), remote: true,
+                    class: 'btn btn-sm btn-primary' %>
+
+        <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe,
+                    task_path(task.id),
+                    remote: true, method: :delete,
+                    data: {confirm: "Are you sure?"},
+                    class: 'btn btn-sm btn-primary' %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <span style="display:inline;font-size:1em; padding:5px;" class="alert alert-success">
+      Open Sprint to Modify
+    </span>
+  <% end %>
+</span>

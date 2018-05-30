@@ -1,0 +1,25 @@
+<% if @error %>
+  toastr.error('<%= @error_message %>');
+<% else %>
+  <%= render 'sprints/re-render_sprint_panel', sprint: @task.sprint %>
+
+  <%= render 'notes/re-render_timeline', notes: @task.sprint.project.sprint_notes, project: @task.sprint.project %>
+
+  toastr.success('Current Task Updated.');
+
+  $('#sprint_gauge_container').animate({
+      width: '<%= ApplicationHelper.sprint_percent(@task.sprint.project) %>%'
+  });
+
+
+  $('#notifications_container').html('<%= j render 'layouts/notifications', project: @task.sprint.project %>');
+
+
+  $('.link-delete').bind('ajax:beforeSend', function () {
+      $('#mySpinner').show();
+  });
+
+  $('.link-delete').bind('ajax:complete', function () {
+      $('#mySpinner').hide();
+  });
+<% end %>

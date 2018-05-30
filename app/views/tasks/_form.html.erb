@@ -1,0 +1,52 @@
+<%= form_with model: task, class: 'form-inline', remote: true do |f| %>
+  <div id="task-form-row" class="row">
+    <div class="col-xs-12 col-sm-1">
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      Task
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      Rate
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      Estimate Hrs.
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      Actual Hrs.
+    </div>
+    <div class="col-xs-12 col-sm-2">
+    </div>
+  </div>
+  <div id="task-form-row" class="row">
+    <div class="col-xs-12 col-sm-1">
+      <%= f.check_box :complete, class: 'iswitch iswitch-info' %>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <%= f.text_field :description, style: '', class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      <%= f.text_field :rate, style: '', class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      <%= f.text_field :planned_hours, class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      <%= f.text_field :hours, class: 'form-control' %>
+    </div>
+    <div class="col-xs-12 col-sm-2">
+      <%#= f.hidden_field :id, value: task.id %>
+      <%= f.hidden_field :sprint_id, value: task.sprint.id %>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save"></i></button>
+        <% unless task.id.nil? %>
+          <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
+                      task_path(task.id), method: :delete, data: {confirm: "Are you sure?"}, remote: true,
+                      class: 'btn btn-sm btn-success', style: '' %>
+        <% end %>
+        <%= link_to '<i class="fas fa-times"></i>'.html_safe, cancel_task_update_path(task.sprint.id), :class => 'btn btn-sm btn-success', style: '', remote: true %>
+      </div>
+    </div>
+  </div>
+
+
+<% end %>

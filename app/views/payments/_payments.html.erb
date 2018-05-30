@@ -8,16 +8,16 @@
       <div class="col-xs-12 col-md-6">
         <ul class="settings_sprint_balance list-group list-group-minimal">
           <h2>Sprint Balances</h2>
-          <% unless project.invoices.empty? %>
-            <% project.invoices.order('sprint::integer ASC').each do |invoice| %>
-              <% if invoice.balance < 0 %>
+          <% unless project.sprints.empty? %>
+            <% project.sprints.order('sprint::integer ASC').each do |sprint| %>
+              <% if sprint.balance < 0 %>
                 <li class="list-group-item">
-                      <span>Sprint <%= invoice.sprint.to_s %>
-                        <% if invoice.is_current? %>
+                      <span>Sprint <%= sprint.sprint.to_s %>
+                        <% if sprint.current? %>
                           <strong>(current)</strong>
                         <% end %>
                       </span>
-                  <span class="badge badge-roundless badge-danger"><%= invoice.balance.money %></span>
+                  <span class="badge badge-roundless badge-danger"><%= sprint.balance.money %></span>
                 </li>
               <% end %>
             <% end %>
@@ -39,21 +39,21 @@
       <div class="col-xs-12 col-md-6">
         <h2>Payment Requests</h2>
         <% unless project.payment_requests.empty? %>
-          <% project.payment_requests.each do |invoice| %>
-            <div id="request_payment_notification_sprint_<%= invoice.id.to_s %>" class="alert alert-danger">
+          <% project.payment_requests.each do |sprint| %>
+            <div id="request_payment_notification_sprint_<%= sprint.id.to_s %>" class="alert alert-danger">
               <div style="padding-right:15px">
-                Payment Requested For Sprint <%= invoice.sprint.to_s %>.
-                <% if invoice == 0 %>
+                Payment Requested For Sprint <%= sprint.sprint.to_s %>.
+                <% if sprint == 0 %>
                   Balance (None)
-                  <% elsifif invoice.balance > 0 %>
-                  Balance: +<%= invoice.balance.money %>
+                  <% elsifif sprint.balance > 0 %>
+                  Balance: +<%= sprint.balance.money %>
                 <% else %>
-                  Balance: <%= invoice.balance.money %>
+                  Balance: <%= sprint.balance.money %>
                 <% end %>
-                <% if project.is_owner?(current_user) %>
+                <% if project.owner?(current_user) %>
                   <% payment_request_btn = '<span style="" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>' %>
                   <%= link_to payment_request_btn.html_safe,
-                              cancel_request_payment_path(invoice.id),
+                              cancel_request_payment_path(sprint.id),
                               remote: true %>
                 <% end %>
               </div>
@@ -70,18 +70,18 @@
         <% if project.owner.stripe_account_id.nil? %>
           <div class="alert alert-danger">
             <i style="padding-left: 6px" class="fab fa-2x fa-stripe pull-right"></i>
-            <% if project.is_owner? %>
+            <% if project.owner? %>
               To receive payments, <%= link_to 'connect Jeweler with Stripe', root_url + 'users/auth/stripe_connect' %>
             <% else %>
               To receive payments, the project owner must connect his Stripe account. Notify project owner.
             <% end %>
           </div>
         <% else %>
-          <% if project.is_owner? %>
-            <%#= render 'invoices/admin_payment_form', project: project, display_balances: false #TODO:Add a setting to allow admins to add payments %>
-            <%= render 'invoices/fee_notice' %>
+          <% if project.owner? %>
+            <%#= render 'sprints/admin_payment_form', project: project, display_balances: false #TODO:Add a setting to allow admins to add payments %>
+            <%= render 'sprints/fee_notice' %>
           <% else %>
-            <%= render 'invoices/payment_form', project: project, display_balances: false %>
+            <%= render 'sprints/payment_form', project: project, display_balances: false %>
           <% end %>
         <% end %>
       </div>
@@ -92,7 +92,7 @@
             <div class="alert alert-default">
               <div style="padding-right:15px">
                 <i class="fas fa-dollar-sign pull-right"></i>
-                <strong>Payment: </strong> Sprint <%= payment.invoice.sprint.to_s %><br>
+                <strong>Payment: </strong> Sprint <%= payment.sprint.sprint.to_s %><br>
                 <%= payment.user.full_name %><br>
 
                 <%= payment.amount.money %>

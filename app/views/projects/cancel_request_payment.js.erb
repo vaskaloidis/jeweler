@@ -1,6 +1,6 @@
 toastr.success('Payment Request Canceled.');
 
-<%= render 'layouts/re-render_notifications', project:@invoice.project %>
-<%= render 'payments/re-render_payments_panel', project: @invoice.project, user: @user %>
-<%= render 'invoices/re-render_invoice_panel', invoice: @invoice %>
-<%= render 'notes/re-render_timeline', notes: @invoice.project.sprint_notes, project:@invoice.project %>
+<%= render 'layouts/re-render_notifications', project:@sprint.project %>
+<%= render 'payments/re-render_payments_panel', project: @sprint.project, user: @user %>
+<%= render 'sprints/re-render_sprint_panel', sprint: @sprint %>
+<%= render 'notes/re-render_timeline', notes: @sprint.project.sprint_notes, project:@sprint.project %>

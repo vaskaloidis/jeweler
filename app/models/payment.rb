@@ -1,10 +1,10 @@
 class Payment < ApplicationRecord
   enum payment_type: [ :venmo, :paypal, :credit_card, :jeweler, :bank_transfer, :check, :cash ]
 
-  belongs_to :invoice
+  belongs_to :sprint
   belongs_to :user
 
-  accepts_nested_attributes_for :invoice
+  accepts_nested_attributes_for :sprint
   accepts_nested_attributes_for :user
 
   validates :amount, numericality: { message: 'Must be Present.' }

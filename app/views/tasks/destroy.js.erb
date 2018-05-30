@@ -1,0 +1,10 @@
+<%= render 'sprints/re-render_sprint_panel', sprint: @task.sprint %>
+
+<% if @errors.empty? %>
+  toastr.success('Task Deleted');
+  $('#task_row_<%= @task.id.to_s %>').hide('slide');
+<% else %>
+  <% @errors.each do |error| %>
+    toastr.error('<%= error %>');
+  <% end %>
+<% end %>

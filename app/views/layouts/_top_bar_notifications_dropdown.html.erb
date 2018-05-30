@@ -16,7 +16,7 @@
   </li>
 <% end %>
 
-<% project.sprint_notes.each do |event| %>
+<% project.sprint_notes.includes(:author).each do |event| %>
 
   <li class="notification-<%= ApplicationHelper.note_icon_color(event.note_type) %>">
     <a href="#">

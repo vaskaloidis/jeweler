@@ -95,31 +95,31 @@ pc.project = p
 pc.save
 
 # Invoice
-sprint1 = Invoice.create(sprint: 1, description: 'Get the template purchased. Plan the web application design. Build the relational database.
+sprint1 = Sprint.create(sprint: 1, description: 'Get the template purchased. Plan the web application design. Build the relational database.
     Setup the code plumbing.', project: p)
-InvoiceItem.create(position: 0, invoice: sprint1, description: 'Research and Purchase the template.', planned_hours: rand(0..8), hours: 8, rate: 35)
-InvoiceItem.create(position: 1, invoice: sprint1, description: 'Design the web application.', planned_hours: rand(0..4), hours: 4, rate: 35)
-InvoiceItem.create(position: 2, invoice: sprint1, description: 'Design the relational database.', planned_hours: rand(0..5), hours: 5, rate: 35)
-InvoiceItem.create(position: 3, invoice: sprint1, description: 'Setup the plumbing for the rails project, after generating it.', planned_hours: rand(0..10), hours: 10, rate: 35)
+Task.create(position: 0, sprint: sprint1, description: 'Research and Purchase the template.', planned_hours: rand(0..8), hours: 8, rate: 35)
+Task.create(position: 1, sprint: sprint1, description: 'Design the web application.', planned_hours: rand(0..4), hours: 4, rate: 35)
+Task.create(position: 2, sprint: sprint1, description: 'Design the relational database.', planned_hours: rand(0..5), hours: 5, rate: 35)
+Task.create(position: 3, sprint: sprint1, description: 'Setup the plumbing for the rails project, after generating it.', planned_hours: rand(0..10), hours: 10, rate: 35)
 
-sprint2 = Invoice.create(sprint: 2, description: 'Build the SASS system, and implement the Bootstrap template into Rails. Design the Gem configuration and
+sprint2 = Sprint.create(sprint: 2, description: 'Build the SASS system, and implement the Bootstrap template into Rails. Design the Gem configuration and
   build Gemfile..', project: p)
-InvoiceItem.create(position: 0, invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-InvoiceItem.create(position: 1, invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-InvoiceItem.create(position: 2, invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-InvoiceItem.create(position: 3, invoice: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+Task.create(position: 0, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+Task.create(position: 1, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+Task.create(position: 2, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+Task.create(position: 3, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 
-sprint3 = Invoice.create(sprint: 3, description: 'Scaffold the database and build the relational data structure.', project: p)
-InvoiceItem.create(position: 0, invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-InvoiceItem.create(position: 1, invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-InvoiceItem.create(position: 2, invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-InvoiceItem.create(position: 3, invoice: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+sprint3 = Sprint.create(sprint: 3, description: 'Scaffold the database and build the relational data structure.', project: p)
+Task.create(position: 0, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+Task.create(position: 1, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+Task.create(position: 2, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+Task.create(position: 3, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 
-sprint4 = Invoice.create(sprint: 4, description: 'Implement the design into the project scaffold system.', project: p)
-InvoiceItem.create(position: 0, invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
-InvoiceItem.create(position: 1, invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
-InvoiceItem.create(position: 2, invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
-InvoiceItem.create(position: 3, invoice: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+sprint4 = Sprint.create(sprint: 4, description: 'Implement the design into the project scaffold system.', project: p)
+Task.create(position: 0, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+Task.create(position: 1, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+Task.create(position: 2, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+Task.create(position: 3, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
 
 # Customer Projects
 p = Project.new

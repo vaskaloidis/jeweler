@@ -62,7 +62,7 @@
 <%# TODO: Add a setting to render payments pane or not %>
 <% if false %>
   <% if controller_name == 'projects' and action_name == 'show' %>
-    <% if @project.is_owner?(current_user) %>
+    <% if @project.owner?(current_user) %>
       <div id="settings_container">
         <%= render 'layouts/payments_pane', project: @project, user: current_user %>
       </div>

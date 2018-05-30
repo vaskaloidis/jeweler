@@ -1,0 +1,12 @@
+<%= form_with url: new_charge_path, class: 'form-inline' do |f| %>
+  <%= f.hidden_field :sprint_id, :value => sprint.id %>
+  <%= f.hidden_field :project_id, :value => sprint.id %>
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+  <%= f.hidden_field :sprint_payment, :value => true %>
+
+
+  <%= f.text_field :amount, :value => 'Payment Amount' %>
+
+  <%= f.submit 'Pay', :class => 'btn-sm btn-success' %>
+<% end %>
+

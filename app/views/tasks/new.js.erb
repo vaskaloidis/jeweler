@@ -1,0 +1,3 @@
+$("#create_task_container_sprint_<%= @task.sprint.id.to_s %> > #create_task_inline_button").hide('slide');
+$("#tasks_<%= @task.sprint.id.to_s %>_hidden_row").html('<%= j render('form', task: @task) %>');
+$("#tasks_<%= @task.sprint.id.to_s %>_hidden_row").show('slide');

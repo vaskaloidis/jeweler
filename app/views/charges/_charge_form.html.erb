@@ -10,17 +10,17 @@
 
   <div class="row">
     <div class="col-xs-6">
-      <div style="float:left;text-align:left;margin-top:5px;" class="invoice-totals">
-        <div style="float:left;text-align: left" class="invoice-subtotals-totals">
+      <div style="float:left;text-align:left;margin-top:5px;" class="sprint-totals">
+        <div style="float:left;text-align: left" class="sprint-subtotals-totals">
           <div style="margin-bottom:5px;" class="well">
             <span><strong>Payment Info</strong></span><br>
-            <span>Sprint: <strong><%#= invoice.sprint.to_s %></strong></span><br>
+            <span>Sprint: <strong><%#= sprint.sprint.to_s %></strong></span><br>
             <span>Payment: <strong><%= amount.money %></strong></span><br>
             <span>Tax: <strong>$0.00</strong></span><br>
             <span>Grand Total: <strong><%= (amount + 0.00).money %></strong></span><br>
             <hr style="color: black">
-            Sprint <%= invoice.sprint.to_s %> Balance (before payment): <strong><%= invoice.balance.money.to_s %></strong><br>
-            <span>Remaining Sprint <%= invoice.sprint.to_s %> Balance (after payment): <strong><%= (invoice.balance - amount).money.to_s %></strong></span>
+            Sprint <%= sprint.sprint.to_s %> Balance (before payment): <strong><%= sprint.balance.money.to_s %></strong><br>
+            <span>Remaining Sprint <%= sprint.sprint.to_s %> Balance (after payment): <strong><%= (sprint.balance - amount).money.to_s %></strong></span>
           </div>
         </div>
       </div>
@@ -29,7 +29,7 @@
 
   <%= hidden_field_tag :customer_id, customer.id %>
   <%= hidden_field_tag :project_id, project.id %>
-  <%= hidden_field_tag :invoice_id, invoice.id %>
+  <%= hidden_field_tag :sprint_id, sprint.id %>
   <%= hidden_field_tag :payment_note, payment_note %>
   <%= hidden_field_tag :charge_amount, amount %>
   <%= hidden_field_tag :payment_type, 'jeweler' %>

@@ -1,6 +1,0 @@
-<% if @sprint.valid? %>
-  <%= render 'invoices/re-render_invoice_panel', invoice: @sprint %>
-  toastr.success('Sprint <%= @sprint.sprint.to_s %>  Open');
-<% else %>
-  toastr.error('Sprint <%= @sprint.sprint.to_s %> Could Not Be Opened');
-<% end %>

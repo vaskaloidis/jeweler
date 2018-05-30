@@ -1,0 +1,20 @@
+
+$('.sprint-displayed').removeClass('sprint-displayed');
+
+$('.sprint-tab.active').removeClass('active').slideUp();
+$('#sprint_tab_<%= @sprint.sprint.to_s %>').addClass('active');
+
+$("#sprint_panel_<%= @sprint.sprint.to_s %>_container").html('<%= j render 'sprints/sprint_panel', sprint: @sprint  %>');
+
+$('#sprint_tab_<%= @sprint.sprint.to_s %>').slideDown();
+
+$('li > #sprint_btn_<%= @sprint.sprint.to_s %>').addClass('sprint-displayed');
+
+<%#= j render 'sprints/re-render_sprint_panel', sprint: @project.get_sprint(sprint) %>
+<%#= j @sprint.render_panel %>
+<%#= j render 'sprints/re-render_sprint_panel', sprint: @sprint %>
+
+// TODO:Check if its empty to prevent useless re-rendering
+// if( $('#sprint_panel_<%#= @sprint.sprint.to_s %>_container').html() == '' ) {
+//     $("#sprint_panel_<%= @sprint.sprint.to_s %>_container").html('<%#= j render 'sprints/sprint_panel', sprint: @sprint  %>');
+// }
