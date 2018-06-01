@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Project < ApplicationRecord
+  include Averageable
+  include Totalable
+  include Maxable
+
   belongs_to :owner, class_name: 'User', foreign_key: 'user_id', inverse_of: 'owner_projects', required: true
   has_many :project_customers
   has_many :customers, through: :project_customers, source: :user
@@ -16,6 +20,7 @@ class Project < ApplicationRecord
 
   mount_uploader :image, AvatarUploader
 
+  # TODO: Evaluate if we really need all these
   accepts_nested_attributes_for :customers
   accepts_nested_attributes_for :owner
   accepts_nested_attributes_for :sprints
@@ -34,16 +39,8 @@ class Project < ApplicationRecord
     Note.create_event(self, event_type, message)
   end
 
-  def sprint_events
-    current_sprint.notes.where(note_type: [:event]).order('created_at DESC').all
-  end
-
   def events
-    sprint_events
-  end
-
-  def home_page_notes
-    sprint_notes
+    current_sprint.notes.where(note_type: [:event]).order('created_at DESC').all
   end
 
   def sprint_notes
@@ -54,7 +51,8 @@ class Project < ApplicationRecord
     default_notes
   end
 
-  def owner?(user)
+  def owner?(user = nil)
+    return (owner == User.current_user) if user.nil?
     owner == user
   end
 
@@ -69,101 +67,6 @@ class Project < ApplicationRecord
     else
       customers.include?(user)
     end
-  end
-
-  def balance
-    if !total_cost.nil? && !total_payment.nil?
-      total_payment - total_cost
-    else
-      0
-    end
-  end
-
-  def total_hours
-    total = 0.0
-    sprints.includes(:tasks).pluck(:hours).each do |hours|
-      total += hours unless hours.nil?
-    end
-    total
-  end
-
-  def sprint_hours
-    total_hours
-  end
-
-  def average_sprint_hours(precision = 2)
-    return 0 if sprints.empty? || sprints.count.zero? || sprints.nil?
-    sum = 0.0
-    sprints.pluck(:hours).each do |sprint|
-      sum += sprint.hours
-    end
-    (sum / sprints.count).round(precision, :banker)
-  end
-
-  def task_hours
-    if tasks.empty? || tasks.sum(:hours).nil?
-      0
-    else
-      tasks.sum(:hours)
-    end
-  end
-
-  def average_task_hours(precision = 2)
-    if tasks.empty? || tasks.average(:hours).nil?
-      0
-    else
-      tasks.average(:hours).round(precision, :banker)
-    end
-  end
-
-  def average_task_planned_hours(precision = 2)
-    if tasks.empty? || tasks.average(:planned_hours).nil?
-      0
-    else
-      tasks.average(:planned_hours).round(precision, :banker)
-    end
-  end
-
-  def average_payment(precision = 2)
-    if payments.empty? || ayments.average(:amount).nil?
-      0
-    else
-      payments.average(:amount).round(precision, :banker)
-    end
-  end
-
-  def total_cost
-    total = 0.0
-    sprints.each do |sprint|
-      total += sprint.cost
-    end
-    total
-  end
-
-  def total_payment
-    total = 0.0
-    sprints.each do |sprint|
-      sprint.payments.pluck(:amount).each do |payment|
-        total += payment.amount
-      end
-    end
-    total
-  end
-
-  def total_planned_hours
-    total = 0.0
-    sprints.each do |sprint|
-      total += sprint.planned_hours
-    end
-    total
-  end
-
-  def total_planned_cost
-    total = 0.0
-    sprints.includes(:tasks).each do |sprint|
-      total += sprint.planned_cost
-    end
-    total
   end
 
   def get_sprint(number)
@@ -222,27 +125,5 @@ class Project < ApplicationRecord
     nc
   end
 
-  def max_planned_hours
-    max = 0.00
-    sprints.each do |i|
-      max = i.planned_hours if max < i.planned_hours
-    end
-    max
-  end
 
-  def max_hours
-    max = 0.00
-    sprints.each do |i|
-      max = i.hours if max < i.hours
-    end
-    max
-  end
-
-  def max_payment
-    max = 0.00
-    payments.each do |p|
-      max = p.amount if p.amount > max
-    end
-    max
-  end
 end

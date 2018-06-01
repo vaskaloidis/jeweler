@@ -1,5 +1,5 @@
 <% if @sprint.valid? %>
-<%= render 'sprints/re-render_sprint_panel', sprint: @sprint %>
+<%= render 'renderers/re-render_sprint_panel', sprint: @sprint %>
 <%= render 'notes/re-render_timeline', notes: @sprint.project.sprint_notes, project: @sprint.project %>
   toastr.success('Sprint <%= @sprint.sprint.to_s %> Closed');
 <% else %>

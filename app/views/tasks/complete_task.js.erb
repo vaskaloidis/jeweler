@@ -1,8 +1,8 @@
 <% if @task.valid? %>
 
-  <%= render 'sprints/re-render_sprint_panel', sprint: @sprint %>
+  <%= render 'renderers/re-render_sprint_panel', sprint: @sprint %>
   <%= render 'notes/re-render_timeline', notes: @sprint.project.sprint_notes, project: @sprint.project %>
-  <%= render 'layouts/re-render_notifications', project:@sprint.project %>
+  <%= render 'renderers/re-render_notifications', project:@sprint.project %>
 
   $('#sprint_gauge_container').animate({
       width: '0'

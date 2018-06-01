@@ -19,14 +19,14 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    Sprint
+    Sprint Goals
   </div>
   <div class="panel-body">
     <div class="row">
       <div id="rootwizard" class="form-wizard">
         <!-- Sprint Tab Numbers -->
         <ul id="sprint-tabs" class="tabs">
-          <% @project.sprints.each do |sprint| %>
+          <% @project.sprints.includes(:project).each do |sprint| %>
             <% if sprint.current? %>
               <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed current-sprint-tab sprint-tab">
                 <a href="#" id="sprint_btn_<%= sprint.sprint.to_s %>"><%= sprint.sprint.to_s %></a>
@@ -82,7 +82,7 @@
   <div class="panel-body">
     <div class="row">
       <div id="sprint_<%= @project.current_sprint.sprint.to_s %>_panel" class="col-sm-12">
-        <%= render 'sprints/sprint_slider', sprint: @project.current_sprint, sprint: @project.current_sprint.sprint %>
+        <%= render 'sprints/slider', sprint: @project.current_sprint %>
       </div>
     </div>
   </div>
@@ -98,7 +98,7 @@
         <% @project.sprints.order('sprint ASC').each_with_index do |sprint, count| %>
           <div id="sprint_<%= sprint.sprint.to_s %>_panel">
             <% if count > @project.current_sprint.sprint %>
-              <%= render 'sprints/sprint_slider', sprint: sprint %>
+              <%= render 'sprints/slider', sprint: sprint %>
             <% end %>
           </div>
         <% end %>
@@ -117,7 +117,7 @@
         <% @project.sprints.order('sprint ASC').each_with_index do |sprint, count| %>
           <div id="sprint_<%= sprint.sprint.to_s %>_panel">
             <% if count < @project.current_sprint.sprint %>
-              <%= render 'sprints/sprint_slider', sprint: sprint %>
+              <%= render 'sprints/slider', sprint: sprint %>
             <% end %>
           </div>
         <% end %>

@@ -3,6 +3,4 @@ class MainController < ApplicationController
     render(:layout => "landing_page")
   end
 
-  def authenticated_home
-  end
 end

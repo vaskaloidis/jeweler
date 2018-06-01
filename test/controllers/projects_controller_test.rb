@@ -7,10 +7,10 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   # Setup runs before EVERY test
   setup do
-    @user = create(:user)
+    # @user = create(:owner)
+    @project = create(:project)
+    @user = @project.owner
     sign_in @user
-
-    @project = create(:project_with_sprints)
   end
 
   test 'should get index' do

@@ -14,4 +14,4 @@
   toastr.error('User <%= @email %> is already a member of this projectd!');
 <% end %>
 
-$('#customers_container').html('<%= j render 'projects/customers', project: @project %>');
+$('#customers_container').html('<%= j render 'project_customers/customers', project: @project %>');

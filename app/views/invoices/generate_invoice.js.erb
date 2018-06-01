@@ -9,7 +9,7 @@ $("#modal_target").html("<%= j render 'sprints/generate_printable_invoice',
                                       display_payments: false %>");
 
 <% if @estimate %>
-  <%= render 'layouts/render_modal', title: 'Estimate' %>
+  <%= render 'renderers/render_modal', title: 'Estimate' %>
 <% else %>
-  <%= render 'layouts/render_modal', title: 'Invoice' %>
+  <%= render 'renderers/render_modal', title: 'Invoice' %>
 <% end %>

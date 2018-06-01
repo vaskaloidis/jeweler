@@ -47,7 +47,7 @@ gem 'virtus'
 # gem 'bootsnap', require: false
 
 # Memory Testing
-gem 'skylight'
+# gem 'skylight'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.

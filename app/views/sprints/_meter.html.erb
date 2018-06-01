@@ -40,16 +40,16 @@
 
       <% if sprint == project.current_sprint %>
 
-        <div class="sprint-tab active" id="sprint_tab_<%= sprint.sprint.to_s %>" style="">
-          <div class="current_sprint_panel" id="sprint_panel_<%= sprint.sprint.to_s %>_container">
-            <%= render 'sprints/sprint_panel', sprint: sprint %>
+        <div class="sprint-panel active" id="sprint-panel-<%= sprint.sprint.to_s %>" style="">
+          <div class="current-sprint-panel" id="sprint-panel-<%= sprint.sprint.to_s %>-container">
+            <%= render sprint %>
           </div>
         </div>
 
       <% else %>
 
-        <div class="sprint-tab" id="sprint_tab_<%= sprint.sprint.to_s %>" style="display:none">
-          <div id="sprint_panel_<%= sprint.sprint.to_s %>_container">
+        <div class="sprint-panel" id="sprint-panel-<%= sprint.sprint.to_s %>" style="display:none">
+          <div id="sprint-panel-<%= sprint.sprint.to_s %>-container">
           </div>
         </div>
 

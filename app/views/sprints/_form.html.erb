@@ -4,9 +4,9 @@
       <h2><%= pluralize(sprint.errors.count, "error") %> prohibited this sprint from being saved:</h2>
 
       <ul>
-      <% sprint.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% sprint.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>

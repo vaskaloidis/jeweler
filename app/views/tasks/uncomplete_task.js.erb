@@ -1,6 +1,6 @@
 <% if @task.valid? %>
 
-  <%= render 'sprints/re-render_sprint_panel', sprint: @sprint %>
+  <%= render 'renderers/re-render_sprint_panel', sprint: @sprint %>
 
   console.log(<%= ApplicationHelper.sprint_percent(@sprint.project) %>);
 

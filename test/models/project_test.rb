@@ -12,7 +12,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test 'create a valid project with sprints and tasks' do
-    project = create(:project_with_sprints)
+    project = create(:project)
     assert project and project.valid?
 
     sprints = project.sprints
@@ -25,7 +25,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test 'current_sprint method' do
-    project = create(:project_with_sprints)
+    project = create(:project)
     current_sprint = project.sprint_current
     total_sprints = project.sprint_total
     refute current_sprint.nil? or total_sprints.nil?

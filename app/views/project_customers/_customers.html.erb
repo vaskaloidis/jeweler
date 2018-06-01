@@ -106,7 +106,7 @@
       <div class="col-med-6 col-sm-12">
         <% if project.owner?(current_user) %>
           <h2>Invite User</h2>
-          <%= render 'project_customers/add_project_customer', project: project %>
+          <%= render 'project_customers/form', project: project %>
         <% end %>
 
       </div>

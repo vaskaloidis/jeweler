@@ -2,12 +2,12 @@
     jQuery(document).ready(function ($) {
         var i = 0;
         var line_chart_data_source = [
-            <% project.sprints.each_with_index do |sprint_id, index| %>
+            <% project.sprints.each_with_index do |sprint, index| %>
             {
                 id: ++i,
                 planned_hours: <%= sprint.planned_hours.to_s %>,
                 hours: <%= sprint.hours.to_s %>
-            }<% if index != project.sprint_ids.size %>, <% end %>
+            }<% if index != project.sprints.size %>, <% end %>
             <% end %>
         ];
 
@@ -55,11 +55,11 @@
         var y = 0;
         $("#sprint_payments_chart").dxChart({
             dataSource: [
-                <% project.sprints.each_with_index do |sprint_id, index| %>
+                <% project.sprints.each_with_index do |sprint, index| %>
                 {
                     id: ++y,
                     payment: <%= sprint.total_payments.to_s %>
-                }<% if index != project.sprint_ids.size %>, <% end %>
+                }<% if index != project.sprints.size %>, <% end %>
                 <% end %>
             ],
             tooltip: {
@@ -97,7 +97,7 @@
 
         // Sprint Length
         var doughnut1_data_source = [
-            <% project.sprints.each_with_index do |sprint_id, index| %>
+            <% project.sprints.each_with_index do |sprint, index| %>
             {sprint: "sprint<%= sprint.sprint.to_s %>", val: <%= sprint.planned_hours.to_s %>},
             <% end %>
         ], timer;

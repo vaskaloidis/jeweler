@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy]
-  before_action :verify_sprints_exist, only: [:edit, :update]
+  before_action :verify_sprints_exist, only: [:show, :edit, :update, :create]
   before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
   respond_to :html, :js, only: [:request_payment]
@@ -39,7 +39,8 @@ class ProjectsController < ApplicationController
 
     @user = current_user
 
-    Note.create_event(@sprint.project, 'payment_request_cancelled', 'Sprint ' + @sprint.sprint.to_s + ' Payment Request Canceled')
+    Note.create_event(@sprint.project, 'payment_request_cancelled', 'Sprint ' +
+        @sprint.sprint.to_s + ' Payment Request Canceled')
 
     respond_to do |format|
       format.js
@@ -153,14 +154,14 @@ class ProjectsController < ApplicationController
 
   def verify_owner
     unless @project.owner?(current_user)
-      flash[:error] = "You must be the owner to modify project"
+      flash[:error] = 'You must be the owner to modify project'
       redirect_to projects_url # halts request cycle
     end
   end
 
   def verify_customer
     unless @project.customer?(current_user) or @project.owner?(current_user)
-      flash[:error] = "You must be a member of this project to view it"
+      flash[:error] = 'You must be a member of this project to view it'
       redirect_to projects_url # halts request cycle
     end
   end
@@ -209,19 +210,24 @@ class ProjectsController < ApplicationController
 
   def verify_sprints_exist
     # TODO: Verify this is not making an extra useless Sprint
-    total_sprint_count = @project.sprint_total + 1
-    total_sprint_count.times do |sprint|
-      next unless @project.get_sprint(sprint).nil? and sprint != 0
-      sprint = Sprint.new
-      sprint.project = @project
-      sprint.sprint = sprint
-      sprint.open = @project.sprint_current == sprint
-      sprint.save
+    # TODO: Verify this is not
+    total = @project.sprint_total + 1
+    total.times do |sprint|
+      next if sprint.zero?
+      next unless @project.get_sprint(sprint).nil?
+      s = Sprint.new
+      s.project = @project
+      s.sprint = sprint
+      s.open = @project.sprint_current == sprint
+      s.save
     end
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
-    params.require(:project).permit(:name, :language, :image, :sprint_total, :sprint_current, :description, :github_url, :heroku_token, :github_branch, :github_secondary_branch, :readme_file, :readme_remote, :stage_website_url, :demo_url, :prod_url, :complete, :stage_travis_api_url, :stage_travis_api_token, :prod_travis_api_token, :prod_travis_api_url, :coveralls_api_url, :customers_id, :task_id)
+    params.require(:project).permit(:name, :language, :image, :sprint_total,
+                                    :sprint_current, :description, :github_url,
+                                    :heroku_token, :github_branch, :github_secondary_branch,
+                                    :readme_file, :readme_remote, :stage_website_url, :demo_url,
+                                    :prod_url, :complete, :task_id)
   end
 end

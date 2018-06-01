@@ -1,2 +1,2 @@
-$('#modal_target').html('<%= j render 'notes/simple_form', note: @note %>');
-<%= render 'layouts/render_modal', title: 'Create Note' %>
+$('#modal_target').html('<%= j render 'notes/modal_form', note: @note %>');
+<%= render 'renderers/render_modal', title: 'Create Note' %>

@@ -169,7 +169,7 @@
           <td class="text-center text-primary text-bold"><%= task.planned_cost.money %></td>
         <% else %>
           <td class="text-center hidden-xs"><%= task.hours.to_s %> hrs.</td>
-          <td class="text-right text-primary text-bold"><%= task.total_cost.money %></td>
+          <td class="text-right text-primary text-bold"><%= task.cost.money %></td>
         <% end %>
 
       </tr>

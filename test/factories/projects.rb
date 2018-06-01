@@ -1,12 +1,12 @@
 FactoryBot.define do
   factory :project, class: 'Project' do
     transient do
-      phases 15
+      phases 5
     end
     name Faker::App.name
     language Faker::ProgrammingLanguage.name
-    sprint_total 15
-    sprint_current 1
+    sprint_total { phases }
+    sprint_current '1'
     # sprint_total { phases }
     # sprint_current { Random.rand(phases) }
     description Faker::ChuckNorris.fact
@@ -15,22 +15,22 @@ FactoryBot.define do
     demo_url Faker::Internet.domain_name
     prod_url Faker::Internet.domain_name
     complete false
-    association :owner, factory: :owner, email: Faker::Internet.email
+    association :owner, factory: :owner
     # heroku_token Faker::Omniauth.github['uid']
     # google_analytics_tracking_code Faker::Omniauth.google[:credentials][:token]
-
-    factory :project_with_sprints do
-      after(:create) do |project, evaluator|
-        create_list(:sprint, evaluator.phases, project: project)
-      end
+    after(:create) do |project, evaluator|
+      create_list(:sprint, evaluator.phases, project: project)
     end
+    # after(:create) do |project, evaluator|
+    #   create_list(:note, 2, project: project)
+    # end
   end
 
   factory :new_project, class: 'Project' do
     name 'new project name'
     language 'rails'
-    sprint_total 10
-    sprint_current 1
+    sprint_total '10'
+    sprint_current '1'
     description 'new project desc'
     github_url 'http://github.com/user/project'
     stage_website_url 'project stage url'

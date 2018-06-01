@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :load_requires
+  before_action :load_dependencies
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_current_user
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: keys)
   end
 
-  def load_requires
+  def load_dependencies
     require 'dotenv/load' unless Rails.env.production?
 
     require Rails.root.join('lib', 'Array.rb')
