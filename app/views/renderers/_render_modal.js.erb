@@ -1,0 +1,16 @@
+$('#modal_title').html('<%= title %>');
+
+<% if defined? small_modal and small_modal %>
+  $('.modal-sizer').removeClass('modal-lg').addClass('modal-sm');
+<% elsif defined? medium_modal and medium_modal %>
+  $('.modal-sizer').removeClass('modal-lg')
+<% end %>
+
+<% if defined? display_close %>
+  <% if display_close %>
+    $('#modal_close').show();
+  <% end %>
+<% end %>
+
+$('#modal').modal('show');
+$('#modal').appendTo("body");

@@ -14,7 +14,7 @@ class BigDecimal
   def sprint_rate
     result = self.prettify.to_s
     result = '$' + result + ' /hr'
-    return result
+    result
   end
 
   def hours

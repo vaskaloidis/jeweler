@@ -18,10 +18,10 @@ class Task < ApplicationRecord
     self.position = self.sprint.next_position_int
   end
   def task_id
-    return 'task' + self.sprint.sprint.to_s + self.get_letter
+    'task' + self.sprint.sprint.to_s + self.letter
   end
-  def get_letter
-    return ApplicationHelper.alphabet.at(self.position)
+  def letter
+    ApplicationHelper.alphabet.at(self.position)
   end
 
   # def hours
@@ -34,7 +34,7 @@ class Task < ApplicationRecord
   #   return ApplicationHelper.prettify(ph)
   # end
 
-  def total_cost
+  def cost
     if self.hours.nil?
       return 0.00
     else

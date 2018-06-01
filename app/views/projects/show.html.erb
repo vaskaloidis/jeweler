@@ -14,9 +14,9 @@
                 <%= render 'projects/project_image', project: @project %>
               </div>
               <div class="col-xs-12 col-sm-9">
-                <%= render 'projects/widgets', project: @project %>
+                <%= render 'widgets/project_widgets', project: @project %>
                 <%= render 'sprints/bar_graph', project: @project %>
-                <%= render 'projects/sprint_meter', project: @project %>
+                <%= render 'sprints/meter', project: @project %>
               </div>
               <div id="home_timeline_container" class="col-xs-12 col-md-8 pull-right">
                 <%= render 'projects/timeline', notes: @project.sprint_notes, project: @project %>

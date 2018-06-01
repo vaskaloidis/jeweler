@@ -1,16 +1,15 @@
 <% sprints.includes(:project).each do |sprint| %>
   <% if sprint.current? %>
     <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed sprint-displayed current-sprint-tab">
-      <% sprint_btn = '<i class="fas fa-paper-plane"> ' + sprint.sprint.to_s %>
-      <%= link_to sprint.sprint.to_s, render_sprint_panel_path(sprint), id: 'sprint_btn_' + sprint.sprint.to_s, remote: true %>
+      <%= link_to sprint.sprint.to_s, render_sprint_path(sprint), id: 'sprint_btn_' + sprint.sprint.to_s, remote: true %>
     </li>
   <% elsif sprint.sprint < sprint.project.sprint_current %>
     <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed">
-      <%= link_to sprint.sprint.to_s, render_sprint_panel_path(sprint), id: 'sprint_btn_' + sprint.sprint.to_s, remote: true %>
+      <%= link_to sprint.sprint.to_s, render_sprint_path(sprint), id: 'sprint_btn_' + sprint.sprint.to_s, remote: true %>
     </li>
   <% else %>
     <li id="sprint_tab_<%= sprint.sprint.to_s %>" >
-      <%= link_to sprint.sprint.to_s, render_sprint_panel_path(sprint), id: 'sprint_btn_' + sprint.sprint.to_s, remote: true %>
+      <%= link_to sprint.sprint.to_s, render_sprint_path(sprint), id: 'sprint_btn_' + sprint.sprint.to_s, remote: true %>
     </li>
   <% end %>
 <% end %>

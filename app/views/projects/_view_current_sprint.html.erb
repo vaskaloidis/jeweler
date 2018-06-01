@@ -1,7 +1,0 @@
-<%= render 'projects/sprint_meter' %>
-
-<%#= render 'projects/note_full_timeline', local_note: @project.notes.where(note_type: 'commit').order('created_at DESC') %>
-
-<div id="home_timeline_container" class="col-md-12">
-  <%= render 'projects/timeline', notes: @project.sprint_notes, project:@project %>
-</div>

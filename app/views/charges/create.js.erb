@@ -1,5 +1,5 @@
 $('#modal_target').html('<%= j render 'charges/payment_details', payment: @payment, errors:@error_msgs %>');
-<%= render 'layouts/render_modal', title: 'Payment Details', display_close: true %>
+<%= render 'renderers/render_modal', title: 'Payment Details', display_close: true %>
 
 <% unless @error_msgs.empty? %>
   <% @error_msgs.each do |error| %>

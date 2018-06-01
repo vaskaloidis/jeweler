@@ -2,10 +2,10 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
-        <%#= render 'sprints/sprint_slider', sprint: project.current_sprint, sprint: project.current_sprint.sprint %>
+        <%#= render 'sprints/slider', sprint: project.current_sprint, sprint: project.current_sprint.sprint %>
 
         <div class="current_sprint_panel" id="sprint_panel_<%= @sprint.id.to_s %>_container">
-          <%= render 'sprints/sprint_panel', sprint: @sprint, sprint: @sprint.sprint %>
+          <%= render @sprint %>
         </div>
 
       </div>
@@ -13,6 +13,6 @@
   </div>
 </div>
 
-
-<%= link_to 'Edit', edit_sprint_path(@sprint) %> |
-<%= link_to 'Back', project_path(@sprint.project) %>
+<div id="home_timeline_container" class="col-md-12">
+  <%= render 'projects/timeline', notes: @sprint.project.sprint_notes, project:@sprint.project %>
+</div>

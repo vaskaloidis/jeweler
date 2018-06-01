@@ -1,68 +1,127 @@
-<% if notice != '' && notice != nil %>
-  <p class="alert alert-success"><%= notice %></p>
+<h1>Welcome <%= current_user.first_name %> <%= current_user.last_name %>.</h1>
+
+<% unless current_user.customer_projects.empty? %>
+  <% total_payment = 0.0 %>
+  <% total_cost = 0.0 %>
+  <% total_hours = 0.0 %>
+  <% total_balance = 0.0 %>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <% #TODO: Move this chart enable / disable on dshabord to a config %>
+      <% if true %>
+        <div class="row">
+          <%= render 'graphs/user/dashboard_bar_graph', user: current_user %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Your Projects
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="list-group">
+            <% current_user.owner_projects.each do |project| %>
+              <a href="<%= project_path(project) %>" class="list-group-item">
+                <h4 class="list-group-item-heading"><%= project.name %></h4>
+                <p class="list-group-item-text">
+                <p><%= project.description %></p><br>
+
+                <div id="project_description_home">
+                  <% if project.total_planned_hours > 0 %>
+                    <span class="alert alert-success">Planned Cost: <%= project.total_planned_cost.money %></span>
+                    <span class="alert alert-success">planned Hours: <%= project.total_planned_hours.prettify %>
+                      hrs</span>
+                  <% end %>
+                  <% if project.hours > 0 %>
+                    <span class="alert alert-success">Total Billed: <%= project.total_cost.money %></span>
+                    <span class="alert alert-success">Billed Hours: <%= project.hours.prettify %> hrs</span>
+                    <span class="alert alert-warning">Total Payment: <%= project.total_payment.money %></span>
+                    <% if project.balance > 0 %>
+                      <% total_balance = total_balance + project.balance %>
+                      <span class="alert alert-danger">Balance: <%= project.balance.money %></span>
+                    <% end %>
+                    <% total_payment = total_payment + project.total_payment %>
+                    <% total_cost = total_cost + project.total_cost %>
+                    <% total_hours = total_hours + project.hours %>
+                  <% end %>
+                </div>
+                </p>
+              </a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <% #TODO:Move these calculations for a current_user owner's overall projects to User Model %>
+        <%= render 'widgets/home_widgets', total_cost: total_cost, total_payment: total_payment, total_balance: total_balance, total_hours: total_hours %>
+      </div>
+    </div>
+  </div>
 <% end %>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Owner Projects
-  </div>
+<% unless current_user.invitations.empty? %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Invitations
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="list-group">
+            <% current_user.invitations.each do |invitation| %>
+              <div class="list-group-item">
+                <h4 class="list-group-item-heading"><%= invitation.project.name %></h4>
+                <p class="list-group-item-text">
+                <p><%= invitation.project.description %></p>
 
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="list-group">
-
-          <% @owner_projects.each do |project| %>
-            <a href="<%= project_path(project) %>" class="list-group-item">
-              <h4 class="list-group-item-heading"><%= project.name %></h4>
-              <p class="list-group-item-text">
-                  <%= project.description %> <br>
-                <span class="label label-success"><%= project.language %></span>
-                <span class="label label-success">Sprint <%= project.sprint_current %> of <%= project.sprint_total %></span>
-                <%#= link_to 'Open Demo URL', project.demo_url, class: 'btn btn-success' %>
-                <%#= link_to 'Edit', edit_project_path(project), class: 'btn btn-warning' %>
-                <%#= link_to 'Destroy',
-                          project,
-                          class: 'btn btn-danger',
-                          method: :delete,
-                          data: {confirm: 'Are you sure you want to delete project?'} %>
-              </p>
-            </a>
-          <% end %>
+                <p>
+                  <%= link_to 'Accept', accept_invitation_path(invitation.id), class: 'btn btn-success' %>
+                  <%= link_to 'Decline', decline_invitation_path(invitation.id), class: 'btn btn-danger' %>
+                </p>
+                </p>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 
-<br>
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Customer Projects
-  </div>
-
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="list-group">
-
-          <% @customer_projects.each do |project| %>
-            <!-- Add active to href class if needed -->
-            <a href="<%= project_path(project) %>" class="list-group-item">
-              <h4 class="list-group-item-heading"><%= project.name %></h4>
-              <p class="list-group-item-text">
-                <%= project.description %> <br>
-                <small><%= project.language %> /
-                  <%= project.sprint_current %> of <%= project.sprint_total %> /
-                  <%= project.demo_url %>
-                </small>
-              </p>
-            </a>
-
-          <% end %>
+<% unless current_user.customer_projects.empty? %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Projects Member
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="list-group">
+            <% current_user.customer_projects.each do |project| %>
+              <a href="<%= project_path(project) %>" class="list-group-item">
+                <h4 class="list-group-item-heading"><%= project.name %></h4>
+                <p class="list-group-item-text">
+                <p><%= project.description %></p>
+              </a>
+              <% unless project.payment_requests.empty? %>
+                <p>
+                  <% project.payment_requests.each do |sprint| %>
+                  <div class="alert alert-success">
+                    Payment Requested For Sprint <%= sprint.sprint.to_s %>
+                    <%= link_to '<strong>Make Payment</strong>'.html_safe, project_payments_path(sprint.project.id) %>
+                  </div>
+                <% end %>
+                </p>
+              <% end %>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>

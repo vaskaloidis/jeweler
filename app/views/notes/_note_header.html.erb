@@ -6,7 +6,7 @@
       </span>
       <% unless note.task.nil? %>
           <span id="timeline_sprint_task_message" class="alert alert-success">
-            #task<%= note.sprint.sprint.to_s + note.task.get_letter %>
+            #task<%= note.sprint.sprint.to_s + note.task.letter %>
           </span>
       <% end %>
     <% end %>

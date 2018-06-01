@@ -1,62 +1,105 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class TasksControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    sign_in create(:user)
-    # @project = create(:project_with_sprints)
-    # @sprint = @project.sprints.first
-    # @task = @sprint.tasks.first
     @task = create(:task)
-    @sprint = @task.sprint
-    @project = @sprint.project
+    @project = create(:project)
+    @user = @project.owner
+    sign_in @user
+    # TODO: Add test to verify owner is doing these (verify_owner), add code to actually check the owner is doing these, then check to make sure nobody else can
   end
 
-  test "should get new" do
-    get new_project_sprint_task_url(@project, @sprint), xhr: true
+  test 'should get new' do
+    get new_project_sprint_task_url(@project, @project.sprints.first), xhr: true
 
     assert_response :success
-    assert_equal "text/javascript", @response.content_type
+    assert_equal 'text/javascript', @response.content_type
   end
 
-  test "should create task" do
+  test 'should create task' do
     new_task = attributes_for(:new_task)
+    Rails.logger.info(new_task.to_s)
+
     assert_difference('Task.count') do
-      post tasks_url, params: {task: new_task}, xhr:true
+      post tasks_url, params: {
+                        task: {
+                            sprint_id: @project.sprints.first.id,
+                            description: new_task[:description],
+                            hours: new_task[:hours],
+                            planned_hours: new_task[:planned_hours],
+                            rate: new_task[:rate]
+                        }
+                    },
+                    xhr: true
     end
     assert_response :success
-    assert_equal "text/javascript", @response.content_type
-    latest = Task.last
-    assert_equal latest.description, new_task.description
+    assert_equal 'text/javascript', @response.content_type
 
+    task = Task.last
+    assert_equal new_task[:description], task.description
+    assert_equal new_task[:hours].to_f, task.hours.to_f
+    assert_equal new_task[:planned_hours].to_f, task.planned_hours.to_f
+    assert_equal new_task[:rate].to_f, task.rate.to_f
+    assert_equal @project.sprints.first.id, task.sprint.id
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get edit_task_url(@task), xhr: true
     assert_response :success
-    assert_equal "text/javascript", @response.content_type
+    assert_equal 'text/javascript', @response.content_type
   end
 
-  test "should update task" do
+  test 'should update task' do
     task_update = attributes_for(:task_update)
-    patch task_url(@task), params: task_update, xhr: true
+    patch task_url(@task), params: {
+        task: {
+            description: task_update[:description],
+            hours: task_update[:hours],
+            planned_hours: task_update[:planned_hours],
+            rate: task_update[:rate]
+        }
+    },
+          xhr: true
     assert_response :success
-    assert_equal "text/javascript", @response.content_type
+    assert_equal 'text/javascript', @response.content_type
+    @task.reload
     assert_equal task_update[:description], @task.description
-    assert_equal task_update[:hours], @task.hours
-    assert_equal task_update[:planned_hours], @task.planned_hours
-    assert_equal task_update[:rate], @task.rate
+    assert_equal task_update[:hours].to_f, @task.hours.to_f
+    assert_equal task_update[:planned_hours].to_f, @task.planned_hours.to_f
+    assert_equal task_update[:rate].to_f, @task.rate.to_f
   end
 
-  test "should set task to deleted status" do
+  test 'should set task to deleted status' do
     refute @task.deleted
 
     delete task_url(@task), xhr: true
     assert_response :success
-    assert_equal "text/javascript", @response.content_type
+    assert_equal 'text/javascript', @response.content_type
 
     @task.reload
     assert @task.deleted
+  end
+
+  test 'should complete task' do
+    get complete_task_path(@task), xhr: true
+    assert_response :success
+    @task.reload
+    assert @task.complete
+  end
+
+  test 'should uncomplete task' do
+    task = create(:task, complete: true)
+    get uncomplete_task_path(task), xhr: true
+    assert_response :success
+    refute task.complete
+  end
+
+  test 'should cancel task update' do
+    get cancel_task_update_path(@project.sprints.first), xhr: true
+    assert_response :success
   end
 end

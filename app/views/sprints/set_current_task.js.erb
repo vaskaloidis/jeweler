@@ -1,7 +1,7 @@
 <% if @error %>
   toastr.error('<%= @error_message %>');
 <% else %>
-  <%= render 'sprints/re-render_sprint_panel', sprint: @task.sprint %>
+  <%= render 'renderers/re-render_sprint_panel', sprint: @task.sprint %>
 
   <%= render 'notes/re-render_timeline', notes: @task.sprint.project.sprint_notes, project: @task.sprint.project %>
 

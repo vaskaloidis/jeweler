@@ -30,23 +30,22 @@ Rails.application.routes.draw do
   # Invoices
   get '/print_invoice/:sprint_id/:estimate', to: 'invoices#print_invoice', as: 'print_invoice'
   get '/generate_invoice/:sprint_id/:estimate', to: 'invoices#generate_invoice', as: 'generate_invoice'
-  match '/send_invoice', to: 'invoices#send_invoice', via: [:post], as: 'send_invoice'
-  match '/review_customer_invoice', to: 'invoices#review_customer_invoice', via: [:post], as: 'review_customer_invoice'
+  match '/invoices', to: 'invoices#send_invoice', via: [:post], as: 'send_invoice'
+  match '/invoices', to: 'invoices#review_customer_invoice', via: [:post], as: 'review_customer_invoice'
   get '/generate_customer_invoice/:sprint_id/:estimate', to: 'invoices#generate_customer_invoice', as: 'generate_customer_invoice'
 
   # Sprints
-  get '/edit_description/:sprint_id', to: 'sprints#edit_description', as: 'edit_sprint_description'
-  get '/render_sprint/:sprint_id', to: 'sprints#render_panel', as: 'render_sprint_panel'
-  get '/set_current_sprint/:sprint_id' => 'sprints#set_current_sprint', as: 'set_current_sprint'
-  get '/open_sprint/:sprint_id' => 'sprints#open_sprint_inline', as: 'open_sprint'
-  get '/close_sprint/:sprint_id' => 'sprints#close_sprint_inline', as: 'close_sprint'
-  get '/set_current_task/:task_id' => 'sprints#set_current_task', as: 'set_current_task'
+  get '/sprint/edit_description/:id', to: 'sprints#edit_description', as: 'edit_sprint_description'
+  get '/sprint/render/:id', to: 'sprints#render_panel', as: 'render_sprint'
+  get '/sprint/set_current_sprint/:id' => 'sprints#set_current_sprint', as: 'set_current_sprint'
+  get '/sprint/open/:id' => 'sprints#open', as: 'open_sprint'
+  get '/sprint/close/:id' => 'sprints#close', as: 'close_sprint'
+  get '/sprint/set_current_task/:task_id' => 'sprints#set_current_task', as: 'set_current_task'
 
   # Notes
-  get '/timeline_query/:project_id/:sprint_query/:note_type', to: 'notes#note_query', as: 'note_query'
-  get '/delete_note_inline/:note_id' => 'notes#delete_note_inline', as: 'delete_note_inline'
-  get '/create_note_modal/:project_id', to: 'notes#create_note_modal', as: 'create_note_modal'
-  get '/create_project_update_modal/:project_id', to: 'notes#create_project_update_modal', as: 'create_project_update_modal'
+  get '/notes/timeline_query/:project_id/:sprint_query/:note_type', to: 'notes#note_query', as: 'note_query'
+  get '/notes/delete_note_inline/:note_id' => 'notes#delete_note_inline', as: 'delete_note_inline'
+  get '/notes/create_note_modal/:project_id', to: 'notes#create_note_modal', as: 'create_note_modal'
 
   # Discussions
   match '/create_chat_message', to: 'discussions#create_chat_message_inline', via: [:post], as: 'create_chat_message_inline'
@@ -56,11 +55,6 @@ Rails.application.routes.draw do
   get '/complete_task/:id' => 'tasks#complete_task', as: 'complete_task'
   get '/uncomplete_task/:id' => 'tasks#uncomplete_task', as: 'uncomplete_task'
   get '/cancel_task_update/:sprint_id' => 'tasks#cancel_update', as: 'cancel_task_update'
-  get '/edit_task_inline/:id' => 'tasks#edit_inline', as: 'edit_task_inline'
-  match '/update_task_inline' => 'tasks#update_inline', via: [:post], as: 'update_task_inline'
-  get '/delete_task_inline/:id' => 'tasks#delete_inline', as: 'delete_task_inline'
-  get '/create_task_inline/:sprint_id' => 'tasks#create_inline', as: 'create_task_inline'
-  match '/save_task_inline', to: 'tasks#save_inline', via: [:post], as: 'save_task_inline'
 
   get '/authorize_github', to: 'webhook#authorize_account', as: 'authorize_github'
 
@@ -72,22 +66,18 @@ Rails.application.routes.draw do
   resources :project_customers
   resources :notes
   resources :discussions
-
   resources :invitations
   resources :payments
-
   resources :tasks
   resources :sprints do
     resources :tasks
   end
-
   resources :projects do
     resources :notes do
       resources :discussions
     end
     resources :sprints do
       resources :tasks do
-        resources :payments
       end
     end
     resources :project_customers
@@ -106,7 +96,7 @@ Rails.application.routes.draw do
     get '/pay/:project_id', to: 'payments#unauthenticated_payment', via: 'pay'
   end
   authenticated do
-    root :to => 'main#authenticated_home'
+    root :to => 'projects#index'
     get '/pay/:project_id', to: 'payments#index', via: 'pay'
   end
 
