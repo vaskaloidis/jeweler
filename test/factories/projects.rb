@@ -21,9 +21,9 @@ FactoryBot.define do
     after(:create) do |project, evaluator|
       create_list(:sprint, evaluator.phases, project: project)
     end
-    # after(:create) do |project, evaluator|
-    #   create_list(:note, 2, project: project)
-    # end
+    after(:create) do |project, evaluator|
+      create_list(:project_customer, 2, project: project)
+    end
   end
 
   factory :new_project, class: 'Project' do

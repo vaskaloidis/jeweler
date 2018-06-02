@@ -1,31 +1,23 @@
 Rails.application.routes.draw do
 
-  # Ajax
-
+  # Ajax TODO: Convert any 'Inline' Actions to use Stock Controller Actions
   get '/install_github_webhook/:project_id', to: 'webhook#install_webhook', as: 'install_github_webhook'
-
   match '/new_charge_modal', to: 'charges#generate_modal', via: [:post], as: 'generate_charge_modal'
-
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
 
   # Payments
   get '/pay/:project_id', to: 'payments#unauthenticated_payment', as: 'pay'
-  # get '/display_payments_panel/:project_id', to: 'payments#display_panel', as: 'display_payments_panel'
-  get '/request_payment/:sprint_id' => 'projects#request_payment', as: 'request_payment'
-  get '/cancel_request_payment/:sprint_id' => 'projects#cancel_request_payment', as: 'cancel_request_payment'
-  get '/open_payment/:project_id', to: 'sprints#open_payment', as: 'open_payment'
-  get '/open_sprint_payment/:sprint_id', to: 'sprints#open_sprint_payment', as: 'open_sprint_payment'
+  get '/request_payment/:sprint_id', to: 'projects#request_payment', as: 'request_payment'
+  get '/cancel_payment_request/:sprint_id', to: 'projects#cancel_request_payment', as: 'cancel_request_payment'
   # match '/make_payment', to: 'sprints#make_payment', via: [:post], as: 'make_payment'
 
   # Invitations
-  get '/accept_invitation/:invitation_id', to: 'invitations#accept_invitation', as: 'accept_invitation'
-  get '/decline_invitation/:invitation_id', to: 'invitations#decline_invitation', as: 'decline_invitation'
+  get '/invitation/:id/accept', to: 'invitations#accept', as: 'accept_invitation'
+  get '/invitation/:id/decline', to: 'invitations#decline', as: 'decline_invitation'
 
-  # Customers
-  get '/leave_project/:project_id/:user_id', to: 'project_customers#leave_project', as: 'leave_project'
-  match '/create_customer_inline', to: 'project_customers#create_customer_inline', via: [:post], as: 'create_customer_inline'
-  get '/remove_customer/:project_id/:user_id', to: 'project_customers#remove_customer_inline', as: 'remove_customer_inline'
-  get '/remove_invitation/:invitation_id', to: 'invitations#remove_invitation_inline', as: 'remove_invitation_inline'
+  # Customers API Calls (TODO: re-implement these eventually)
+  get '/project/:project_id/leave/:user_id', to: 'project_customers#leave', as: 'leave_project'
+  match '/project/:project_id/remove/:user_id', to: 'project_customers#remove', via: [:delete], as: 'remove_customer'
 
   # Invoices
   get '/print_invoice/:sprint_id/:estimate', to: 'invoices#print_invoice', as: 'print_invoice'
@@ -35,11 +27,11 @@ Rails.application.routes.draw do
   get '/generate_customer_invoice/:sprint_id/:estimate', to: 'invoices#generate_customer_invoice', as: 'generate_customer_invoice'
 
   # Sprints
-  get '/sprint/edit_description/:id', to: 'sprints#edit_description', as: 'edit_sprint_description'
-  get '/sprint/render/:id', to: 'sprints#render_panel', as: 'render_sprint'
-  get '/sprint/set_current_sprint/:id' => 'sprints#set_current_sprint', as: 'set_current_sprint'
-  get '/sprint/open/:id' => 'sprints#open', as: 'open_sprint'
-  get '/sprint/close/:id' => 'sprints#close', as: 'close_sprint'
+  get '/sprint/:id/edit_description', to: 'sprints#edit_description', as: 'edit_sprint_description'
+  get '/sprint/:id/render', to: 'sprints#render_panel', as: 'render_sprint'
+  get '/sprint/:id/set_current' => 'sprints#set_current_sprint', as: 'set_current_sprint'
+  get '/sprint/:id/open' => 'sprints#open', as: 'open_sprint'
+  get '/sprint/:id/close' => 'sprints#close', as: 'close_sprint'
   get '/sprint/set_current_task/:task_id' => 'sprints#set_current_task', as: 'set_current_task'
 
   # Notes
@@ -82,6 +74,7 @@ Rails.application.routes.draw do
     end
     resources :project_customers
     resources :payments
+    resources :invitations
   end
 
   # Stripe

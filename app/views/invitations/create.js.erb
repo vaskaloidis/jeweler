@@ -11,7 +11,7 @@
     toastr.error('User <%= @email %> was already invited!');
   <% end %>
 <% else %>
-  toastr.error('User <%= @email %> is already a member of this projectd!');
+  toastr.error('User <%= @email %> is already a member of this project!');
 <% end %>
 
 $('#customers_container').html('<%= j render 'project_customers/customers', project: @project %>');
