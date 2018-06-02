@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy]
-  before_action :verify_sprints_exist, only: [:show, :edit, :update, :create]
+  # before_action :verify_sprints_exist, only: [:show, :edit, :update, :create]
   before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
   respond_to :html, :js, only: [:request_payment]
@@ -205,21 +205,6 @@ class ProjectsController < ApplicationController
     rescue Exception
       logger.error("Error syncing Github Repo")
       logger.error
-    end
-  end
-
-  def verify_sprints_exist
-    # TODO: Verify this is not making an extra useless Sprint
-    # TODO: Verify this is not
-    total = @project.sprint_total + 1
-    total.times do |sprint|
-      next if sprint.zero?
-      next unless @project.get_sprint(sprint).nil?
-      s = Sprint.new
-      s.project = @project
-      s.sprint = sprint
-      s.open = @project.sprint_current == sprint
-      s.save
     end
   end
 

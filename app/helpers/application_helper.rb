@@ -155,20 +155,21 @@ module ApplicationHelper
   end
 
   def self.sprint_percent(project)
+    return 0 if project.current_sprint.nil?
     total_tasks = project.current_sprint.tasks.count
     completed_tasks = project.current_sprint.completed_tasks.count
-    if total_tasks > 0
-      tasks_diff = completed_tasks.to_f / total_tasks.to_f
-    else
-      tasks_diff = 0
-    end
+    tasks_diff = if total_tasks > 0
+                   completed_tasks.to_f / total_tasks.to_f
+                 else
+                   0
+                 end
     progress_total = (project.sprint_current - 1.0) + tasks_diff.to_f
     progress_percent = (progress_total.to_f / project.sprint_total.to_f) * 100.to_f
-    return progress_percent
+    progress_percent
   end
 
   def self.alphabet
-    return ("a".."zz").to_a
+    ("a".."zz").to_a
   end
 
   def self.display_project_nav?(controller_name, action_name)
@@ -177,9 +178,9 @@ module ApplicationHelper
         (controller_name == 'sprints') or
         (controller_name == 'project_customers') or
         (controller_name == 'payments' and action_name == 'index')
-      return true
+      true
     else
-      return false
+      false
     end
 
   end

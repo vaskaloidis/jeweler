@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
-  before_action :prepare_errors
-  after_action :log_errors
   before_action :set_task, only: %i[show edit update destroy complete_task
                                     uncomplete_task cancel_update]
   respond_to :js, :json, only: %i[complete_task uncomplete_task cancel_update
@@ -40,7 +38,7 @@ class TasksController < ApplicationController
           project.current_task = @task
           project.save
           if project.invalid?
-            project.errors.full_messages.log_errors('TasksController - Error changing Curent-Task')
+            project.errors.full_messages.log_errors('TasksController - Error changing current-Task')
           end
           @task.sprint.project.reload
         end
@@ -154,18 +152,6 @@ class TasksController < ApplicationController
   def set_task
     @task = Task.find(params[:id])
     @sprint = @task.sprint
-  end
-
-  def prepare_errors
-    @errors = Array.new
-  end
-
-  def log_errors
-    unless @errors.empty?
-      @errors.each do |e|
-        logger.error 'TasksController Error: ' + e
-      end
-    end
   end
 
   def task_params

@@ -12,6 +12,7 @@ namespace :Jeweler do
   desc 'Run Tests Verbose'
   task test: :environment do
     puts 'Testing Verbose'
+    Rake::Task["log:clear"].invoke
     Rake::Task["test TESTOPTS='-v'"].invoke
   end
 

@@ -24,14 +24,26 @@ class ProjectTest < ActiveSupport::TestCase
     refute tasks.empty?
   end
 
-  test 'current_sprint method' do
+  test 'test current_sprint method' do
     project = create(:project)
     current_sprint = project.sprint_current
     total_sprints = project.sprint_total
     refute current_sprint.nil? or total_sprints.nil?
-
     refute project.get_sprint(current_sprint).nil?
   end
 
+  test 'test all sprints get generated correctly' do
+    project = create(:project)
+    current_sprint = project.sprint_current
+    total_sprints = project.sprint_total
+
+    (1..total_sprints).each_with_index do |sprint, index|
+      s = project.get_sprint(sprint)
+      assert_equals s.sprint, index
+      refute s.nil?
+    end
+
+
+  end
 
 end

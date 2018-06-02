@@ -1,8 +1,8 @@
 FactoryBot.define do
-  factory :sprint, class: Sprint do
+  factory :sprint, class: 'Sprint' do
     payment_due false
     description Faker::ChuckNorris.fact
-    open true
+    add_attribute(:open) { 'true' }
     sequence(:sprint)
     project
     after(:create) do |sprint, evaluator|

@@ -66,7 +66,9 @@
           </td>
           <td class="action-links">
             <% if project.owner?(current_user) %>
-              <%= link_to '<i class="linecons-trash"></i> Remove Customer'.html_safe, remove_customer_inline_path(project.id, u.id), remote: true %>
+              <%= link_to remove_customer_path(project.id, u.id), method: :delete, data: {confirm: 'Delete Customer?'}, remote: true do %>
+                <i class="linecons-trash"></i> Delete Customer
+              <% end %>
             <% end %>
           </td>
         </tr>
@@ -93,9 +95,9 @@
             <%= invitation.email %>
           </td>
           <td class="action-links">
-            <% if project.owner?(current_user) %>
-              <%= link_to '<i class="linecons-trash"></i> Remove Invitation'.html_safe, remove_invitation_inline_path(invitation.id), remote: true %>
-            <% end %>
+              <%= link_to_if project.owner?, invitation.id, method: :delete, data: {confirm: 'Delete Invitation?'} do %>
+                <i class="linecons-trash"></i> Delete Invitation
+              <% end %>
           </td>
         </tr>
       <% end %>

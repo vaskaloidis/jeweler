@@ -84,9 +84,7 @@
     <% if !request.original_url.include?("users/sign_in") %>
       <% if user_signed_in? %>
         <%= render 'layouts/top_bar_authenticated' %>
-        <% if defined? @project %>
-          <%= render 'layouts/top_notifications', project: @project, current_user: current_user %>
-        <% end %>
+        <%= render 'layouts/top_notifications' %>
       <% else %>
         <%= render 'layouts/top_bar' %>
       <% end %>

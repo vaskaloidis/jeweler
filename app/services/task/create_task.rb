@@ -1,14 +1,16 @@
-class CreateTask  < Patterns::Service
-def initialize(user)
-  @user = user
-end
+module Task
+  class CreateTask < Patterns::Service
+    def initialize(user)
+      @user = user
+    end
 
-def call
+    def call
 
 
-end
+    end
 
-private
+    private
 
-attr_reader :user
+    attr_reader :user
+  end
 end

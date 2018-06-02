@@ -2,11 +2,8 @@ class Sprint < ApplicationRecord
   belongs_to :project
   has_many :tasks
   has_many :payments
-
   has_many :notes
-
   accepts_nested_attributes_for :project
-
   validates :sprint, presence: true
 
   def closed?
