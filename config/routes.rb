@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   # Customers API Calls (TODO: re-implement these eventually)
   get '/project/:project_id/leave/:user_id', to: 'project_customers#leave', as: 'leave_project'
-  match '/project/:project_id/remove/:user_id', to: 'project_customers#remove', via: [:delete], as: 'remove_customer'
+  delete '/project/:project_id/remove/:user_id', to: 'project_customers#remove', as: 'remove_customer'
 
   # Invoices
   get '/print_invoice/:sprint_id/:estimate', to: 'invoices#print_invoice', as: 'print_invoice'
@@ -29,10 +29,15 @@ Rails.application.routes.draw do
   # Sprints
   get '/sprint/:id/edit_description', to: 'sprints#edit_description', as: 'edit_sprint_description'
   get '/sprint/:id/render', to: 'sprints#render_panel', as: 'render_sprint'
-  get '/sprint/:id/set_current' => 'sprints#set_current_sprint', as: 'set_current_sprint'
-  get '/sprint/:id/open' => 'sprints#open', as: 'open_sprint'
-  get '/sprint/:id/close' => 'sprints#close', as: 'close_sprint'
-  get '/sprint/set_current_task/:task_id' => 'sprints#set_current_task', as: 'set_current_task'
+  get '/sprint/:id/current', to: 'sprints#set_current', as: 'set_current_sprint'
+  get '/sprint/:id/open', to: 'sprints#open', as: 'open_sprint'
+  get '/sprint/:id/close', to: 'sprints#close', as: 'close_sprint'
+
+  # Tasks
+  get '/task/:id/complete' => 'tasks#complete', as: 'complete_task'
+  get '/task/:id/uncomplete' => 'tasks#uncomplete', as: 'uncomplete_task'
+  get '/task/cancel/:sprint_id' => 'tasks#cancel', as: 'cancel_task_update'
+  get '/task/current/:id' => 'tasks#set_current', as: 'set_current_task'
 
   # Notes
   get '/notes/timeline_query/:project_id/:sprint_query/:note_type', to: 'notes#note_query', as: 'note_query'
@@ -42,11 +47,6 @@ Rails.application.routes.draw do
   # Discussions
   match '/create_chat_message', to: 'discussions#create_chat_message_inline', via: [:post], as: 'create_chat_message_inline'
   get '/fetch_discussion/:note_id' => 'discussions#fetch_discussion', as: 'fetch_discussion'
-
-  # Tasks
-  get '/complete_task/:id' => 'tasks#complete_task', as: 'complete_task'
-  get '/uncomplete_task/:id' => 'tasks#uncomplete_task', as: 'uncomplete_task'
-  get '/cancel_task_update/:sprint_id' => 'tasks#cancel_update', as: 'cancel_task_update'
 
   get '/authorize_github', to: 'webhook#authorize_account', as: 'authorize_github'
 

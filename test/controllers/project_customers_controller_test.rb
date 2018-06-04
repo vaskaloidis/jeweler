@@ -19,7 +19,7 @@ class ProjectCustomersControllerTest < ActionDispatch::IntegrationTest
   test "remove customer from project" do
     @user = @project.owner
     sign_in @user
-    delete leave_project_url(@project, @project_customer)
+    delete leave_project_url(@project, @project_customer.user)
     assert_redirected_to root_path
     assert_response :success
   end
@@ -31,7 +31,7 @@ class ProjectCustomersControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     @user = @project.owner
     sign_in @user
-    get project_customers_url(@project)
+    get project_project_customers_url(@project)
     assert_response :success
   end
 end

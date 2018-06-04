@@ -4,7 +4,7 @@
   </a>
 
   <%= link_to new_project_note_path(project.id), class: 'btn btn-success btn-block text-left', remote: true do %>
-    Create Sprint <%= project.current_sprint.sprint.to_s %> Note<i class="fas fa-sticky-note pull-right"></i>
+    Create Sprint <%= project.sprint_current.to_s %> Note<i class="fas fa-sticky-note pull-right"></i>
   <% end %>
 
   <% if project.current_task.nil? %>

@@ -78,6 +78,8 @@ group :development, :test do
   gem 'rubocop', '~> 0.56.0', require: false
 end
 group :development do
+  gem 'guard'
+  gem 'guard-minitest'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'bundler-audit' # TODO: Security Audit Gems

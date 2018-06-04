@@ -20,20 +20,18 @@ class InvitationsControllerTest < ActionDispatch::IntegrationTest
   test "should get accept" do
     get accept_invitation_url(@invitation)
     assert_redirected_to root_path
-    assert_response :success
     # assert_equal 'You have joined the project ' + @project.name, flash[:notice]
   end
 
   test "should get decline" do
     get decline_invitation_url(@invitation)
     assert_redirected_to root_path
-    assert_response :success
     # assert_equal 'You have joined the project ' + @project.name, flash[:notice]
   end
 
   test "should destroy invitation" do
     assert_difference('Invitation.count', -1) do
-      delete invitations_url(@invitation)
+      delete invitation_url(@invitation)
     end
 
     assert_redirected_to invitations_url

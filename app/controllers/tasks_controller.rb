@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[show edit update destroy complete_task
-                                    uncomplete_task cancel_update]
-  respond_to :js, :json, only: %i[complete_task uncomplete_task cancel_update
+  before_action :set_task, only: %i[show edit update destroy complete
+                                    uncomplete set_current]
+  respond_to :js, :json, only: %i[complete uncomplete cancel
                                   new show create edit update destroy]
 
   def index
@@ -33,7 +33,7 @@ class TasksController < ApplicationController
       if @task.save
 
         # Set Current Task if none, and is first Sprint Task created
-        if @task.sprint.tasks.empty? and @task.sprint.project.current_task.nil? and @task.sprint.current?
+        if @task.sprint.tasks.empty? && @task.sprint.project.current_task.nil? && @task.sprint.current?
           project = @task.sprint.project
           project.current_task = @task
           project.save
@@ -90,8 +90,53 @@ class TasksController < ApplicationController
     end
   end
 
+  def set_current
+    @old_task = @task.sprint.project.current_task
 
-  def complete_task
+    if @task.sprint != @task.sprint.project.current_sprint
+      @error = true
+      @error_message = 'Current Task must be within Current Sprint.'
+      logger.debug('Error: ' + @error_message)
+    else
+      logger.debug('No Errors')
+      @error = false
+      unless @old_task.nil? || @old_task.complete
+        @old_task.complete = true
+        @old_task.save
+        @old_task.reload
+      end
+
+      @task.sprint.project.current_task = @task
+      @task.sprint.project.save
+      @task.sprint.project.reload
+      @task.sprint.reload
+
+      if @task.complete? != false
+        @task.complete = false
+        @task.save
+        @task.reload
+      end
+
+      if @task.sprint.closed?
+        @task.sprint.open = true
+        @task.sprint.save
+      end
+
+      @current_sprint = @task.sprint.project.sprint_current
+
+    end
+    if @task.sprint.project.valid?
+      Note.create_event(@task.sprint.project, 'current_task_changed', 'Current Task: ' + @task.description)
+    else
+      @error = true
+      @error_message = 'Error changing current task.'
+      logger.error('Error Changing Current Task From to ID: ' + @task.id.to_s)
+    end
+
+    logger.debug('Setting Task ' + @task.id.to_s + ' for Invoice ' + @task.sprint.id.to_s)
+  end
+
+  def complete
     @task.sprint.project.create_event('task_completed', 'Complete: ' + @task.description)
 
     @task.complete = true
@@ -103,7 +148,7 @@ class TasksController < ApplicationController
       @task.sprint.project.current_task = nil
       @task.sprint.project.save
       @next_task = false
-      until !@task.sprint.project.current_task.nil? or @task.sprint.incomplete_tasks.empty?
+      until !@task.sprint.project.current_task.nil? || @task.sprint.incomplete_tasks.empty?
         @task.sprint.tasks.each do |task|
           if @next_task
             if task.complete == false
@@ -133,17 +178,16 @@ class TasksController < ApplicationController
     end
   end
 
-  def uncomplete_task
+  def uncomplete
     @task.complete = false
     @task.save
     @task.reload
     @task.sprint.reload
     @sprint = @task.sprint
     @sprint.reload
-
   end
 
-  def cancel_update
+  def cancel
     @sprint = Sprint.find(params[:sprint_id])
   end
 
@@ -155,7 +199,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:sprint_id, :sprint, :description, :hours, :deleted, :position, :planned_hours, :rate, :complete,)
+    params.require(:task).permit(:sprint_id, :sprint, :description, :hours, :deleted, :position, :planned_hours, :rate, :complete)
   end
-
 end

@@ -47,14 +47,6 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'set current task' do
-    task = @sprint.tasks.first
-    get set_current_task_path(task), xhr: true
-    assert_response :success
-    task.reload
-    assert task.current?
-  end
-
   test 'set current sprint' do
     project = create(:project)
     next_sprint = project.get_sprint(project.sprint_total - 1)

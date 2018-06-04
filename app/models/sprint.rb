@@ -1,8 +1,9 @@
 class Sprint < ApplicationRecord
+  default_scope { order('sprint ASC') }
   belongs_to :project
-  has_many :tasks
-  has_many :payments
-  has_many :notes
+  has_many :tasks, dependent: :destroy
+  has_many :payments, dependent: :nullify
+  has_many :notes, -> { order 'created_at DESC' }, dependent: :destroy
   accepts_nested_attributes_for :project
   validates :sprint, presence: true
 
