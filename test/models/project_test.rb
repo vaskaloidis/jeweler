@@ -5,12 +5,10 @@ class ProjectTest < ActiveSupport::TestCase
 
   test 'build a valid project' do
     assert build(:project).valid?
-  end
-
-  test 'create a valid project' do
     assert create(:project).valid?
   end
 
+  # TODO: This is a test of the factory-tests, this does not belong here, move it
   test 'create a valid project with sprints and tasks' do
     project = create(:project)
     assert project and project.valid?
@@ -24,26 +22,19 @@ class ProjectTest < ActiveSupport::TestCase
     refute tasks.empty?
   end
 
-  test 'test current_sprint method' do
+  test 'callback should build sprints correctly' do
     project = create(:project)
-    current_sprint = project.sprint_current
-    total_sprints = project.sprint_total
-    refute current_sprint.nil? or total_sprints.nil?
-    refute project.get_sprint(current_sprint).nil?
-  end
 
-  test 'test all sprints get generated correctly' do
-    project = create(:project)
-    current_sprint = project.sprint_current
-    total_sprints = project.sprint_total
+    refute project.sprint_current.nil?
+    refute project.sprint_total.nil?
+    refute project.current_sprint.nil?
+    refute project.get_sprint(1).nil?
 
-    (1..total_sprints).each_with_index do |sprint, index|
-      s = project.get_sprint(sprint)
-      assert_equals s.sprint, index
-      refute s.nil?
+    (1..project.sprint_total).each do |sprint|
+      this_sprint = project.get_sprint(sprint)
+      assert_equal this_sprint.sprint, sprint
+      refute this_sprint.nil?
     end
-
-
   end
 
 end

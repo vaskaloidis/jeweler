@@ -187,7 +187,7 @@
       <% if @project.owner?(current_user) %>
         <div class="tab-pane" id="sprint_<%= sprint %>_tab-3">
           <h3>Events</h3>
-          <% @project.events.includes(:author).each do |event| %>
+          <% @project.notes.events.includes(:author).each do |event| %>
             <%= event.author.first_name + ' ' + event.author.last_name + ' ' + event.content + ' on ' + event.created_at.to_s %>
             <br>
           <% end %>

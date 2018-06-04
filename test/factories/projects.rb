@@ -5,7 +5,7 @@ FactoryBot.define do
     end
     name Faker::App.name
     language Faker::ProgrammingLanguage.name
-    sprint_total { phases }
+    sprint_total '5'
     sprint_current '1'
     # sprint_total { phases }
     # sprint_current { Random.rand(phases) }
@@ -18,11 +18,22 @@ FactoryBot.define do
     association :owner, factory: :owner
     # heroku_token Faker::Omniauth.github['uid']
     # google_analytics_tracking_code Faker::Omniauth.google[:credentials][:token]
+    # after(:create) do |project, evaluator|
+    #   create_list(:sprint, evaluator.phases, project: project)
+    # end
     after(:create) do |project, evaluator|
-      create_list(:sprint, evaluator.phases, project: project)
-    end
-    after(:create) do |project, evaluator|
+      # TODO: Iterate over Sprints here, creating tasks
+      create_list(:task, 2, sprint: evaluator.get_sprint(1))
+      create_list(:task, 2, sprint: evaluator.get_sprint(2))
+      create_list(:task, 2, sprint: evaluator.get_sprint(3))
+      create_list(:task, 2, sprint: evaluator.get_sprint(4))
+      create_list(:task, 2, sprint: evaluator.get_sprint(5))
       create_list(:project_customer, 2, project: project)
+    end
+    factory :project_with_current_task do
+      after(:create) do |project, evaluator|
+        project.current_task || create(:task, sprint: evaluator.current_sprint)
+      end
     end
   end
 

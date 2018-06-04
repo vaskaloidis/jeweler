@@ -95,11 +95,22 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     task = create(:task, complete: true)
     get uncomplete_task_path(task), xhr: true
     assert_response :success
+    task.reload
     refute task.complete
   end
 
+  test 'set current task' do
+    project = create(:project)
+    sprint = project.current_sprint
+    task = sprint.tasks.first
+    get set_current_task_path(task), xhr: true
+    assert_response :success
+    task.reload
+    assert task.current?
+  end
+
   test 'should cancel task update' do
-    get cancel_task_update_path(@project.sprints.first), xhr: true
+    get cancel_task_update_path(@task.sprint), xhr: true
     assert_response :success
   end
 end

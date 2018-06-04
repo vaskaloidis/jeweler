@@ -1,19 +1,32 @@
 # rake Jeweler:test
 
-namespace :Jeweler do
+namespace :jeweler do
 
   desc 'Run Tests Verbose w/ Backtrace'
   task test_loud: :environment do
-
     puts 'Testing Verbose w/ Backtrace'
-    Rake::Task["test TESTOPTS='-vb'"].invoke
+    ENV['TESTOPTS'] = '-vb'
+    Rake::Task["test"].invoke
   end
 
   desc 'Run Tests Verbose'
   task test: :environment do
     puts 'Testing Verbose'
     Rake::Task["log:clear"].invoke
-    Rake::Task["test TESTOPTS='-v'"].invoke
+    ENV['TESTOPTS'] = '-v'
+    ENV['RAKE_ENV'] = 'test'
+    ENV['RAILS_ENV'] = 'test'
+    Rake::Task["test"].invoke
+  end
+
+  desc 'Info'
+  task info: :environment do
+    Bundler.with_clean_env do
+      sh 'rails --help | grep Jeweler: '
+    end
+    # Bundler.with_clean_env do
+    # sh "rails --help | grep db: "
+    # end
   end
 
   private

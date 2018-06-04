@@ -6,9 +6,7 @@ FactoryBot.define do
     sequence(:sprint)
     project
     after(:create) do |sprint, evaluator|
-      create_list(:task, 2, sprint: sprint)
-    end
-    after(:create) do |sprint, evaluator|
+      create_list(:task, 3, sprint: sprint)
       create_list(:note, 2, sprint: sprint)
     end
   end

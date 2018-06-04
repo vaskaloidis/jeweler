@@ -29,8 +29,7 @@ class PaymentsController < ApplicationController
     respond_to do |format|
       if @payment.save
 
-        @payment.sprint.project.create_note('project_update', @payment.user.first_name + ' ' + @payment.user.last_name +
-            ' Made a Payment of $' + @payment.amount.to_s + ' for Sprint ' + @payment.sprint.sprint.to_s)
+        # Create Payment Event
 
         format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
         format.json { render :show, status: :created, location: @payment }

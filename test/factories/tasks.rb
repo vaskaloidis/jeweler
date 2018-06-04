@@ -1,10 +1,10 @@
 FactoryBot.define do
-  factory :task, class: Task do
+  factory :task, class: 'Task' do
     description Faker::ChuckNorris.fact
     hours Random.rand(20)
     rate Random.rand(50)
     complete false
-    association :sprint
+    sprint
     planned_hours Random.rand(20)
     sequence(:position)
     deleted false
@@ -16,9 +16,17 @@ FactoryBot.define do
       hours '14'
       complete true
     end
+    factory :task_in_current_sprint do
+      association :sprint, factory: :current_sprint
+    end
+    factory :current_task_in_current_sprint do
+      # after(:create) do |task, evaluator|
+      #   association :sprint, factory: :current_sprint, current_task: sprint
+      # end
+    end
   end
 
-  factory :new_task, class: Task do
+  factory :new_task, class: 'Task' do
     association :sprint
     description 'new task desc'
     rate '13'
