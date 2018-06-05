@@ -19,7 +19,7 @@
                 <%= render 'sprints/meter', project: @project %>
               </div>
               <div id="home_timeline_container" class="col-xs-12 col-md-8 pull-right">
-                <%= render 'notes/notes', notes: @project.sprint_notes %>
+                <%= render 'notes/notes', notes: @project.sprint_notes, project:@project %>
               </div>
             </div>
 
