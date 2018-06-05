@@ -94,28 +94,30 @@ pc.user = c3
 pc.project = p
 pc.save
 
+sprint1 = p.get_sprint(1)
 # Invoice
-sprint1 = Sprint.create(sprint: 1, description: 'Get the template purchased. Plan the web application design. Build the relational database.
-    Setup the code plumbing.', project: p)
+sprint1.update(description: 'Get the template purchased. Plan the web application design. Build the relational database.
+    Setup the code plumbing.')
 Task.create(position: 0, sprint: sprint1, description: 'Research and Purchase the template.', planned_hours: rand(0..8), hours: 8, rate: 35)
 Task.create(position: 1, sprint: sprint1, description: 'Design the web application.', planned_hours: rand(0..4), hours: 4, rate: 35)
 Task.create(position: 2, sprint: sprint1, description: 'Design the relational database.', planned_hours: rand(0..5), hours: 5, rate: 35)
 Task.create(position: 3, sprint: sprint1, description: 'Setup the plumbing for the rails project, after generating it.', planned_hours: rand(0..10), hours: 10, rate: 35)
-
-sprint2 = Sprint.create(sprint: 2, description: 'Build the SASS system, and implement the Bootstrap template into Rails. Design the Gem configuration and
-  build Gemfile..', project: p)
+sprint2 = p.get_sprint(2)
+sprint2.update(description: 'Build the SASS system, and implement the Bootstrap template into Rails. Design the Gem configuration and
+  build Gemfile..')
 Task.create(position: 0, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 Task.create(position: 1, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 Task.create(position: 2, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 Task.create(position: 3, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 
-sprint3 = Sprint.create(sprint: 3, description: 'Scaffold the database and build the relational data structure.', project: p)
+sprint3 = p.get_sprint(3)
+sprint3.update(description: 'Scaffold the database and build the relational data structure.')
 Task.create(position: 0, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 Task.create(position: 1, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 Task.create(position: 2, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 Task.create(position: 3, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-
-sprint4 = Sprint.create(sprint: 4, description: 'Implement the design into the project scaffold system.', project: p)
+sprint4 = p.get_sprint(4)
+sprint4.update(description: 'Implement the design into the project scaffold system.')
 Task.create(position: 0, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
 Task.create(position: 1, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
 Task.create(position: 2, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)

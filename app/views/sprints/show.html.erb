@@ -14,5 +14,5 @@
 </div>
 
 <div id="home_timeline_container" class="col-md-12">
-  <%= render 'notes/notes', notes: @sprint.project.sprint_notes %>
+  <%= render 'notes/notes', notes: @sprint.project.sprint_notes, project: @sprint.project %>
 </div>
