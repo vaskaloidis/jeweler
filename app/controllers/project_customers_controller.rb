@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProjectCustomersController < ApplicationController
-  before_action :set_project, only: %i[verify_owner leave remove]
+  before_action :set_user, only: %i[verify_owner leave remove]
   before_action :set_project, only: %i[verify_owner index leave remove]
   before_action :verify_owner, only: [:remove]
 

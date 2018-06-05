@@ -3,14 +3,17 @@ require 'test_helper'
 class ProjectTest < ActiveSupport::TestCase
   should have_many(:sprints)
 
-  test 'build a valid project' do
-    assert build(:project).valid?
-    assert create(:project).valid?
+  setup do
+    @project = create(:project)
   end
 
-  # TODO: This is a test of the factory-tests, this does not belong here, move it
+  test 'build a valid project' do
+    assert @project.valid?
+  end
+
+  # TODO: This does not belong here, move it
   test 'create a valid project with sprints and tasks' do
-    project = create(:project)
+    project = @project
     assert project and project.valid?
 
     sprints = project.sprints
@@ -22,8 +25,18 @@ class ProjectTest < ActiveSupport::TestCase
     refute tasks.empty?
   end
 
+  test 'should have a valid project owner and customers' do
+    assert @project.owner.valid? && !@project.owner.nil?
+    assert @project.owner.instance_of?(User)
+
+    refute @project.customers.nil?
+    @project.customers.each do |customer|
+      assert customer.valid? && customer.instance_of?(User)
+    end
+  end
+
   test 'callback should build sprints correctly' do
-    project = create(:project)
+    project = @project
 
     refute project.sprint_current.nil?
     refute project.sprint_total.nil?

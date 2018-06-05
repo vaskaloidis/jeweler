@@ -4,15 +4,15 @@ class ProjectCustomerTest < ActiveSupport::TestCase
   should belong_to(:project)
   should belong_to(:user)
 
-
-  test 'create a project customer' do
+  test 'create a valid project customer' do
     project_customer = create(:project_customer)
     project = project_customer.project
     customer = project_customer.user
 
     assert project_customer.valid?
-    refute project.nil? and project.name.nil?
-    refute customer.nil? and customer.email.nil?
+    assert !project.nil? && project.instance_of?(Project)
+    assert customer.valid? && customer.instance_of?(User)
+    refute customer.id.nil?
   end
 
 end

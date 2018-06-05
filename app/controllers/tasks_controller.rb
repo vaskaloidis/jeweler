@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
+  before_action :set_sprint, only: %i[index new]
   before_action :set_task, only: %i[show edit update destroy complete
                                     uncomplete set_current]
   respond_to :js, :json, only: %i[complete uncomplete cancel
                                   new show create edit update destroy]
 
   def index
-    @tasks = Task.all
+    @tasks = @sprint.tasks
   end
 
   def new
@@ -166,7 +167,7 @@ class TasksController < ApplicationController
 
     @sprint = @task.sprint
 
-    if @sprint.sprint_complete?
+    if @sprint.complete?
       # Do We Want To Close Sprint Upon Completion Feature? No, we make it a setting
       close_sprint_upon_completion_feature = false
       if close_sprint_upon_completion_feature
@@ -196,6 +197,10 @@ class TasksController < ApplicationController
   def set_task
     @task = Task.find(params[:id])
     @sprint = @task.sprint
+  end
+
+  def set_sprint
+    @sprint = Sprint.find(params[:sprint_id])
   end
 
   def task_params

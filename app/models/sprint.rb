@@ -69,7 +69,7 @@ class Sprint < ApplicationRecord
     sprint_payments - cost
   end
 
-  def sprint_complete?
+  def complete?
     return false if tasks.empty?
     tasks.each do |task|
       return false unless task.complete?

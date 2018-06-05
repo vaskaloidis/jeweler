@@ -42,7 +42,7 @@ class InvitationsController < ApplicationController
   end
 
   def accept
-    pc = @project.customers.create(user: @user)
+    pc = @project.customers.create(@user)
 
     if pc.valid?
       @invitation.destroy

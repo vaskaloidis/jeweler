@@ -22,14 +22,14 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
 
   create_table "tasks", force: :cascade do |t|
     t.text "description"
-    t.decimal "hours"
+    t.decimal "hours", default: "0.0"
     t.decimal "rate", default: "0.0"
     t.string "item_type"
     t.boolean "complete", default: false
     t.bigint "sprint_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "planned_hours"
+    t.decimal "planned_hours", default: "0.0"
     t.integer "position", null: false
     t.boolean "deleted", default: false
     t.index ["sprint_id"], name: "index_tasks_on_sprint_id"

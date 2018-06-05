@@ -12,7 +12,7 @@
       width: '<%= ApplicationHelper.sprint_percent(@sprint.project) %>%'
   });
 
-  <% if @sprint.sprint_complete? %>
+  <% if @sprint.complete? %>
     toastr.success('Sprint Complete. Congragulations!!');
   <% else %>
     toastr.success('Task Complete.')
