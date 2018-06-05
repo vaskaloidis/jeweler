@@ -1,11 +1,28 @@
 # frozen_string_literal: true
 
-module Jeweler::Service
-  class Status
+module Jeweler
+  class ServiceOutcome
     include Virtus.model
+    attribute :success, Boolean, default: false
+    attribute :success_message, String
+    attribute :errors, Array
+    attribute :result
 
-    attribute :success, Boolean
-    attribute :failure, Boolean
-    attribute :message, String
+    def failure?
+      if success
+        false
+      else
+        true
+      end
+    end
+
+    def success?
+      if success
+        true
+      else
+        false
+      end
+    end
+
   end
 end
