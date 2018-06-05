@@ -85,10 +85,11 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should complete task' do
-    get complete_task_path(@task), xhr: true
+    task = create(:task, complete: false)
+    get complete_task_path(task), xhr: true
     assert_response :success
-    @task.reload
-    assert @task.complete
+    task.reload
+    assert task.complete
   end
 
   test 'should uncomplete task' do

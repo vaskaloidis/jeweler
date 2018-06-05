@@ -24,10 +24,15 @@ FactoryBot.define do
     after(:create) do |project, evaluator|
       # TODO: Iterate over Sprints here, creating tasks
       create_list(:task, 2, sprint: evaluator.get_sprint(1))
+      create_list(:note, 2, sprint: evaluator.get_sprint(1))
       create_list(:task, 2, sprint: evaluator.get_sprint(2))
+      create_list(:note, 2, sprint: evaluator.get_sprint(2))
       create_list(:task, 2, sprint: evaluator.get_sprint(3))
+      create_list(:note, 2, sprint: evaluator.get_sprint(3))
       create_list(:task, 2, sprint: evaluator.get_sprint(4))
+      create_list(:note, 2, sprint: evaluator.get_sprint(4))
       create_list(:task, 2, sprint: evaluator.get_sprint(5))
+      create_list(:note, 2, sprint: evaluator.get_sprint(5))
       create_list(:project_customer, 2, project: project)
     end
     factory :project_with_current_task do

@@ -53,12 +53,12 @@
     </div>
 
     <div data-toggle="settings-pane" data-animate="true" class="col-xs-12 col-sm-6 col-lg-3">
-      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.sprint_payments.to_s %>" data-prefix="$" data-duration="2">
+      <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.payment.to_s %>" data-prefix="$" data-duration="2">
         <div class="xe-icon">
           <i class="fas fa-dollar-sign"></i>
         </div>
         <div class="xe-label">
-          <strong class="num">$<%= project.current_sprint.sprint_payments.to_s %></strong>
+          <strong class="num">$<%= project.current_sprint.payment.to_s %></strong>
           <span>Sprint <%= project.sprint_current.to_s %> Revenue (Payment Received)</span>
         </div>
       </div>

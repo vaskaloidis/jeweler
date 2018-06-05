@@ -1,5 +1,6 @@
 class NotesController < ApplicationController
-  before_action :set_note, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:index]
+  before_action :set_note, only: [:edit, :update, :destroy]
 
   def note_query
     @project = Project.find(params[:project_id])
@@ -46,31 +47,6 @@ class NotesController < ApplicationController
     end
   end
 
-  def delete_note_inline
-    id = params[:note_id]
-    @note = Note.find(id)
-    @project = @note.project
-    @note.destroy
-
-    @notes = @project.notes.order('created_at DESC').all
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  # GET /notes
-  # GET /notes.json
-  def index
-    @notes = Note.all
-  end
-
-  # GET /notes/1
-  # GET /notes/1.json
-  def show
-  end
-
-  # GET /notes/new
   def new
     @note = Note.new
     @note.author = current_user
@@ -134,7 +110,7 @@ class NotesController < ApplicationController
     end
   end
 
-  def create_note_modal
+  def new_modal
     @note = Note.new
     @note.note_type = 'note'
     @note.project = Project.find(params[:project_id])
@@ -146,19 +122,6 @@ class NotesController < ApplicationController
     end
   end
 
-  def create_project_update_modal
-    @note = Note.new
-    @note.note_type = 'project_update'
-    @note.project = params[:project_id]
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-
-  # PATCH/PUT /notes/1
-  # PATCH/PUT /notes/1.json
   def update
     if @note.invalid?
       logger.error("Note not updated successfully")
@@ -187,9 +150,12 @@ class NotesController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
   def set_note
     @note = Note.find(params[:id])
+  end
+
+  def set_project
+    @project = Project.find(params[:project_id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

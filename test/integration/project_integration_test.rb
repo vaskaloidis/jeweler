@@ -33,11 +33,10 @@ class ProjectIntegrationTest < ActionDispatch::IntegrationTest
     # Assert Current-Sprint exists (and Open)
     @found = false
     project.sprints.each do |sprint|
-      if project.current_sprint == sprint
-        @found = true
-        assert sprint.open and sprint.open?
-        refute sprint.closed?
-      end
+      next unless project.current_sprint == sprint
+      @found = true
+      assert sprint.open && sprint.open?
+      refute sprint.closed?
     end
     assert @found
   end

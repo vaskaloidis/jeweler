@@ -4,22 +4,22 @@ module Totalable
   extend ActiveSupport::Concern
 
   def balance
-    if !total_cost.nil? && !total_payment.nil?
-      total_payment - total_cost
+    if !cost.nil? && !payment.nil?
+      payment - cost
     else
       0
     end
   end
 
-  def total_cost
+  def cost
     total = 0.0
-    tasks.each do |sprint|
-      total += sprint.cost
+    tasks.each do |task|
+      total += task.cost
     end
     total
   end
 
-  def total_payment
+  def payment
     total = 0.0
     payments.pluck(:amount).each do |payment|
       total += payment.amount
@@ -27,18 +27,18 @@ module Totalable
     total
   end
 
-  def total_planned_hours
+  def planned_hours
     total = 0.0
-    tasks.each do |sprint|
-      total += sprint.planned_hours
+    tasks.each do |task|
+      total += task.planned_hours
     end
     total
   end
 
-  def total_planned_cost
+  def planned_cost
     total = 0.0
-    tasks.each do |sprint|
-      total += sprint.planned_cost
+    tasks.each do |task|
+      total += task.planned_cost
     end
     total
   end
