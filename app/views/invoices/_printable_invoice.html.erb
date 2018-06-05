@@ -230,7 +230,7 @@
         <td></td>
         <td></td>
         <td><strong>Payment Total:</strong></td>
-        <td><%= sprint.sprint_payments.money %></td>
+        <td><%= sprint.payment.money %></td>
       </tr>
       </tbody>
     </table>
@@ -238,7 +238,7 @@
     <div class="invoice-totals">
       <div class="invoice-subtotals-totals">
         <span>Invoice Amount: <strong><%= sprint.cost.money %></strong></span>
-        <span>Payments: <strong><%= sprint.total_payments.money %></strong></span>
+        <span>Payments: <strong><%= sprint.payment.money %></strong></span>
         <hr/>
         <span>Balance: <strong><%= sprint.balance.money %></strong></span>
       </div>

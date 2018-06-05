@@ -8,6 +8,7 @@ class Note < ApplicationRecord
   default_scope { order('created_at DESC') }
   scope :timeline, -> { where(note_type: %i[note commit project_update payment payment_request demo]) }
   scope :events, -> { where(note_type: %i[event]) }
+  scope :commits, -> { where(note_type: :commit) }
   belongs_to :project
   has_many :discussions, dependent: :destroy
   belongs_to :author, class_name: 'User', foreign_key: 'user_id', inverse_of: 'notes', required: true
@@ -87,7 +88,7 @@ class Note < ApplicationRecord
       note.task = project.current_task unless project.current_task.nil?
     else
       note.sprint = sprint
-      note.task = sprint.current_task if project.current_sprint = sprint
+      note.task = sprint.project.current_task if project.current_sprint = sprint
     end
 
     # note.content = 'Sprint ' + note.sprint.sprint.to_s + ' - ' + message

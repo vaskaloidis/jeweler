@@ -4,10 +4,12 @@ class Task < ApplicationRecord
   has_one :project, class_name: 'Project', inverse_of: 'current_task', dependent: :nullify
   has_many :notes, dependent: :nullify
 
+  scope :incomplete_tasks, -> {where(complete: false, deleted: false)}
+  scope :completed_tasks, -> {where(complete: true, deleted: false)}
+
   accepts_nested_attributes_for :notes
   accepts_nested_attributes_for :sprint
   accepts_nested_attributes_for :project
-
 
   validates :planned_hours, numericality: { message: 'Must be a number.' }, allow_nil: true
   validates :hours, numericality: { message: 'Must be a number.' }, allow_nil: true

@@ -157,7 +157,7 @@ module ApplicationHelper
   def self.sprint_percent(project)
     return 0 if project.current_sprint.nil?
     total_tasks = project.current_sprint.tasks.count
-    completed_tasks = project.current_sprint.completed_tasks.count
+    completed_tasks = project.current_sprint.tasks.completed_tasks.count
     tasks_diff = if total_tasks > 0
                    completed_tasks.to_f / total_tasks.to_f
                  else

@@ -2,7 +2,7 @@
 
 <% unless current_user.customer_projects.empty? %>
   <% total_payment = 0.0 %>
-  <% total_cost = 0.0 %>
+  <% cost = 0.0 %>
   <% total_hours = 0.0 %>
   <% total_balance = 0.0 %>
 
@@ -32,21 +32,21 @@
                 <p><%= project.description %></p><br>
 
                 <div id="project_description_home">
-                  <% if project.total_planned_hours > 0 %>
-                    <span class="alert alert-success">Planned Cost: <%= project.total_planned_cost.money %></span>
-                    <span class="alert alert-success">planned Hours: <%= project.total_planned_hours.prettify %>
+                  <% if project.planned_hours > 0 %>
+                    <span class="alert alert-success">Planned Cost: <%= project.planned_cost.money %></span>
+                    <span class="alert alert-success">planned Hours: <%= project.planned_hours.prettify %>
                       hrs</span>
                   <% end %>
                   <% if project.hours > 0 %>
-                    <span class="alert alert-success">Total Billed: <%= project.total_cost.money %></span>
+                    <span class="alert alert-success">Total Billed: <%= project.cost.money %></span>
                     <span class="alert alert-success">Billed Hours: <%= project.hours.prettify %> hrs</span>
-                    <span class="alert alert-warning">Total Payment: <%= project.total_payment.money %></span>
+                    <span class="alert alert-warning">Total Payment: <%= project.payment.money %></span>
                     <% if project.balance > 0 %>
                       <% total_balance = total_balance + project.balance %>
                       <span class="alert alert-danger">Balance: <%= project.balance.money %></span>
                     <% end %>
-                    <% total_payment = total_payment + project.total_payment %>
-                    <% total_cost = total_cost + project.total_cost %>
+                    <% total_payment = total_payment + project.payment %>
+                    <% cost = cost + project.cost %>
                     <% total_hours = total_hours + project.hours %>
                   <% end %>
                 </div>
@@ -58,7 +58,7 @@
       </div>
       <div class="row">
         <% #TODO:Move these calculations for a current_user owner's overall projects to User Model %>
-        <%= render 'widgets/home_widgets', total_cost: total_cost, total_payment: total_payment, total_balance: total_balance, total_hours: total_hours %>
+        <%= render 'widgets/home_widgets', cost: cost, total_payment: total_payment, total_balance: total_balance, total_hours: total_hours %>
       </div>
     </div>
   </div>

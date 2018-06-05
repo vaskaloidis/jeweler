@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   # Notes
   get '/notes/timeline_query/:project_id/:sprint_query/:note_type', to: 'notes#note_query', as: 'note_query'
   get '/notes/delete_note_inline/:note_id' => 'notes#delete_note_inline', as: 'delete_note_inline'
-  get '/notes/create_note_modal/:project_id', to: 'notes#create_note_modal', as: 'create_note_modal'
+  get '/notes/create_note_modal/:project_id', to: 'notes#new_modal', as: 'create_note_modal'
 
   # Discussions
   match '/create_chat_message', to: 'discussions#create_chat_message_inline', via: [:post], as: 'create_chat_message_inline'

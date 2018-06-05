@@ -24,7 +24,7 @@
         <% else %>
           <div class="label label-danger">Sprint Closed</div>
         <% end %>
-        <% if sprint.total_payments != 0 %>
+        <% if sprint.payment != 0 %>
           <div class="label label-success"><strong>Payment: </strong> <%= payment_total.money %></div>
         <% end %>
         <div class="label label-info"><Strong>Cost: </Strong> <%= sprint.cost.money %></div>
@@ -146,7 +146,7 @@
               <td></td>
               <td></td>
               <td><strong>Payment Total:</strong></td>
-              <td><%= sprint.total_payments.money %></td>
+              <td><%= sprint.payment.money %></td>
             </tr>
             </tbody>
           </table>
@@ -159,7 +159,7 @@
           <% sprint.tasks.each do |task| %>
             <div class="row">
               <strong>Task: </strong> <%= task.description %>
-              <% sprint.commits.each do |commit| %>
+              <% sprint.notes.commits.each do |commit| %>
                 <div style="border:1px solid black; margin-left:15px" class="row">
                   <%= truncate(commit.git_commit_id, length: 10) %> <%= truncate(commit.content.html_safe, length: 100) %>
                 </div>
@@ -168,7 +168,7 @@
           <% end %>
           <div class="row">
             <% if 1 == 2 #TODO: Finish getting commits without Tasks %>
-              <% sprint.commits.where("id not in (select task_id from notes)").each do |commit| %>
+              <% sprint.notes.commits.where("id not in (select task_id from notes)").each do |commit| %>
                 <div class="row">
                   <%= truncate(commit.git_commit_id, length: 10) %> <%= truncate(commit.content.html_safe, length: 100) %>
                 </div>

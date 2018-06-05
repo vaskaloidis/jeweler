@@ -58,7 +58,7 @@
                 <% project.sprints.each_with_index do |sprint, index| %>
                 {
                     id: ++y,
-                    payment: <%= sprint.total_payments.to_s %>
+                    payment: <%= sprint.payment.to_s %>
                 }<% if index != project.sprints.size %>, <% end %>
                 <% end %>
             ],
