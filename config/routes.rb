@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   # Invitations
   get '/invitation/:id/accept', to: 'invitations#accept', as: 'accept_invitation'
   get '/invitation/:id/decline', to: 'invitations#decline', as: 'decline_invitation'
+  delete 'invitation/:id/destroy', to: 'invitations#destroy', as: 'destroy_invitation'
 
   # Customers API Calls (TODO: re-implement these eventually)
   get '/project/:project_id/leave/:user_id', to: 'project_customers#leave', as: 'leave_project'

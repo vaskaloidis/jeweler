@@ -31,9 +31,8 @@ class InvitationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy invitation" do
     assert_difference('Invitation.count', -1) do
-      delete invitation_url(@invitation)
+      delete destroy_invitation_url(@invitation), xhr: true
     end
-
-    assert_redirected_to invitations_url
+    assert_response :success
   end
 end

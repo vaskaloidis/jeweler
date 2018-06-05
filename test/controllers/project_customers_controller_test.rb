@@ -13,20 +13,22 @@ class ProjectCustomersControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
     get leave_project_url(@project, @user)
     assert_redirected_to root_path
-    assert_response :success
+    @project.reload
+    assert_not_includes @project.customers, @user
   end
 
   test "remove customer from project" do
     @user = @project.owner
     sign_in @user
-    delete leave_project_url(@project, @project_customer.user)
-    assert_redirected_to root_path
+    customer = @project_customer.user
+    delete remove_customer_url(@project, customer), xhr:true
     assert_response :success
+    @project.reload
+    assert_not_includes @project.customers, customer
   end
 
   test "customer should not be able to remove customers from project" do
   end
-
 
   test "should get index" do
     @user = @project.owner
