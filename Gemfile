@@ -36,6 +36,8 @@ gem 'therubyracer' # Ruby
 gem 'time_for_a_boolean', '~> 0.2.0'
 gem 'yaml_db'
 gem 'yui-compressor'
+# Move this to Dev group after initial seeding
+gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 
 # Refactoring / Service Objects / Patterns
 gem 'rails-patterns'
@@ -73,7 +75,6 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot'
   gem 'factory_bot_rails'
-  gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
   gem 'launchy'
   gem 'rubocop', '~> 0.56.0', require: false
 end
