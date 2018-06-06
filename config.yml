@@ -3,11 +3,15 @@
 # Check https://circleci.com/docs/2.0/language-ruby/ for more details
 #
 version: 2
+general:
+  branches:
+    only:
+     - production # list of branches to build
 jobs:
   build:
     working_directory: ~/vkaloidis
     docker:
-      - image: circleci/ruby:2.4.1-node-browsers
+      - image: circleci/ruby:2.5.1-node-browsers
         environment:
           PGHOST: localhost
           PGUSER: vkaloidis
