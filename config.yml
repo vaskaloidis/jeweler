@@ -1,0 +1,35 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  build:
+    working_directory: ~/vkaloidis
+    docker:
+      - image: circleci/ruby:2.4.1-node-browsers
+        environment:
+          PGHOST: localhost
+          PGUSER: vkaloidis
+          RAILS_ENV: test
+      - image: postgres:10.1-alpine
+        environment:
+          POSTGRES_USER: vkaloidis
+          POSTGRES_DB: ruby24
+          POSTGRES_PASSWORD: ""
+
+    steps:
+      - checkout
+
+      # Install Gems
+      - run: bundle install
+
+      # Database Setup
+      - run: bundle exec rake db:setup
+
+      # Run Tests
+      - run: bundle exec rake
+
+      # Store Test Results
+      - store_test_results:
+          path: test/reports

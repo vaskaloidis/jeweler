@@ -81,7 +81,7 @@
             <%#= render 'sprints/admin_payment_form', project: project, display_balances: false #TODO:Add a setting to allow admins to add payments %>
             <%= render 'sprints/fee_notice' %>
           <% else %>
-            <%= render 'sprints/payment_form', project: project, display_balances: false %>
+            <%= render 'payments/form', project: project, display_balances: false %>
           <% end %>
         <% end %>
       </div>

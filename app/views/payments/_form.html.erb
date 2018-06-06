@@ -1,47 +1,37 @@
-<%= form_with(model: payment, local: true) do |form| %>
-  <% if payment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(payment.errors.count, "error") %> prohibited this payment from being saved:</h2>
+<%= form_with url: generate_charge_modal_path, class: 'form-horizontal' do %>
 
-      <ul>
-      <% payment.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  <div class='row text-center'>
+    <h4>Make Payment</h4>
+  </div>
+
+  <div class='row'>
+    <div class='col-xs-12 col-sm-6 col-sm-4'>
+      <div class='form-field' style='color: black'>
+        <%= select_tag 'sprint_id',
+                       options_from_collection_for_select(project.sprints, 'id', 'sprint'),
+                       prompt: 'Select a Sprint',
+                       class: 'form-control payment_form_item',
+                       style: 'color:black' %>
+      </div>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :payment_type %>
-    <%= form.number_field :payment_type %>
+    <div class='col-xs-12 col-sm-6 col-sm-4'>
+      <div class='input-group'>
+        <span class="input-group-addon">$</span>
+        <%= text_field_tag 'charge_amount', 'Payment Amount', class: 'form-control payment_form_item' %>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-sm-4">
+      <%= submit_tag 'Pay', :class => 'btn-sm btn-success form-control payment_form_item' %><br>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :payment_identifier %>
-    <%= form.text_field :payment_identifier %>
-  </div>
+  <div class='row margin-top-10'>
 
-  <div class="field">
-    <%= form.label :payment_note %>
-    <%= form.text_field :payment_note %>
-  </div>
-
-  <div class="field">
-    <%= form.label :amount %>
-    <%= form.text_field :amount %>
-  </div>
-
-  <div class="field">
-    <%= form.label :belongs_to %>
-    <%= form.text_field :belongs_to %>
-  </div>
-
-  <div class="field">
-    <%= form.label :belongs_to %>
-    <%= form.text_field :belongs_to %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
+    <div class='col-xs-12'>
+      <div class='form-field'>
+        <%= hidden_field_tag :project_id, project.id %>
+        <%= render 'sprints/fee_notice' %>
+      </div>
+    </div>
   </div>
 <% end %>

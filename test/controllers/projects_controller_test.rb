@@ -30,6 +30,14 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     end
     project = Project.last
     assert project and project.valid?
+    assert_equal new_project[:name], project.name
+    assert_equal new_project[:language], project.language
+    assert_equal new_project[:description], project.description
+    assert_equal new_project[:github_url], project.github_url
+    assert_equal new_project[:stage_website_url], project.stage_website_url
+    assert_equal new_project[:demo_url], project.demo_url
+    assert_equal new_project[:prod_url], project.prod_url
+    # TODO: assert_equal new_project[:owner], @user
     assert_redirected_to project_url(project)
   end
 

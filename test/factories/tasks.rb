@@ -16,6 +16,13 @@ FactoryBot.define do
       hours '14'
       complete true
     end
+    factory :new_task, class: 'Task' do
+      association :sprint
+      description 'new task desc'
+      rate '13'
+      planned_hours '14'
+      hours '15'
+    end
     factory :task_in_current_sprint do
       association :sprint, factory: :current_sprint
     end
@@ -24,15 +31,6 @@ FactoryBot.define do
       #   association :sprint, factory: :current_sprint, current_task: sprint
       # end
     end
-  end
-
-  factory :new_task, class: 'Task' do
-    association :sprint
-    description 'new task desc'
-    rate '13'
-    planned_hours '14'
-    hours '15'
-    sequence(:position)
   end
 
 end
