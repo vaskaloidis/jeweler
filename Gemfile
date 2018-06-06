@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+# Jeweler Gems
+
 source 'https://rubygems.org'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
-# Jeweler Gems
+
 ruby '2.5.1'
 
 # gem 'rails', github: 'rails/rails'
@@ -66,7 +68,8 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda', '~> 3.5'
   gem 'shoulda-matchers', '~> 2.0'
-  gem 'simplecov', require: false
+  gem 'simplecov'
+  gem 'simplecov-console'
 end
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console

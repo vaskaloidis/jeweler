@@ -92,6 +92,6 @@ class SprintsController < ApplicationController
   private
 
   def sprint_id_params
-    params.require(:sprint).permit(:sprint, :payment_due_date, :payment_due, :description)
+    params.require(:sprint).permit(:sprint, :payment_due_date, :open, :payment_due, :description)
   end
 end

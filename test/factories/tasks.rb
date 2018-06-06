@@ -17,7 +17,6 @@ FactoryBot.define do
       complete true
     end
     factory :new_task, class: 'Task' do
-      association :sprint
       description 'new task desc'
       rate '13'
       planned_hours '14'

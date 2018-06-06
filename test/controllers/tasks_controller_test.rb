@@ -21,7 +21,10 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should create task' do
+    sprint = create(:sprint)
     new_task = attributes_for(:new_task)
+    new_task[:sprint_id] = sprint.id
+    Rails.logger.info new_task.inspect
     assert_difference('Task.count') do
       post tasks_url, params: { task: new_task }, xhr: true
     end
@@ -33,8 +36,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal new_task[:hours].to_f, task.hours.to_f
     assert_equal new_task[:planned_hours].to_f, task.planned_hours.to_f
     assert_equal new_task[:rate].to_f, task.rate.to_f
-    assert_equal new_task[:sprint].id, task.sprint.id
-    # TODO: assert_equal new_task[:owner], @user
+    assert_equal new_task[:sprint_id], task.sprint.id
 
   end
 
