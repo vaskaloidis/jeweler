@@ -41,10 +41,10 @@
         <div class="row">
           <% if project.owner? %>
               <h4>Add Payment</h4>
-            <%= render 'sprints/admin_payment_form', project: project, display_balances: false %>
+            <%= render 'payments/admin_form', project: project, display_balances: false %>
           <% else %>
               <h4>Make Payment</h4>
-            <%= render 'sprints/payment_form', project: project, display_balances: false %>
+            <%= render 'payments/form', project: project, display_balances: false %>
           <% end %>
         </div>
 
@@ -60,7 +60,7 @@
           <div>
             <ul class="settings_sprint_balance list-group list-group-minimal">
               <% unless project.sprints.empty? %>
-                <% project.sprints.order('sprint::integer ASC').each do |sprint| %>
+                <% project.sprints.each do |sprint| %>
                   <% if sprint.balance > 0 %>
                     <li class="list-group-item">
                       <span>

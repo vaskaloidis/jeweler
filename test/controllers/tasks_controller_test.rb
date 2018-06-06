@@ -10,7 +10,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     @project = create(:project)
     @user = @project.owner
     sign_in @user
-    # TODO: Add test to verify owner is doing these (verify_owner), add code to actually check the owner is doing these, then check to make sure nobody else can
+    # TODO: Security Checks / Permissions Checks (Customer VS. Owner)
   end
 
   test 'should get new' do
@@ -22,18 +22,8 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create task' do
     new_task = attributes_for(:new_task)
-
     assert_difference('Task.count') do
-      post tasks_url, params: {
-                        task: {
-                            sprint_id: @project.sprints.first.id,
-                            description: new_task[:description],
-                            hours: new_task[:hours],
-                            planned_hours: new_task[:planned_hours],
-                            rate: new_task[:rate]
-                        }
-                    },
-                    xhr: true
+      post tasks_url, params: { task: new_task }, xhr: true
     end
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
@@ -43,7 +33,9 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal new_task[:hours].to_f, task.hours.to_f
     assert_equal new_task[:planned_hours].to_f, task.planned_hours.to_f
     assert_equal new_task[:rate].to_f, task.rate.to_f
-    assert_equal @project.sprints.first.id, task.sprint.id
+    assert_equal new_task[:sprint].id, task.sprint.id
+    # TODO: assert_equal new_task[:owner], @user
+
   end
 
   test 'should get edit' do

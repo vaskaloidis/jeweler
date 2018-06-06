@@ -24,12 +24,19 @@ class TasksController < ApplicationController
 
   def create
     @service_object = CreateTask.call(task_params)
+    logger.error('CreateTaskSO Error: Task returned is Nil') if @service_object.result.nil?
     respond_to do |format|
       format.js
       if @service_object.result.valid?
-        format.json {render :show, status: :created, location: @service_object.result}
+        format.json do
+          render :show, status: :created,
+                        location: @service_object.result
+        end
       else
-        format.json {render json: @service_object.result.errors, status: :unprocessable_entity}
+        format.json do
+          render json: @service_object.result.errors,
+                 status: :unprocessable_entity
+        end
       end
     end
   end
@@ -39,9 +46,9 @@ class TasksController < ApplicationController
       format.js
       if @task.update(task_params)
         # TODO: Note.create_event(@task.sprint.project, 'task_updated', 'Updated: ' + @task.description)
-        format.json {render :show, status: :ok, location: @task}
+        format.json { render :show, status: :ok, location: @task }
       else
-        format.json {render json: @task.errors, status: :unprocessable_entity}
+        format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -50,7 +57,7 @@ class TasksController < ApplicationController
     @service_object = DestroyTask.call(@task)
     respond_to do |format|
       format.js
-      format.json {head :no_content}
+      format.json { head :no_content }
     end
   end
 

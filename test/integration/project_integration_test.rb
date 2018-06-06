@@ -17,7 +17,6 @@ class ProjectIntegrationTest < ActionDispatch::IntegrationTest
 
     project = Project.last
     assert project and project.valid?
-
     assert_redirected_to project_url(project)
     assert_equal(project.name, new_project[:name])
     assert_equal(project.description, new_project[:description])

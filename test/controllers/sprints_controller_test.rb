@@ -71,10 +71,15 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
     sprint = create(:sprint, open: false)
     get open_sprint_path(sprint), xhr: true
     assert_response :success
+    sprint.reload
+    assert sprint.open
   end
 
   test 'close sprint' do
-    get close_sprint_path(@sprint), xhr: true
+    sprint = create(:sprint, open: true)
+    get close_sprint_path(sprint), xhr: true
     assert_response :success
+    sprint.reload
+    refute sprint.open
   end
 end
