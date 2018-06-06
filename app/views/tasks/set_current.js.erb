@@ -1,5 +1,7 @@
-<% if @error %>
-  toastr.error('<%= @error_message %>');
+<% if !@errors.empty? %>
+  <% @errors.each do |error| %>
+    toastr.error('<%= error %>');
+  <% end %>
 <% else %>
   <%= render 'renderers/re-render_sprint_panel', sprint: @task.sprint %>
 

@@ -22,7 +22,6 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create task' do
     new_task = attributes_for(:new_task)
-    Rails.logger.info(new_task.to_s)
 
     assert_difference('Task.count') do
       post tasks_url, params: {

@@ -8,13 +8,16 @@
       <% if note.user_id == current_user.id or note.project.owner?(current_user) %>
         <% if (note.note_type != 'commit' and note.note_type != 'project_update' and note.note_type != 'payment' and note.note_type != 'payment_request' and note.note_type != 'event') or current_user.is_god? %>
           <%# Debugging Helper: if note.note_type != 'commit' %>
-          <%= link_to '<i style="padding-right: 1px; margin-right:0px" class="far fa-edit"></i>'.html_safe,
-                      edit_note_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
-          <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
-                      delete_note_inline_path(note.id), remote: true, class: 'btn btn-sm btn-success' %>
+          <%= link_to edit_note_path(note.id), remote: true, class: 'btn btn-sm btn-success' do %>
+            <i style="padding-right: 1px; margin-right:0px" class="far fa-edit"></i>
+          <% end %>
+          <%= link_to note, method: :delete, data: {confirm: 'Delete Note?'}, remote: true, class: 'btn btn-sm btn-success' do %>
+            <i style="padding-right: 4px;" class="fas fa-trash-alt"></i>
+          <% end %>
           <% unless note.commit_diff_path.nil? %>
-            <%= link_to '<i style="padding-right: 4px;" class="fab fa-github"></i>'.html_safe,
-                        note.commit_diff_path, class: 'btn btn-sm btn-success' %>
+            <%= link_to note.commit_diff_path, class: 'btn btn-sm btn-success' do %>
+              <i style="padding-right: 4px;" class="fab fa-github"></i>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>

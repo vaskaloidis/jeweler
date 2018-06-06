@@ -20,6 +20,10 @@ module Jeweler
         se.errors = service.errors
         se.success = service.success
         se.success_message = service.success_message
+        service.instance_variable_set(
+            "@outcome",
+            se
+        )
       end
     end
 
