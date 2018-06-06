@@ -13,8 +13,8 @@ require_relative '../config/environment'
 require 'rails/test_help'
 require 'faker'
 require 'minitest/reporters'
-Minitest::Reporters.use! [Minitest::Reporters::ProgressReporter]
-# Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new({color: true})]
+# Minitest::Reporters.use! [Minitest::Reporters::ProgressReporter]
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new({color: true})]
 require 'capybara/email'
 require 'coveralls'
 Coveralls.wear!
