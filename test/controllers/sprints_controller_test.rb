@@ -29,20 +29,20 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update sprint' do
-    base_sprint = create(:sprint, open: true, description: 'some-desc', payment_due:false)
+    base_sprint = create(:sprint, open: true, description: 'some-desc', payment_due: false)
     patch sprint_url(base_sprint), params: {
       sprint: {
         description: 'updated-sprint-desc',
-        payment_requested: 'true',
-        open: 'false'
+        payment_due: true,
+        open: false
       }
     }, xhr: true
     assert_response :success
     base_sprint.reload
     last_sprint = Sprint.last
-    assert_equal last_sprint.description, @sprint.description
-    assert_equal last_sprint.payment_requested, @sprint.payment_requested
-    assert_equal last_sprint.open, @sprint.open
+    assert_equal 'updated-sprint-desc', last_sprint.description
+    assert_equal true, last_sprint.payment_due
+    assert_equal false, last_sprint.open
   end
 
   test 'edit sprint description' do

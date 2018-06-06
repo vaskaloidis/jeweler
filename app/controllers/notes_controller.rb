@@ -67,8 +67,7 @@ class NotesController < ApplicationController
   end
 
   # GET /notes/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /notes
   # POST /notes.json
@@ -139,12 +138,10 @@ class NotesController < ApplicationController
     end
   end
 
-  # DELETE /notes/1
-  # DELETE /notes/1.json
   def destroy
     @note.destroy
     respond_to do |format|
-      format.html {redirect_to notes_url, notice: 'Note was successfully destroyed.'}
+      format.js
       format.json {head :no_content}
     end
   end

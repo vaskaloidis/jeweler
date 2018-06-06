@@ -1,5 +1,5 @@
-$("#tasks_<%= @sprint.id.to_s %>_hidden_row").hide('slide')
-<%= render 'renderers/re-render_sprint_panel', sprint: @sprint %>
+$("#tasks_<%= @task.sprint.id.to_s %>_hidden_row").hide('slide')
+<%= render 'renderers/re-render_sprint_panel', sprint: @task.sprint %>
 
 <% if @errors.empty? %>
   toastr.success('Task Created Successfully');
