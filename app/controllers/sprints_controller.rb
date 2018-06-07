@@ -2,11 +2,11 @@
 
 class SprintsController < ApplicationController
   before_action :set_sprint, only: %i[edit_description render_panel
-                                      set_current
+                                      set_current request_payment cancel_payment_request
                                       open close show edit update destroy]
   respond_to :json, :html, only: %i[show edit update destroy]
   respond_to :js, only: %i[edit_description render_panel open close show
-                           edit update destroy]
+                           edit update destroy request_payment cancel_payment_request]
 
   def index
     @project = Project.includes(:payments, :tasks).find(params[:project_id])
@@ -34,8 +34,6 @@ class SprintsController < ApplicationController
   def render_panel; end
 
   def set_current
-    logger.debug('Setting Current Sprint ' + @sprint.id.to_s)
-
     @old_sprint = @project.current_sprint
     @project.current_sprint = @sprint
 
@@ -52,6 +50,29 @@ class SprintsController < ApplicationController
     end
 
     @current_sprint = @project.sprint_current
+  end
+
+  def request_payment
+    if @sprint.cost > 0
+      @sprint.payment_due = true
+      @sprint.save
+
+      @user = current_user
+
+      @project = @sprint.project
+
+      Note.create_payment_request(@sprint, current_user) if @sprint.valid?
+    end
+  end
+
+  def cancel_request_payment
+    @sprint.payment_due = false
+    @sprint.save
+
+    @user = current_user
+
+    Note.create_event(@sprint.project, 'payment_request_cancelled', 'Sprint ' +
+        @sprint.sprint.to_s + ' Payment Request Canceled')
   end
 
   def open

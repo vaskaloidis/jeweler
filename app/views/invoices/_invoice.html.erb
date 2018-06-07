@@ -4,69 +4,69 @@
   <div class="invoice-header">
 
     <!-- TODO:Figure this out -->
-    <% if (defined? display_send_btn and display_send_btn) or (defined? display_print_btn and display_print_btn) or (defined? display_pay_btn and display_pay_btn) %>
+    <% if invoice.display_send_btn or invoice.display_print_btn or invoice.display_pay_btn %>
       <div class="invoice-options hidden-print">
     <% end %>
 
     <div class="margin-bottom-20">
-      <% if estimate %>
+      <% if invoice.estimate %>
         <h2>Estimate</h2>
       <% else %>
         <h2>Invoice</h2>
       <% end %>
     </div>
 
-    <% if defined? display_send_btn %>
-      <% if display_send_btn %>
-        <% if estimate %>
+    <% if invoice.display_send_btn %>
+      <% if invoice.display_send_btn %>
+        <% if invoice.estimate %>
           <% send_btn = '<i class="fa-envelope-o"></i><span>Send Estimate</span>' %>
           <%= link_to send_btn.html_safe,
-                      generate_customer_invoice_path(sprint.id, 'true'),
+                      generate_customer_invoice_path(invoice.sprint.id, 'true'),
                       remote: true,
                       class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' %>
         <% else %>
           <% send_btn = '<i class="fa-envelope-o"></i><span>Send Invoice</span>' %>
           <%= link_to send_btn.html_safe,
-                      generate_customer_invoice_path(sprint.id, 'false'),
+                      generate_customer_invoice_path(invoice.sprint.id, 'false'),
                       remote: true,
                       class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' %>
         <% end %>
       <% end %>
     <% end %>
 
-    <% if defined? display_print_btn and display_print_btn %>
-      <% if estimate %>
+    <% if invoice.display_print_btn %>
+      <% if invoice.estimate %>
         <% print_btn = '<i class="fa-print"></i><span>Print Estimate</span>' %>
         <%= link_to print_btn.html_safe,
-                    print_invoice_path(sprint.id, 'true'),
+                    print_invoice_path(invoice.sprint.id, 'true'),
                     class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
       <% else %>
         <% print_btn = '<i class="fa-print"></i><span>Print Invoice</span>' %>
         <%= link_to print_btn.html_safe,
-                    print_invoice_path(sprint.id, 'false'),
+                    print_invoice_path(invoice.sprint.id, 'false'),
                     class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
       <% end %>
     <% end %>
 
-    <% if defined? display_pay_btn and display_pay_btn %>
+    <% if invoice.display_pay_btn %>
       <% pay_btn = '<i class="fa-money"></i><span>Make Payment</span>' %>
       <%= link_to pay_btn.html_safe,
-                  pay_path(sprint.project.id),
+                  pay_path(invoice.sprint.project.id),
                   class: 'btn btn-block btn-secondary btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
     <% end %>
 
-    <% if (defined? display_send_btn and display_send_btn) or (defined? display_print_btn and display_print_btn) or (defined? display_pay_btn and display_pay_btn) %>
+    <% if invoice.display_send_btn or invoice.display_print_btn or invoice.display_pay_btn %>
       </div>
     <% end %>
 
     <!-- Invoice Data Header -->
     <div class="invoice-logo">
       <a href="#" class="logo">
-        <img width="150" src="<%= sprint.project.image.url %>" class="img-responsive"/>
+        <img width="150" src="<%= invoice.sprint.project.image.url %>" class="img-responsive"/>
       </a>
       <ul class="list-unstyled">
         <li><%= Date.today.to_s %></li>
-        <li><%= sprint.project.owner.first_name %> <%= sprint.project.owner.last_name %></li>
+        <li><%= invoice.sprint.project.owner.first_name %> <%= invoice.sprint.project.owner.last_name %></li>
       </ul>
     </div>
   </div>
@@ -74,11 +74,11 @@
 
   <!-- Client and Payment Details -->
   <div class="invoice-details">
-    <% if sprint.payment_due %>
-      <% if payment_request_amount %>
+    <% if invoice.sprint.payment_due %>
+      <% if invoice.payment_request_amount %>
         <div class="alert alert-success">
           <i class="fa-dollar-sign pull-right"></i>
-          A payment of <%= payment_request_amount.money %> has been requested
+          A payment of <%= invoice.payment_request_amount.money %> has been requested
         </div>
       <% else %>
         <div class="alert alert-success">
@@ -87,28 +87,28 @@
         </div>
       <% end %>
     <% end %>
-    <% if !customer.nil? and customer %>
+    <% if invoice.customer %>
       <div class="invoice-client-info">
         <strong>Client</strong>
         <ul class="list-unstyled">
-          <% unless customer.first_name.nil? and customer.last_name.nil? %>
-            <li><%= customer.first_name %> <%= customer.last_name %></li>
+          <% unless invoice.customer.first_name.nil? and invoice.customer.last_name.nil? %>
+            <li><%= invoice.customer.first_name %> <%= invoice.customer.last_name %></li>
           <% end %>
-          <% unless customer.company.nil? %>
-            <li><%= customer.company %> </li>
+          <% unless invoice.customer.company.nil? %>
+            <li><%= invoice.customer.company %> </li>
           <% end %>
-          <% unless customer.email.nil? %>
-            <li><%= customer.email %></li>
+          <% unless invoice.customer.email.nil? %>
+            <li><%= invoice.customer.email %></li>
           <% end %>
         </ul>
         <ul class="list-unstyled">
         </ul>
       </div>
-    <% elsif !customer_email.nil? and customer_email %>
+    <% elsif invoice.customer_email %>
       <div class="invoice-client-info">
         <strong>Client</strong>
         <ul class="list-unstyled">
-          <li><%= customer_email %> </li>
+          <li><%= invoice.customer_email %> </li>
         </ul>
         <ul class="list-unstyled">
         </ul>
@@ -116,18 +116,18 @@
     <% end %>
 
     <div class="invoice-payment-info">
-      <% if sprint.current? %>
+      <% if invoice.sprint.current? %>
         <span class="label label-default">Current Sprint</span>
       <% end %>
       <ul class="list-unstyled">
-        <li class="upper">Sprint <strong><%= sprint.sprint.to_s %></strong></li>
-        <li><strong>Tasks: </strong><%= sprint.tasks.size.to_s %></li>
-        <li><strong>Estimated Hours: </strong><%= sprint.planned_hours.to_s %> hrs.</li>
-        <% unless estimate %>
-          <li><strong>Reported Hours: </strong><%= sprint.hours.to_s %> hrs.</li>
+        <li class="upper">Sprint <strong><%= invoice.sprint.sprint.to_s %></strong></li>
+        <li><strong>Tasks: </strong><%= invoice.sprint.tasks.size.to_s %></li>
+        <li><strong>Estimated Hours: </strong><%= invoice.sprint.planned_hours.to_s %> hrs.</li>
+        <% unless invoice.estimate %>
+          <li><strong>Reported Hours: </strong><%= invoice.sprint.hours.to_s %> hrs.</li>
         <% end %>
-        <% if invoice_note %>
-          <li><strong>Note: </strong><%= invoice_note %></li>
+        <% if invoice.invoice_note %>
+          <li><strong>Note: </strong><%= invoice.invoice_note %></li>
         <% end %>
       </ul>
     </div>
@@ -142,7 +142,7 @@
       <th class="text-center hidden-xs"></th>
       <th width="50%" class="text-center">Task</th>
       <th class="text-center">Rate</th>
-      <% if estimate %>
+      <% if invoice.estimate %>
         <th class="text-center hidden-xs">Estimate</th>
         <th class="text-center">Projected Cost</th>
       <% else %>
@@ -153,10 +153,10 @@
     </thead>
 
     <tbody>
-    <% sprint.tasks.each do |task| %>
+    <% invoice.sprint.tasks.each do |task| %>
       <tr>
         <td class="text-center hidden-xs">
-          <% if sprint.project.current_task == task %>
+          <% if invoice.sprint.project.current_task == task %>
             <span class="label label-default">Current Task</span>
           <% elsif task.complete %>
             <i class="fas fa-check fa-1x"></i>
@@ -164,7 +164,7 @@
         </td>
         <td><span class="alert alert-success task-id">#<%= task.task_id %></span><%= task.description %></td>
         <td class="text-center">$<%= task.rate.to_s %>/hr.</td>
-        <% if estimate %>
+        <% if invoice.estimate %>
           <td class="text-center hidden-xs"><%= task.planned_hours.to_s %> hrs.</td>
           <td class="text-center text-primary text-bold"><%= task.planned_cost.money %></td>
         <% else %>
@@ -178,12 +178,12 @@
       <td></td>
       <td></td>
       <td></td>
-      <% if estimate %>
-        <td class="text-center hidden-xs"><%= sprint.planned_hours %> hrs.</td>
-        <td class="text-center text-primary text-bold"><%= sprint.planned_cost.money %></td>
+      <% if invoice.estimate %>
+        <td class="text-center hidden-xs"><%= invoice.sprint.planned_hours %> hrs.</td>
+        <td class="text-center text-primary text-bold"><%= invoice.sprint.planned_cost.money %></td>
       <% else %>
-        <td class="text-center hidden-xs"><%= sprint.hours.to_s %> hrs.</td>
-        <td class="text-right text-primary text-bold"><%= sprint.cost.money %></td>
+        <td class="text-center hidden-xs"><%= invoice.sprint.hours.to_s %> hrs.</td>
+        <td class="text-right text-primary text-bold"><%= invoice.sprint.cost.money %></td>
       <% end %>
     </tr>
     </tbody>
@@ -195,7 +195,7 @@
     <div class="invoice-subtotals-totals">
           <span>
             Sub - Total amount:
-            <strong>$<%= sprint.cost.to_s %></strong>
+            <strong>$<%= invoice.sprint.cost.to_s %></strong>
           </span>
 
       <!-- TODO:Add Tax rate to settings -->
@@ -207,18 +207,18 @@
       <% end %>
 
       <hr/>
-      <% if estimate %>
-        <span>Projected Cost: <strong><%= sprint.planned_cost.money %></strong></span>
+      <% if invoice.estimate %>
+        <span>Projected Cost: <strong><%= invoice.sprint.planned_cost.money %></strong></span>
       <% else %>
-        <span>Grand Total: <strong><%= sprint.cost.money %></strong></span>
+        <span>Grand Total: <strong><%= invoice.sprint.cost.money %></strong></span>
       <% end %>
     </div>
   </div>
 
-  <% if display_payments %>
+  <% if invoice.display_payments %>
     <table class="table table-condensed">
       <tbody>
-      <% sprint.payments.each do |payment| %>
+      <% invoice.sprint.payments.each do |payment| %>
         <tr>
           <td><%= payment.amount %></td>
           <td><%= payment.payment_type %></td>
@@ -230,17 +230,17 @@
         <td></td>
         <td></td>
         <td><strong>Payment Total:</strong></td>
-        <td><%= sprint.payment.money %></td>
+        <td><%= invoice.sprint.payment.money %></td>
       </tr>
       </tbody>
     </table>
 
     <div class="invoice-totals">
       <div class="invoice-subtotals-totals">
-        <span>Invoice Amount: <strong><%= sprint.cost.money %></strong></span>
-        <span>Payments: <strong><%= sprint.payment.money %></strong></span>
+        <span>Invoice Amount: <strong><%= invoice.sprint.cost.money %></strong></span>
+        <span>Payments: <strong><%= invoice.sprint.payment.money %></strong></span>
         <hr/>
-        <span>Balance: <strong><%= sprint.balance.money %></strong></span>
+        <span>Balance: <strong><%= invoice.sprint.balance.money %></strong></span>
       </div>
       <div class=" invoice-bill-info">
       </div>

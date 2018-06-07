@@ -1,2 +1,2 @@
-$('#home_timeline_container').html('<%= j render @note.project.sprint_notes, project: @note.project %>');
+$('#home_timeline_container').html('<%= j render 'notes/notes', notes: @note.project.sprint_notes, project: @note.project %>');
 toastr.success('Note Updated');

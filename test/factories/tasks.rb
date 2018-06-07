@@ -9,6 +9,11 @@ FactoryBot.define do
     sequence(:position)
     deleted false
 
+    factory :planned_task do
+      hours 0
+      planned_hours Random.rand(1...20)
+    end
+
     factory :task_update do
       description 'updated desc'
       rate '12'

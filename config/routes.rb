@@ -6,26 +6,24 @@ Rails.application.routes.draw do
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
 
   # Payments
-  get '/pay/:project_id', to: 'payments#unauthenticated_payment', as: 'pay'
-  get '/request_payment/:sprint_id', to: 'projects#request_payment', as: 'request_payment'
-  get '/cancel_payment_request/:sprint_id', to: 'projects#cancel_request_payment', as: 'cancel_request_payment'
-  # match '/make_payment', to: 'sprints#make_payment', via: [:post], as: 'make_payment'
+  get '/pay/:project_id', to: 'payments#unauthenticated_payment', as: 'customer_project_payment'
+  get '/pay/sprint/:sprint_id', to: 'sprints#make_payment', via: [:post], as: 'customer_sprint_payment'
 
   # Invitations
   get '/invitation/:id/accept', to: 'invitations#accept', as: 'accept_invitation'
   get '/invitation/:id/decline', to: 'invitations#decline', as: 'decline_invitation'
   delete 'invitation/:id/destroy', to: 'invitations#destroy', as: 'destroy_invitation'
 
-  # Customers API Calls (TODO: re-implement these eventually)
+  # Customers
   get '/project/:project_id/leave/:user_id', to: 'project_customers#leave', as: 'leave_project'
   delete '/project/:project_id/remove/:user_id', to: 'project_customers#remove', as: 'remove_customer'
 
   # Invoices
-  get '/print_invoice/:sprint_id/:estimate', to: 'invoices#print_invoice', as: 'print_invoice'
-  get '/generate_invoice/:sprint_id/:estimate', to: 'invoices#generate_invoice', as: 'generate_invoice'
-  match '/invoices', to: 'invoices#send_invoice', via: [:post], as: 'send_invoice'
-  match '/invoices', to: 'invoices#review_customer_invoice', via: [:post], as: 'review_customer_invoice'
-  get '/generate_customer_invoice/:sprint_id/:estimate', to: 'invoices#generate_customer_invoice', as: 'generate_customer_invoice'
+  get '/invoice/:id/generate/:estimate', to: 'invoices#generate', as: 'generate_invoice'
+  get '/invoice/:id/select_customer/:estimate/:goal', to: 'invoices#select_customer', as: 'select_invoice_customer'
+  post '/invoice/review', to: 'invoices#review', as: 'review_customer_invoice'
+  post '/invoice/:id/print/:estimate', to: 'invoices#print', as: 'print_invoice'
+  post '/invoice/send', to: 'invoices#send', as: 'send_invoice'
 
   # Sprints
   get '/sprint/:id/edit_description', to: 'sprints#edit_description', as: 'edit_sprint_description'
@@ -33,6 +31,8 @@ Rails.application.routes.draw do
   get '/sprint/:id/current', to: 'sprints#set_current', as: 'set_current_sprint'
   get '/sprint/:id/open', to: 'sprints#open', as: 'open_sprint'
   get '/sprint/:id/close', to: 'sprints#close', as: 'close_sprint'
+  get '/sprint/:id/request_payment', to: 'sprints#request_payment', as: 'request_payment'
+  get '/sprint/:id/cancel_payment_request', to: 'sprints#cancel_request_payment', as: 'cancel_request_payment'
 
   # Tasks
   get '/task/:id/complete' => 'tasks#complete', as: 'complete_task'
@@ -46,16 +46,15 @@ Rails.application.routes.draw do
   get '/notes/create_note_modal/:project_id', to: 'notes#new_modal', as: 'create_note_modal'
 
   # Discussions
-  match '/create_chat_message', to: 'discussions#create_chat_message_inline', via: [:post], as: 'create_chat_message_inline'
-  get '/fetch_discussion/:note_id' => 'discussions#fetch_discussion', as: 'fetch_discussion'
-
-  get '/authorize_github', to: 'webhook#authorize_account', as: 'authorize_github'
+  post '/discussions/create_message', to: 'discussions#create_message', as: 'create_discussion_message'
+  get '/discussions/fetch/:note_id', to: 'discussions#fetch', as: 'fetch_discussion'
 
   # Github Webhooks
   get '/oath', to: 'webhook#save_oath', as: 'oath_save'
   post '/hook', to: 'webhook#hook', as: 'webhook_execute'
+  get '/authorize_github', to: 'webhook#authorize_account', as: 'authorize_github'
 
-  # Scaffolds
+  # Scaffolds TODO: Cleanup route resource scaffolds
   resources :project_customers
   resources :notes
   resources :discussions

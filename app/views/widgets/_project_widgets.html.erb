@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <% if project.current_sprint.only_planned? %>
+  <% if project.current_sprint.estimate? %>
 
     <div class="col-xs-12 col-sm-6 col-lg-3" data-animate="true">
       <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.current_sprint.planned_cost.to_s %>" data-prefix="$" data-duration="2">

@@ -54,7 +54,7 @@
       <div class="btn-group">
 
         <% if sprint.project.owner?(current_user) %>
-          <% if sprint.only_planned? %>
+          <% if sprint.estimate? %>
             <%= link_to 'Generate Estimate', generate_invoice_path(sprint.id, 'true'), class: 'btn btn-sm btn-success', remote: true %>
           <% else %>
             <%= link_to 'Generate Invoice', generate_invoice_path(sprint.id, 'false'), class: 'btn btn-sm btn-success', remote: true %>
@@ -98,7 +98,7 @@
               </li>
             <% end %>
             <li><%= link_to 'Generate Estimate', generate_invoice_path(sprint.id, 'true'), remote: true %></li>
-            <% unless sprint.only_planned? %>
+            <% unless sprint.estimate? %>
               <li><%= link_to 'Generate Invoice', generate_invoice_path(sprint.id, 'false'), remote: true %></li>
             <% end %>
           </ul>
@@ -116,7 +116,7 @@
           <th data-priority="1">Task</th>
           <th data-priority="2">Rate</th>
           <th data-priority="3" class="hidden-xs">Estimate</th>
-          <% if sprint.only_planned? %>
+          <% if sprint.estimate? %>
             <th data-priority="3">Projected Cost</th>
           <% else %>
             <th data-priority="3">Hours</th>
@@ -151,7 +151,7 @@
             </td>
             <td>$<%= task.rate.to_f.prettify %>/hr</td>
             <td><%= task.planned_hours.prettify %> hrs.</td>
-            <% if sprint.only_planned? %>
+            <% if sprint.estimate? %>
               <td><%= task.planned_cost.money %></td>
             <% else %>
               <td><%= task.hours.prettify %> hrs.</td>
@@ -175,7 +175,7 @@
           </th>
           <th><strong>Total:</strong></th>
           <th><%= sprint.planned_hours.prettify %> hrs.</th>
-          <% if sprint.only_planned? %>
+          <% if sprint.estimate? %>
             <td><%= sprint.planned_cost.money %></td>
           <% else %>
             <td><%= sprint.hours.prettify %> hrs.</td>
@@ -235,7 +235,7 @@
         <div style="display:none" id="sprint_payment_inline_<%= sprint.id.to_s %>">
           <%# TODO: DELETE THIS CRAP render 'sprints/sprint_payment_form', sprint: sprint %>
         </div>
-        <%= link_to 'Make Sprint ' + sprint.sprint.to_s + ' Payment', open_sprint_payment_path(sprint.id), class: 'btn btn-primary btn-sm', remote: true %>
+        <%= link_to 'Make Sprint ' + sprint.sprint.to_s + ' Payment', customer_sprint_payment_path(sprint.id), class: 'btn btn-primary btn-sm', remote: true %>
       </div>
     <% end %>
 
@@ -243,7 +243,7 @@
       <span>
         <strong>Sprint <%= sprint.sprint.to_s %></strong>
       </span>
-      <% if sprint.only_planned? %>
+      <% if sprint.estimate? %>
         <span>
           <strong>No Hours Reported</strong>
         </span>
@@ -269,7 +269,7 @@
       <span>
         <strong>Projected Cost:</strong> <%= sprint.planned_cost.money %>
       </span>
-      <% unless sprint.only_planned? %>
+      <% unless sprint.estimate? %>
         <span>
           <strong>Cost:</strong> <%= sprint.cost.money %>
         </span>

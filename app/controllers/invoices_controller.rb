@@ -1,15 +1,37 @@
+# The controller for building and configuring Sprint Invoices. This controller has
+#  actions to generate a Sprint's Invoice, choose a customer, print or send.
 class InvoicesController < ApplicationController
+  respond_to :html, only: %i[print]
+  respond_to :js, except: %i[print]
+  before_action :set_sprint
+  before_action :set_estimate_bool
 
-  def send_invoice
-    @sprint = Sprint.find(params[:sprint_id])
-    @estimate = params[:estimate].to_b
+  def generate
+    @invoice = Invoice.new(sprint: @sprint,
+                           estimate: @estimate,
+                           display_send_btn: true,
+                           display_print_btn: true,
+                           customer: false,
+                           customer_email: false,
+                           display_payments: false)
+  end
+
+  def select_customer
+    @goal = params[:goal]
+    @invoice = Invoice.new(sprint: @sprint,
+                           estimate: @estimate,
+                           display_pay_btn: true,
+                           goal: @goal)
+
+  end
+
+  def send
     @customer_email = params[:customer_email]
 
     @invitation = params[:invitation].to_b
     @invoice_note = params[:invoice_note]
     @display_payments = params[:display_payments]
     @request_amount = params[:payment_request_amount]
-    @estimate = params[:estimate].to_b
 
     @customer_param = params[:customer]
     if @customer_param.to_b and !@customer_param.nil? and @customer_param != ''
@@ -51,27 +73,19 @@ class InvoicesController < ApplicationController
 
 
     end
-
-    respond_to do |format|
-      format.js
-    end
   end
 
-  def review_customer_invoice
-    @error_msgs = Array.new
-
-    @sprint = Sprint.find(params[:sprint_id])
-    @estimate = params[:estimate].to_b
+  def review
     @customer_email = params[:customer_email]
     @invoice_note = params[:invoice_note]
     @display_payments = params[:display_payments] == "1"
     @request_amount = params[:request_amount]
-    @estimate = params[:estimate].to_b
 
+    # Parse
     if @customer_email == 'Customer Email' or @customer_email == ''
       # Email Dropdown
       if params[:customer_id].nil? or params[:customer_id] == ''
-        @error_msgs << 'A customer was not selected'
+        @errors << 'A customer was not selected'
       else
         @customer = User.find(params[:customer_id])
         @customer_email = false
@@ -96,40 +110,15 @@ class InvoicesController < ApplicationController
       else
         if @request_amount != '(Optional) Request Amount' and @request_amount != ''
           if !ApplicationHelper.is_number? @request_amount
-            @error_msgs << 'Payment request amount must be a number (or leave it empty)'
+            @errors << 'Payment request amount must be a number (or leave it empty)'
           end
         end
       end
     end
-
-    respond_to do |format|
-      format.js
-    end
   end
 
-  def generate_customer_invoice
-    @sprint = Sprint.find(params[:sprint_id])
-    @estimate = params[:estimate].to_b
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def generate_invoice
-    @sprint = Sprint.find(params[:sprint_id])
-    @estimate = params[:estimate].to_b
-    logger.debug("Estimate: " + @estimate.to_s)
-    logger.debug("Invoice ID: " + @sprint.id.to_s)
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def print_invoice
-    @sprint = Sprint.find(params[:sprint_id])
-    @estimate = params[:estimate].true?
-    render partial: 'sprints/generate_printable_invoice',
+  def print
+    render partial: 'invoices/generate_printable_invoice',
            locals: {sprint_id: @sprint,
                     estimate: @estimate,
                     display_send_btn: false,
@@ -138,5 +127,14 @@ class InvoicesController < ApplicationController
            layout: 'print'
   end
 
+  private
+
+  def set_sprint
+    @sprint = Sprint.find(params[:id])
+  end
+
+  def set_estimate_bool
+    @estimate = params[:estimate].to_b
+  end
 
 end
