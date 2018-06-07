@@ -9,10 +9,10 @@ class Note < ApplicationRecord
   scope :timeline, -> { where(note_type: %i[note commit project_update payment payment_request demo]) }
   scope :events, -> { where(note_type: %i[event]) }
   scope :commits, -> { where(note_type: :commit) }
+
   belongs_to :project
   has_many :discussions, dependent: :destroy
   belongs_to :author, class_name: 'User', foreign_key: 'user_id', inverse_of: 'notes', required: true
-
   belongs_to :sprint, optional: true
   belongs_to :task, optional: true
 
@@ -20,6 +20,8 @@ class Note < ApplicationRecord
 
   accepts_nested_attributes_for :sprint
   accepts_nested_attributes_for :task
+  accepts_nested_attributes_for :discussions
+
 
   # TODO: Refactor / Scrap this (better way to do it)
   def self.note_types

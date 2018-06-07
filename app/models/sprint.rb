@@ -60,9 +60,11 @@ class Sprint < ApplicationRecord
     true
   end
 
-  def only_planned?
+  # Returns true if all Sprint Tasks have NOT yet reported Hours,
+  # False if any Sprint Tasks have reported actual Hours
+  def estimate?
     tasks.each do |task|
-      false if task.hours != 0
+      return false if task.hours != 0
     end
     true
   end

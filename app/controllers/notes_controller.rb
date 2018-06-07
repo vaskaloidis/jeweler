@@ -19,6 +19,8 @@ class NotesController < ApplicationController
     if @note_type == 'all'
       @notes = @sprint.order('created_at DESC').all
     else
+      # TODO: Place a factory here, or some other pattern. But not this.
+      #  This is what nightmares are made of
       case @note_type
         when 'commit'
           @notes = @sprint.where(note_type: :commit).order('created_at DESC').all
@@ -73,9 +75,13 @@ class NotesController < ApplicationController
   # POST /notes.json
   def create
     @note = Note.new(note_params)
+
+    logger.info(note_params.inspect)
+    logger.info(@note.inspect)
+
     @note.author = current_user
 
-    project = @note.project
+    project = Project.find(@note.project_id)
     unless project.current_sprint.nil?
       @note.sprint = project.current_sprint
     end

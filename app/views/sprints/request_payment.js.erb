@@ -6,7 +6,9 @@
   <%= render 'payments/re-render_payments_panel', project: @sprint.project, user: @user %>
   <%= render 'notes/re-render_timeline', notes: @sprint.project.sprint_notes, project: @sprint.project %>
 
-  $("#modal_target").html('<%= j render'sprints/invoice_select_customer', sprint: @sprint, estimate: false %>');
+<% invoice = Invoice.new(sprint: @sprint, estimate: false, goal: 'send') %>
+
+  $("#modal_target").html('<%= j invoice %>');
   <%= render 'renderers/render_modal', title: 'Invoice' %>
 
 <% else %>

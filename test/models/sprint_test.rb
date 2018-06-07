@@ -23,4 +23,18 @@ class SprintTest < ActiveSupport::TestCase
     assert task and task.valid?
   end
 
+  test 'is just an estimate' do
+    sprint = create(:sprint)
+    create_list(:planned_task, 5, sprint: sprint)
+    sprint.reload
+    assert sprint.estimate?
+  end
+
+  test 'is not an estimate' do
+    sprint = create(:sprint_with_reported_hours)
+    create_list(:task, 5, sprint: sprint, hours: Random.rand(1...20))
+    sprint.reload
+    refute sprint.estimate?
+  end
+
 end

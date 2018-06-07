@@ -11,42 +11,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def request_payment
-    @sprint = Sprint.find(params[:sprint_id])
-    if @sprint.cost > 0
-      @sprint.payment_due = true
-      @sprint.save
-
-      @user = current_user
-
-      @project = @sprint.project
-
-      if @sprint.valid?
-        Note.create_payment_request(@sprint, current_user)
-      end
-    end
-
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def cancel_request_payment
-    @sprint = Sprint.find(params[:sprint_id])
-    @sprint.payment_due = false
-    @sprint.save
-
-    @user = current_user
-
-    Note.create_event(@sprint.project, 'payment_request_cancelled', 'Sprint ' +
-        @sprint.sprint.to_s + ' Payment Request Canceled')
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
   # GET /projects
   # GET /projects.json
   def index

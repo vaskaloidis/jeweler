@@ -1,8 +1,7 @@
 <div id="note_form_<%= note.id.to_s %>" style="display:none" class="row">
-  <%= form_with url: create_chat_message_inline_path, class: 'form-inline margin-bottom-5 margin-left-10 margin-top-20' do |f| %>
+  <%= form_with url: create_discussion_message_path, class: 'form-inline margin-bottom-5 margin-left-10 margin-top-20' do |f| %>
     <%= f.text_field :content, class: 'col-sm-12 col-md-4 margin-left-20' %>
     <%= f.submit 'Comment', :class => 'btn-sm btn-success', style: 'height:26px; bottom: 10px' %>
-    <%= f.hidden_field :user_id, :value => user.id %>
     <%= f.hidden_field :note_id, :value => note.id %>
   <% end %>
 </div>
