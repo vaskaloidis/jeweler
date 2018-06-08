@@ -53,7 +53,7 @@
                 <% if project.owner?(current_user) %>
                   <% payment_request_btn = '<span style="" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>' %>
                   <%= link_to payment_request_btn.html_safe,
-                              cancel_request_payment_path(sprint.id),
+                              cancel_payment_request_path(sprint.id),
                               remote: true %>
                 <% end %>
               </div>

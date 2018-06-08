@@ -1,22 +1,27 @@
+# Useful String methods for Jeweler: .true?, .to_b and .money
 class String
+  # Returns true if the string is equal to 'true'
   def true?
-    if self.to_s == "true"
-      return true
-    else
-      return false
-    end
+    to_s == 'true'
   end
 
+  # Returns true if String is explicitly equal to 'true'
+  # Returns false if String is explicitly equal to 'false'
+  # raise ArgumentError if any other String is evaluated
   def to_b
-    if self.to_s == 'true'
-      return true
+    if to_s == 'true'
+      true
+    elsif to_s == 'false'
+      false
     else
-      return false
+      raise ArgumentError
     end
   end
 
+  # Parses a number by converting it to a Double, formatting
+  # it as money, and then converting it back to String
+  # Example: $32.50 (String)
   def money
-    result = self.to_d.money
-    return result.to_s
+    to_d.money.to_s
   end
 end

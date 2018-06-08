@@ -1,10 +1,9 @@
 # The controller for building and configuring Sprint Invoices. This controller has
 #  actions to generate a Sprint's Invoice, choose a customer, print or send.
 class InvoicesController < ApplicationController
+  before_action :set_sprint
   respond_to :html, only: %i[print]
   respond_to :js, except: %i[print]
-  before_action :set_sprint
-  before_action :set_estimate_bool
 
   def generate
     @invoice = Invoice.new(sprint: @sprint,
@@ -131,10 +130,11 @@ class InvoicesController < ApplicationController
 
   def set_sprint
     @sprint = Sprint.find(params[:id])
+    @estimate = params[:estimate].to_b
   end
 
-  def set_estimate_bool
-    @estimate = params[:estimate].to_b
+  def invoice_params
+    params.require(:invoice).permit(:sprint, :estimate, :display_send_btm, :display_pay_btn, :display_print_btn, :request_amount, :invoice_note, :display_payments, :customer, :customer_email)
   end
 
 end

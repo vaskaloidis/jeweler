@@ -82,7 +82,7 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
 
   test 'cancel sprint payment request' do
     sprint = create(:sprint, payment_due: true)
-    get cancel_request_payment_url(sprint), xhr: true
+    get cancel_payment_request_url(sprint), xhr: true
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
     sprint.reload

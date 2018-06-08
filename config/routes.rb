@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   get '/sprint/:id/open', to: 'sprints#open', as: 'open_sprint'
   get '/sprint/:id/close', to: 'sprints#close', as: 'close_sprint'
   get '/sprint/:id/request_payment', to: 'sprints#request_payment', as: 'request_payment'
-  get '/sprint/:id/cancel_payment_request', to: 'sprints#cancel_request_payment', as: 'cancel_request_payment'
+  get '/sprint/:id/cancel_payment_request', to: 'sprints#cancel_payment_request', as: 'cancel_payment_request'
 
   # Tasks
   get '/task/:id/complete' => 'tasks#complete', as: 'complete_task'
