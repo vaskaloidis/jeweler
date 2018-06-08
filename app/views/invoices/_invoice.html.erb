@@ -19,32 +19,32 @@
     <% if invoice.display_send_btn %>
       <% if invoice.display_send_btn %>
         <% if invoice.estimate %>
-          <% send_btn = '<i class="fa-envelope-o"></i><span>Send Estimate</span>' %>
-          <%= link_to send_btn.html_safe,
-                      generate_customer_invoice_path(invoice.sprint.id, 'true'),
+          <%= link_to select_invoice_customer_path(invoice.sprint.id, 'true', 'send'),
                       remote: true,
-                      class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' %>
+                      class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' do %>
+            <i class="fa-envelope-o"></i><span>Send Estimate</span>
+          <% end %>
         <% else %>
-          <% send_btn = '<i class="fa-envelope-o"></i><span>Send Invoice</span>' %>
-          <%= link_to send_btn.html_safe,
-                      generate_customer_invoice_path(invoice.sprint.id, 'false'),
+          <%= link_to select_invoice_customer_path(invoice.sprint.id, 'false', 'send'),
                       remote: true,
-                      class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' %>
+                      class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right text-left' do %>
+            <i class="fa-envelope-o"></i><span>Send Invoice</span>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>
 
     <% if invoice.display_print_btn %>
       <% if invoice.estimate %>
-        <% print_btn = '<i class="fa-print"></i><span>Print Estimate</span>' %>
-        <%= link_to print_btn.html_safe,
-                    print_invoice_path(invoice.sprint.id, 'true'),
-                    class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+        <%= link_to select_invoice_customer_path(invoice.sprint.id, 'true', 'print'),
+                    class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' do %>
+          <i class="fa-print"></i><span>Print Estimate</span>
+        <% end %>
       <% else %>
-        <% print_btn = '<i class="fa-print"></i><span>Print Invoice</span>' %>
-        <%= link_to print_btn.html_safe,
-                    print_invoice_path(invoice.sprint.id, 'false'),
-                    class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
+        <%= link_to select_invoice_customer_path(invoice.sprint.id, 'false', 'print'),
+                    class: 'btn btn-block btn-gray btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' do %>
+          <i class="fa-print"></i><span>Print Invoice</span>
+        <% end %>
       <% end %>
     <% end %>
 

@@ -22,7 +22,8 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create note" do
     project = create(:project)
-    new_note = attributes_for(:note, project: project)
+    new_note = attributes_for(:note)
+    new_note[:project_id] = project.id
     assert_difference('Note.count') do
       post notes_url, params: { note: new_note }, xhr: true
     end
