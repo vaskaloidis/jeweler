@@ -16,27 +16,32 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should generate invoice" do
-    get generate_invoice, xhr: true
+    get generate_invoice_url(@sprint, 'false'), xhr: true
+    assert_response :success
+  end
+
+  test "should generate estimate" do
+    get generate_invoice_url(@sprint, 'true'), xhr: true
     assert_response :success
   end
 
   test "should select invoice customer" do
-    get select_invoice_customer, xhr: true
+    get select_invoice_customer_url, xhr: true
     assert_response :success
   end
 
   test "should review customer invoice" do
-    post review_customer_invoice, params: {invoice: {}}, xhr: true
+    post review_customer_invoice_url, params: {invoice: {}}, xhr: true
     assert_response :success
   end
 
   test "should print invoice" do
-    post print_invoice, params: {invoice: {}}, xhr: true
+    post print_invoice_url, params: {invoice: {}}, xhr: true
     assert_response :success
   end
 
   test "should send invoice" do
-    post send_invoice, params: {invoice: {}}, xhr: true
+    post send_invoice_url, params: {invoice: {}}, xhr: true
     assert_response :success
   end
 

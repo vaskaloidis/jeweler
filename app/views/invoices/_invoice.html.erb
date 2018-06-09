@@ -51,7 +51,7 @@
     <% if invoice.display_pay_btn %>
       <% pay_btn = '<i class="fa-money"></i><span>Make Payment</span>' %>
       <%= link_to pay_btn.html_safe,
-                  pay_path(invoice.sprint.project.id),
+                  customer_sprint_payment_url(invoice.sprint.project.id),
                   class: 'btn btn-block btn-secondary btn-icon btn-icon-standalone btn-icon-standalone-right btn-single text-left' %>
     <% end %>
 
@@ -87,18 +87,18 @@
         </div>
       <% end %>
     <% end %>
-    <% if invoice.customer %>
+    <% if invoice.user %>
       <div class="invoice-client-info">
         <strong>Client</strong>
         <ul class="list-unstyled">
-          <% unless invoice.customer.first_name.nil? and invoice.customer.last_name.nil? %>
-            <li><%= invoice.customer.first_name %> <%= invoice.customer.last_name %></li>
+          <% unless invoice.user.first_name.nil? and invoice.user.last_name.nil? %>
+            <li><%= invoice.user.first_name %> <%= invoice.user.last_name %></li>
           <% end %>
-          <% unless invoice.customer.company.nil? %>
-            <li><%= invoice.customer.company %> </li>
+          <% unless invoice.user.company.nil? %>
+            <li><%= invoice.user.company %> </li>
           <% end %>
-          <% unless invoice.customer.email.nil? %>
-            <li><%= invoice.customer.email %></li>
+          <% unless invoice.user.email.nil? %>
+            <li><%= invoice.user.email %></li>
           <% end %>
         </ul>
         <ul class="list-unstyled">

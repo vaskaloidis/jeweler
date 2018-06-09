@@ -146,7 +146,7 @@
                 #task<%= task.sprint.sprint.to_s %><%= task.letter %>
               </span>
               <span class="hidden-xs">
-                <%= truncate(task.description, length: 150) %>
+                <%= truncate(task.description, length: 85) %>
               </span>
             </td>
             <td>$<%= task.rate.to_f.prettify %>/hr</td>

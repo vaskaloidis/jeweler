@@ -1,4 +1,4 @@
-$("#modal_target").html("<%= j render @invoice %>");
+$("#modal_target").html("<%= j render 'invoices/select_customer', invoice: @invoice %>");
 
 <% if @estimate %>
   <%= render 'renderers/render_modal', title: 'Estimate' %>

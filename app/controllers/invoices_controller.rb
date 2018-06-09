@@ -1,8 +1,7 @@
 # The controller for building and configuring Sprint Invoices. This controller has
 #  actions to generate a Sprint's Invoice, choose a customer, print or send.
 class InvoicesController < ApplicationController
-  before_action :set_sprint
-  respond_to :html, only: %i[print]
+  before_action :set_sprint, except: %i[]
   respond_to :js, except: %i[print]
 
   def generate
@@ -24,55 +23,9 @@ class InvoicesController < ApplicationController
 
   end
 
-  def send
-    @customer_email = params[:customer_email]
-
-    @invitation = params[:invitation].to_b
-    @invoice_note = params[:invoice_note]
-    @display_payments = params[:display_payments]
-    @request_amount = params[:payment_request_amount]
-
-    @customer_param = params[:customer]
-    if @customer_param.to_b and !@customer_param.nil? and @customer_param != ''
-      @customer = User.find(params[:customer])
-    else
-      @customer = false
-    end
-
-    unless @invoice_note.to_b
-      @invoice_note = false
-    end
-
-    unless @customer_email.to_b
-      @customer_email = false
-    end
-
-    unless @request_amount.to_b and @request_amount != 0.00
-      @request_amount = false
-    end
-
-    if @invitation
-      if @customer_email
-        if Invitation.where(email: @customer_email).empty?
-          jeweler_invitation = Invitation.new
-          jeweler_invitation.project = @sprint.project
-          jeweler_invitation.email = @customer_email
-          jeweler_invitation.save
-          UserInviteMailer.with(email: @customer_email, project: @sprint.project.id).invite_user.deliver_now
-        end
-      else
-        if Invitation.where(email: @customer.email).empty?
-          jeweler_invitation = Invitation.new
-          jeweler_invitation.project = @sprint.project
-          jeweler_invitation.email = @customer_email
-          jeweler_invitation.save
-          UserInviteMailer.with(email: @customer.email, project: @sprint.project.id).invite_user.deliver_now
-        end
-      end
-
-
-    end
-  end
+  # def send
+  #
+  # end
 
   def review
     @customer_email = params[:customer_email]
@@ -129,8 +82,9 @@ class InvoicesController < ApplicationController
   private
 
   def set_sprint
-    @sprint = Sprint.find(params[:id])
-    @estimate = params[:estimate].to_b
+    @sprint = Sprint.find(params[:sprint_id])
+    @estimate = params[:estimate].to_b if defined? @estimate
+    raise ArgumentError, 'InvoicesController: sprint_id was not defined in the request' if @sprint.nil?
   end
 
   def invoice_params
