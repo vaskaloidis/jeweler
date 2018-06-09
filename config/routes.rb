@@ -19,11 +19,11 @@ Rails.application.routes.draw do
   delete '/project/:project_id/remove/:user_id', to: 'project_customers#remove', as: 'remove_customer'
 
   # Invoices
-  get '/invoice/:id/generate/:estimate', to: 'invoices#generate', as: 'generate_invoice'
-  get '/invoice/:id/select_customer/:estimate/:goal', to: 'invoices#select_customer', as: 'select_invoice_customer'
+  get '/invoice/:sprint_id/generate/:estimate', to: 'invoices#generate', as: 'generate_invoice'
+  get '/invoice/:sprint_id/select_customer/:estimate/:goal', to: 'invoices#select_customer', as: 'select_invoice_customer'
   post '/invoice/review', to: 'invoices#review', as: 'review_customer_invoice'
-  post '/invoice/:id/print/:estimate', to: 'invoices#print', as: 'print_invoice'
-  post '/invoice/send', to: 'invoices#send', as: 'send_invoice'
+  post '/invoice/print', to: 'invoices#print', as: 'print_invoice'
+  # post '/invoice/send', to: 'invoices#send', as: 'send_invoice'
 
   # Sprints
   get '/sprint/:id/edit_description', to: 'sprints#edit_description', as: 'edit_sprint_description'

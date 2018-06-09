@@ -1,17 +1,24 @@
 # An Invoice is simply a group of configuration settings for a Sprint
 class Invoice
+  include ActiveModel::Model
   include Virtus.model
+
   attribute :sprint, Sprint
-  attribute :estimate, Boolean, default: false
+  attribute :estimate, Boolean, default: true
   attribute :display_print_btn, Boolean, default: false
-  attribute :display_pay_btn, Boolean, default: true
+  attribute :display_pay_btn, Boolean, default: false
   attribute :display_send_btn, Boolean, default: false
-  attribute :customer, User, default: false
+  attribute :user, User, default: false
   attribute :customer_email, String, default: false
   attribute :payment_request_amount, Float, default: false
   attribute :display_payments, Boolean, default: false
   attribute :invoice_note, String, default: false
+  # goal: 'print' or 'send'
   attribute :goal, String, default: false
+
+  def to_partial_path
+    'invoices/invoice'
+  end
 
   def parse_form!
     if @customer_email == 'Customer Email' or @customer_email == ''

@@ -25,7 +25,7 @@
       <strong>Invoice Note: </strong><%= invoice_note %>
     </p>
   <% end %>
-  <%= form_with url: send_invoice_path do %>
+  <%= form_with url: root_path do %>
     <%= hidden_field_tag :customer_email, customer_email %>
 
     <% if customer %>

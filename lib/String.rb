@@ -14,7 +14,8 @@ class String
     elsif to_s == 'false'
       false
     else
-      raise ArgumentError
+      # raise SyntaxError
+      raise ArgumentError 'String being evaluated by to_b can only be equal to True or False'
     end
   end
 

@@ -2,11 +2,13 @@
   <div class='row'>
     <div class='col-xs-12 col-sm-4'>
       <div class='form-field' style='color: black'>
-        <%= i.select_tag :customer_id,
-                       options_from_collection_for_select(i.sprint.project.customers, "id", "first_name"),
-                       prompt: "Select a Customer",
-                       class: "form-control",
-                       style: "color:black" %>
+        <%= i.collection_select :user,
+                                invoice.sprint.project.customers,
+                                :id,
+                                :full_name,
+                                {prompt: 'Select a Customer'},
+                                {class: 'form-control',
+                                 style: 'color:black'} %>
       </div>
     </div>
     <div class="col-xs-12 col-sm-1">
@@ -15,14 +17,14 @@
     <div class='col-xs-12 col-sm-4'>
       <div class='input-group'>
         <span class="input-group-addon"><i class="fa-envelope-o"></i></span>
-        <%= i.text_field :customer_email, 'Customer Email', class: 'form-control payment_form_item' %>
+        <%= i.text_field :customer_email, value: 'Customer Email', class: 'form-control payment_form_item' %>
       </div>
     </div>
     <div class="col-xs-12 col-sm-3">
-      <%= i.hidden_field :goal %>
       <%= i.hidden_field :estimate %>
       <%= i.hidden_field :sprint %>
       <%= i.submit 'Send', :class => 'btn-sm btn-success form-control' %><br>
+      <%= i.submit 'Print', :class => 'btn-sm btn-default form-control' %><br>
     </div>
   </div>
   <hr class="invoince-review-split">
@@ -30,14 +32,14 @@
     <div class='col-xs-12 col-sm-4'>
       <div class='input-group'>
         <span class="input-group-addon"><i class="fas fa-pencil-alt"></i></span>
-        <%= i.text_field :invoice_note, '(Optional) Invoice Note', class: 'form-control' %>
+        <%= i.text_field :invoice_note, value: '(Optional) Invoice Note', class: 'form-control' %>
       </div>
     </div>
-    <% if sprint.payment_due %>
+    <% if invoice.sprint.payment_due %>
       <div class='col-xs-12 col-sm-4'>
         <div class='input-group'>
           <span class="input-group-addon"><i class="fa-money"></i></span>
-          <%= i.text_field :request_amount, '(Optional) Request Amount', class: 'form-control' %>
+          <%= i.text_field :request_amount, value: '(Optional) Request Amount', class: 'form-control' %>
         </div>
       </div>
     <% end %>
@@ -51,7 +53,7 @@
                     remote: true %>
       <% end %>
     </div>
-    <% unless sprint.payments.empty? %>
+    <% unless invoice.sprint.payments.empty? %>
       <div class='col-xs-12 col-sm-2'>
         <div class='input-group'>
           <%= i.label :display_payments, 'Display Payments?' %>
