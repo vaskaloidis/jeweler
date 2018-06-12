@@ -8,16 +8,15 @@ class Project < ApplicationRecord
 
   after_save :build_sprints, if: ->(obj) { obj.sprint_total.present? || obj.sprint_total_changed? }
 
+  belongs_to :current_task, class_name: 'Task', foreign_key: 'task_id', inverse_of: 'project', optional: true
   belongs_to :owner, class_name: 'User', foreign_key: 'user_id', inverse_of: 'owner_projects', required: true, dependent: :destroy
+
   has_many :project_customers, dependent: :destroy
   has_many :customers, through: :project_customers, source: :user
-  has_many :notes, -> { order 'created_at DESC' }, dependent: :destroy
-
-  belongs_to :current_task, class_name: 'Task', foreign_key: 'task_id', inverse_of: 'project', optional: true
-
-  has_many :sprints, -> { order 'sprint ASC' }, dependent: :destroy
-  has_many :tasks, dependent: :destroy
-  has_many :tasks, through: :sprints, source: :tasks, dependent: :destroy
+  has_many :notes, dependent: :destroy
+  has_many :sprints, dependent: :destroy
+  # has_many :tasks, dependent: :destroy
+  has_many :tasks, through: :sprints, source: :tasks
   has_many :payments, through: :sprints
   has_many :invitations, dependent: :destroy
 
@@ -104,6 +103,10 @@ class Project < ApplicationRecord
       nc << u unless customer?(current_user)
     end
     nc
+  end
+
+  def github_installed?
+    owner.github_installed?
   end
 
   private

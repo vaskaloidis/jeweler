@@ -9,7 +9,7 @@
         <ul class="settings_sprint_balance list-group list-group-minimal">
           <h2>Sprint Balances</h2>
           <% unless project.sprints.empty? %>
-            <% project.sprints.includes(:project).order('sprint::integer ASC').each do |sprint| %>
+            <% project.sprints.includes(:project).each do |sprint| %>
               <% if sprint.balance < 0 %>
                 <li class="list-group-item">
                       <span>Sprint <%= sprint.sprint.to_s %>

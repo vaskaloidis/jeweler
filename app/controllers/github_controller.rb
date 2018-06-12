@@ -1,14 +1,22 @@
-class WebhookController < ApplicationController
+class GithubController < ApplicationController
+  before_action :set_project, only: %i[install_webhook]
+  respond_to :js, only: %i[install_webhook]
+
+
   # protect_from_forgery with: :exception, if: Proc.new { |c| c.request.format != 'application/json' }
   # protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
   # skip_before_action :verify_authenticity_token
 
   respond_to :json, :html
 
-  # Webhook for GitHub Push Events
-  # TODO: Move this to a delayed job possibly
+  # GitHub WebHook Push Event endpoint
+  # POST /github_hook
+  # TODO: Move this to a delayed job
+  # TODO: Build a Service Object
+  # Build a GitHubPushEvent Model
   def hook
-    logger.debug "GitHub Webhook Executed!"
+    logger.info "Executing GitHub Webhook"
+
     payload = JSON.parse(request.body.read)
     # payload = ActiveSupport::JSON.decode(response.body)
 
@@ -147,20 +155,38 @@ class WebhookController < ApplicationController
 
   end
 
+  # Install GitHub Push Hook (Internal)
+  # AJAX:GET /github_install_webhook/:project_id
+  def install_webhook
+    GitHubOauth.new(@project).install_webhook!
+  end
+
+  # Redirect to GitHub Auth Page for Oauth Token
+  # GET /github_authorize
+  def authorize_account
+    auth_url = GitHubApp.authorization_url
+    respond_to do |format|
+      format.html { redirect_to auth_url }
+    end
+  end
+
   # Save Authenticated GitHub user Oauth Token
-  def save_oath
-    token = params[:code]
-
-    puts 'Save GitHub Oath Token: ' + token.to_s
-
+  # GET /github_oauth
+  def save_oauth
+    authorization_code = params[:code]
+    access_token = GitHubApp.api.get_token( authorization_code )
     user = User.find(current_user.id)
-    user.oauth = token
+    user.update(oauth: access_token.token)
 
-    # TODO:Implement this here also
-    # ApplicationHelper.install_github_webhook(@project)
+    # Eventually we want to do this here too
+    #  but we don't have information about project_id here
+    #  unless we pass it to GitHub first when we go to authorize
+    #  the GitHub Account
+    # gho = GitHubOauth.new(@project)
+    # gho.install_webhook!
 
     respond_to do |format|
-      if user.save!
+      if user.valid?
         format.html {redirect_to root_path, notice: 'GitHub Account Successfully Authenticated!'}
       else
         format.html {redirect_to root_path, :flash => {:error => 'Error Authenticated GitHub Authenticated.'}}
@@ -168,26 +194,9 @@ class WebhookController < ApplicationController
     end
   end
 
-  def authorize_account
-    gha = GitHubApp.new
+  private
 
-    logger.debug("Github Auth URL: " + gha.authorization_url)
-
-    respond_to do |format|
-      format.html {redirect_to gha.authorization_url}
-    end
-
-  end
-
-  def install_webhook
+  def set_project
     @project = Project.find(params[:project_id])
-
-    gha = GitHubApp.new @project
-    gha.install_github_webhook
-
-    respond_to do |format|
-      format.js
-    end
   end
-
 end

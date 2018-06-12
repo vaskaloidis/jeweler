@@ -65,4 +65,12 @@ class User < ApplicationRecord
   end
   # end
 
+  def self.god
+    User.where(email: 'vas.kaloidis@gmail.com').first
+  end
+
+  def github_installed?
+    !oauth.nil? and !oauth.empty?
+  end
+
 end

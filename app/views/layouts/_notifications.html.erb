@@ -35,15 +35,16 @@
     </div>
   <% end %>
 
-  <% if (current_user.oauth.nil? or current_user.oauth == '') %>
+  <% gho = GitHubOauth.new(project) %>
+  <% if !project.github_installed? %>
     <div class="alert alert-danger">
       <i class="fab fa-2x fa-github pull-right"></i>
       Please Connect Jewler with GitHub, <%= link_to 'Here', authorize_github_path %>
     </div>
-  <% elsif !GitHubApp.github_hook_configured?(project) %>
+  <% elsif !gho.webhook_installed? %>
     <div class="alert alert-danger">
       <i class="fab fa-2x fa-github pull-right"></i>
-      You need to add Jewler GitHub Webhook. Add it <%= link_to 'Here', install_github_webhook_path(project.id), remote: true %>.
+      Install GitHub Webhook for Commit Events <%= link_to 'Here', install_github_webhook_path(project.id), remote: true %>.
     </div>
   <% end %>
 

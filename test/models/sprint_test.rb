@@ -37,4 +37,12 @@ class SprintTest < ActiveSupport::TestCase
     refute sprint.estimate?
   end
 
+  test 'only finds active tasks' do
+    project = create(:project_only)
+    create_list(:task, 3, sprint: project.current_sprint, deleted: false)
+    create_list(:task, 3, sprint: project.current_sprint, deleted: true)
+    project.reload
+    assert_equal project.current_sprint.tasks.count, 3
+  end
+
 end

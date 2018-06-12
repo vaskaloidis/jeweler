@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
   # Ajax TODO: Convert any 'Inline' Actions to use Stock Controller Actions
-  get '/install_github_webhook/:project_id', to: 'webhook#install_webhook', as: 'install_github_webhook'
   match '/new_charge_modal', to: 'charges#generate_modal', via: [:post], as: 'generate_charge_modal'
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
 
@@ -50,9 +49,10 @@ Rails.application.routes.draw do
   get '/discussions/fetch/:note_id', to: 'discussions#fetch', as: 'fetch_discussion'
 
   # Github Webhooks
-  get '/oath', to: 'webhook#save_oath', as: 'oath_save'
-  post '/hook', to: 'webhook#hook', as: 'webhook_execute'
-  get '/authorize_github', to: 'webhook#authorize_account', as: 'authorize_github'
+  get '/github_oauth', to: 'github#save_oauth', as: 'github_oauth_save'
+  post '/github_hook', to: 'github#hook', as: 'execute_github_webhook'
+  get '/github_authorize', to: 'github#authorize_account', as: 'authorize_github'
+  get '/github_install_webhook/:project_id', to: 'github#install_webhook', as: 'install_github_webhook'
 
   # Scaffolds TODO: Cleanup route resource scaffolds
   resources :project_customers

@@ -7,8 +7,6 @@ class InvoicesController < ApplicationController
   def generate
     @invoice = Invoice.new(sprint: @sprint,
                            estimate: @estimate,
-                           display_send_btn: true,
-                           display_print_btn: true,
                            customer: false,
                            customer_email: false,
                            display_payments: false)

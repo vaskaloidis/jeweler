@@ -2,12 +2,17 @@ class Sprint < ApplicationRecord
   include Totalable
   include Averageable
   include Maxable
+
   default_scope {order('sprint ASC')}
+
   belongs_to :project
+
   has_many :tasks, dependent: :destroy
   has_many :payments, dependent: :nullify
-  has_many :notes, -> {order 'created_at DESC'}, dependent: :destroy
+  has_many :notes, dependent: :destroy
+
   accepts_nested_attributes_for :project
+
   validates :sprint, presence: true
 
   def closed?

@@ -4,7 +4,7 @@ class SprintsController < ApplicationController
   before_action :set_sprint, only: %i[edit_description render_panel
                                       set_current request_payment cancel_payment_request
                                       open close show edit update destroy]
-  after_action :gather_errors
+  after_action :handle_service_object, only: %i[request_payment]
   respond_to :json, :html, only: %i[show edit update destroy]
   respond_to :js, only: %i[edit_description render_panel open close show
                            edit update destroy request_payment cancel_payment_request]
@@ -13,11 +13,9 @@ class SprintsController < ApplicationController
     @project = Project.includes(:payments, :tasks).find(params[:project_id])
   end
 
-  def show;
-  end
+  def show; end
 
-  def edit;
-  end
+  def edit; end
 
   def update
     respond_to do |format|
@@ -52,50 +50,42 @@ class SprintsController < ApplicationController
   end
 
   def request_payment
-    if @sprint.cost > 0
-      @sprint.payment_due = true
-      @sprint.save
-      @user = current_user
-      @project = @sprint.project
-      Note.create_payment_request(@sprint, current_user) if @sprint.valid?
-    end
+    @service_object = RequestSprintPayment.call(@sprint, current_user)
+    @sprint = @service_object.result
+    @errors = @service_object.errors
   end
 
   def cancel_payment_request
-    @sprint.payment_due = false
-    @sprint.save
+    @sprint.update(payment_due: false)
     @user = current_user
     Note.create_event(@sprint.project, 'payment_request_cancelled', 'Sprint ' +
         @sprint.sprint.to_s + ' Payment Request Canceled')
   end
 
   def open
-    @sprint.open = true
-    @sprint.save
+    @sprint.update(open: true)
     Note.create_event(@sprint.project, 'sprint_opened', 'Sprint ' + @sprint.sprint.to_s + ' Opened ')
-    # TODO: Get rid of this if we dont need it @sprint.reload
   end
 
   def close
-    @sprint.open = false
-    @sprint.save
+    @sprint.update(open: false)
     Note.create_event(@sprint.project, 'sprint_closed', 'Sprint ' + @sprint.sprint.to_s + ' Closed ')
-    # TODO: Get rid of this if we dont need it @sprint.reload
   end
 
   private
 
   def set_sprint
-    logger.error 'SprintController Error: Sprint could not be set (nil) for View' if @sprint.nil?
     @sprint = Sprint.find(params[:id])
     @project = @sprint.project
-  end
-
-  def gather_errors
-    @sprint.errors.full_messages.map {|e| @errors << 'Error Closing Sprint: ' + e} if defined? @sprint
+    @user = current_user
   end
 
   private
+
+  def handle_service_object
+    @sprint = @service_object.result
+    @errors = @service_object.errors
+  end
 
   def sprint_id_params
     params.require(:sprint).permit(:sprint, :payment_due_date, :open, :payment_due, :description)

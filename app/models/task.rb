@@ -1,9 +1,10 @@
 class Task < ApplicationRecord
-  belongs_to :sprint
+  belongs_to :sprint, required: true
 
   has_one :project, class_name: 'Project', inverse_of: 'current_task', dependent: :nullify
   has_many :notes, dependent: :nullify
 
+  default_scope { where(deleted: false) }
   scope :incomplete_tasks, -> {where(complete: false, deleted: false)}
   scope :completed_tasks, -> {where(complete: true, deleted: false)}
 
@@ -16,14 +17,12 @@ class Task < ApplicationRecord
   validates :description, presence: { message: 'Cannot be empty.' }
   validates :rate, presence: {message: 'must cannot me empty.'}, numericality: { message: 'must be a number.' }
 
-  def set_next_position
-    self.position = self.sprint.next_position_int
-  end
   def task_id
-    'task' + self.sprint.sprint.to_s + self.letter
+    'task' + sprint.sprint.to_s + letter
   end
+
   def letter
-    ApplicationHelper.alphabet.at(self.position)
+    ApplicationHelper.alphabet.at(position)
   end
 
   # def hours
@@ -37,10 +36,10 @@ class Task < ApplicationRecord
   # end
 
   def cost
-    if self.hours.nil?
-      return 0.00
+    if hours.nil?
+      0.00
     else
-      return self.rate * self.hours
+      rate * hours
     end
   end
 

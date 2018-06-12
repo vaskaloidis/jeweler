@@ -19,9 +19,11 @@ class TasksController < ApplicationController
     @task.sprint = @sprint
   end
 
-  def show; end
+  def show;
+  end
 
-  def edit; end
+  def edit;
+  end
 
   def create
     @service_object = CreateTask.call(task_params)
@@ -52,6 +54,7 @@ class TasksController < ApplicationController
 
   def destroy
     @service_object = DestroyTask.call(@task)
+    @task.reload
     respond_to do |format|
       format.js
       format.json {head :no_content}
@@ -70,7 +73,8 @@ class TasksController < ApplicationController
     @service_object = UnCompleteTask.call(@task)
   end
 
-  def cancel; end
+  def cancel;
+  end
 
   private
 
@@ -84,12 +88,8 @@ class TasksController < ApplicationController
   end
 
   def handle_service_object
-    if @service_object.result.nil?
-      logger.error 'Task ServiceObject Error: SO Result is nil'
-    else
-      @task = @service_object.result
-      @errors = @service_object.errors
-    end
+    @task = @service_object.result
+    @errors = @service_object.errors
   end
 
   def task_params

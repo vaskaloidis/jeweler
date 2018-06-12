@@ -1,29 +1,47 @@
 module Jeweler
   class ServiceObject
-    # include Virtus.model
-    # attribute :outcome, Jeweler::ServiceOutcome
-    attr_reader :result, :errors, :success, :failure, :success_message, :outcome
+    attr_reader :result, :errors, :fatals, :success, :success_message, :outcome
 
     def self.call(*args)
       new(*args).tap do |service|
-        se = Jeweler::ServiceOutcome.new
         service.instance_variable_set(
-            "@errors",
+            '@errors',
             []
         )
-        service_call = service.call
         service.instance_variable_set(
-            "@result",
-            service_call
+            '@fatals',
+            []
         )
-        se.result = service_call
-        se.errors = service.errors
-        se.success = service.success
-        se.success_message = service.success_message
+        begin
+          tapped_result = service.call
+        rescue StandardError => e
+          Rails.logger.fatal('ServiceObject Exception: ' + e.message)
+          Rails.logger.debug('ServiceObject Exception Tap Inspected: ' + service.inspect)
+          # Rails.logger.debug('ServiceObject Exception Result: ' + tapped_result.attributes.inspect)
+          # TODO: Log to Rollbar
+        end
+
         service.instance_variable_set(
-            "@outcome",
-            se
+            '@result',
+            tapped_result
         )
+        tapped_errors = service.instance_variable_get('@errors')
+        tapped_fatals = service.instance_variable_get('@fatals')
+
+        tapped_errors.each do |error|
+          Rails.logger.warn error
+        end
+
+        tapped_fatals.each do |fatal|
+          Rails.logger.error fatal
+          tapped_errors << fatal
+        end
+
+        service.instance_variable_set(
+            '@errors',
+            tapped_errors
+        )
+
       end
     end
 
