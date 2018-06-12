@@ -23,7 +23,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="form-field" style="color: black">
-        <%= f.select(:sprint_id, project.sprints.order('sprint::integer DESC').collect {|sprint| ['Sprint ' + sprint.sprint.to_s, sprint.id]}, {}, {:class => 'form-control payment_form_item', :style => 'color:black'}) %>
+        <%= f.select(:sprint_id, project.sprints.collect {|sprint| ['Sprint ' + sprint.sprint.to_s, sprint.id]}, {}, {:class => 'form-control payment_form_item', :style => 'color:black'}) %>
       </div>
     </div>
   </div>

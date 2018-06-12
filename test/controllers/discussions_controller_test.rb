@@ -11,17 +11,15 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     # TODO: Security Checks / Permissions Checks (Customer VS. Owner)
   end
 
-  test 'should fetch a note discussions' do
-    @user = @project.owner
-    sign_in @user
+  test 'owner should fetch a note discussions' do
+    sign_in @project.owner
     get fetch_discussion_url(@note), xhr: true
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
   end
 
   test 'owner should create discussion message' do
-    @user = @project.owner
-    sign_in @user
+    sign_in @project.owner
     new_discussion = attributes_for(:discussion)
     new_discussion[:note_id] = @note.id
     assert_difference('Discussion.count') do
@@ -36,8 +34,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'customer should create discussion message' do
-    @user = @project.project_customers.first.user
-    sign_in @user
+    sign_in @project.customers.first
     new_discussion = attributes_for(:discussion)
     new_discussion[:note_id] = @note.id
     assert_difference('Discussion.count') do
@@ -50,4 +47,12 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @note.id, discussion.note.id
     assert_equal @user.id, discussion.user.id
   end
+
+  test 'customer should fetch a note discussions' do
+    sign_in @project.customers.first
+    get fetch_discussion_url(@note), xhr: true
+    assert_response :success
+    assert_equal 'text/javascript', @response.content_type
+  end
+
 end

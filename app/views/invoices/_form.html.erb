@@ -23,8 +23,7 @@
     <div class="col-xs-12 col-sm-3">
       <%= i.hidden_field :estimate %>
       <%= i.hidden_field :sprint %>
-      <%= i.submit 'Send', :class => 'btn-sm btn-success form-control' %><br>
-      <%= i.submit 'Print', :class => 'btn-sm btn-default form-control' %><br>
+      <%= i.submit 'Generate', :class => 'btn-sm btn-success form-control' %><br>
     </div>
   </div>
   <hr class="invoince-review-split">
@@ -47,19 +46,19 @@
       <% if invoice.sprint.payment_due %>
         <span class="label label-default">Payment Requested</span>
       <% else %>
-        <%= link_to 'Request Pay'.html_safe,
+        <%= link_to 'Request Payment',
                     request_payment_path(invoice.sprint.id),
-                    class: 'btn btn-sm btn-success payment-request-btn',
+                    class: 'btn btn-sm btn-primary payment-request-btn',
                     remote: true %>
       <% end %>
     </div>
-    <% unless invoice.sprint.payments.empty? %>
-      <div class='col-xs-12 col-sm-2'>
+    <div class='col-xs-12 col-sm-2'>
+      <% unless invoice.sprint.payments.empty? %>
         <div class='input-group'>
           <%= i.label :display_payments, 'Display Payments?' %>
           <%= i.check_box :display_payments, 'Display Payments?', class: 'form-control payment_form_item' %>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 <% end %>

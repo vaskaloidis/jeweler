@@ -19,7 +19,7 @@ FactoryBot.define do
       tagline Faker::MostInterestingManInTheWorld
       location Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
       # stripe_account_id Faker::Stripe.valid_card
-      # oauth Faker::Omniauth.github[:credentials][:token]
+      # DO NOT Set in default user factory! oauth Faker::Omniauth.github[:credentials][:token]
     end
   end
 end

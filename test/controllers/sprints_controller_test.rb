@@ -7,18 +7,26 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @sprint = create(:sprint)
-    @user = @sprint.project.owner
-    sign_in @user
+    @owner = @sprint.project.owner
+    @customer = @sprint.project.customers.first
   end
 
-  test 'should get index' do
-    Rails.logger.info(@sprint.project.to_s)
+  test 'should get index for owner and customer' do
+    sign_in @owner
+    get project_sprints_url(@sprint.project)
+    assert_response :success
+    sign_out @owner
+    sign_in @customer
     get project_sprints_url(@sprint.project)
     assert_response :success
   end
 
-  test 'should show sprint' do
-    Rails.logger.info(@sprint.to_s)
+  test 'should show sprint for owner and customer' do
+    sign_in @owner
+    get sprint_url(@sprint)
+    assert_response :success
+    sign_out @owner
+    sign_in @customer
     get sprint_url(@sprint)
     assert_response :success
   end
