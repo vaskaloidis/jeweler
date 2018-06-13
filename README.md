@@ -9,9 +9,6 @@
 
 Jeweler is a project planning, invoicing and CRM SAAS, designed specifically for `programmers`, built around the Agile development methodology. 
 
-- [http://jeweler-staging.bluehelmet.software](http://jeweler-staging.bluehelmet.software)
-- [http://jeweler.bluehelmet.software](http://jeweler.bluehelmet.software)
-
 ### Summary
 
 Using Jeweler, devs can make sure to get paid on-time. It allows devs to always keep their customers / stake-holders informed on what the dev is working on.
@@ -26,6 +23,10 @@ Using Jeweler, devs can make sure to get paid on-time. It allows devs to always 
 * Generate Invoices And Send To Customer + Request Payment
 * Allow Stakeholders to Keep Track of GitHub and Heroku Activity in Jeweler
 * In Jeweler Stakeholders can view the contents of Git Commits, GitHub Issues, GitHub Activity
+
+### Servers
+- [http://jeweler-staging.bluehelmet.software](http://jeweler-staging.bluehelmet.software)
+- [http://jeweler.bluehelmet.software](http://jeweler.bluehelmet.software)
 
 ## Developers
 

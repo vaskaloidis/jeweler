@@ -32,11 +32,13 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get edit' do
+    sign_in @owner
     get edit_sprint_url(@sprint)
     assert_response :success
   end
 
   test 'should update sprint' do
+    sign_in @owner
     base_sprint = create(:sprint, open: true, description: 'some-desc', payment_due: false)
     patch sprint_url(base_sprint), params: {
       sprint: {
@@ -55,18 +57,21 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'edit sprint description' do
+    sign_in @owner
     get edit_sprint_description_path(@sprint), xhr: true
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
   end
 
   test 'render sprint panel' do
+    sign_in @owner
     get render_sprint_path(@sprint), xhr: true
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
   end
 
   test 'set current sprint' do
+    sign_in @owner
     project = create(:project)
     next_sprint = project.get_sprint(project.sprint_total - 1)
     if next_sprint.current?
@@ -80,7 +85,8 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'request sprint payment' do
-    sprint = create(:sprint, payment_due: false)
+    sign_in @owner
+    sprint = create(:sprint_with_reported_hours, payment_due: false)
     get request_payment_url(sprint), xhr: true
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
@@ -89,6 +95,7 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'cancel sprint payment request' do
+    sign_in @owner
     sprint = create(:sprint, payment_due: true)
     get cancel_payment_request_url(sprint), xhr: true
     assert_response :success
@@ -98,6 +105,7 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'open sprint' do
+    sign_in @owner
     sprint = create(:sprint, open: false)
     get open_sprint_path(sprint), xhr: true
     assert_response :success
@@ -107,6 +115,7 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'close sprint' do
+    sign_in @owner
     sprint = create(:sprint, open: true)
     get close_sprint_path(sprint), xhr: true
     assert_response :success

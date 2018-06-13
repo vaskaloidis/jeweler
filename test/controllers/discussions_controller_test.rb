@@ -35,7 +35,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'customer should create discussion message' do
-    sign_in
+    sign_in @customer
     new_discussion = attributes_for(:discussion)
     new_discussion[:note_id] = @note.id
     assert_difference('Discussion.count') do
