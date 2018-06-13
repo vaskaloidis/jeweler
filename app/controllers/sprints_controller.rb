@@ -53,6 +53,8 @@ class SprintsController < ApplicationController
     @service_object = RequestSprintPayment.call(@sprint, current_user)
     @sprint = @service_object.result
     @errors = @service_object.errors
+    logger.info(@service_object.inspect)
+    logger.info(@service_object.errors.inspect)
   end
 
   def cancel_payment_request
@@ -83,8 +85,6 @@ class SprintsController < ApplicationController
   private
 
   def handle_service_object
-    @sprint = @service_object.result
-    @errors = @service_object.errors
   end
 
   def sprint_id_params

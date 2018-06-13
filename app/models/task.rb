@@ -18,8 +18,10 @@ class Task < ApplicationRecord
   validates :rate, presence: {message: 'must cannot me empty.'}, numericality: { message: 'must be a number.' }
 
   def task_id
-    raise StandardError 'Sprint.sprint is nil' if sprint.nil? or sprint.sprint.nil?
-    'task' + sprint.sprint.to_s + letter
+    raise StandardError.new('Sprint.sprint is nil') if sprint.nil? or sprint.sprint.nil? or letter.nil?
+    result = '#task' + sprint.sprint.to_s + letter.to_s
+    Rails.logger.info 'Task_ID: ' + result.to_s
+    return result
   end
 
   def letter

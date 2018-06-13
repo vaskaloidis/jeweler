@@ -12,7 +12,7 @@ class ProjectIntegrationTest < ActionDispatch::IntegrationTest
 
     new_project = attributes_for(:new_project)
     assert_difference('Project.count') do
-      post projects_url, params: {project: new_project}
+      post projects_url, params: { project: new_project }
     end
 
     project = Project.last

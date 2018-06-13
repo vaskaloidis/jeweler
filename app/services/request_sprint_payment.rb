@@ -20,6 +20,7 @@ class RequestSprintPayment < Jeweler::ServiceObject
         sprint.errors.full_messages.map { |e| fatals << 'Error Requesting Payment: ' + e}
       end
     end
+    sprint.reload
     sprint
   end
 
