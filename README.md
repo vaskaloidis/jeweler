@@ -7,8 +7,6 @@
 
 </p>
 
-
-
 Jeweler is a project planning, invoicing and CRM SAAS, designed specifically for `programmers`, built around the Agile development methodology. 
 
 - [http://jeweler-staging.bluehelmet.software](http://jeweler-staging.bluehelmet.software)
