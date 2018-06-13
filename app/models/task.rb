@@ -18,6 +18,7 @@ class Task < ApplicationRecord
   validates :rate, presence: {message: 'must cannot me empty.'}, numericality: { message: 'must be a number.' }
 
   def task_id
+    raise StandardError 'Sprint.sprint is nil' if sprint.nil? or sprint.sprint.nil?
     'task' + sprint.sprint.to_s + letter
   end
 

@@ -1,6 +1,6 @@
-<div style="text-align:center">
+<p align="center">
 <a href="http://jeweler-staging.bluehelmet.software"><img width="400" src="https://raw.githubusercontent.com/vaskaloidis/jeweler/master/app/assets/images/jeweler-logo-full-alternate.png"></a>
-</div>
+</p>
 
 [![CircleCI](https://circleci.com/gh/vaskaloidis/jeweler.svg?style=svg&circle-token=0695c448bed1c7ed2fc9e4d982aa38f0651ca0c4)](https://circleci.com/gh/vaskaloidis/jeweler)
 [![Slack](https://img.shields.io/badge/discuss-Slack-brightgreen.svg)](https://bluehelmet.slack.com)
