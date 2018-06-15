@@ -40,8 +40,6 @@ gem 'yaml_db'
 gem 'yui-compressor'
 # Move this to Dev group after initial seeding
 gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
-
-# Refactoring / Service Objects / Patterns
 gem 'rails-patterns'
 # gem 'business_process'
 gem 'virtus'
@@ -91,7 +89,7 @@ group :development do
   gem 'guard-minitest'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'bundler-audit' # TODO: Security Audit Gems
+  gem 'bundler-audit' # TODO: Use security Audit Gems
   gem 'pry-rails'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
