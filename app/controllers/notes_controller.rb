@@ -1,6 +1,7 @@
 class NotesController < ApplicationController
-  before_action :set_project, only: [:index]
-  before_action :set_note, only: [:edit, :update, :destroy]
+  before_action :set_project, only: %i[index]
+  before_action :set_note, only: %i[edit update destroy]
+  respond_to :js, only: %i[note_query new edit new_modal new]
 
   def note_query
     @project = Project.find(params[:project_id])
@@ -44,9 +45,6 @@ class NotesController < ApplicationController
     end
 
     @query = @note_type
-    respond_to do |format|
-      format.js
-    end
   end
 
   def new
@@ -61,10 +59,6 @@ class NotesController < ApplicationController
 
     unless @note.project.current_task.nil?
       @note.task = @note.project.current_task
-    end
-
-    respond_to do |format|
-      format.js
     end
   end
 
@@ -103,14 +97,12 @@ class NotesController < ApplicationController
     end
 
     respond_to do |format|
+      format.js
       if @note.save
-        @note.reload
         format.json {render :show, status: :created, location: @note}
-        format.js
       else
         logger.error("Error Creating Note: " + @note.errors.full_messages.first)
         format.json {render json: @note.errors, status: :unprocessable_entity}
-        format.js
       end
     end
   end
@@ -120,26 +112,16 @@ class NotesController < ApplicationController
     @note.note_type = 'note'
     @note.project = Project.find(params[:project_id])
     @note.author = current_user
-
-
-    respond_to do |format|
-      format.js
-    end
   end
 
   def update
-    if @note.invalid?
-      logger.error("Note not updated successfully")
-      log.error(@note.errors)
-    end
-
     respond_to do |format|
+      format.js
       if @note.update(note_params)
         format.json {render :show, status: :ok, location: @note}
-        format.js
       else
+        @note.errors.full_messages.map{ |e| @errors << e }
         format.json {render json: @note.errors, status: :unprocessable_entity}
-        format.js
       end
     end
   end

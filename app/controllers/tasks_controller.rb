@@ -93,6 +93,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:sprint_id, :open, :sprint, :description, :hours, :deleted, :position, :planned_hours, :rate, :complete)
+    params.require(:task).permit(:sprint_id, :open, :sprint, :description, :hours, :deleted, :planned_hours, :rate, :complete)
   end
 end

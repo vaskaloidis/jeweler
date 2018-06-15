@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 # Request payment on the Sprint passed-in
-class RequestSprintPayment < Jeweler::ServiceObject
+class RequestSprintPayment < Jeweler::Service
   def initialize(sprint, current_user)
     @sprint = sprint
     @current_user = current_user
   end
 
   def call
-    if sprint.cost.zero?
-      errors << 'You must report hours to request payment.'
+    if sprint.hours.zero?
+      @errors << 'You must report hours to request payment.'
     elsif sprint.payment_due
-      errors << 'Payment already Requested.'
+      @errors << 'Payment already Requested.'
     else
       sprint.update(payment_due: true)
       if sprint.valid?
@@ -20,7 +20,6 @@ class RequestSprintPayment < Jeweler::ServiceObject
         sprint.errors.full_messages.map { |e| fatals << 'Error Requesting Payment: ' + e}
       end
     end
-    sprint.reload
     sprint
   end
 

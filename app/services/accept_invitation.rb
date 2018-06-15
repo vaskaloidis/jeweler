@@ -1,4 +1,4 @@
-class AcceptInvitation < Jeweler::ServiceObject
+class AcceptInvitation < Jeweler::Service
 
   def initialize(project, email)
     @project = project

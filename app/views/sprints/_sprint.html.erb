@@ -166,7 +166,7 @@
           <th id="create_task_container_sprint_<%= sprint.id.to_s %>">
             <% if sprint.project.owner?(current_user) %>
               <%= link_to 'Create Task',
-                          new_project_sprint_task_path(sprint.project.id, sprint.id),
+                          new_sprint_task_path(sprint),
                           remote: true,
                           id: 'create_task_inline_button',
                           class: 'btn btn-sm btn-primary',

@@ -4,26 +4,35 @@ require 'application_system_test_case'
 
 class ProjectsTest < ApplicationSystemTestCase
   setup do
-    @project = projects(:one)
+    @owner = create(:user)
+    @project = create(:project, owner: @owner)
+    login_as(@owner, scope: :user)
   end
 
   test 'visiting the index' do
     visit projects_url
-    assert_selector 'h1', text: 'Projects'
+    assert_selector 'h1', text: @owner.full_name
   end
 
   test 'creating a Project' do
     visit projects_url
     click_on 'New Project'
-
-    click_on 'Create Project'
-
-    assert_text 'Project was successfully created'
+    assert_difference('Project.count') do
+      fill_in 'Name', 'new-project-name'
+      fill_in 'Github url', 'http://github.com/vaskaloidis/jeweler-test-project'
+      fill_in 'Project Description', 'new-project-desc'
+      fill_in 'Sprint current', '2'
+      fill_in 'Sprint total', '12'
+      click_on 'Submit'
+    end
+    assert_redirected_to projects_url
+    latest = Project.last
+    assert_equal 'new-project-name', latest.name
     click_on 'Back'
   end
 
   test 'updating a Project' do
-    visit projects_url
+    visit project_url(@project)
     click_on 'Edit', match: :first
 
     click_on 'Update Project'

@@ -4,7 +4,7 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @project = create :project
+    @project = create(:project)
     @sprint = @project.sprints.first
     @estimate = false
     @invoice = Invoice.new(sprint: @sprint,

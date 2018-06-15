@@ -2,7 +2,7 @@
 
 # Complete a specified task. If the task is specified as current,
 #  then set the next qualified task as current
-class CompleteTask < Jeweler::ServiceObject
+class CompleteTask < Jeweler::Service
   def initialize(task)
     @task = task
   end

@@ -162,7 +162,7 @@
             <i class="fas fa-check fa-1x"></i>
           <% end %>
         </td>
-        <td><span class="alert alert-success task-id">#task<%= task.task_id %></span><%= task.description %></td>
+        <td><span class="alert alert-success task-id">#task<%= task.code %></span><%= task.description %></td>
         <td class="text-center">$<%= task.rate.to_s %>/hr.</td>
         <% if invoice.estimate %>
           <td class="text-center hidden-xs"><%= task.planned_hours.to_s %> hrs.</td>

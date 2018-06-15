@@ -34,10 +34,10 @@ Rails.application.routes.draw do
   get '/sprint/:id/cancel_payment_request', to: 'sprints#cancel_payment_request', as: 'cancel_payment_request'
 
   # Tasks
+  get '/task/:id/current' => 'tasks#set_current', as: 'set_current_task'
   get '/task/:id/complete' => 'tasks#complete', as: 'complete_task'
   get '/task/:id/uncomplete' => 'tasks#uncomplete', as: 'uncomplete_task'
   get '/task/cancel/:sprint_id' => 'tasks#cancel', as: 'cancel_task_update'
-  get '/task/current/:id' => 'tasks#set_current', as: 'set_current_task'
 
   # Notes
   get '/notes/timeline_query/:project_id/:sprint_query/:note_type', to: 'notes#note_query', as: 'note_query'
@@ -54,30 +54,23 @@ Rails.application.routes.draw do
   get '/github_authorize', to: 'github#authorize_account', as: 'authorize_github'
   get '/github_install_webhook/:project_id', to: 'github#install_webhook', as: 'install_github_webhook'
 
-  # Scaffolds TODO: Cleanup route resource scaffolds
-  resources :project_customers
-  resources :notes
-  resources :discussions
-  resources :invitations
-  resources :payments
-  resources :tasks
-  resources :sprints do
-    resources :tasks
-  end
-  resources :projects do
+  shallow do
+    resources :sprints do
+      resources :tasks
+    end
     resources :notes do
       resources :discussions
     end
-    resources :sprints do
-      resources :tasks do
-      end
+    resources :projects do
+      resources :notes
+      resources :sprints
+      resources :project_customers
+      resources :payments
+      resources :invitations
     end
-    resources :project_customers
-    resources :payments
-    resources :invitations
   end
 
-  # Stripe
+  resources :tasks
   resources :charges
 
   # Devise

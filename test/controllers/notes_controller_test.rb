@@ -23,9 +23,11 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
   # TODO: Finish this, its not working at all. The controller is the part not working it looks like. Refactor controller with a service object and TDD the service object to verify it works in a seperate test in services
   test "should create note" do
     project = create(:project)
-    new_note = attributes_for(:note, content: 'new-note-content', project: project, sprint: project.current_sprint)
+    new_note = attributes_for(:note, project: project, sprint: project.current_sprint)
     new_note[:project_id] = project.id
-    post notes_url, params: {note: new_note}, xhr: true
+    assert_difference('Note.count') do
+      post notes_url, params: {note: new_note}, xhr: true
+    end
     assert_response :success
     last_note = Note.last
     Rails.logger.info("new note content: " + new_note[:content])
