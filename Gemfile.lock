@@ -6,8 +6,9 @@ GIT
     faker (1.8.7)
       i18n (>= 0.7)
 
-PATH
-  remote: ../jeweler-utils
+GIT
+  remote: https://github.com/vaskaloidis/jeweler-utils.git
+  revision: e90df8c2ad5290715d846a38464f2823cd5b95b2
   specs:
     jeweler-utils (0.1.0)
       actionpack (>= 4.2.6)
