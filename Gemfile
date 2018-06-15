@@ -53,8 +53,8 @@ gem 'virtus'
 # Memory Testing
 # gem 'skylight'
 
-gem 'jeweler-utils', path: '../jeweler-utils'
-# gem 'jeweler-utils', git: 'https://github.com/vaskaloidis/jeweler-utils.git'
+# gem 'jeweler-utils', path: '../jeweler-utils'
+gem 'jeweler-utils', git: 'https://github.com/vaskaloidis/jeweler-utils.git'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
