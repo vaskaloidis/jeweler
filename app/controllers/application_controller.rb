@@ -70,17 +70,6 @@ class ApplicationController < ActionController::Base
 
   def load_dependencies
     require 'dotenv/load' unless Rails.env.production?
-
-    # Libs
-    require Rails.root.join('lib', 'Array.rb')
-    require Rails.root.join('lib', 'Float.rb')
-    require Rails.root.join('lib', 'Double.rb')
-    require Rails.root.join('lib', 'BigDecimal.rb')
-    require Rails.root.join('lib', 'Decimal.rb')
-    require Rails.root.join('lib', 'String.rb')
-    require Rails.root.join('lib', 'Integer.rb')
-    require Rails.root.join('lib', 'NilClass.rb')
-
   end
 
   def configure_permitted_parameters

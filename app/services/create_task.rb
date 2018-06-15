@@ -2,13 +2,12 @@
 
 # Creates a Task from the supplied params, then
 #  sets that task as Current-Task if appropriate.
-class CreateTask < Jeweler::ServiceObject
+class CreateTask < Jeweler::Service
   def initialize(task_params)
     @task = Task.new(task_params)
   end
 
   def call
-    task.position = task.sprint.next_position_int
     if task.save
       sprint = Sprint.find(task.sprint.id)
       # Set Current task if no other tasks, and is first Sprint task created,

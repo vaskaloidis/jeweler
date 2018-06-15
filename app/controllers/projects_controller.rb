@@ -57,24 +57,17 @@ class ProjectsController < ApplicationController
   end
 
   # GET /projects/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /projects
   # POST /projects.json
   def create
     @project = current_user.owner_projects.create(project_params)
-    # @project = Project.new(project_params)
-    # @project.owner = current_user
-
-
     respond_to do |format|
       if @project.save
-
         if @project.valid?
           sync_github(@project, current_user)
         end
-
         format.html {redirect_to @project, notice: 'Project was successfully created.'}
         format.json {render :show, status: :created, location: @project}
       else
@@ -175,8 +168,8 @@ class ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(:name, :language, :image, :sprint_total,
                                     :sprint_current, :description, :github_url,
-                                    :heroku_token, :github_branch, :github_secondary_branch,
+                                    :heroku_token, :github_branch,
                                     :readme_file, :readme_remote, :stage_website_url, :demo_url,
-                                    :prod_url, :complete, :task_id)
+                                    :prod_url, :complete, :task_id, :google_analytics_tracking_code)
   end
 end

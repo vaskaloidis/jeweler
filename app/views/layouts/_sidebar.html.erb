@@ -20,7 +20,7 @@
       <div class="mobile-menu-toggle visible-xs visible-sm visible-md">
 <!--        <a href="#" data-toggle="user-info-menu">-->
           <!--<i class="fa-bell-o"></i>-->
-          <!-- TODO: Handle Sidebar Badge Number (Set Notifications Count Here also)-->
+          <%# TODO: Handle Sidebar Badge Number (Set Notifications Count Here also) %>
           <!--<span class="badge badge-success">7</span>-->
 <!--        </a>-->
 
@@ -30,7 +30,7 @@
       </div>
 
       <div class="settings-icon">
-        <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
+        <% if ApplicationHelper.display_project_nav?(@project, controller_name, action_name) %>
           <% if defined? @project and !@project.nil? %>
             <a href="<%= project_payments_path(@project.id) %>">
               <i class="fas fa-hand-holding-usd white-icon"></i>
@@ -66,7 +66,7 @@
             </a>
           </li>
           <li>
-            <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
+            <% if ApplicationHelper.display_project_nav?(@project, controller_name, action_name) %>
               <% if @project.owner?(current_user) %>
                 <%= link_to '<i class="fas fa-sticky-note"></i> New Note'.html_safe,
                             create_note_modal_path(@project.id),
@@ -85,7 +85,7 @@
             <% end %>
           </li>
           <li class="logout-link">
-            <% if defined? @project and @project.owner?(current_user) %>
+            <% if ApplicationHelper.display_project_nav?(@project, controller_name, action_name) and @project.owner?(current_user) %>
               <%= link_to '<i class="fas fa-cogs sidebar-icon"></i>'.html_safe, edit_project_path(@project) %>
             <% else %>
               <%= link_to('<i class="fa-power-off"></i>'.html_safe, destroy_user_session_path, method: :delete) %>
@@ -100,10 +100,10 @@
       <li>
         <a href="<%= root_path %>">
           <i class="fas fa-home"></i>
-          <span class="title">Home</span>
+          <span class="title">Dashboard</span>
         </a>
       </li>
-      <% if ApplicationHelper.display_project_nav?(controller_name, action_name) %>
+      <% if ApplicationHelper.display_project_nav?(@project, controller_name, action_name) %>
         <li class="opened active">
           <a href="<%= projects_url %>">
             <i class="linecons-diamond"></i>
@@ -169,6 +169,7 @@
           </a>
           <ul>
             <% current_user.owner_projects.each do |cp| %>
+              <% next if cp.id.nil? %>
               <li>
                 <div style=" white-space: nowrap;">
                   <a href="<%= project_path cp %>">

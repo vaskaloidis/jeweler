@@ -6,7 +6,6 @@ FactoryBot.define do
     complete false
     sprint
     planned_hours Random.rand(20)
-    sequence(:position)
     deleted false
 
     factory :planned_task do

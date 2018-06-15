@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Set a specified task as not complete
-class UnCompleteTask < Jeweler::ServiceObject
+class UnCompleteTask < Jeweler::Service
   def initialize(task)
     @task = task
   end

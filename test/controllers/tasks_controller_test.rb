@@ -15,8 +15,16 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get new' do
-    get new_project_sprint_task_url(@project, @project.sprints.first), xhr: true
+    sprint = @project.sprints.first
+    assert sprint
+    refute sprint.nil?
+    get new_sprint_task_path(sprint), xhr: true
+    assert_response :success
+    assert_equal 'text/javascript', @response.content_type
+  end
 
+  test 'should show a task' do
+    get task_url(@task), xhr: true
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
   end
@@ -27,7 +35,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     new_task[:sprint_id] = sprint.id
     Rails.logger.info new_task.inspect
     assert_difference('Task.count') do
-      post tasks_url, params: { task: new_task }, xhr: true
+      post sprint_tasks_url(sprint), params: { task: new_task }, xhr: true
     end
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
@@ -41,7 +49,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
 
   end
 
-  test 'should get edit' do
+  test 'should edit the task' do
     get edit_task_url(@task), xhr: true
     assert_response :success
     assert_equal 'text/javascript', @response.content_type

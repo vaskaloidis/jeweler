@@ -24,8 +24,8 @@
         <% else %>
           <div class="label label-danger">Sprint Closed</div>
         <% end %>
-        <% if sprint.payment != 0 %>
-          <div class="label label-success"><strong>Payment: </strong> <%= payment_total.money %></div>
+        <% unless sprint.payment.zero? %>
+          <div class="label label-success"><strong>Payment: </strong> <%= sprint.payment.money %></div>
         <% end %>
         <div class="label label-info"><Strong>Cost: </Strong> <%= sprint.cost.money %></div>
         <div class="label label-default"><Strong>Projected: </Strong> <%= sprint.planned_hours.hours %></div>
@@ -107,7 +107,7 @@
           <% sprint.tasks.each do |task| %>
             <tr>
               <td><%= task.description %></td>
-              <td><%= task.rate.sprint_rate %></td>
+              <td><%= task.rate.rate %></td>
               <td><%= task.planned_hours.hours %></td>
               <% unless sprint.estimate? %>
                 <td><%= task.hours.hours %></td>
@@ -120,7 +120,7 @@
           <tr>
             <th></th>
             <th><strong>Total:</strong></th>
-            <th><%= sprint.planned_hours.sprint_rate %></th>
+            <th><%= sprint.planned_hours.rate %></th>
             <% unless sprint.estimate? %>
               <th><%= sprint.hours.hours %></th>
               <th><%= sprint.cost.money %></th>

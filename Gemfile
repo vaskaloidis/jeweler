@@ -53,6 +53,9 @@ gem 'virtus'
 # Memory Testing
 # gem 'skylight'
 
+gem 'jeweler-utils', path: '../jeweler-utils'
+# gem 'jeweler-utils', git: 'https://github.com/vaskaloidis/jeweler-utils.git'
+
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
   gem 'foreman'
@@ -60,9 +63,11 @@ group :production do
   gem 'uglifier', '>= 1.3.0'
 end
 group :test do
+  gem 'minitest-spec-rails'
   gem 'minitest-around'
   gem 'capybara'
   gem 'chromedriver-helper'
+  gem 'poltergeist'
   gem 'database_cleaner'
   gem 'minitest-reporters'
   gem 'selenium-webdriver'

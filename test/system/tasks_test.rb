@@ -2,40 +2,47 @@ require "application_system_test_case"
 
 class TasksTest < ApplicationSystemTestCase
   setup do
-    @task = tasks(:one)
+    @owner = create(:user)
+    @project = create(:project, owner: @owner)
+    @task = @project.tasks.first
+    login_as(@owner, scope: :user)
   end
 
-  test "visiting the index" do
-    visit tasks_url
-    assert_selector "h1", text: "Invoice Items"
-  end
+  test "creating a Task" do
+    visit project_url(@project)
+    click_on "New Task"
 
-  test "creating a Invoice item" do
-    visit tasks_url
-    click_on "New Invoice Item"
-
-    click_on "Create Invoice item"
-
-    assert_text "Invoice item was successfully created"
+    assert_text "Task was successfully created"
     click_on "Back"
   end
 
-  test "updating a Invoice item" do
-    visit tasks_url
+  test "view a Task" do
+    skip 'not done'
+    visit project_url(@project)
+    click_on "View Task"
+
+    click_on "Back"
+  end
+
+  test "updating a Task" do
+    task = @projects.tasks.first
+    skip 'not done'
+    visit task_url(task)
     click_on "Edit", match: :first
 
-    click_on "Update Invoice item"
+    click_on "Update Task"
 
-    assert_text "Invoice item was successfully updated"
+    assert_text "Task was successfully updated"
     click_on "Back"
   end
 
-  test "destroying a Invoice item" do
-    visit tasks_url
+  test "destroying a Task" do
+    task = @project.tasks.first
+    skip 'not done'
+    visit task_url(task)
     page.accept_confirm do
       click_on "Destroy", match: :first
     end
-
-    assert_text "Invoice item was successfully destroyed"
+    assert_text "Task was successfully destroyed"
   end
 end

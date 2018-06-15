@@ -2,7 +2,7 @@
 
 # Delete a task by setting the task deleted attribute to true
 # Then create the event
-class DestroyTask < Jeweler::ServiceObject
+class DestroyTask < Jeweler::Service
   def initialize(task)
     @task = task
   end

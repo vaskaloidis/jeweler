@@ -1,15 +1,6 @@
 module ApplicationHelper
-
-  def self.money(input)
-    require 'action_view'
-
-    input = ActionView::Base.new.number_to_currency(input)
-    input = self.prettify(input)
-    return input.to_s
-  end
-
   def self.alphabet
-    return ("a".."z").to_a
+    ("a".."z").to_a
   end
 
   def self.name_pretty(pretty_name)
@@ -35,42 +26,42 @@ module ApplicationHelper
     when 'event'
       case note.event_type
       when 'task_created'
-        return 'Created a Task'
+        'Created a Task'
       when 'task_updated'
-        return 'Updated a Task'
+        'Updated a Task'
       when 'task_deleted'
-        return 'Deleted a Task'
+        'Deleted a Task'
       when 'sprint_opened'
-        return 'Opened a Sprint'
+        'Opened a Sprint'
       when 'sprint_closed'
-        return 'Closed a Sprint'
+        'Closed a Sprint'
       when 'hours_reported'
-        return 'Reported Hours'
+        'Reported Hours'
       when 'task_completed'
-        return 'Completed a Task'
+        'Completed a Task'
       when 'sprint_completed'
-        return 'Completed a Sprint'
+        'Completed a Sprint'
       when 'payment_request_cancelled'
-        return 'Cancelled a Payment Request'
+        'Cancelled a Payment Request'
       when 'current_task_changed'
-        return 'Changed Current Task'
+        'Changed Current Task'
       when 'current_sprint_changed'
-        return 'Changed the Current Sprint'
+        'Changed the Current Sprint'
       else
-        return ''
+        ''
       end
     when 'project_update'
-      return 'Posted a Project Update'
+      'Posted a Project Update'
     when 'payment_request'
-      return 'Requested a Payment'
+      'Requested a Payment'
     when 'payment'
       'Made a Payment'
     when 'note'
-      return 'Posted a Note'
+      'Posted a Note'
     when 'demo'
-      return 'Posted a Demo of ' + note.content
+      'Posted a Demo of ' + note.content
     else
-      return ''
+      ''
     end
   end
 
@@ -172,17 +163,20 @@ module ApplicationHelper
     ("a".."zz").to_a
   end
 
-  def self.display_project_nav?(controller_name, action_name)
+  def self.display_project_nav?(project, controller_name, action_name)
+    return false unless defined? project
 
-    if (controller_name == 'projects' and action_name != 'index' and action_name != 'new') or
-        (controller_name == 'sprints') or
-        (controller_name == 'project_customers') or
-        (controller_name == 'payments' and action_name == 'index')
-      true
-    else
-      false
+    case controller_name
+    when 'projects'
+      return true if %w[show edit].include?(action_name)
+    when 'sprints' then
+      return true
+    when 'payments' then
+      return true if action_name == 'index'
+    when 'project_customers' then
+      return true
     end
-
+    false
   end
 
   def self.is_number?(number)
@@ -212,11 +206,11 @@ module ApplicationHelper
 
   end
 
-  # Devicon Icons & Form Helper
-  #
-  # TODO: Move these to another helper, and
-  #       figure out why it was not working
-  #       in another helper last time
+# Devicon Icons & Form Helper
+#
+# TODO: Move these to another helper, and
+#       figure out why it was not working
+#       in another helper last time
 
   def self.build_languages_dropdown(selected)
     cat = self.dropdown_categories

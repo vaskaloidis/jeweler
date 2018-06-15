@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ChooseNextCurrentTask < Jeweler::ServiceObject
+class ChooseNextCurrentTask < Jeweler::Service
   def initialize(task)
     @task = task
   end

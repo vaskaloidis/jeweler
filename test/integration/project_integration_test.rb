@@ -3,7 +3,7 @@ require 'test_helper'
 class ProjectIntegrationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test "project is created" do
+  test "project gets created" do
     @user = create(:user)
     sign_in @user
 
