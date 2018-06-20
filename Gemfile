@@ -51,8 +51,8 @@ gem 'virtus'
 # Memory Testing
 # gem 'skylight'
 
-gem 'jeweler-utils', path: '../jeweler-utils'
-# gem 'jeweler-utils', git: 'https://github.com/vaskaloidis/jeweler-utils.git'
+# gem 'jeweler-utils', path: '../jeweler-utils'
+gem 'jeweler-utils', git: 'https://github.com/vaskaloidis/jeweler-utils.git'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
@@ -84,6 +84,7 @@ group :development, :test do
   gem 'launchy'
   gem 'rubocop', '~> 0.56.0', require: false
   gem "rubycritic", require: false
+  gem 'bullet'
 end
 group :development do
   # gem 'guard'
@@ -97,7 +98,6 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0' # Add to page: <%= console %>
   # Memory
-  gem 'bullet'
   gem 'rack-mini-profiler'
   # gem 'memory_profiler'
   # gem 'flamegraph'
