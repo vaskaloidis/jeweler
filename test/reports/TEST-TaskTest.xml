@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="TaskTest" filepath="test/models/task_test.rb" skipped="0" failures="0" errors="0" tests="3" assertions="4" time="1.7587609998881817">
+    <testcase name="test_Task_has_a_valid_Sprint" lineno="15" classname="TaskTest" assertions="2" time="0.5863009998574853">
+    </testcase>
+    <testcase name="test_Valid_Task_is_Created" lineno="10" classname="TaskTest" assertions="1" time="0.5969310002401471">
+    </testcase>
+    <testcase name="test_Valid_Task_is_Built" lineno="5" classname="TaskTest" assertions="1" time="0.5755289997905493">
+    </testcase>
+  </testsuite>
+</test_suites>

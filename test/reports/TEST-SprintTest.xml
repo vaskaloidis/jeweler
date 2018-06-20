@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="SprintTest" filepath="test/models/sprint_test.rb" skipped="0" failures="0" errors="0" tests="7" assertions="11" time="3.1179260006174445">
+    <testcase name="test_is_just_an_estimate" lineno="26" classname="SprintTest" assertions="1" time="0.6686470005661249">
+    </testcase>
+    <testcase name="test_Valid_Sprint_is_Built" lineno="7" classname="SprintTest" assertions="1" time="0.49507699999958277">
+    </testcase>
+    <testcase name="test_is_not_an_estimate" lineno="33" classname="SprintTest" assertions="1" time="0.6793929999694228">
+    </testcase>
+    <testcase name="test_only_finds_active_tasks" lineno="40" classname="SprintTest" assertions="1" time="0.09253200050443411">
+    </testcase>
+    <testcase name="test_Valid_Sprint_and_Tasks_are_Created" lineno="12" classname="SprintTest" assertions="5" time="1.178935999982059">
+    </testcase>
+    <testcase name="test_: Sprint should belong to project. " lineno="346" classname="SprintTest" assertions="1" time="0.001858999952673912">
+    </testcase>
+    <testcase name="test_: Sprint should have many tasks. " lineno="346" classname="SprintTest" assertions="1" time="0.0014819996431469917">
+    </testcase>
+  </testsuite>
+</test_suites>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="SprintsControllerTest" filepath="test/controllers/sprints_controller_test.rb" skipped="0" failures="0" errors="0" tests="11" assertions="29" time="11.987522997893393">
+    <testcase name="test_request_sprint_payment" lineno="87" classname="SprintsControllerTest" assertions="3" time="1.9100529998540878">
+    </testcase>
+    <testcase name="test_edit_sprint_description" lineno="59" classname="SprintsControllerTest" assertions="2" time="0.6722639994695783">
+    </testcase>
+    <testcase name="test_should_show_sprint_for_owner_and_customer" lineno="24" classname="SprintsControllerTest" assertions="2" time="0.7586709996685386">
+    </testcase>
+    <testcase name="test_cancel_sprint_payment_request" lineno="97" classname="SprintsControllerTest" assertions="3" time="1.3997849998995662">
+    </testcase>
+    <testcase name="test_set_current_sprint" lineno="73" classname="SprintsControllerTest" assertions="3" time="1.2453069994226098">
+    </testcase>
+    <testcase name="test_render_sprint_panel" lineno="66" classname="SprintsControllerTest" assertions="2" time="0.6626070002093911">
+    </testcase>
+    <testcase name="test_should_get_index_for_owner_and_customer" lineno="14" classname="SprintsControllerTest" assertions="2" time="0.9442269997671247">
+    </testcase>
+    <testcase name="test_open_sprint" lineno="107" classname="SprintsControllerTest" assertions="3" time="1.2278669998049736">
+    </testcase>
+    <testcase name="test_close_sprint" lineno="117" classname="SprintsControllerTest" assertions="3" time="1.2574230004101992">
+    </testcase>
+    <testcase name="test_should_update_sprint" lineno="40" classname="SprintsControllerTest" assertions="5" time="1.2478350000455976">
+    </testcase>
+    <testcase name="test_should_get_edit" lineno="34" classname="SprintsControllerTest" assertions="1" time="0.6614839993417263">
+    </testcase>
+  </testsuite>
+</test_suites>

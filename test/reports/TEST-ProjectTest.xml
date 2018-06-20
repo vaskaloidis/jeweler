@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="ProjectTest" filepath="../../../.rvm/gems/ruby-2.5.1/gems/shoulda-context-1.2.2/lib/shoulda/context/context.rb" skipped="0" failures="0" errors="0" tests="7" assertions="32" time="5.1488449992612">
+    <testcase name="test_: Project should have many sprints. " lineno="346" classname="ProjectTest" assertions="1" time="0.4946569995954633">
+    </testcase>
+    <testcase name="test_callback_should_build_sprints_correctly" lineno="41" classname="ProjectTest" assertions="14" time="0.50339699909091">
+    </testcase>
+    <testcase name="test_github_installed?_method" lineno="64" classname="ProjectTest" assertions="2" time="1.6464080000296235">
+    </testcase>
+    <testcase name="test_only_finds_active_tasks" lineno="56" classname="ProjectTest" assertions="1" time="0.6172040002420545">
+    </testcase>
+    <testcase name="test_creates_a_valid_project" lineno="10" classname="ProjectTest" assertions="1" time="0.7270809998735785">
+    </testcase>
+    <testcase name="test_factory_generates_relationships_correctly" lineno="14" classname="ProjectTest" assertions="8" time="0.55086600035429">
+    </testcase>
+    <testcase name="test_should_have_a_valid_project_owner_and_customers" lineno="31" classname="ProjectTest" assertions="5" time="0.6092320000752807">
+    </testcase>
+  </testsuite>
+</test_suites>

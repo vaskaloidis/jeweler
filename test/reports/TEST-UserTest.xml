@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="UserTest" filepath="test/models/user_test.rb" skipped="0" failures="0" errors="0" tests="2" assertions="4" time="0.025071999058127403">
+    <testcase name="test_valid_users" lineno="5" classname="UserTest" assertions="2" time="0.014163999818265438">
+    </testcase>
+    <testcase name="test_github_installed?_method" lineno="10" classname="UserTest" assertions="2" time="0.010907999239861965">
+    </testcase>
+  </testsuite>
+</test_suites>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="TaskServicesTest" filepath="test/services/task_services_test.rb" skipped="0" failures="0" errors="0" tests="5" assertions="12" time="5.653677000664175">
+    <testcase name="test_complete_task_service" lineno="39" classname="TaskServicesTest" assertions="1" time="1.1583190001547337">
+    </testcase>
+    <testcase name="test_delete_task_service" lineno="32" classname="TaskServicesTest" assertions="1" time="1.1662739999592304">
+    </testcase>
+    <testcase name="test_set_current_task_service" lineno="53" classname="TaskServicesTest" assertions="1" time="1.0790880005806684">
+    </testcase>
+    <testcase name="test_create_task_service" lineno="12" classname="TaskServicesTest" assertions="8" time="1.1275310004130006">
+    </testcase>
+    <testcase name="test_uncomplete_task_service" lineno="46" classname="TaskServicesTest" assertions="1" time="1.1224649995565414">
+    </testcase>
+  </testsuite>
+</test_suites>

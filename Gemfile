@@ -51,8 +51,8 @@ gem 'virtus'
 # Memory Testing
 # gem 'skylight'
 
-# gem 'jeweler-utils', path: '../jeweler-utils'
-gem 'jeweler-utils', git: 'https://github.com/vaskaloidis/jeweler-utils.git'
+gem 'jeweler-utils', path: '../jeweler-utils'
+# gem 'jeweler-utils', git: 'https://github.com/vaskaloidis/jeweler-utils.git'
 
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
@@ -61,7 +61,7 @@ group :production do
   gem 'uglifier', '>= 1.3.0'
 end
 group :test do
-  gem 'minitest-spec-rails'
+  # gem 'minitest-spec-rails'
   gem 'minitest-around'
   gem 'capybara'
   gem 'chromedriver-helper'
@@ -83,10 +83,12 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'launchy'
   gem 'rubocop', '~> 0.56.0', require: false
+  gem "rubycritic", require: false
 end
 group :development do
-  gem 'guard'
-  gem 'guard-minitest'
+  # gem 'guard'
+  # gem 'guard-minitest'
+  gem 'yard'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'bundler-audit' # TODO: Use security Audit Gems

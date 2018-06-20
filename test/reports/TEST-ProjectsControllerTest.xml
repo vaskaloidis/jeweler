@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="ProjectsControllerTest" filepath="test/controllers/projects_controller_test.rb" skipped="0" failures="0" errors="0" tests="9" assertions="19" time="5.617882000282407">
+    <testcase name="test_owner_should_show_project" lineno="53" classname="ProjectsControllerTest" assertions="1" time="0.8269640002399683">
+    </testcase>
+    <testcase name="test_should_update_project" lineno="71" classname="ProjectsControllerTest" assertions="1" time="0.549452000297606">
+    </testcase>
+    <testcase name="test_should_create_project_and_corresponding_sprints" lineno="34" classname="ProjectsControllerTest" assertions="10" time="0.6792029999196529">
+    </testcase>
+    <testcase name="test_should_get_edit" lineno="65" classname="ProjectsControllerTest" assertions="1" time="0.5301249995827675">
+    </testcase>
+    <testcase name="test_should_get_new" lineno="28" classname="ProjectsControllerTest" assertions="1" time="0.5312130004167557">
+    </testcase>
+    <testcase name="test_customer_should_show_project" lineno="59" classname="ProjectsControllerTest" assertions="1" time="0.7489609997719526">
+    </testcase>
+    <testcase name="test_customer_should_get_index" lineno="22" classname="ProjectsControllerTest" assertions="1" time="0.5360400006175041">
+    </testcase>
+    <testcase name="test_should_destroy_project" lineno="78" classname="ProjectsControllerTest" assertions="2" time="0.6683559995144606">
+    </testcase>
+    <testcase name="test_owner_should_get_index" lineno="16" classname="ProjectsControllerTest" assertions="1" time="0.5475679999217391">
+    </testcase>
+  </testsuite>
+</test_suites>
