@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="InvoicesControllerTest" filepath="test/controllers/invoices_controller_test.rb" skipped="3" failures="0" errors="0" tests="5" assertions="2" time="2.5929329991340637">
+    <testcase name="test_should_send_invoice" lineno="40" classname="InvoicesControllerTest" assertions="0" time="0.49011499993503094">
+    <skipped type="test_should_send_invoice"/>
+    </testcase>
+    <testcase name="test_should_generate_estimate" lineno="23" classname="InvoicesControllerTest" assertions="1" time="0.5720689995214343">
+    </testcase>
+    <testcase name="test_should_generate_invoice" lineno="18" classname="InvoicesControllerTest" assertions="1" time="0.5479790000244975">
+    </testcase>
+    <testcase name="test_should_review_customer_invoice" lineno="28" classname="InvoicesControllerTest" assertions="0" time="0.4883380001410842">
+    <skipped type="test_should_review_customer_invoice"/>
+    </testcase>
+    <testcase name="test_should_print_invoice" lineno="34" classname="InvoicesControllerTest" assertions="0" time="0.4944319995120168">
+    <skipped type="test_should_print_invoice"/>
+    </testcase>
+  </testsuite>
+</test_suites>

@@ -14,16 +14,12 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task = Task.new
-    @sprint = Sprint.find(params[:sprint_id])
-    @task.sprint = @sprint
+    @task = @sprint.tasks.build
   end
 
-  def show;
-  end
+  def show; end
 
-  def edit;
-  end
+  def edit; end
 
   def create
     @service_object = CreateTask.call(task_params)

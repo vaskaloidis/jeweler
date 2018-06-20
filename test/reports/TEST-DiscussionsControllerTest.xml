@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="DiscussionsControllerTest" filepath="test/controllers/discussions_controller_test.rb" skipped="0" failures="0" errors="0" tests="4" assertions="16" time="5.1245419988408685">
+    <testcase name="test_customer_should_create_discussion_message" lineno="37" classname="DiscussionsControllerTest" assertions="6" time="1.3486689999699593">
+    </testcase>
+    <testcase name="test_owner_should_create_discussion_message" lineno="22" classname="DiscussionsControllerTest" assertions="6" time="1.2398759992793202">
+    </testcase>
+    <testcase name="test_customer_should_fetch_a_note_discussions" lineno="52" classname="DiscussionsControllerTest" assertions="2" time="1.33130900003016">
+    </testcase>
+    <testcase name="test_owner_should_fetch_a_note_discussions" lineno="15" classname="DiscussionsControllerTest" assertions="2" time="1.204687999561429">
+    </testcase>
+  </testsuite>
+</test_suites>

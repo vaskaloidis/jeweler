@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="TasksControllerTest" filepath="test/controllers/tasks_controller_test.rb" skipped="0" failures="0" errors="0" tests="10" assertions="36" time="15.623459998518229">
+    <testcase name="test_set_current_task" lineno="104" classname="TasksControllerTest" assertions="3" time="1.7684129998087883">
+    </testcase>
+    <testcase name="test_should_update_task" lineno="58" classname="TasksControllerTest" assertions="6" time="1.19023900013417">
+    </testcase>
+    <testcase name="test_should_set_task_to_deleted_status" lineno="77" classname="TasksControllerTest" assertions="3" time="1.8695040000602603">
+    </testcase>
+    <testcase name="test_should_get_new" lineno="17" classname="TasksControllerTest" assertions="4" time="1.206911999732256">
+    </testcase>
+    <testcase name="test_should_show_a_task" lineno="26" classname="TasksControllerTest" assertions="2" time="1.2104599997401237">
+    </testcase>
+    <testcase name="test_should_uncomplete_task" lineno="95" classname="TasksControllerTest" assertions="3" time="1.9219909999519587">
+    </testcase>
+    <testcase name="test_should_complete_task" lineno="86" classname="TasksControllerTest" assertions="3" time="2.0614759996533394">
+    </testcase>
+    <testcase name="test_should_create_task" lineno="32" classname="TasksControllerTest" assertions="8" time="1.9145820001140237">
+    </testcase>
+    <testcase name="test_should_cancel_task_update" lineno="115" classname="TasksControllerTest" assertions="2" time="1.231241999194026">
+    </testcase>
+    <testcase name="test_should_edit_the_task" lineno="52" classname="TasksControllerTest" assertions="2" time="1.2486410001292825">
+    </testcase>
+  </testsuite>
+</test_suites>

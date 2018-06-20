@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_suites>
+  <testsuite name="InvitationsControllerTest" filepath="test/controllers/invitations_controller_test.rb" skipped="0" failures="0" errors="0" tests="4" assertions="8" time="2.834786999039352">
+    <testcase name="test_should_create_invitation" lineno="12" classname="InvitationsControllerTest" assertions="2" time="1.1465559992939234">
+    </testcase>
+    <testcase name="test_should_get_accept" lineno="20" classname="InvitationsControllerTest" assertions="2" time="0.5492920000106096">
+    </testcase>
+    <testcase name="test_should_destroy_invitation" lineno="32" classname="InvitationsControllerTest" assertions="2" time="0.5755209997296333">
+    </testcase>
+    <testcase name="test_should_get_decline" lineno="26" classname="InvitationsControllerTest" assertions="2" time="0.5634180000051856">
+    </testcase>
+  </testsuite>
+</test_suites>
