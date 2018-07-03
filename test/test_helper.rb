@@ -14,18 +14,17 @@ SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
-require 'faker' #TODO: This has to go too
+require 'faker'
+#TODO: Faker has to get removed from here once we find out where its being used
 # require 'capybara/email'
 
-if ENV['LOCAL_DEVELOPMENT'].nil? || ENV['LOCAL_DEVELOPMENT'] != 'true'
+unless ENV['LOCAL_DEVELOPMENT'].nil?
   require 'coveralls'
   Coveralls.wear!
 end
 
 require 'minitest/reporters'
-# Prevent two reporters from printing
 # https://github.com/kern/minitest-reporters/issues/230
-# https://github.com/rails/rails/issues/30491
 Minitest.load_plugins
 Minitest.extensions.delete('rails')
 Minitest.extensions.unshift('rails')
@@ -36,6 +35,8 @@ reporters << Minitest::Reporters::ProgressReporter.new(color: true)
 # reporters << Minitest::Reporters::DefaultReporter.new({color: true})
 # reporters << Minitest::Reporters::RubyMineReporter
 Minitest::Reporters.use! reporters
+
+require 'webmock/minitest'
 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
