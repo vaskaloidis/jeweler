@@ -65,4 +65,3 @@ application-36b53a4315b99e1e06c34e3379cc09693ee8268394aadb1ea147b91f7aa09995.js
 coverage/*
 coverage/
 /coverage
-.env-prod
