@@ -5,10 +5,7 @@ end
 require 'simplecov'
 SimpleCov.start 'rails'
 # Rails.application.eager_load!
-formatters = []
-formatters << SimpleCov::Formatter::HTMLFormatter
-formatters << SimpleCov::Formatter::Console
-SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
+
 # SimpleCov.root(root_path)
 
 ENV['RAILS_ENV'] ||= 'test'
@@ -18,7 +15,12 @@ require 'faker'
 #TODO: Faker has to get removed from here once we find out where its being used
 # require 'capybara/email'
 
-unless ENV['LOCAL_DEVELOPMENT'].nil?
+formatters = []
+formatters << SimpleCov::Formatter::HTMLFormatter
+formatters << SimpleCov::Formatter::Console
+SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
+
+unless ENV['LOCAL_DEVELOPMENT'].try
   require 'coveralls'
   Coveralls.wear!
 end
@@ -55,4 +57,10 @@ class ActiveSupport::TestCase
     end
     DatabaseCleaner.clean
   end
+
+  def github_app_env(client_id, client_secret, &block)
+    ClimateControl.modify(GITHUB_CLIENT_ID: client_id, GITHUB_CLIENT_SECRET: client_secret, &block)
+  end
 end
+
+require 'mocha/minitest'

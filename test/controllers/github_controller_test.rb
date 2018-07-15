@@ -55,6 +55,17 @@ class GithubControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should save GitHub user Oauth Token" do
+    skip 'TODO: Mock GitHub OAuth token'
+    get github_oauth_save_url
+    assert_response :success
+  end
+
+  test "should redirect to GitHub authorization " do
+    expect(Github.new).to
+    get authorize_github_url
+    assert_redirected_to GitHubApp.authorization_url
+  end
 
   test "should show github" do
     skip 'test stub not created yet'

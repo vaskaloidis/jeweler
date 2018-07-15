@@ -61,7 +61,9 @@ group :production do
   gem 'uglifier', '>= 1.3.0'
 end
 group :test do
-  # gem 'minitest-spec-rails'
+  gem 'climate_control'
+  gem 'minitest-spec-rails'
+  gem 'mocha'
   gem 'minitest-around'
   gem 'capybara'
   gem 'chromedriver-helper'
