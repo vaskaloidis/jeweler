@@ -21,32 +21,33 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    # require 'redcarpet'
+    # TODO: Move this to the GitHub Class, use Gem. This is garbage
+    readme_feature = false
+    if readme_feature
+      gh_url = if @project.github_url.ends_with? '/'
+                 @project.github_url + 'master/README.md'
+               else
+                 @project.github_url + '/master/README.md'
+               end
 
-    gh_url = if @project.github_url.ends_with? '/'
-               @project.github_url + 'master/README.md'
-             else
-               @project.github_url + '/master/README.md'
-             end
-
-    gh_url.sub! 'github.com', 'raw.githubusercontent.com'
-
-    begin
-      readme_raw = Net::HTTP.get(URI.parse(gh_url))
-
-      if readme_raw == 'Not Found'
+      gh_url.sub! 'github.com', 'raw.githubusercontent.com'
+      begin
+        readme_raw = Net::HTTP.get(URI.parse(gh_url))
+        if readme_raw == 'Not Found'
+          @github_readme_parsed = 'README file could not be loaded.<br> GitHub README file: ' + gh_url
+        else
+          redcarpet = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
+          @github_readme_parsed = redcarpet.render(readme_raw)
+        end
+      rescue => ex
+        logger.error ex.message
         @github_readme_parsed = 'README file could not be loaded.<br>
                                GitHub README file: ' + gh_url
-      else
-        redcarpet = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
-        @github_readme_parsed = redcarpet.render(readme_raw)
       end
-
-    rescue => ex
-      logger.error ex.message
-      @github_readme_parsed = 'README file could not be loaded.<br>
-                               GitHub README file: ' + gh_url
+    else
+      @github_readme_parsed = ''
     end
+
 
     @notes = @project.notes.where(note_type: [:note, :commit, :project_update]).order('created_at DESC').all
   end
@@ -57,7 +58,8 @@ class ProjectsController < ApplicationController
   end
 
   # GET /projects/1/edit
-  def edit; end
+  def edit;
+  end
 
   # POST /projects
   # POST /projects.json
