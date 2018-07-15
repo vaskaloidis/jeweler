@@ -11,8 +11,6 @@ development:
   adapter: postgresql
   pool: 10
   host: localhost
-  username: postgres
-  password: postgres
 
 test:
   <<: *default
