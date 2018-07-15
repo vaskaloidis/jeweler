@@ -22,6 +22,7 @@ class GithubControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect to GitHub authorization " do
+    expect(Github.new).to
     get authorize_github_url
     assert_redirected_to GitHubApp.authorization_url
   end
