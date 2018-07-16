@@ -8,6 +8,9 @@ class GitHubOauthTest < ActiveSupport::TestCase
     @gho = GitHubOauth.new @project
   end
 
+
+  describe ''
+
   test 'should return instance of GitHubOauth' do
     assert @gho
   end

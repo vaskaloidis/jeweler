@@ -70,6 +70,7 @@ group :test do
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'minitest-reporters'
+  gem 'minitest'
   gem 'selenium-webdriver'
   gem 'shoulda', '~> 3.5'
   gem 'shoulda-matchers', '~> 2.0'

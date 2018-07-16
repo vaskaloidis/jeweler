@@ -1,47 +1,84 @@
 require 'test_helper'
 
 class GitHubAppTest < ActiveSupport::TestCase
-
-  let(:github_app) {GitHubApp.new}
-
   let(:github_client_id) {'client-id-123'}
   let(:github_client_secret) {'client-secret-123'}
+  let(:auth_code) {'authcode-123'}
+  let(:token) {'token-123'}
 
   around do |tests|
     github_app_env(github_client_id, github_client_secret, &tests)
   end
 
-  before do
-    (GitHubApp.new).stubs(:new).with(client_id: github_client_id, client_secret: github_client_secrt)
+  context 'local testing' do
+
+    before do
+      mock('github').stubs(:new).with(client_id: github_client_id, client_secret: github_client_secret)
+    end
+
+    after do
+      Github.verify.must_be true
+    end
+
+    describe '#authorize_url' do
+      let(:scope) {'repo admin:repo_hook read:repo_hook write:repo_hook admin:org_hook'}
+      let(:auth_url) {'https://api.github.com/login/oauth/authorize'}
+
+      before do
+        Github.stubs(:authorize_url).with(scope: scope).returns(auth_url)
+      end
+
+      it 'should return a string' do
+        GitHubApp.authorization_url.must_be_instance_of String
+      end
+
+      after do
+        Github.verify.must_be true
+      end
+    end
+
+    describe '#authorization_token' do
+      it 'takes an auth_code and returns a string' do
+        mock('github').stubs(:get_token).with(token).returns(token)
+        GitHubApp.authorization_token(auth_code).must_be_instance_of String
+      end
+
+      after do
+        Github.verify.must_be true
+      end
+    end
   end
 
-  describe '#api' do
-    it 'should respond to api' do
-      expect(github_app).to respond_to(:api)
+  context 'remote testing' do
+    let(:api_url) {"https://github.com/login/oauth/access_token"}
+    before do
+      @api_url = "https://github.com/login/oauth/access_token"
+    end
+    describe '#authorization_token' do
+      it 'makes an authorization request' do
+        stub = stub_request(:post, @api_url).
+            with(body: {"client_id" => github_client_id,
+                        "client_secret" => github_client_secret,
+                        "code" => auth_code,
+                        "grant_type" => "authorization_code"})
+        mock('github').expects(:get_token).with(:auth_code).return(@token)
+
+        GitHubApp.authorization_token(auth_code).must_equal token
+        assert_requested(stub)
+      end
     end
 
-    it 'returns the API' do
-      expect(github_app.api).to eq('https://api.github.com')
+    describe '#authorization_token' do
+      before do
+        # @stub = stub_request(:post, @api_url).
+      end
+      it 'makes an authorization request' do
+        mock('github').expects(:authorize_url).returns(token)
+        GitHubApp.authorization_token(auth_code).must_equal token
+        # assert_requested(@stub)
+      end
     end
 
-    it 'returns the GitHub API as an Oauth instance' do
-      expect(github_app.api).must_be_instance_of OAuth2::Client
-    end
-  end
-
-  describe '#authorize_url' do
-    it 'should respond to authorize_url' do
-      should respond_to(:authorize_url)
-    end
-
-    it "should return address containing client_id and auth url" do
-      githu.authorize_url.should =~ '/login/oauth/authorize'
-      github.authorize_url.should =~ "/client_id=#{github_client_id}/"
-    end
-
-    it "should return address containing scopes" do
-      github.authorize_url.should =~ '/scope=repo%20admin:repo_hook%20read:repo_hook%20write:repo_hook%20admin:org_hook/'
-    end
   end
 
 end

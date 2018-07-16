@@ -5,6 +5,14 @@ namespace :jeweler do
   include JewelerRakeCommands
   task default: [:test]
 
+  desc 'Test current feature'
+  task feature_test: :environment do
+    JewelerRakeCommands.clear_logs
+    JewelerRakeCommands.run('clear')
+    JewelerRakeCommands.test('models/git_hub_app')
+    # JewelerRakeCommands.test('controllers/github_controller')
+  end
+
   desc 'Simple Quick Minitest Suite (Default Tests)'
   task quick_test: :environment do
     JewelerRakeCommands::clear_logs

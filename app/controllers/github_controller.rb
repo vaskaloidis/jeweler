@@ -155,14 +155,10 @@ class GithubController < ApplicationController
 
   end
 
-  # Install GitHub Push Hook (Internal)
-  # AJAX:GET /github_install_webhook/:project_id
   def install_webhook
     GitHubOauth.new(@project).install_webhook!
   end
 
-  # Redirect to GitHub Auth Page for Oauth Token
-  # GET /github_authorize
   def authorize_account
     auth_url = GitHubApp.authorization_url
     respond_to do |format|
@@ -170,11 +166,9 @@ class GithubController < ApplicationController
     end
   end
 
-  # Save Authenticated GitHub user Oauth Token
-  # GET /github_oauth
   def save_oauth
     authorization_code = params[:code]
-    access_token = GitHubApp.api.get_token( authorization_code )
+    access_token = GitHubApp.api.get_token(authorization_code)
     user = User.find(current_user.id)
     user.update(oauth: access_token.token)
 

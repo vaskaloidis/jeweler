@@ -37,19 +37,29 @@ module JewelerRakeCommands
     end
   end
 
+  def run2(cmd)
+    Bundler.with_clean_env do
+      sh cmd.to_s
+    end
+  end
+
   def run(cmd)
-    # sh cmd.to_s
     require 'open3'
     Open3.popen3(cmd.to_s) do |stdout, stderr, status, thread|
-      while line=stderr.gets do
+      while line = stderr.gets do
         puts(line)
       end
     end
-
   end
 
   def rake(cmd)
-    run('rake ' + cmd)
+    run("rake #{cmd}")
+  end
+
+  def test(test)
+    test = "test/#{test}" unless test.starts_with?('test/')
+    test = "#{test}_test.rb" unless test.ends_with?('_test.rb')
+    run("rails test #{test}")
   end
 
   private

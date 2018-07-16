@@ -20,7 +20,7 @@ formatters << SimpleCov::Formatter::HTMLFormatter
 formatters << SimpleCov::Formatter::Console
 SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
 
-unless ENV['LOCAL_DEVELOPMENT'].try
+unless try(ENV['LOCAL_DEVELOPMENT'])
   require 'coveralls'
   Coveralls.wear!
 end

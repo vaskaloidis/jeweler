@@ -486,6 +486,7 @@ DEPENDENCIES
   jquery-ui-rails
   json
   launchy
+  minitest
   minitest-around
   minitest-reporters
   minitest-spec-rails
