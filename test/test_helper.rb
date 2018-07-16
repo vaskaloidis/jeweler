@@ -11,6 +11,7 @@ SimpleCov.start 'rails'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
+require 'minitest/around/unit'
 require 'faker'
 #TODO: Faker has to get removed from here once we find out where its being used
 # require 'capybara/email'
@@ -43,6 +44,10 @@ require 'webmock/minitest'
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
+  # Mocha
+  # include Minitest::RSpecMocks
+  # RSpec::Mocks.configuration.syntax = :expect
+
   def setup
     DatabaseCleaner.start
     if Bullet.enable?
@@ -62,5 +67,4 @@ class ActiveSupport::TestCase
     ClimateControl.modify(GITHUB_CLIENT_ID: client_id, GITHUB_CLIENT_SECRET: client_secret, &block)
   end
 end
-
 require 'mocha/minitest'
