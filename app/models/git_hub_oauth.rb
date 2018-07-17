@@ -3,61 +3,53 @@ class GitHubOauth
   attr_accessor :project
 
   def initialize(selected_project)
-    @project = selected_project
-    github_api(selected_project)
+    @project ||= selected_project
   end
 
-  def self.github_api(selected_project)
-    @github_api ||= Github.new oauth_token: selected_project.owner.oauth
+  def github_api
+    @github_api ||= Github.new oauth_token: @project.owner.oauth
   end
 
-  def gh_user
-    uri = URI(project.github_url)
-    uri.path.split('/').second
+  def user
+    @user ||= begin
+      uri = URI(project.github_url)
+      uri.path.split('/').second
+    end
   end
 
-  def gh_repo
-    uri = URI(project.github_url)
-    uri.path.split('/').third
+  def repo
+    @repo ||= begin
+      uri = URI(project.github_url)
+      uri.path.split('/').third
+    end
   end
 
   def hooks
-    github.repos.hooks.all gh_user, gh_repo
+    @hooks ||= github_api.repos.hooks.all user, repo
   end
 
-  # Install our GitHub Push Webhook to the Project on GitHuB
   def install_webhook!
-    unless webhook_installed?
-      Rails.logger.debug 'GITHUB_HOOK_URL (ENV): ' + ENV['GITHUB_HOOK_URL']
-      github.repos.hooks.create gh_user, gh_repo, new_hook
-    end
-  rescue => e
-    # TODO: Get rid of this / make it catch more specific exceptions
-    Rails.logger.error 'Github Hook Error: ' + e.message
-    e.backtrace.each {|line| Rails.logger.error line}
+    github_api.repos.hooks.create user, repo, new_hook unless webhook_installed
+  rescue => e # TODO: Make it catch more specific exceptions
+    Rails.logger.fatal 'Github Hook Error: ' + e.message
   end
 
-  # Check if the GitHub_URL for the project has a webhook installed,
-  # the Webhook is checked by comapring the Hook URL in ENV to the
-  # Projects Webhooks
-  # TODO: Check how expensive this is, and if we need to do on each project#show
-  def webhook_installed?
-    if @project.github_installed?
+  def webhook_installed
+    # TODO: Cache this somehow
+    @webhook_installed ||= begin
+      false if project.github_installed?
       hooks.each do |hook|
-        if hook.config.url == ENV['GITHUB_HOOK_URL'] && hook.config.content_type == 'json'
-          return true
-        end
+        return true if hook.config.url == ENV['GITHUB_HOOK_URL'] && hook.config.content_type == 'json'
       end
+      false
+    rescue => e # TODO: Make it catch more specific exceptions
+      Rails.logger.fatal 'Github Hook Error: ' + e.message
+      false
     end
-    false
-  rescue => e
-    # TODO: Get rid of this / make it catch more specific exceptions
-    Rails.logger.error 'Github Hook Error: ' + e.message
-    e.backtrace.each {|line| Rails.logger.error line}
   end
 
   def new_hook
-    {
+    @new_hook ||= {
         name: "web",
         active: true,
         config: {

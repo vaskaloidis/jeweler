@@ -63,13 +63,15 @@ class ActiveSupport::TestCase
     DatabaseCleaner.clean
   end
 
+  # Climate Control Gem (Sets Env variables)
   def github_app_env(client_id, client_secret, &block)
-    ClimateControl.modify({GITHUB_CLIENT_ID: client_id, GITHUB_CLIENT_SECRET: client_secret}, &block)
+    ClimateControl.modify({ GITHUB_CLIENT_ID: client_id, GITHUB_CLIENT_SECRET: client_secret }, &block)
   end
 
-  def github_oauth_env(client_id, &block)
-    ClimateControl.modify( { GITHUB_CLIENT_SECRET: client_secret}, &block)
+  def github_oauth_env(hook_url, &block)
+    ClimateControl.modify({ GITHUB_HOOK_URL: hook_url }, &block)
   end
+
 end
 
 require 'mocha/minitest'

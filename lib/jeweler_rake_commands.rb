@@ -37,19 +37,25 @@ module JewelerRakeCommands
     end
   end
 
-  def run2(cmd)
+  def bundler_run(cmd)
     Bundler.with_clean_env do
       sh cmd.to_s
     end
   end
 
-  def run(cmd)
+  def open3_run(cmd)
     require 'open3'
     Open3.popen3(cmd.to_s) do |stdout, stderr, status, thread|
       while line = stderr.gets do
         puts(line)
       end
     end
+  end
+
+  # Implement this run method. It should execute
+  # Bash commands in a Bundler.with_clean_env &block
+  def run(cmd)
+    raise NotImplementedError, 'You must implement the run method'
   end
 
   def rake(cmd)
@@ -59,7 +65,7 @@ module JewelerRakeCommands
   def test(test)
     test = "test/#{test}" unless test.starts_with?('test/')
     test = "#{test}_test.rb" unless test.ends_with?('_test.rb')
-    run("rails test #{test}")
+    run "rails test #{test}"
   end
 
   private
