@@ -2,7 +2,6 @@ class GithubController < ApplicationController
   before_action :set_project, only: %i[install_webhook]
   respond_to :js, only: %i[install_webhook]
 
-
   # protect_from_forgery with: :exception, if: Proc.new { |c| c.request.format != 'application/json' }
   # protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
   # skip_before_action :verify_authenticity_token
@@ -161,9 +160,7 @@ class GithubController < ApplicationController
 
   def authorize_account
     auth_url = GitHubApp.authorization_url
-    respond_to do |format|
-      format.html { redirect_to auth_url }
-    end
+    respond_to html { redirect_to auth_url }
   end
 
   def save_oauth

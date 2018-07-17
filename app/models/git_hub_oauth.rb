@@ -1,11 +1,14 @@
 # Interact with GitHub API using generated user Oauth
 class GitHubOauth
-  attr_accessor :github, :project
+  attr_accessor :project
 
-  def initialize(project)
-    @project = project
-    # @github = Github::Client::Repos::Hooks.new oauth_token: @project.owner.oauth
-    @github = Github.new oauth_token: @project.owner.oauth
+  def initialize(selected_project)
+    @project = selected_project
+    github_api(selected_project)
+  end
+
+  def self.github_api(selected_project)
+    @github_api ||= Github.new oauth_token: selected_project.owner.oauth
   end
 
   def gh_user
@@ -26,14 +29,6 @@ class GitHubOauth
   def install_webhook!
     unless webhook_installed?
       Rails.logger.debug 'GITHUB_HOOK_URL (ENV): ' + ENV['GITHUB_HOOK_URL']
-      new_hook = {
-          name: "web",
-          active: true,
-          config: {
-              url: ENV['GITHUB_HOOK_URL'],
-              content_type: "json"
-          }
-      }
       github.repos.hooks.create gh_user, gh_repo, new_hook
     end
   rescue => e
@@ -59,6 +54,17 @@ class GitHubOauth
     # TODO: Get rid of this / make it catch more specific exceptions
     Rails.logger.error 'Github Hook Error: ' + e.message
     e.backtrace.each {|line| Rails.logger.error line}
+  end
+
+  def new_hook
+    {
+        name: "web",
+        active: true,
+        config: {
+            url: ENV['GITHUB_HOOK_URL'],
+            content_type: "json"
+        }
+    }
   end
 
 end

@@ -32,9 +32,9 @@ Minitest.load_plugins
 Minitest.extensions.delete('rails')
 Minitest.extensions.unshift('rails')
 reporters = []
-# reporters << Minitest::Reporters::SpecReporter.new
+reporters << Minitest::Reporters::SpecReporter.new
 # reporters << Minitest::Reporters::JUnitReporter.new
-reporters << Minitest::Reporters::ProgressReporter.new(color: true)
+# reporters << Minitest::Reporters::ProgressReporter.new(color: true)
 # reporters << Minitest::Reporters::DefaultReporter.new({color: true})
 # reporters << Minitest::Reporters::RubyMineReporter
 Minitest::Reporters.use! reporters
@@ -64,7 +64,12 @@ class ActiveSupport::TestCase
   end
 
   def github_app_env(client_id, client_secret, &block)
-    ClimateControl.modify(GITHUB_CLIENT_ID: client_id, GITHUB_CLIENT_SECRET: client_secret, &block)
+    ClimateControl.modify({GITHUB_CLIENT_ID: client_id, GITHUB_CLIENT_SECRET: client_secret}, &block)
+  end
+
+  def github_oauth_env(client_id, &block)
+    ClimateControl.modify( GITHUB_CLIENT_SECRET: client_secret}, &block)
   end
 end
+
 require 'mocha/minitest'

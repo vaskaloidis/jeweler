@@ -2,7 +2,6 @@ require 'test_helper'
 
 class GithubControllerTest < ActionDispatch::IntegrationTest
 
-
   describe 'Requesting a GitHub Token' do
     it 'should redirect to GitHub authorization' do
       github_app_env('gh-client-id', 'gh-client-secret') do
