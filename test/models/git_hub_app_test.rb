@@ -26,15 +26,7 @@ class GitHubAppTest < ActiveSupport::TestCase
 
   describe '#api' do
     it 'should return api' do
-      GitHubApp.github_api.must_equal @github_api
-    end
-    it 'verifies the client_id env variables are set' do
-      skip 'not finished yet' #TODO: Inspect api data-structuree first then finish test
-      GitHubApp.github_api.client_id.must_equal @client_id
-    end
-    it 'verifies the client_secret env variables are set' do
-      skip 'not finished yet' #TODO: Inspect api data-structuree first then finish test
-      GitHubApp.github_api.client_secret.must_equal @client_secret
+      GitHubApp.github_api.must_be @github_api
     end
   end
 

@@ -2,10 +2,6 @@
 # Env: client_id and client_secret
 class GitHubApp
 
-  def initialize
-    github_api
-  end
-
   def self.github_api
     @github_api ||= Github.new client_id: ENV['GITHUB_CLIENT_ID'],
                         client_secret: ENV['GITHUB_CLIENT_SECRET']
