@@ -68,7 +68,7 @@ class ActiveSupport::TestCase
   end
 
   def github_oauth_env(client_id, &block)
-    ClimateControl.modify( GITHUB_CLIENT_SECRET: client_secret}, &block)
+    ClimateControl.modify( { GITHUB_CLIENT_SECRET: client_secret}, &block)
   end
 end
 
