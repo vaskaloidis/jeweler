@@ -2,141 +2,137 @@ require 'test_helper'
 
 class GitHubOauthTest < ActiveSupport::TestCase
 
-  around do |tests|
-    @repo = 'example-repo'
-    @user = 'example-user'
-    @github_url = "https://github.com/#{@user}/#{repo}"
+  before(:each) do
+    @repo        = 'example-repo'
+    @user        = 'example-user'
+    @github_url  = "https://github.com/#{@user}/#{@repo}"
     @oauth_token = 'oauth-token-123'
-    @owner = create(:user, oauth: @oauth_token)
-    @project = create(:project, github_url: @github_url, owner: @owner)
-    @github_oauth = GitHubOauth.new @project
 
     @hook_url = 'http://example.com/hook'
-    github_oauth_env(@hook_url) do
+
+    @owner   = create(:user, oauth: @oauth_token)
+    @project = create(:project, github_url: @github_url, owner: @owner)
+  end
+
+  test '#new should set a project in GitHubOauth.new' do
+    gho = GitHubOauth.new(@project)
+    gho.project.must_equal @project
+  end
+
+  test '#user should return the GitHub user from project-url' do
+    gho = GitHubOauth.new(@project)
+    gho.user.must_equal @user
+  end
+
+  test '#repo should return the GitHub repo from project-url' do
+    gho = GitHubOauth.new(@project)
+    gho.repo.must_equal @repo
+  end
 
 
-      @github_api = mock('github_api')
-                        .responds_like(Github.new)
-                        .stubs(:repos).returns(@repos)
-      tests.call
+  describe '#webhook_installed?' do
+    before do
+      @hooks = mock('hooks')
+      Github.stubs(new: stub('api', repos: stub('repos', hooks: @hooks)))
+    end
+    it 'returns false bc GitHub is not connected' do
+      github_oauth_env(@hook_url) do
+        @project.stubs(github_installed?: false)
+
+        @hooks.expects(:all).never
+        # @repos.expects(:hooks).returns(all)
+        # @api.expects(:repos)
+        # Github.expects(:new)
+
+        gho    = GitHubOauth.new(@project)
+        result = gho.webhook_installed?
+
+        expect(result).must_equal false
+      end
+    end
+
+    it '#webhook_installed? returns false because the webhook is not installed' do
+      github_oauth_env(@hook_url) do
+        @project.stubs(github_installed?: true)
+
+        @hooks.expects(:all).once
+            .with(@user, @repo)
+            .returns(hooks_list_not_installed)
+        # Github.stubs(new: mock('api', repos: mock('repos', hooks: all)))
+
+        gho    = GitHubOauth.new(@project)
+        result = gho.webhook_installed?
+
+        expect(result).must_equal false
+      end
+    end
+
+    it 'returns true bc hook is already installed' do
+      github_oauth_env(@hook_url) do
+        @project.stubs(github_installed?: true)
+
+        @hooks.expects(:all).once
+            .with(@user, @repo)
+            .returns(hooks_list_installed)
+
+        gho    = GitHubOauth.new(@project)
+        result = gho.webhook_installed?
+
+        expect(result).must_equal true
+      end
     end
   end
 
-  describe '.new' do
-    it 'should set a project in GitHubOauth.new' do
-      gho = GitHubOauth.new(@project)
-      gho.project.must_equal @project
-      GitHubOauth.project.must_equal @project
+  describe '#install_webhook!' do
+    before(:each) do
+      @hooks = mock('hooks')
+      Github.stubs(new: stub('api', repos: stub('repos', hooks: @hooks)))
     end
-    it 'should set the project using the attr_accessor' do
-      Github.stubs(:new).with(:oauth_token => @oauth_token).returns(@github_api)
-      GitHubOauth.project = @project
-      GitHubOauth.project.must_equal @project
-      GitHubOauth.github_api.must_equal @github_api
-    end
-  end
+    it 'installs the webhook' do
+      @project.stubs(github_installed?: true)
 
-  describe '.github_api' do
-    it 'should initialize github api with oauth params and return it' do
-      Github.expect(:new).once.with(:oauth_token => @oauth_token).returns(@github_api)
-      gho = GitHubOauth.new(@project)
-      gho.github_api.must_equal @github_api
-      GitHubOauth.github_api.must_equal @github_api
+      @install_webhook_response = mock('install_webhook_response')
+      @hooks.expects(:create)
+            .with(@user, @repo, new_hook)
+            .returns(@install_webhook_response)
+
+      github_oauth_env(@hook_url) do
+        gho = GitHubOauth.new(@project)
+        expect(gho.install_webhook!).must_equal @install_webhook_response
+      end
     end
   end
 
-  describe '.user' do
-    it 'should return the GitHub user from project-url' do
-      gho = GitHubOauth.new(@project)
-      gho.user.must_equal @user
-      GitHubOauth.user.must_equal @user
-    end
+  def hooks_list_installed
+    [bad_hook, their_hook, our_hook, their_hook, bad_hook]
   end
 
-  describe '.repo' do
-    it 'should return the GitHub repo from project-url' do
-      gho = GitHubOauth.new(@project)
-      gho.user.must_equal @repo
-      GitHubOauth.repo.must_equal @repo
-    end
+  def hooks_list_not_installed
+    [bad_hook, their_hook, bad_hook, their_hook]
   end
 
-  describe '.hooks' do
-    it 'should return the GitHub repo hooks from a user and repo' do
-      Github.expect(:new).once.with(:oauth_token => @oauth_token).returns(@github_api)
-      stub_hooks_ours_not_installed
-      gho = GitHubOauth.new(@project)
-      gho.hooks.must_equal hooks_list_without_ours
-      GitHubOauth.hooks.must_equal hooks_list_without_ours
-    end
+  def bad_hook
+    stub('bad_hook', config: stub('config', url: @hook_url, content_type: 'not-json'))
   end
 
-  describe '.install_webhook!' do
-    it 'should not install the webhook because it is already installed' do
-      skip 'not implemented'
-      # TODO: Finish Spec
-    end
-    it 'should install the webhook because it is not installed' do
-      skip 'not implemented'
-      # TODO: Finish Spec
-    end
+  def their_hook
+    stub('their_hook', config: stub('config', url: 'http://someother.com/hook', content_type: 'json'))
   end
 
-  describe '.webhook_installed' do
-    it 'should return false because the webhook is not installed' do
-      skip 'not implemented'
-      # TODO: Finish Spec
-    end
-    it 'should return true because the webhook is installed' do
-      skip 'not implemented'
-      # TODO: Finish Spec
-    end
+  def our_hook
+    stub('our_hook', config: stub('config', url: @hook_url, content_type: 'json'))
+    # mock('hook_ours').expects(:config).twice.returns(config)
   end
 
-
-  # Helpers
-  # TODO: Move these to a separate module possibly
-  def stub_hooks_ours_is_installed
-    @hooks_create = mock('hooks_create').with(:user, :repo, :new_hook).returns(true)
-    @hooks_all = mock('hooks_all')
-                     .with([:user => @user, :repo => @repo])
-                     .returns(hooks_list_with_ours)
-    stub_repos_hooks
-  end
-
-  def stub_hooks_ours_not_installed
-    @hooks_create = mock('hooks_create').with(:user, :repo, :new_hook).returns(true)
-    @hooks_all = mock('hooks_all')
-                     .with([:user => @user, :repo => @repo])
-                     .returns(hooks_list_without_ours)
-    stub_repos_hooks
-  end
-
-  def hooks_list_with_ours
-    [hook_theirs, hook_theirs, hook_ours, hook_theirs]
-  end
-
-  def hooks_list_without_ours
-    [hook_theirs, hook_theirs, hook_theirs, hook_theirs]
-  end
-
-  def hook_theirs
-    mock('hook')
-        .stubs('config').returns(mock('config').stubs('content_type').returns('json'))
-        .stubs('config_url').returns('http://their-site.com/hook')
-  end
-
-  def hook_ours
-    mock('hook')
-        .stubs('config').returns(mock('config').stubs('content_type').returns('json'))
-        .stubs('config_url').returns(@hook_url)
-  end
-
-  def stub_repos_hooks
-    @hooks = mock('hooks')
-                 .expects(:all).once.returns(@hooks_all)
-                 .expects(:create).once.returns(@hooks_create)
-    @repos = mock('repos').stubs(:hooks).returns(@hooks)
+  def new_hook
+    {
+        name: "web",
+        active: true,
+        config: {
+            url: @hook_url,
+            content_type: "json"
+        }
+    }
   end
 
 end

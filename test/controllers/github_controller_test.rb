@@ -1,51 +1,89 @@
 require 'test_helper'
 
 class GithubControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
 
-  describe 'Requesting a GitHub Token' do
-    it 'should redirect to GitHub authorization' do
-      github_app_env('gh-client-id', 'gh-client-secret') do
-        GitHubApp.stubs(:authorization_url).returns('http://test.com')
-        get authorize_github_url
-        assert_redirected_to 'http://test.com'
-      end
+  setup do
+    # @owner = create(:owner)
+    @current_user = create :user, oauth: nil
+    sign_in @current_user
+  end
+
+  describe '#authorize_account' do
+    before do
+      @auth_url = 'http://github.com/authorization/'
+      @api = mock('api').stubs(:authorization_url)
+      GitHubApp.stubs(:new).returns(@api)
+    end
+    it 'does not authorize users with GitHub already connected' do
+      mock_user = stub('mock-user', oauth: 'oauth-code-123')
+      User.stubs(:find).returns(mock_user)
+      @api.expects(:authorization_url).returns(@auth_url)
+
+      get authorize_github_url
+
+      assert_redirected_to root_path
+      flash[:notice].must_equal 'GitHub is already installed'
+    end
+    it 'forwards users to GitHub auth who dont have it already connected' do
+      @api.expects(:authorization_url).returns(@auth_url)
+
+      get authorize_github_url
+
+      assert_redirected_to @auth_url
     end
   end
 
-  describe 'Saving a GitHub Token' do
-    let(:current_user) {create(:user)}
+  describe '#save_oauth' do
     before do
-      User.stubs(:find).returns(current_user)
-      GitHubApp.expects(:api).returns(nil)
-               .then.stubs(:get_token).returns('token123')
+      @token = 'token-123'
+      @api = mock('api').stubs(:authorization_token)
+      GitHubApp.stubs(:new).returns(@api)
     end
     it 'should save GitHub user Oauth Token' do
-      current_user.oauth.must_be_nil
+      @api.expects(:authorization_token).once.returns(@token)
+
       get github_oauth_save_url
-      assert_redirected_to 'http://test.com'
+
+      @current_user.reload
+      assert_equal @token, @current_user.oauth
+      assert_redirected_to root_path
       flash[:notice].must_equal 'GitHub Account Successfully Authenticated!'
     end
   end
 
-  describe 'Install_webhook' do
-    it 'takes the auth_code and makes a GitHub API call to get a token' do
+  describe '#install_webhook' do
+    before do
+      @stub = mock('api').stubs(:install_webhook!)
+      GitHubOauth.stubs(:new).returns(@stub)
+    end
+    it 'installs the webhook' do
+      @stub.expects(:install_webhook!).once
       project = create(:project_with_github_test_repo)
+
       get install_github_webhook_url(project), xhr: true
+
+      assert_equal 'text/javascript', @response.content_type
       assert_response :success
-      gho = GitHubOauth.new(project)
-      assert gho.webhook_installed?
     end
   end
 
 
-  test "should get a GitHub Push Event" do
-    payload_mock = Json.new
-    # payload = JSON.parse(request.body.read)
-    # commits = payload["commits"]
-    assert_difference('Github.count') do
-      post execute_github_webhook_url, payload_mock
+  describe '#hook' do
+    it 'executes the webhook' do
+      skip 'test not written yet'
+      payload_mock = Json.new
+      # payload = JSON.parse(request.body.read)
+      # commits = payload["commits"]
+      assert_difference('Github.count') do
+        post execute_github_webhook_url, payload_mock
+      end
+      assert_response :success
     end
-    assert_response :success
+  end
+
+  teardown do
+    sign_out @current_user
   end
 
 end

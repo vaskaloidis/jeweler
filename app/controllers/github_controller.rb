@@ -1,12 +1,52 @@
 class GithubController < ApplicationController
   before_action :set_project, only: %i[install_webhook]
-  respond_to :js, only: %i[install_webhook]
 
   # protect_from_forgery with: :exception, if: Proc.new { |c| c.request.format != 'application/json' }
   # protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
   # skip_before_action :verify_authenticity_token
 
   respond_to :json, :html
+
+  def authorize_account
+    github_api = GitHubApp.new
+    user       = User.find(current_user.id)
+    auth_url   = github_api.authorization_url
+
+    respond_to do |format|
+      if user.oauth.nil?
+        format.html { redirect_to auth_url }
+      else
+        format.html { redirect_to root_path, notice: 'GitHub is already installed' }
+      end
+    end
+  end
+
+  def save_oauth
+    authorization_code = params[:code]
+    github_api         = GitHubApp.new
+    access_token       = github_api.authorization_token(authorization_code)
+    user               = User.find(current_user.id)
+    user.update(oauth: access_token)
+
+    # Eventually we want to do this here too
+    #  but we don't have information about project_id here
+    #  unless we pass it to GitHub first when we go to authorize
+    #  the GitHub Account
+    # gho = GitHubOauth.new(@project)
+    # gho.install_webhook!
+
+    respond_to do |format|
+      if user.valid?
+        format.html { redirect_to root_path, notice: 'GitHub Account Successfully Authenticated!' }
+      else
+        format.html { redirect_to root_path, :flash => { :error => 'Error Authenticated GitHub Authenticated.' } }
+      end
+    end
+  end
+
+  def install_webhook
+    GitHubOauth.new(@project).install_webhook!
+  end
 
   # GitHub WebHook Push Event endpoint
   # POST /github_hook
@@ -20,7 +60,7 @@ class GithubController < ApplicationController
     # payload = ActiveSupport::JSON.decode(response.body)
 
     commits = payload["commits"]
-    notes = Array.new
+    notes   = Array.new
 
     unless commits.nil?
       commits.each do |commit|
@@ -31,15 +71,15 @@ class GithubController < ApplicationController
 
         commit_message = commit["message"]
 
-        hide_message = false
+        hide_message   = false
         custom_message = false
-        commands = commit_message.split('#jeweler')
+        commands       = commit_message.split('#jeweler')
 
         commands.each_with_index do |command, count|
           unless count == 0
             pounds = command.split('#')
             second = pounds.second
-            third = pounds.third
+            third  = pounds.third
             fourth = pounds.fourth
 
             if second.starts_with?('task')
@@ -119,19 +159,19 @@ class GithubController < ApplicationController
         # author_name = author["name"]
 
         repository = payload["repository"]
-        repo_url = repository["html_url"]
+        repo_url   = repository["html_url"]
         logger.debug("Repository URL: " + repo_url)
 
         @project = Project.where(github_url: repo_url).first
         logger.debug("Project Name: " + @project.name)
 
-        note = Note.new
-        note.author = @project.owner
-        note.note_type = 'commit'
+        note               = Note.new
+        note.author        = @project.owner
+        note.note_type     = 'commit'
         note.git_commit_id = sha
-        note.sync = true
-        note.project = @project
-        note.content = message.to_s
+        note.sync          = true
+        note.project       = @project
+        note.content       = message.to_s
 
         unless diff_url.nil? or diff_url == ''
           note.commit_diff_path = diff_url.to_s
@@ -149,40 +189,9 @@ class GithubController < ApplicationController
     end
 
     respond_to do |format|
-      format.json {render json: notes.to_json}
+      format.json { render json: notes.to_json }
     end
 
-  end
-
-  def install_webhook
-    GitHubOauth.new(@project).install_webhook!
-  end
-
-  def authorize_account
-    auth_url = GitHubApp.authorization_url
-    respond_to html { redirect_to auth_url }
-  end
-
-  def save_oauth
-    authorization_code = params[:code]
-    access_token = GitHubApp.api.get_token(authorization_code)
-    user = User.find(current_user.id)
-    user.update(oauth: access_token.token)
-
-    # Eventually we want to do this here too
-    #  but we don't have information about project_id here
-    #  unless we pass it to GitHub first when we go to authorize
-    #  the GitHub Account
-    # gho = GitHubOauth.new(@project)
-    # gho.install_webhook!
-
-    respond_to do |format|
-      if user.valid?
-        format.html {redirect_to root_path, notice: 'GitHub Account Successfully Authenticated!'}
-      else
-        format.html {redirect_to root_path, :flash => {:error => 'Error Authenticated GitHub Authenticated.'}}
-      end
-    end
   end
 
   private
