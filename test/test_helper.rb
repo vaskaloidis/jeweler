@@ -44,23 +44,23 @@ require 'webmock/minitest'
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
-  # Mocha
+  # RSpec Mocks (Sucks in Minitest)
   # include Minitest::RSpecMocks
   # RSpec::Mocks.configuration.syntax = :expect
 
   def setup
-    DatabaseCleaner.start
-    if Bullet.enable?
-      Bullet.start_request
-    end
+    # DatabaseCleaner.start
+    # if Bullet.enable?
+    #   Bullet.start_request
+    # end
   end
 
   def teardown
-    if Bullet.enable?
-      Bullet.perform_out_of_channel_notifications if Bullet.notification?
-      Bullet.end_request
-    end
-    DatabaseCleaner.clean
+    # if Bullet.enable?
+    #   Bullet.perform_out_of_channel_notifications if Bullet.notification?
+    #   Bullet.end_request
+    # end
+    # DatabaseCleaner.clean
   end
 
   # Climate Control Gem (Sets Env variables)

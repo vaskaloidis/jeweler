@@ -48,7 +48,6 @@ class ProjectsController < ApplicationController
       @github_readme_parsed = ''
     end
 
-
     @notes = @project.notes.where(note_type: [:note, :commit, :project_update]).order('created_at DESC').all
   end
 

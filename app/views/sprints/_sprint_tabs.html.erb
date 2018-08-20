@@ -1,4 +1,4 @@
-<% sprints.includes(:project).each do |sprint| %>
+<% sprints.each do |sprint| %>
   <% if sprint.current? %>
     <li id="sprint_tab_<%= sprint.sprint.to_s %>" class="completed sprint-displayed current-sprint-tab">
       <%= link_to sprint.sprint.to_s, render_sprint_path(sprint), id: 'sprint_btn_' + sprint.sprint.to_s, remote: true %>

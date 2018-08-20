@@ -192,6 +192,8 @@ GEM
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
+    imagen (0.1.4)
+      parser (>= 2.5, != 2.5.1.1)
     io-like (0.3.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
@@ -369,6 +371,7 @@ GEM
       tty-which (~> 0.3.0)
       virtus (~> 1.0)
     rubyzip (1.2.1)
+    rugged (0.27.4)
     safe_yaml (1.0.4)
     screencap (0.1.4)
       phantomjs
@@ -394,6 +397,7 @@ GEM
       hirb
       simplecov
     simplecov-html (0.10.2)
+    simplecov-lcov (0.7.0)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -424,6 +428,10 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.1.10)
       execjs (>= 0.3.0, < 3)
+    undercover (0.1.4)
+      imagen (~> 0.1.2)
+      rainbow (~> 3.0.0)
+      rugged (~> 0.27.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
@@ -513,6 +521,7 @@ DEPENDENCIES
   simple_form
   simplecov
   simplecov-console
+  simplecov-lcov
   spring
   spring-watcher-listen (~> 2.0.0)
   stripe
@@ -520,6 +529,7 @@ DEPENDENCIES
   time_for_a_boolean (~> 0.2.0)
   tzinfo-data
   uglifier (>= 1.3.0)
+  undercover
   virtus
   web-console (>= 3.3.0)
   webmock
