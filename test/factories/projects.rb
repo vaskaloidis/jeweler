@@ -3,17 +3,17 @@ FactoryBot.define do
     transient do
       phases 5
     end
-    name 'A-String'
-    language 'Rails'
+    name Faker::App.name
+    language Faker::ProgrammingLanguage.name
     sprint_total '5'
     sprint_current '1'
     # sprint_total { phases }
     # sprint_current { Random.rand(phases) }
-    description 'A long string'
-    github_url 'www.github.com/username/repository'
-    stage_website_url 'www.example.com'
-    demo_url 'www.example.com'
-    prod_url 'www.example.com'
+    description Faker::ChuckNorris.fact
+    github_url {Faker::Omniauth.github[:info][:urls][:GitHub] + name}
+    stage_website_url Faker::Internet.domain_name
+    demo_url Faker::Internet.domain_name
+    prod_url Faker::Internet.domain_name
     complete false
     association :owner, factory: :owner
     # heroku_token Faker::Omniauth.github['uid']
@@ -49,17 +49,17 @@ FactoryBot.define do
     transient do
       phases 5
     end
-    name 'A-String'
-    language 'Rails'
+    name Faker::App.name
+    language Faker::ProgrammingLanguage.name
     sprint_total '5'
     sprint_current '1'
     # sprint_total { phases }
     # sprint_current { Random.rand(phases) }
-    description 'A long string'
-    github_url 'www.github.com/username/repository_name'
-    stage_website_url 'www.example.com'
-    demo_url 'www.example.com'
-    prod_url 'www.example.com'
+    description Faker::ChuckNorris.fact
+    github_url {Faker::Omniauth.github[:info][:urls][:GitHub] + name}
+    stage_website_url Faker::Internet.domain_name
+    demo_url Faker::Internet.domain_name
+    prod_url Faker::Internet.domain_name
     complete false
     association :owner, factory: :owner
   end

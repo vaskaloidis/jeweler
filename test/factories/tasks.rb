@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :task, class: 'Task' do
-    description 'A long string'
+    description Faker::ChuckNorris.fact
     hours Random.rand(20)
     rate Random.rand(50)
     complete false

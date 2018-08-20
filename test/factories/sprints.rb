@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :sprint, class: 'Sprint' do
     payment_due false
-    description 'A long string'
+    description Faker::ChuckNorris.fact
     add_attribute(:open) {'true'}
     sequence(:sprint)
     project

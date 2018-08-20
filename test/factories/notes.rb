@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :note, class: 'Note' do
-    content 'A long string'
+    content Faker::ChuckNorris.fact
     note_type 'note'
     author
     # task

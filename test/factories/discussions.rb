@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :discussion, class: 'Discussion' do
-    content 'A long string'
+    content Faker::ChuckNorris.fact
     user
     note
   end
