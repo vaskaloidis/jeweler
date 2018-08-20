@@ -39,10 +39,10 @@ gem 'time_for_a_boolean', '~> 0.2.0'
 gem 'yaml_db'
 gem 'yui-compressor'
 # Move this to Dev group after initial seeding
-gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
-gem 'rails-patterns'
+# gem 'rails-patterns'
 # gem 'business_process'
 gem 'virtus'
+gem "trailblazer-operation"
 
 # TODO: Get Bootsnap working again (crashing)
 # gem 'bootsnap', '>= 1.1.0', require: false
@@ -92,6 +92,7 @@ group :development, :test do
   gem 'bullet'
 end
 group :development do
+  gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
   # gem 'guard'
   # gem 'guard-minitest'
   gem 'yard'
