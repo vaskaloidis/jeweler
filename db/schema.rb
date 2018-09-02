@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_17_033045) do
+ActiveRecord::Schema.define(version: 2018_08_20_165522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,8 +124,10 @@ ActiveRecord::Schema.define(version: 2018_08_17_033045) do
     t.decimal "planned_hours", default: "0.0"
     t.integer "position"
     t.boolean "deleted", default: false
+    t.bigint "user_id"
     t.index ["position"], name: "index_tasks_on_position"
     t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -173,4 +175,5 @@ ActiveRecord::Schema.define(version: 2018_08_17_033045) do
   add_foreign_key "notes", "sprints"
   add_foreign_key "notes", "tasks"
   add_foreign_key "notes", "users"
+  add_foreign_key "tasks", "users"
 end

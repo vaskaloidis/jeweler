@@ -22,6 +22,7 @@ class TasksController < ApplicationController
   def edit; end
 
   def create
+    result = Task::Create.call(task_params, current_user: current_user)
     @service_object = CreateTask.call(task_params)
     @task = @service_object.result
     @errors = @service_object.errors

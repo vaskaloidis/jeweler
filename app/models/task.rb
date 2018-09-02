@@ -1,5 +1,8 @@
 class Task < ApplicationRecord
   after_create :set_position
+  # after_create :set_user, if: user.nil?
+
+  belongs_to :user, required: true
   belongs_to :sprint, required: true
   has_one :project, class_name: 'Project', inverse_of: 'current_task', dependent: :nullify
   has_many :notes, dependent: :nullify
@@ -12,13 +15,19 @@ class Task < ApplicationRecord
   accepts_nested_attributes_for :sprint
   accepts_nested_attributes_for :project
 
-  validates :planned_hours, numericality: {message: 'Must be a number.'}, allow_nil: true
-  validates :hours, numericality: {message: 'Must be a number.'}, allow_nil: true
-  validates :description, presence: {message: 'Cannot be empty.'}
-  validates :rate, presence: {message: 'must cannot me empty.'}, numericality: {message: 'must be a number.'}
+  validates :planned_hours, numericality: {message: 'must be a number.'}, allow_nil: true
+  validates :hours, numericality: {message: 'must be a number.'}, allow_nil: true
+  validates :description, presence: {message: 'cannot be empty.'}
+  validates :user, presence: {message: 'must be assigned.'}
+  validates :rate, presence: {message: 'cannot be empty.'}, numericality: {message: 'must be a number.'}
 
   def set_position
     self.position = sprint.next_position_int
+    save
+  end
+
+  def set_user
+    self.user = sprint.project.owner
     save
   end
 

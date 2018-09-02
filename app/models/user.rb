@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :notes, class_name: 'Note', inverse_of: 'author', dependent: :destroy
   has_many :project_customers, dependent: :destroy
   has_many :customer_projects, source: :project, through: :project_customers, dependent: :destroy
+  has_many :tasks
 
   mount_uploader :image, AvatarUploader
 
@@ -63,6 +64,7 @@ class User < ApplicationRecord
   def self.current_user
     Thread.current[:current_user]
   end
+
   # end
 
   def self.god

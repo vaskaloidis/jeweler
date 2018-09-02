@@ -10,7 +10,7 @@ class InvitationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create invitation" do
-    project = create(:project)
+    project = create(:project, :seed_tasks_notes, :seed_customer)
     assert_difference('Invitation.count') do
       post project_invitations_url(project), params: { project_customer: { email: 'invited@gfake.com' } }, xhr: true
     end

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-# Jeweler Gems
+Deprecate.skip = true if defined?(Deprecate.skip)
+Gem::Deprecate.skip = true if defined?(Gem::Deprecate.skip)
 
+# Jeweler Gems
 source 'https://rubygems.org'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -14,7 +16,6 @@ ruby '2.5.1'
 gem 'rails', '~> 5.2.0'
 # gem 'activestorage', github: 'rails/activestorage'
 # gem 'platform-api' # Heroku
-gem 'cancancan', '~> 2.0'
 gem 'carrierwave', '~> 1.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
@@ -32,30 +33,34 @@ gem 'rails-ujs'
 gem 'redcarpet'
 gem 'rollbar'
 gem 'screencap'
-gem 'simple_form' #TODO: Evaluate if we use this
+# gem 'simple_form' #TODO: Evaluate if we use this
 gem 'stripe'
 gem 'therubyracer' # Ruby
 gem 'time_for_a_boolean', '~> 0.2.0'
 gem 'yaml_db'
 gem 'yui-compressor'
-# Move this to Dev group after initial seeding
-gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
-gem 'rails-patterns'
-# gem 'business_process'
-gem 'virtus'
+# gem 'rails-patterns'
+gem 'virtus' # TODO: Remove this
 
 # TODO: Get Bootsnap working again (crashing)
 # gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'bootsnap', require: false
 
-# Memory Testing
+# Memory Testing TODO: Skylight to find memory leaks
 # gem 'skylight'
 
 # gem 'jeweler-utils', path: '../jeweler-utils'
 gem 'jeweler-utils', git: 'https://github.com/vaskaloidis/jeweler-utils.git'
 
+# gem 'trailblazer-operation'
+gem 'trailblazer-rails', '2.1.5'
+gem 'trailblazer', '2.1.0rc1'
+# gem 'reform', '>= 2.2.0'
+gem 'reform', '2.2.4'
+gem 'reform-rails', '0.1.7'
+
 group :production do
-  # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
+  # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Fix Memcache on Prod
   gem 'foreman'
   gem 'rails_12factor'
   gem 'uglifier', '>= 1.3.0'
@@ -64,7 +69,6 @@ group :test do
   gem 'climate_control'
   gem 'minitest-spec-rails'
   gem 'mocha'
-  # gem 'minitest-rspec_mocks'
   gem 'minitest-around'
   gem 'capybara'
   gem 'chromedriver-helper'
@@ -80,6 +84,7 @@ group :test do
   gem 'webmock'
 end
 group :development, :test do
+  gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'capybara-email'
   gem 'coveralls', require: false
@@ -92,9 +97,6 @@ group :development, :test do
   gem 'bullet'
 end
 group :development do
-  # gem 'guard'
-  # gem 'guard-minitest'
-  gem 'yard'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'bundler-audit' # TODO: Use security Audit Gems
@@ -102,7 +104,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0' # Add to page: <%= console %>
-  # Memory
   gem 'rack-mini-profiler'
   # gem 'memory_profiler'
   # gem 'flamegraph'

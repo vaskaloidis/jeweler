@@ -10,3 +10,6 @@
 
  Metrics/LineLength:
    Enabled: false
+
+ FactoryBot/AttributeDefinedStatically:
+   Enabled: false

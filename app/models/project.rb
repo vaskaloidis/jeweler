@@ -36,6 +36,13 @@ class Project < ApplicationRecord
   validates :name, presence: true
   validates :github_url, presence: true, uniqueness: true
 
+  def add_customer(customer)
+    project_customer = ProjectCustomer.new
+    project_customer.project = self
+    project_customer.user = customer
+    project_customer.save
+  end
+
   # TODO: Scrap this
   def create_event(event_type, message)
     Note.create_event(self, event_type, message)

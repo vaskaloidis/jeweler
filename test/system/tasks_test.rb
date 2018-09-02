@@ -3,7 +3,7 @@ require "application_system_test_case"
 class TasksTest < ApplicationSystemTestCase
   setup do
     @owner = create(:user)
-    @project = create(:project, owner: @owner)
+    @project = create(:project, :seed_tasks_notes, :seed_customer, owner: @owner)
     @task = @project.tasks.first
     login_as(@owner, scope: :user)
   end
