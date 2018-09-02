@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<test_suites>
-  <testsuite name="GitHubAppTest" filepath="test/models/git_hub_app_test.rb" skipped="0" failures="0" errors="0" tests="2" assertions="3" time="1.2705950001254678">
-    <testcase name="test_authorization_url_method" lineno="14" classname="GitHubAppTest" assertions="1" time="0.7965919999405742">
-    </testcase>
-    <testcase name="test_class_gets_functionally_instantiated" lineno="9" classname="GitHubAppTest" assertions="2" time="0.4740030001848936">
-    </testcase>
-  </testsuite>
-</test_suites>

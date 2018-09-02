@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<test_suites>
-  <testsuite name="ProjectIntegrationTest" filepath="test/integration/project_integration_test.rb" skipped="0" failures="0" errors="0" tests="2" assertions="27" time="0.7168389996513724">
-    <testcase name="test_should_update_project" lineno="43" classname="ProjectIntegrationTest" assertions="5" time="0.6108019994571805">
-    </testcase>
-    <testcase name="test_project_gets_created" lineno="6" classname="ProjectIntegrationTest" assertions="22" time="0.10603700019419193">
-    </testcase>
-  </testsuite>
-</test_suites>

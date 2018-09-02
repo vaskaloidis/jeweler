@@ -451,7 +451,6 @@ GEM
     xpath (3.0.0)
       nokogiri (~> 1.8)
     yaml_db (0.2.3)
-    yard (0.9.14)
     yui-compressor (0.12.0)
 
 PLATFORMS
@@ -524,7 +523,6 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webmock
   yaml_db
-  yard
   yui-compressor
 
 RUBY VERSION

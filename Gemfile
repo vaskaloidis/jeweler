@@ -94,7 +94,6 @@ end
 group :development do
   # gem 'guard'
   # gem 'guard-minitest'
-  gem 'yard'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'bundler-audit' # TODO: Use security Audit Gems
