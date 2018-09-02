@@ -11,7 +11,7 @@ require 'carrierwave/orm/activerecord'
 
 module JewlerCRM
   class Application < Rails::Application
-    config.load_defaults 5.2 # TODO: Update this with Rails version once we update to 5.2
+    config.load_defaults 5.1 # TODO: Update this with Rails version once we update to 5.2
 
     config.generators do |g|
       g.factory_bot dir: 'test/factories'
