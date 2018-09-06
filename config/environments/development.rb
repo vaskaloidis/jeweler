@@ -1,6 +1,6 @@
 Rails.application.configure do
-  config.log_level = :debug
-  Bullet.enable = true
+  # config.log_level = :debug
+  Bullet.enable = false
   Bullet.alert = false
   Bullet.bullet_logger = true
   Bullet.console = true

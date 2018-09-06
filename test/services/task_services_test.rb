@@ -4,12 +4,13 @@ class TaskServicesTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @project = create(:project)
+    @project = create(:project, :seed_tasks_notes, :seed_customer)
     @user = @project.owner
     sign_in @user
   end
 
   test 'create task service' do
+    skip 'replacing with trailblazer operation'
     sprint = create(:sprint)
     new_task = attributes_for(:new_task)
     new_task[:sprint_id] = sprint.id
@@ -27,7 +28,6 @@ class TaskServicesTest < ActionDispatch::IntegrationTest
     assert_equal new_task[:rate].to_f, task.rate.to_f
     assert_equal new_task[:sprint_id], task.sprint.id
   end
-
 
   test 'delete task service' do
     task = create(:task, deleted: false)
@@ -51,7 +51,7 @@ class TaskServicesTest < ActionDispatch::IntegrationTest
   end
 
   test 'set current task service' do
-    project = create(:project)
+    project = create(:project, :seed_tasks_notes, :seed_customer)
     sprint = project.current_sprint
     task = sprint.tasks.first
     SetCurrentTask.call(task)

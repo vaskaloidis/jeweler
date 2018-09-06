@@ -1,9 +1,11 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy]
+  before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy, :users]
   # before_action :verify_sprints_exist, only: [:show, :edit, :update, :create]
   before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
-  respond_to :html, :js, only: [:request_payment]
+  respond_to :html, :js, only: [:request_payment, :users]
+
+  def users; end
 
   def commit_codes_modal
     respond_to do |format|
@@ -16,12 +18,13 @@ class ProjectsController < ApplicationController
   def index
     @owner_projects = current_user.owner_projects
     @customer_projects = current_user.customer_projects
+    @developer_projects = current_user.developer_projects
   end
 
   # GET /projects/1
   # GET /projects/1.json
   def show
-    # TODO: Move this to the GitHub Class, use Gem. This is garbage
+    # TODO: Move this to the GitHub Class, use Gem. This is garbage. Terrible. Digusting.
     readme_feature = false
     if readme_feature
       gh_url = if @project.github_url.ends_with? '/'

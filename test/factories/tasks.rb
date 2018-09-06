@@ -5,6 +5,7 @@ FactoryBot.define do
     rate Random.rand(50)
     complete false
     sprint
+    user { sprint.project.owner }
     planned_hours Random.rand(20)
     deleted false
 
@@ -20,12 +21,14 @@ FactoryBot.define do
       hours '14'
       complete true
     end
+
     factory :new_task, class: 'Task' do
       description 'new task desc'
       rate '13'
       planned_hours '14'
       hours '15'
     end
+
     factory :task_in_current_sprint do
       association :sprint, factory: :current_sprint
     end

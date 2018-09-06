@@ -7,7 +7,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @task = create(:task)
-    @project = create(:project)
+    @project = create(:project, :seed_tasks_notes, :seed_customer)
     @user = @project.owner
     sign_in @user
     # TODO: Security Checks / Permissions Checks (Customer VS. Owner)
@@ -102,7 +102,7 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'set current task' do
-    project = create(:project)
+    project = create(:project, :seed_tasks_notes, :seed_customer)
     sprint = project.current_sprint
     task = sprint.tasks.first
     get set_current_task_path(task), xhr: true

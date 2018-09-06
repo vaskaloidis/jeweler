@@ -6,7 +6,7 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @sprint = create(:sprint)
+    @sprint = create :sprint
     @owner = @sprint.project.owner
     @customer = @sprint.project.customers.first
   end
@@ -72,7 +72,7 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
 
   test 'set current sprint' do
     sign_in @owner
-    project = create(:project)
+    project = create(:project, :seed_tasks_notes, :seed_customer)
     next_sprint = project.get_sprint(project.sprint_total - 1)
     if next_sprint.current?
       next_sprint = project.get_sprint(project.sprint_total - 2)

@@ -6,11 +6,12 @@ class Project < ApplicationRecord
   include Totalable
   include Maxable
 
-  after_save :build_sprints, if: ->(obj) { obj.sprint_total.present? || obj.sprint_total_changed? }
+  after_save :build_sprints, if: ->(obj) {obj.sprint_total.present? || obj.sprint_total_changed?}
 
   belongs_to :current_task, class_name: 'Task', foreign_key: 'task_id', inverse_of: 'project', optional: true
   belongs_to :owner, class_name: 'User', foreign_key: 'user_id', inverse_of: 'owner_projects', required: true, dependent: :destroy
-
+  has_many :project_developers, dependent: :destroy
+  has_many :developers, through: :project_developers, source: :user
   has_many :project_customers, dependent: :destroy
   has_many :customers, through: :project_customers, source: :user
   has_many :notes, dependent: :destroy
@@ -23,6 +24,7 @@ class Project < ApplicationRecord
   mount_uploader :image, AvatarUploader
 
   # TODO: Evaluate if we really need all these
+  accepts_nested_attributes_for :developers
   accepts_nested_attributes_for :customers
   accepts_nested_attributes_for :owner
   accepts_nested_attributes_for :sprints

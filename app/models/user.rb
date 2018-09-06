@@ -1,12 +1,12 @@
 class User < ApplicationRecord
   has_many :owner_projects, class_name: 'Project', inverse_of: 'owner', dependent: :destroy
-  has_many :notes, class_name: 'Note', inverse_of: 'author', dependent: :destroy
   has_many :project_customers, dependent: :destroy
   has_many :customer_projects, source: :project, through: :project_customers, dependent: :destroy
-
-  mount_uploader :image, AvatarUploader
-
+  has_many :project_developers, dependent: :destroy
+  has_many :developer_projects, source: :project, through: :project_developers, dependent: :destroy
+  has_many :notes, class_name: 'Note', inverse_of: 'author', dependent: :destroy
   has_many :payments, dependent: :nullify
+  mount_uploader :image, AvatarUploader
 
   accepts_nested_attributes_for :customer_projects
   accepts_nested_attributes_for :owner_projects
@@ -14,37 +14,42 @@ class User < ApplicationRecord
   validates :first_name, :presence => true
   validates :last_name, :presence => true
 
-  # Include default devise modules. Others available are: :timeoutable
+  # Devise modules. Others are: :timeoutable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :lockable, :confirmable, :omniauthable
 
-  def self.get_account(email)
-    if self.account_exists? email
-      return self.where(email: email).first
-    else
-      return false
-    end
+  # @param [Project] project
+  # @return [String] role
+  def role(project)
+    # Role::OWNER if project.owner == self
+    # Role::CUSTOMER if project.customers.include? self
+    # Role::DEVELOPER if project.developers.include? self
+    :owner if project.owner == self
+    :customer if project.customers.include? self
+    :developer if project.developers.include? self
+    false
   end
 
+  # @param [String] email
+  #   # @return [String] role
+  def self.get_account(email)
+    where(email: email).first if account_exists? email
+    false
+  end
+
+  # @param [String] email
   def self.account_exists?(email)
-    unless self.where(email: email).empty?
-      return true
-    else
-      return false
-    end
+    true unless where(email: email).empty?
+    false
   end
 
   def full_name
-    return self.first_name + ' ' + self.last_name
+    first_name + ' ' + last_name
   end
 
   def is_god?
-    if self.email == 'vas.kaloidis@gmail.com'
-      return true
-    else
-      return false
-    end
+    email == 'vas.kaloidis@gmail.com'
   end
 
   def first_last_name_email
@@ -52,7 +57,7 @@ class User < ApplicationRecord
   end
 
   def invitations
-    return Invitation.where(email: self.email).all
+    Invitation.where(email: email).all
   end
 
   # class << self
@@ -63,6 +68,7 @@ class User < ApplicationRecord
   def self.current_user
     Thread.current[:current_user]
   end
+
   # end
 
   def self.god
@@ -70,7 +76,7 @@ class User < ApplicationRecord
   end
 
   def github_installed?
-    !oauth.nil? and !oauth.empty?
+    !oauth.nil? && !oauth.empty?
   end
 
 end

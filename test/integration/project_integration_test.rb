@@ -42,7 +42,7 @@ class ProjectIntegrationTest < ActionDispatch::IntegrationTest
 
   test 'should update project' do
     # @user = create(:owner)
-    @project = create(:project)
+    @project = create(:project, :seed_tasks_notes, :seed_customer)
     @user = @project.owner
     sign_in @user
 

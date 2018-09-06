@@ -93,10 +93,33 @@
   </div>
 <% end %>
 
+<% unless current_user.developer_projects.empty? %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Projects as Developer
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="list-group">
+            <% current_user.developer_projects.each do |project| %>
+              <a href="<%= project_path(project) %>" class="list-group-item">
+                <h4 class="list-group-item-heading"><%= project.name %></h4>
+                <p class="list-group-item-text">
+                <p><%= project.description %></p>
+              </a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <% unless current_user.customer_projects.empty? %>
   <div class="panel panel-default">
     <div class="panel-heading">
-      Projects Member
+      Projects as Customer
     </div>
     <div class="panel-body">
       <div class="row">
