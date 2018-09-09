@@ -6,7 +6,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @project = create(:project, :seed_tasks_notes, :seed_customer)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users)
     @note = create(:note)
     @customer = @project.customers.first
     @owner = @project.owner

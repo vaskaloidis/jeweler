@@ -22,7 +22,13 @@ FactoryBot.define do
     #   create_list(:sprint, evaluator.phases, project: project)
     # end
 
-    trait :seed_customer do
+    trait :seed_owner do
+      after(:create) do |project, evaluator|
+        project.owner = create(:user)
+      end
+    end
+
+    trait :seed_project_users do
       after(:create) do |project, evaluator|
         create_list(:project_customer, 2, project: project)
         create_list(:project_developer, 2, project: project)

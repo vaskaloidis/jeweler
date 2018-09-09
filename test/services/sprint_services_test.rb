@@ -4,7 +4,7 @@ class SprintServicesTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @project = create(:project, :seed_tasks_notes, :seed_customer)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users)
     @owner = @project.owner
     @customer = @project.customers.first
   end

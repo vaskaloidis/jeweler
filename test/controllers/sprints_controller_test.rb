@@ -72,7 +72,7 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
 
   test 'set current sprint' do
     sign_in @owner
-    project = create(:project, :seed_tasks_notes, :seed_customer)
+    project = create(:project, :seed_tasks_notes, :seed_project_users)
     next_sprint = project.get_sprint(project.sprint_total - 1)
     if next_sprint.current?
       next_sprint = project.get_sprint(project.sprint_total - 2)

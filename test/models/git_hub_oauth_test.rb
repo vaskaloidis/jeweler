@@ -11,7 +11,7 @@ class GitHubOauthTest < ActiveSupport::TestCase
     @hook_url = 'http://example.com/hook'
 
     @owner   = create(:user, oauth: @oauth_token)
-    @project = create(:project, :seed_tasks_notes, :seed_customer, github_url: @github_url, owner: @owner)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users, github_url: @github_url, owner: @owner)
   end
 
   test '#new should set a project in GitHubOauth.new' do

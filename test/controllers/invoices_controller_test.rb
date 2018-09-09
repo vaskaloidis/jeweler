@@ -4,7 +4,7 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @project = create(:project, :seed_tasks_notes, :seed_customer)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users)
     @sprint = @project.sprints.first
     @estimate = false
     @invoice = Invoice.new(sprint: @sprint,

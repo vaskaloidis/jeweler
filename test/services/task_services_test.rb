@@ -4,7 +4,7 @@ class TaskServicesTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @project = create(:project, :seed_tasks_notes, :seed_customer)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users)
     @user = @project.owner
     sign_in @user
   end
@@ -51,7 +51,7 @@ class TaskServicesTest < ActionDispatch::IntegrationTest
   end
 
   test 'set current task service' do
-    project = create(:project, :seed_tasks_notes, :seed_customer)
+    project = create(:project, :seed_tasks_notes, :seed_project_users)
     sprint = project.current_sprint
     task = sprint.tasks.first
     SetCurrentTask.call(task)

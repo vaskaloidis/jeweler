@@ -5,7 +5,7 @@ require 'application_system_test_case'
 class ProjectsTest < ApplicationSystemTestCase
   setup do
     @owner = create(:user)
-    @project = create(:project, :seed_tasks_notes, :seed_customer, owner: @owner)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users, owner: @owner)
     login_as(@owner, scope: :user)
   end
 

@@ -4,7 +4,7 @@ class ProjectTest < ActiveSupport::TestCase
   should have_many(:sprints)
 
   setup do
-    @project = create(:project, :seed_tasks_notes, :seed_customer)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users)
   end
 
   test 'creates a valid project' do
@@ -63,9 +63,9 @@ class ProjectTest < ActiveSupport::TestCase
 
   test 'github_installed? method' do
     installed_user = create(:user, oauth: '1245')
-    installed_project = create(:project, :seed_tasks_notes, :seed_customer, owner: installed_user)
+    installed_project = create(:project, :seed_tasks_notes, :seed_project_users, owner: installed_user)
     not_installed_user = create(:user)
-    not_installed_project = create(:project, :seed_tasks_notes, :seed_customer, owner: not_installed_user)
+    not_installed_project = create(:project, :seed_tasks_notes, :seed_project_users, owner: not_installed_user)
     assert installed_project.github_installed?
     refute not_installed_project.github_installed?
   end

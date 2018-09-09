@@ -1,13 +1,14 @@
 FactoryBot.define do
   factory :task, class: 'Task' do
+    sprint
     description Faker::ChuckNorris.fact
     hours Random.rand(20)
     rate Random.rand(50)
     complete false
-    sprint
-    user { sprint.project.owner }
     planned_hours Random.rand(20)
     deleted false
+    created_by { sprint.project.owner }
+    assigned_to
 
     factory :planned_task do
       hours 0
