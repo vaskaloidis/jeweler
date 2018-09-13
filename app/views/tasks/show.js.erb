@@ -1,4 +1,5 @@
 $('#modal_target').html('<%= j render @task %>');
+
 <%= render 'renderers/render_modal', title: 'View Task: ' + @task.code,
                                      display_close: true,
-                                     small_modal: true %>
+                                     medium_modal: true %>

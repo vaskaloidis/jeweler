@@ -37,6 +37,13 @@ class Project < ApplicationRecord
   validates :sprint_current, presence: true
   validates :name, presence: true
   validates :github_url, presence: true, uniqueness: true
+  # validate :validate_sprint_count TODO: Enable validate_sprint_count validation and write model unit tests.
+
+  def validate_sprint_count
+    if sprint_current > sprint_total
+      errors.add(:sprint_current, 'Current-Sprint must be less than or equal to Total-Sprint.')
+    end
+  end
 
   # TODO: Scrap this
   def create_event(event_type, message)

@@ -5,6 +5,10 @@
   <span><strong>Hours: </strong><%= task.try(:hours).hours %></span><br>
   <span><strong>Cost: </strong><%= task.try(:cost).money %></span><br>
   <span><strong>Task: </strong><%= task.try(:description) %></span><br>
-  <span><strong>Created By: </strong><%= task.try(:created_by).try(:full_name) %></span>
-  <span><strong>Assigned To: </strong><%= task.try(:assigned_to).try(:full_name) %></span>
+  <span><strong>Created By: </strong><%= task.try(:created_by).try(:full_name) %></span><br>
+  <span><strong>Assigned To: </strong><%= task.try(:assigned_to).try(:full_name) %></span><br>
 </div>
+
+<hr>
+
+<h3>Events</h3>

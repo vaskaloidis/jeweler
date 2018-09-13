@@ -18,7 +18,8 @@ class Task < ApplicationRecord
   validates :hours, numericality: {message: 'Must be a number.'}, allow_nil: true
   validates :description, presence: {message: 'Cannot be empty.'}
   validates :rate, presence: {message: 'must cannot me empty.'}, numericality: {message: 'must be a number.'}
-  validates :validate_created_by, :validate_assigned_to
+  validate :validate_created_by
+  validate :validate_assigned_to
 
   def code
     raise StandardError.new('task.letter is nil') if letter.nil?

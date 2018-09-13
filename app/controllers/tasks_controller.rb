@@ -3,11 +3,9 @@
 # Controller to handle all the Task Actions, for the Tasks that makeup each sprint
 class TasksController < ApplicationController
   before_action :set_sprint, only: %i[index new cancel]
-  before_action :set_task, only: %i[show edit update destroy complete
-                                    uncomplete set_current]
+  before_action :set_task, only: %i[show edit update destroy complete uncomplete set_current]
   after_action :handle_service_object, only: %i[complete uncomplete destroy set_current]
-  respond_to :js, :json, only: %i[complete uncomplete cancel
-                                  new show create edit update destroy]
+  respond_to :js, :json, only: %i[complete uncomplete cancel new show create edit update destroy]
 
   def index
     @tasks = @sprint.tasks
@@ -17,11 +15,9 @@ class TasksController < ApplicationController
     @task = @sprint.tasks.build
   end
 
-  def show;
-  end
+  def show; end
 
-  def edit;
-  end
+  def edit; end
 
   def create
     @service_object = CreateTask.call(task_params, current_user)
@@ -72,8 +68,7 @@ class TasksController < ApplicationController
     @service_object = UnCompleteTask.call(@task)
   end
 
-  def cancel;
-  end
+  def cancel; end
 
   private
 
