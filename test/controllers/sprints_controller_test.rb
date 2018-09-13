@@ -6,8 +6,9 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @sprint = create :sprint
-    @owner = @sprint.project.owner
+    @owner = create(:user)
+    @project = create(:project, :seed_project_users, owner: @owner)
+    @sprint = @project.get_sprint(2)
     @customer = @sprint.project.customers.first
   end
 

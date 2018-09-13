@@ -57,6 +57,16 @@ class Project < ApplicationRecord
     owner == user
   end
 
+  def add_developer(user)
+    project_developers.create(user: user)
+    reload
+  end
+
+  def add_customer(user)
+    project_customers.create(user: user)
+    reload
+  end
+
   def customer?(user)
     if user.instance_of? String
       user = User.get_account user
@@ -96,15 +106,6 @@ class Project < ApplicationRecord
       true if x.payment_due
     end
     false
-  end
-
-  # TODO: Scrap this if we can, this is crap
-  def non_customers
-    nc = []
-    User.all do |u|
-      nc << u unless customer?(current_user)
-    end
-    nc
   end
 
   def github_installed?

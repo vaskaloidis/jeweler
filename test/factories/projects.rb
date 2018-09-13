@@ -5,16 +5,16 @@ FactoryBot.define do
     end
     name Faker::App.name
     language Faker::ProgrammingLanguage.name
-    sprint_total '5'
-    sprint_current '1'
+    sprint_total {'5'}
+    sprint_current {'1'}
     # sprint_total { phases }
     # sprint_current { Random.rand(phases) }
-    description Faker::ChuckNorris.fact
+    description {Faker::ChuckNorris.fact}
     github_url {Faker::Omniauth.github[:info][:urls][:GitHub] + name}
-    stage_website_url Faker::Internet.domain_name
-    demo_url Faker::Internet.domain_name
-    prod_url Faker::Internet.domain_name
-    complete false
+    stage_website_url {Faker::Internet.domain_name}
+    demo_url {Faker::Internet.domain_name}
+    prod_url {Faker::Internet.domain_name}
+    complete {false}
     association :owner, factory: :owner
     # heroku_token Faker::Omniauth.github['uid']
     # google_analytics_tracking_code Faker::Omniauth.google[:credentials][:token]
@@ -38,20 +38,20 @@ FactoryBot.define do
     trait :seed_tasks_notes do
       after(:create) do |project, evaluator|
         # TODO: Refactor - Iterate over Sprints here, creating tasks cleaner
-        create_list(:task, 2, sprint: evaluator.get_sprint(1))
+        create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(1))
         create_list(:note, 2, sprint: evaluator.get_sprint(1))
-        create_list(:task, 2, sprint: evaluator.get_sprint(2))
+        create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(2))
         create_list(:note, 2, sprint: evaluator.get_sprint(2))
-        create_list(:task, 2, sprint: evaluator.get_sprint(3))
+        create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(3))
         create_list(:note, 2, sprint: evaluator.get_sprint(3))
-        create_list(:task, 2, sprint: evaluator.get_sprint(4))
+        create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(4))
         create_list(:note, 2, sprint: evaluator.get_sprint(4))
-        create_list(:task, 2, sprint: evaluator.get_sprint(5))
+        create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(5))
         create_list(:note, 2, sprint: evaluator.get_sprint(5))
       end
     end
     factory :project_with_github_test_repo do
-      github_url 'https://github.com/vaskaloidis/jeweler_test_repo'
+      github_url {'https://github.com/vaskaloidis/jeweler_test_repo'}
     end
     factory :project_with_current_task do
       after(:create) do |project, evaluator|
@@ -64,18 +64,18 @@ FactoryBot.define do
     transient do
       phases 5
     end
-    name Faker::App.name
-    language Faker::ProgrammingLanguage.name
-    sprint_total '5'
-    sprint_current '1'
+    name {Faker::App.name}
+    language {Faker::ProgrammingLanguage.name}
+    sprint_total {'5'}
+    sprint_current {'1'}
     # sprint_total { phases }
     # sprint_current { Random.rand(phases) }
-    description Faker::ChuckNorris.fact
+    description {Faker::ChuckNorris.fact}
     github_url {Faker::Omniauth.github[:info][:urls][:GitHub] + name}
-    stage_website_url Faker::Internet.domain_name
-    demo_url Faker::Internet.domain_name
-    prod_url Faker::Internet.domain_name
-    complete false
+    stage_website_url {Faker::Internet.domain_name}
+    demo_url {Faker::Internet.domain_name}
+    prod_url{ Faker::Internet.domain_name}
+    complete {false}
     association :owner, factory: :owner
   end
 

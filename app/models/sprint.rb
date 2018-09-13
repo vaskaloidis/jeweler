@@ -15,6 +15,7 @@ class Sprint < ApplicationRecord
   accepts_nested_attributes_for :payments
   accepts_nested_attributes_for :notes
 
+  # TODO: Add validation error for: if sprint_total <= sprint_current
   validates :sprint, presence: true
 
   def closed?

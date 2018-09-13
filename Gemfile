@@ -98,6 +98,8 @@ group :development do
   gem 'binding_of_caller'
   gem 'bundler-audit' # TODO: Use security Audit Gems
   gem 'pry-rails'
+  # gem 'pry'
+  # gem 'pry-debugger'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0' # Add to page: <%= console %>

@@ -17,29 +17,32 @@ class TasksController < ApplicationController
     @task = @sprint.tasks.build
   end
 
-  def show; end
+  def show;
+  end
 
-  def edit; end
+  def edit;
+  end
 
   def create
-    @service_object = CreateTask.call(task_params)
+    @service_object = CreateTask.call(task_params, current_user)
     @task = @service_object.result
     @errors = @service_object.errors
-    Rails.logger.info(@service_object.inspect)
     respond_to do |format|
       format.js
       if @service_object.result.valid?
         format.json {render :show, status: :created, location: @service_object.result}
       else
-        format.json {render json: @service_object.result.errors, status: :unprocessable_entity}
+        format.json {render json: @service_object.errors, status: :unprocessable_entity}
       end
     end
   end
 
   def update
+    @task.update(task_params)
+    @task.errors.full_messages.map {|e| @errors << 'Error Creating task: ' + e} if @task.invalid?
     respond_to do |format|
       format.js
-      if @task.update(task_params)
+      if @task.valid?
         # TODO: Note.create_event(@task.sprint.project, 'task_updated', 'Updated: ' + @task.description)
         format.json {render :show, status: :ok, location: @task}
       else
@@ -89,6 +92,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:sprint_id, :open, :sprint, :description, :hours, :deleted, :planned_hours, :rate, :complete)
+    params.require(:task).permit(:sprint_id, :open, :sprint, :description, :hours, :deleted, :planned_hours, :rate, :complete, :created_by, :assigned_to)
   end
 end

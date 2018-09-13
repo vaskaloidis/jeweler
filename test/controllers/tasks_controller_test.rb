@@ -10,8 +10,6 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     @project = create(:project, :seed_tasks_notes, :seed_project_users)
     @user = @project.owner
     sign_in @user
-    # TODO: Security Checks / Permissions Checks (Customer VS. Owner)
-    # TODO: Check with a customer signed in
   end
 
   test 'should get new' do
@@ -30,10 +28,13 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should create task' do
-    sprint = create(:sprint)
-    new_task = attributes_for(:new_task)
+    owner = create(:user)
+    developer = create(:user)
+    project = create(:project, owner: owner, sprint_current: 2, sprint_total: 5)
+    project.add_developer(assigned_to)
+    sprint = project.get_sprint(3)
+    new_task = attributes_for(:task, created_by: owner, assigned_to: developer, sprint: sprint, description: 'new task desc', rate: 13, planned_hours: 14, hours: 15)
     new_task[:sprint_id] = sprint.id
-    Rails.logger.info new_task.inspect
     assert_difference('Task.count') do
       post sprint_tasks_url(sprint), params: { task: new_task }, xhr: true
     end
@@ -46,7 +47,8 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal new_task[:planned_hours].to_f, task.planned_hours.to_f
     assert_equal new_task[:rate].to_f, task.rate.to_f
     assert_equal new_task[:sprint_id], task.sprint.id
-
+    assert_equal new_task[:created_by_id], owner.id
+    assert_equal new_task[:assigned_to_id], developer.id
   end
 
   test 'should edit the task' do
@@ -56,7 +58,14 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update task' do
-    task_update = attributes_for(:task_update)
+    owner = create(:user)
+    developer1 = create(:user)
+    developer2 = create(:user)
+    project = create(:project, owner: owner, sprint_current: 2, sprint_total: 5)
+    project.add_developer(developer1)
+    project.add_developer(developer2)
+    sprint = project.get_sprint(3)
+    task_update = attributes_for(:task, created_by: developer1, assigned_to: developer2, sprint: sprint, description: 'updated desc', rate: 12, planned_hours: 13, hours: 14, complete: true)
     patch task_url(@task), params: {
         task: {
             description: task_update[:description],
@@ -72,6 +81,8 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal task_update[:hours].to_f, @task.hours.to_f
     assert_equal task_update[:planned_hours].to_f, @task.planned_hours.to_f
     assert_equal task_update[:rate].to_f, @task.rate.to_f
+    assert_equal task_update[:created_by_id], developer1.id
+    assert_equal task_update[:assigned_to_id], developer2.id
   end
 
   test 'should set task to deleted status' do

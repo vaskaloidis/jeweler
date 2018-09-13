@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_04_173947) do
+ActiveRecord::Schema.define(version: 2018_09_11_212101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,13 +84,6 @@ ActiveRecord::Schema.define(version: 2018_09_04_173947) do
     t.index ["user_id"], name: "index_project_developers_on_user_id"
   end
 
-  create_table "project_developers_tables", force: :cascade do |t|
-    t.bigint "project_id"
-    t.bigint "user_id"
-    t.index ["project_id"], name: "index_project_developers_tables_on_project_id"
-    t.index ["user_id"], name: "index_project_developers_tables_on_user_id"
-  end
-
   create_table "projects", force: :cascade do |t|
     t.string "name", null: false
     t.string "language"
@@ -141,10 +134,12 @@ ActiveRecord::Schema.define(version: 2018_09_04_173947) do
     t.decimal "planned_hours", default: "0.0"
     t.integer "position"
     t.boolean "deleted", default: false
-    t.bigint "user_id"
+    t.bigint "assigned_to_id"
+    t.bigint "created_by_id"
+    t.index ["assigned_to_id"], name: "index_tasks_on_assigned_to_id"
+    t.index ["created_by_id"], name: "index_tasks_on_created_by_id"
     t.index ["position"], name: "index_tasks_on_position"
     t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
-    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -192,7 +187,10 @@ ActiveRecord::Schema.define(version: 2018_09_04_173947) do
   add_foreign_key "notes", "sprints"
   add_foreign_key "notes", "tasks"
   add_foreign_key "notes", "users"
+  add_foreign_key "project_customers", "projects"
+  add_foreign_key "project_customers", "users"
   add_foreign_key "project_developers", "projects"
   add_foreign_key "project_developers", "users"
-  add_foreign_key "tasks", "users"
+  add_foreign_key "tasks", "users", column: "assigned_to_id"
+  add_foreign_key "tasks", "users", column: "created_by_id"
 end

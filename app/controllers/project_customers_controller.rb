@@ -13,7 +13,7 @@ class ProjectCustomersController < ApplicationController
     end
   end
 
-  def destroy
+  def remove
     @project.customers.delete(@user)
   end
 

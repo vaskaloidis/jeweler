@@ -1,33 +1,18 @@
 FactoryBot.define do
   factory :task, class: 'Task' do
     sprint
-    description Faker::ChuckNorris.fact
-    hours Random.rand(20)
-    rate Random.rand(50)
-    complete false
-    planned_hours Random.rand(20)
-    deleted false
-    created_by { sprint.project.owner }
-    assigned_to
+    description {Faker::ChuckNorris.fact}
+    hours {Random.rand(20)}
+    rate {Random.rand(50)}
+    complete {false}
+    planned_hours {Random.rand(20)}
+    deleted {false}
+    created_by {sprint.project.owner}
+    add_attribute(:assigned_to)
 
     factory :planned_task do
-      hours 0
-      planned_hours Random.rand(1...20)
-    end
-
-    factory :task_update do
-      description 'updated desc'
-      rate '12'
-      planned_hours '13'
-      hours '14'
-      complete true
-    end
-
-    factory :new_task, class: 'Task' do
-      description 'new task desc'
-      rate '13'
-      planned_hours '14'
-      hours '15'
+      hours {0}
+      planned_hours {Random.rand(1...20)}
     end
 
     factory :task_in_current_sprint do

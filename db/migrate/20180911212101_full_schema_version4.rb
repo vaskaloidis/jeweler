@@ -1,6 +1,5 @@
-class FullSchemaVersion2 < ActiveRecord::Migration[5.2]
+class FullSchemaVersion4 < ActiveRecord::Migration[5.2]
   def change
-    enable_extension "plpgsql"
 
     create_table "discussions", force: :cascade do |t|
       t.bigint "note_id"
@@ -121,10 +120,12 @@ class FullSchemaVersion2 < ActiveRecord::Migration[5.2]
       t.decimal "planned_hours", default: "0.0"
       t.integer "position"
       t.boolean "deleted", default: false
-      t.bigint "user_id"
+      t.bigint "assigned_to_id"
+      t.bigint "created_by_id"
+      t.index ["assigned_to_id"], name: "index_tasks_on_assigned_to_id"
+      t.index ["created_by_id"], name: "index_tasks_on_created_by_id"
       t.index ["position"], name: "index_tasks_on_position"
       t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
-      t.index ["user_id"], name: "index_tasks_on_user_id"
     end
 
     create_table "users", force: :cascade do |t|
@@ -172,8 +173,11 @@ class FullSchemaVersion2 < ActiveRecord::Migration[5.2]
     add_foreign_key "notes", "sprints"
     add_foreign_key "notes", "tasks"
     add_foreign_key "notes", "users"
+    add_foreign_key "project_customers", "projects"
+    add_foreign_key "project_customers", "users"
     add_foreign_key "project_developers", "projects"
     add_foreign_key "project_developers", "users"
-    add_foreign_key "tasks", "users"
+    add_foreign_key "tasks", "users", column: "assigned_to_id"
+    add_foreign_key "tasks", "users", column: "created_by_id"
   end
 end

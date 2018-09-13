@@ -6,12 +6,12 @@ class Invitation < ApplicationRecord
 
   def user
     search = User.where(email: email).all
-    false if search.count.zero?
+    return false if search.count.zero?
     search.first
   end
 
   def accept!
-    false unless user
+    return false unless user
     result = if customer?
                project.project_customers.create(user: user)
              else

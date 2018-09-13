@@ -2,67 +2,133 @@ require 'test_helper'
 
 class TaskTest < ActiveSupport::TestCase
 
-  test 'created_by and assigned_to relationships all work' do
+  test 'code' do
+    owner = create(:user)
+    developer = create(:user)
+    project = create(:project, owner: owner, sprint_current: 3, sprint_total: 5)
+    project.add_developer(developer)
+    sprint = project.get_sprint(4)
+    task = Task.create(sprint: sprint, created_by: developer, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    assert_equal 1, sprint.tasks.count
+    assert_equal '#task4a', task.code
+  end
+
+  test 'created_by and assigned_to relationships work' do
     dev1 = create(:user)
     dev2 = create(:user)
     project = create(:project)
     sprint = project.get_sprint(2)
-    task = Tasks.create(sprint: sprint, created_by: dev1, assigned_to: dev2)
-
+    task = Task.create(sprint: sprint, created_by: dev1, assigned_to: dev2)
     assert_equal task.created_by, dev1
     assert_equal task.assigned_to, dev2
   end
 
-  test 'add_developer' do
-    dev = create(:user)
-    project = create(:project, :seed_owner)
-    project.add_developer(dev)
-    assert_includes project.developers, dev1
+  def mock_errors
+    errors_mock = mock('errors')
+    errors_mock.stub(:add)
+    mock
   end
 
-  test 'add_customer' do
-    dev = create(:user)
-    project = create(:project)
-    project.add_customer(dev)
-    assert_includes project.customers, dev
+  test 'validate_assigned_to returns true for the owner' do
+    owner = create(:user)
+    project = create(:project, :seed_tasks_notes, owner: owner)
+    sprint = project.current_sprint
+    task = Task.create(sprint: sprint, created_by: owner, assigned_to: owner, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    task.validate_assigned_to
+    # assert_equal true, task.valid?
+    assert_not_includes task.errors, 'Must only be assigned to the Project Owner or Developer.'
   end
-  test 'add_customer' do
-    customer = create(:user)
+
+  test 'validate_assigned_to returns true for a developer' do
+    owner = create(:user)
     developer = create(:user)
-    project = create(:project)
+    project = create(:project, :seed_tasks_notes, owner: owner)
+    project.add_customer(developer)
+    sprint = project.current_sprint
+    task = Task.create(sprint: sprint, created_by: owner, assigned_to: developer, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    task.validate_assigned_to
+    assert_equal true, task.valid?
+    assert_not_includes task.errors, 'Must only be assigned to the Project Owner or Developer.'
+  end
+
+  test 'validate_assigned_to returns false for a customer' do
+    owner = create(:user)
+    customer = create(:user)
+    project = create(:project, :seed_tasks_notes, owner: owner)
     project.add_customer(customer)
+    sprint = project.current_sprint
+    task = Task.create(sprint: sprint, created_by: owner, assigned_to: customer, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    task.validate_assigned_to
+    assert_equal false, task.valid?
+    assert_includes task.errors, 'Must only be assigned to the Project Owner or Developer.'
+  end
+
+  test 'validate_assigned_to returns false for a non-project user' do
+    owner = create(:user)
+    non_project_user = create(:user)
+    project = create(:project, :seed_tasks_notes, owner: owner)
+    sprint = project.current_sprint
+    task = Task.create(sprint: sprint, created_by: owner, assigned_to: non_project_user, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    task.validate_assigned_to
+    assert_equal true, task.valid?
+    assert_not_includes task.errors, 'Must only be assigned to the Project Owner or Developer.'
+  end
+
+  test 'validate_created_by cannot be nil' do
+    owner = create(:user)
+    project = create(:project, :seed_tasks_notes, owner: owner)
+    sprint = project.current_sprint
+    task = Task.create(sprint: sprint, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    task.validate_created_by
+    assert_equal false, task.valid?
+    assert_includes task.errors, 'Must have created_by assigned.'
+  end
+
+  test 'validate_created_by returns false for a customer' do
+    owner = create(:user)
+    non_project_user = create(:user)
+    project = create(:project, :seed_tasks_notes, owner: owner)
+    sprint = project.current_sprint
+    task = Task.create(sprint: sprint, created_by: non_project_user, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    task.validate_created_by
+    assert_equal false, task.valid?
+    assert_includes task.errors, 'Must be created by the Project Owner or Developer'
+  end
+
+  test 'validate_created_by returns false for a customer' do
+    owner = create(:user)
+    customer = create(:user)
+    project = create(:project, :seed_tasks_notes, owner: owner)
+    project.add_customer(user)
+    sprint = project.current_sprint
+    task = Task.create(sprint: sprint, created_by: customer, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    task.validate_created_by
+    assert_equal false, task.valid?
+    assert_includes task.errors, 'Must be created by the Project Owner or Developer'
+  end
+
+  test 'validate_created_by returns true for owner' do
+    owner = create(:user)
+    project = create(:project, :seed_tasks_notes, owner: owner)
+    sprint = project.current_sprint
+    task = Task.create(sprint: sprint, created_by: owner, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    task.validate_created_by
+    assert_equal true, task.valid?
+    assert_not_includes task.errors, 'Must be created by the Project Owner or Developer'
+    assert_includes task.errors, 'Must have created_by assigned.'
+  end
+
+  test 'validate_created_by returns true for developer' do
+    owner = create(:user)
+    developer = create(:user)
+    project = create(:project, :seed_tasks_notes, owner: owner)
     project.add_developer(developer)
-    assert_true project.customer?(customer)
-    assert_false project.customer?(developer)
+    sprint = project.current_sprint
+    task = Task.create(sprint: sprint, created_by: developer, description: 'task-desc', hours: 5.0, planned_hours: 3.0, rate: 25.0)
+    task.validate_created_by
+    assert_equal true, task.valid?
+    assert_not_includes task.errors, 'Must be created by the Project Owner or Developer'
+    assert_includes task.errors, 'Must have created_by assigned.'
   end
 
-
-  test 'tasks without users are not valid' do
-    owner = create :user
-    project = create :project, owner: owner, sprint_total: 7, sprint_current: 2
-    task = project.get_sprint(4).tasks.create(description: 'task has owner as the user', rate: 13)
-
-    assert_equal task.valid?, false
-  end
-
-  test 'Valid Task is Built' do
-    project = create(:project, :seed_tasks_notes, :seed_project_users)
-    task = build(:task, sprint: project.current_sprint)
-    assert task.valid?
-  end
-
-  test 'Valid Task is Created' do
-    project = create(:project, :seed_tasks_notes, :seed_project_users)
-    task = create(:task, sprint: project.current_sprint)
-    assert task.valid?
-  end
-
-  test 'Task has a valid Sprint' do
-    task = create(:task)
-    sprint = task.sprint
-    assert sprint and sprint.valid?
-
-    project = sprint.project
-    assert project and project.valid?
-  end
 end

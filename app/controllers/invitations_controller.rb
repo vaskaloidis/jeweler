@@ -19,6 +19,7 @@ class InvitationsController < ApplicationController
     else
       # Check if Invitation exists already
       if @project.invitations.where(email: @email).empty?
+
         @invitation = @project.invitations.create(email: @email, user_type: @user_type)
         @errors << 'Error creating invitation' if @invitation.invalid?
 

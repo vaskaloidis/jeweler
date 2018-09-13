@@ -4,11 +4,16 @@
 require 'faker'
 
 # Clear Table Data
-# User.delete_all
-# Project.delete_all
-# ProjectCustomer.delete_all
-# Note.delete_all
-# Discussion.delete_all
+User.delete_all
+Project.delete_all
+ProjectCustomer.delete_all
+ProjectDeveloper.delete_all
+Invitation.delete_all
+Payment.delete_all
+Note.delete_all
+Discussion.delete_all
+Task.delete_all
+Sprint.delete_all
 
 # My User
 u = User.new
@@ -65,6 +70,32 @@ c3.tagline = 'I am Awesome'
 c3.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
 c3.confirm
 c3.save
+d1 = User.new
+d1.email = Faker::Internet.email
+pass = Faker::Internet.password
+d1.password = pass
+d1.password_confirmation = pass
+d1.company = 'Red Tail Software'
+d1.first_name = Faker::Name.first_name
+d1.last_name = Faker::Name.last_name
+d1.website_url = Faker::Internet.url
+d1.tagline = 'A Robot User'
+d1.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
+d1.confirm
+d1.save
+d2 = User.new
+d2.email = Faker::Internet.email
+pass = Faker::Internet.password
+d2.password = pass
+d2.password_confirmation = pass
+d2.company = 'Red Tail Software'
+d2.first_name = Faker::Name.first_name
+d2.last_name = Faker::Name.last_name
+d2.website_url = Faker::Internet.url
+d2.tagline = 'A Robot User'
+d2.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
+d2.confirm
+d2.save
 
 # Owner Project
 p = Project.new
@@ -80,48 +111,44 @@ p.sprint_current = 1
 p.image = Rails.root.join('app/assets/images/seeds/bluehelmet.png').open
 p.save
 
-# Project Customers
-pc = ProjectCustomer.new
-pc.user = c1
-pc.project = p
-pc.save
-pc = ProjectCustomer.new
-pc.user = c2
-pc.project = p
-pc.save
-pc = ProjectCustomer.new
-pc.user = c3
-pc.project = p
-pc.save
+p.project_customers.create(user: c1)
+p.project_customers.create(user: c2)
+p.project_customers.create(user: c3)
+p.project_developers.create(user: d1)
+p.project_developers.create(user: d2)
 
 sprint1 = p.get_sprint(1)
-# Invoice
-sprint1.update(description: 'Get the template purchased. Plan the web application design. Build the relational database.
-    Setup the code plumbing.')
-Task.create(position: 0, sprint: sprint1, description: 'Research and Purchase the template.', planned_hours: rand(0..8), hours: 8, rate: 35)
-Task.create(position: 1, sprint: sprint1, description: 'Design the web application.', planned_hours: rand(0..4), hours: 4, rate: 35)
-Task.create(position: 2, sprint: sprint1, description: 'Design the relational database.', planned_hours: rand(0..5), hours: 5, rate: 35)
-Task.create(position: 3, sprint: sprint1, description: 'Setup the plumbing for the rails project, after generating it.', planned_hours: rand(0..10), hours: 10, rate: 35)
+sprint1.update(description: 'Get the template purchased. Plan the web application design. Build the DB.')
 sprint2 = p.get_sprint(2)
-sprint2.update(description: 'Build the SASS system, and implement the Bootstrap template into Rails. Design the Gem configuration and
-  build Gemfile..')
-Task.create(position: 0, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-Task.create(position: 1, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-Task.create(position: 2, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-Task.create(position: 3, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-
+sprint2.update(description: 'Build the SASS system, and implement the Bootstrap template.')
 sprint3 = p.get_sprint(3)
 sprint3.update(description: 'Scaffold the database and build the relational data structure.')
-Task.create(position: 0, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-Task.create(position: 1, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-Task.create(position: 2, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
-Task.create(position: 3, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
 sprint4 = p.get_sprint(4)
 sprint4.update(description: 'Implement the design into the project scaffold system.')
-Task.create(position: 0, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
-Task.create(position: 1, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
-Task.create(position: 2, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
-Task.create(position: 3, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+
+# Task.create(created_by: u, sprint: sprint, description: 'desc', planned_hours: rand(0..8), hours: 8, rate: 35)
+
+# Task.create(created_by: u, sprint: sprint1, description: Faker::ChuckNorris.fact, planned_hours: rand(0..8), hours: 8, rate: 35)
+
+build_tasks = true
+if build_tasks
+  Task.create(created_by: u, sprint: sprint1, description: Faker::ChuckNorris.fact, planned_hours: rand(0..8), hours: 8, rate: 35)
+  Task.create(created_by: u, sprint: sprint1, description: Faker::ChuckNorris.fact, planned_hours: rand(0..4), hours: 4, rate: 35)
+  Task.create(created_by: d2, assigned_to: d1, sprint: sprint1, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), hours: 5, rate: 35)
+  Task.create(created_by: d2, assigned_to: d1, sprint: sprint1, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), hours: 10, rate: 35)
+  Task.create(created_by: d1, assigned_to: d2, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+  Task.create(created_by: d1, assigned_to: d2, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+  Task.create(created_by: d1, assigned_to: d2, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+  Task.create(created_by: d1, assigned_to: d2, sprint: sprint2, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+  Task.create(created_by: d1, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+  Task.create(created_by: d1, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+  Task.create(created_by: d1, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+  Task.create(created_by: d1, assigned_to: u, sprint: sprint3, description: Faker::ChuckNorris.fact, planned_hours: rand(0..10), rate: 35)
+  Task.create(created_by: d1, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+  Task.create(created_by: d1, assigned_to: d2, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+  Task.create(created_by: d1, assigned_to: u, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+  Task.create(created_by: d1, sprint: sprint4, description: Faker::ChuckNorris.fact, planned_hours: rand(0..5), rate: 35)
+end
 
 # Customer Projects
 p = Project.new
