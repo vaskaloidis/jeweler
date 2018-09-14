@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SprintServicesTest < ActionDispatch::IntegrationTest
+class RequestSprintPaymentTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do

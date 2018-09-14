@@ -20,7 +20,7 @@ class TasksController < ApplicationController
   def edit; end
 
   def create
-    @service_object = CreateTask.call(task_params, current_user)
+    @service_object = CreateTask.call(task_params)
     @task = @service_object.result
     @errors = @service_object.errors
     respond_to do |format|
@@ -87,6 +87,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:sprint_id, :open, :sprint, :description, :hours, :deleted, :planned_hours, :rate, :complete, :created_by, :assigned_to)
+    params.require(:task).permit(:sprint_id, :open, :sprint, :description, :hours, :deleted, :planned_hours, :rate, :complete, :created_by_id, :assigned_to_id)
   end
 end

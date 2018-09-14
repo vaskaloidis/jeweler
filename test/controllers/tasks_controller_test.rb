@@ -31,9 +31,9 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     owner = create(:user)
     developer = create(:user)
     project = create(:project, owner: owner, sprint_current: 2, sprint_total: 5)
-    project.add_developer(assigned_to)
+    project.add_developer(developer)
     sprint = project.get_sprint(3)
-    new_task = attributes_for(:task, created_by: owner, assigned_to: developer, sprint: sprint, description: 'new task desc', rate: 13, planned_hours: 14, hours: 15)
+    new_task = attributes_for(:task, created_by_id: owner.id, assigned_to_id: developer.id, sprint: sprint, description: 'new task desc', rate: 13, planned_hours: 14, hours: 15)
     new_task[:sprint_id] = sprint.id
     assert_difference('Task.count') do
       post sprint_tasks_url(sprint), params: { task: new_task }, xhr: true
@@ -65,15 +65,8 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     project.add_developer(developer1)
     project.add_developer(developer2)
     sprint = project.get_sprint(3)
-    task_update = attributes_for(:task, created_by: developer1, assigned_to: developer2, sprint: sprint, description: 'updated desc', rate: 12, planned_hours: 13, hours: 14, complete: true)
-    patch task_url(@task), params: {
-        task: {
-            description: task_update[:description],
-            hours: task_update[:hours],
-            planned_hours: task_update[:planned_hours],
-            rate: task_update[:rate]
-        }
-    }, xhr: true
+    task_update = attributes_for(:task, created_by_id: developer1.id, assigned_to_id: developer2.id, sprint_id: @task.sprint.id, description: 'updated desc', rate: 12, planned_hours: 13, hours: 14, complete: true)
+    patch task_url(@task), params: { task: task_update }, xhr: true
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
     @task.reload

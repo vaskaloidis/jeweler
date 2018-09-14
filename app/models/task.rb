@@ -51,11 +51,10 @@ class Task < ApplicationRecord
   def validate_created_by
     project = sprint.project
     if created_by.nil?
-      errors.add(:created_by, 'Must have created_by assigned.')
-      # TODO: Add fatal logger here
+      errors.add(:created_by, 'cannot be nil.')
     else
-      unless created_by == project.owner || project.developers.include?(created_by)
-        errors.add(:created_by, 'Must be created by the Project Owner or Developer.')
+      unless created_by.id == project.owner.id || project.developers.include?(created_by)
+        errors.add(:created_by, 'must be the Project Owner or a Developer.')
       end
     end
   end
@@ -63,8 +62,8 @@ class Task < ApplicationRecord
   def validate_assigned_to
     project = sprint.project
     unless assigned_to.nil?
-      unless created_by == project.owner || project.developers.include?(created_by)
-        errors.add(:assigned_to, 'Must only be assigned to the Project Owner or Developer.')
+      unless assigned_to.id == project.owner.id || project.developers.include?(assigned_to)
+        errors.add(:assigned_to, 'must be the Project Owner or a Developer.')
       end
     end
   end

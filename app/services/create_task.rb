@@ -3,9 +3,8 @@
 # Creates a Task from the supplied params, then
 #  sets that task as Current-Task if appropriate.
 class CreateTask < Jeweler::Service
-  def initialize(task_params, current_user)
+  def initialize(task_params)
     @task = Task.new(task_params)
-    @task.user = current_user
   end
 
   def call
@@ -21,6 +20,7 @@ class CreateTask < Jeweler::Service
   end
 
   private
+
   attr_reader :task
 
   def create_note
