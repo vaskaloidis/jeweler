@@ -47,11 +47,11 @@
           <div class="panel-body">
             <% unless @project.owner?(current_user) %>
               <% if current_user.role(@project) == :customer %>
-                <%= link_to customer_leave_project_path(@project.id, current_user) do %>
+                <%= link_to customer_leave_project_path(@project.id) do %>
                   <i class="linecons-trash"></i> Leave Project
                 <% end %>
               <% else %>
-                <%= link_to developer_leave_project_path(@project.id, current_user) do %>
+                <%= link_to developer_leave_project_path(@project.id) do %>
                   <i class="linecons-trash"></i> Leave Project
                 <% end %>
               <% end %>

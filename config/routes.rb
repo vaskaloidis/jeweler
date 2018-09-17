@@ -35,10 +35,10 @@ Rails.application.routes.draw do
 
   # Project Users: Customers and Developers
   get '/project/:id/users', to: 'projects#users', as: 'project_users'
-  get '/project/:project_id/leave/:user_id', to: 'project_developers#leave', as: 'developer_leave_project'
-  delete '/project/:project_id/user/:user_id', to: 'project_developers#remove', as: 'remove_project_developer'
-  get '/project/:project_id/leave/:user_id', to: 'project_customers#leave', as: 'customer_leave_project'
-  delete '/project/:project_id/user/:user_id', to: 'project_customers#remove', as: 'remove_project_customer'
+  get '/developer_leave/:project_id/', to: 'project_developers#leave', as: 'developer_leave_project'
+  delete '/project/:project_id/remove_developer/:user_id', to: 'project_developers#remove', as: 'remove_project_developer'
+  get '/customer_leave/:project_id/', to: 'project_customers#leave', as: 'customer_leave_project'
+  delete '/project/:project_id/remove_customer/:user_id', to: 'project_customers#remove', as: 'remove_project_customer'
 
   # Invoices
   get '/invoice/:sprint_id/generate/:estimate', to: 'invoices#generate', as: 'generate_invoice'

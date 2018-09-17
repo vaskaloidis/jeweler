@@ -32,8 +32,8 @@ u.save
 
 # 3 Generated Customers
 c1 = User.new
-c1.email = Faker::Internet.email
-pass = Faker::Internet.password
+c1.email = 'customer1@gmail.com'
+pass = 'password'
 c1.password = pass
 c1.password_confirmation = pass
 c1.company = 'Red Tail Software'
@@ -45,8 +45,8 @@ c1.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::
 c1.confirm
 c1.save
 c2 = User.new
-c2.email = Faker::Internet.email
-pass = Faker::Internet.password
+c2.email = 'customer2@gmail.com'
+pass = 'password'
 c2.password = pass
 c2.password_confirmation = pass
 c2.company = 'Jim Bob Software Corporation'
@@ -58,8 +58,8 @@ c2.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::
 c2.confirm
 c2.save
 c3 = User.new
-c3.email = Faker::Internet.email
-pass = Faker::Internet.password
+c3.email = 'customer3@gmail.com'
+pass = 'password'
 c3.password = pass
 c3.password_confirmation = pass
 c3.company = 'Google Software Company'
@@ -70,9 +70,10 @@ c3.tagline = 'I am Awesome'
 c3.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::Address.country
 c3.confirm
 c3.save
+
 d1 = User.new
-d1.email = Faker::Internet.email
-pass = Faker::Internet.password
+d1.email = 'developer1@gmail.com'
+pass = 'password'
 d1.password = pass
 d1.password_confirmation = pass
 d1.company = 'Red Tail Software'
@@ -84,8 +85,8 @@ d1.location = Faker::Address.city + ', ' + Faker::Address.state + ', ' + Faker::
 d1.confirm
 d1.save
 d2 = User.new
-d2.email = Faker::Internet.email
-pass = Faker::Internet.password
+d2.email = 'developer2@gmail.com'
+pass = 'password'
 d2.password = pass
 d2.password_confirmation = pass
 d2.company = 'Red Tail Software'

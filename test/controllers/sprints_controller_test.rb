@@ -40,21 +40,15 @@ class SprintsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update sprint' do
     sign_in @owner
-    base_sprint = create(:sprint, open: true, description: 'some-desc', payment_due: false)
-    patch sprint_url(base_sprint), params: {
-      sprint: {
-        description: 'updated-sprint-desc',
-        payment_due: true,
-        open: false
-      }
-    }, xhr: true
+    sprint_modifications = { description: 'updated-sprint-desc', payment_due: true, open: false }
+    sprint = create(:sprint, open: true, description: 'some-desc', payment_due: false)
+    patch sprint_url(sprint), params: { sprint: sprint_modifications }, xhr: true
     assert_response :success
     assert_equal 'text/javascript', @response.content_type
-    base_sprint.reload
-    last_sprint = Sprint.last
-    assert_equal 'updated-sprint-desc', last_sprint.description
-    assert_equal true, last_sprint.payment_due
-    assert_equal false, last_sprint.open
+    result = sprint.reload
+    assert_equal sprint_modifications[:description], result.description
+    assert_equal sprint_modifications[:payment_due], result.payment_due
+    assert_equal sprint_modifications[:open], result.open
   end
 
   test 'edit sprint description' do

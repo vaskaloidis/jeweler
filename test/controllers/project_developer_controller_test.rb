@@ -11,7 +11,7 @@ class ProjectDeveloperControllerTest < ActionDispatch::IntegrationTest
   test "should leave project" do
     @user = @project_developer.user
     sign_in @user
-    get developer_leave_project_url(@project, @user)
+    get developer_leave_project_url(@project)
     assert_redirected_to root_path
     @project.reload
     assert_not_includes @project.developers, @user

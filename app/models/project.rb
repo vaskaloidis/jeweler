@@ -11,9 +11,9 @@ class Project < ApplicationRecord
   belongs_to :current_task, class_name: 'Task', foreign_key: 'task_id', inverse_of: 'project', optional: true
   belongs_to :owner, class_name: 'User', foreign_key: 'user_id', inverse_of: 'owner_projects', required: true, dependent: :destroy
   has_many :project_developers, dependent: :destroy
-  has_many :developers, through: :project_developers, source: :user
+  has_many :developers, through: :project_developers, source: :user, dependent: :destroy
   has_many :project_customers, dependent: :destroy
-  has_many :customers, through: :project_customers, source: :user
+  has_many :customers, through: :project_customers, source: :user, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :sprints, dependent: :destroy
   # has_many :tasks, dependent: :destroy

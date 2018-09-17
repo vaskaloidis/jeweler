@@ -36,10 +36,10 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test 'add_customer' do
-    dev = create(:user)
+    customer = create(:user)
     project = create(:project)
-    project.add_customer(dev)
-    assert_includes project.customers, dev
+    project.add_customer(customer)
+    assert_includes project.customers, customer
   end
 
   test 'customer?' do
