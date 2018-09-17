@@ -3,6 +3,8 @@ class Task < ApplicationRecord
   belongs_to :sprint, required: true
   has_one :project, class_name: 'Project', inverse_of: 'current_task', dependent: :nullify
   has_many :notes, dependent: :nullify
+  belongs_to :assigned_to, class_name: 'User', optional: true
+  belongs_to :created_by, class_name: 'User'
 
   default_scope {where(deleted: false)}
   scope :incomplete_tasks, -> {where(complete: false, deleted: false)}
@@ -16,11 +18,8 @@ class Task < ApplicationRecord
   validates :hours, numericality: {message: 'Must be a number.'}, allow_nil: true
   validates :description, presence: {message: 'Cannot be empty.'}
   validates :rate, presence: {message: 'must cannot me empty.'}, numericality: {message: 'must be a number.'}
-
-  def set_position
-    self.position = sprint.next_position_int
-    save
-  end
+  validate :validate_created_by
+  validate :validate_assigned_to
 
   def code
     raise StandardError.new('task.letter is nil') if letter.nil?
@@ -47,6 +46,33 @@ class Task < ApplicationRecord
     current_task = sprint.project.current_task
     return false if current_task.nil?
     current_task == self
+  end
+
+  def validate_created_by
+    project = sprint.project
+    if created_by.nil?
+      errors.add(:created_by, 'cannot be nil.')
+    else
+      unless created_by.id == project.owner.id || project.developers.include?(created_by)
+        errors.add(:created_by, 'must be the Project Owner or a Developer.')
+      end
+    end
+  end
+
+  def validate_assigned_to
+    project = sprint.project
+    unless assigned_to.nil?
+      unless assigned_to.id == project.owner.id || project.developers.include?(assigned_to)
+        errors.add(:assigned_to, 'must be the Project Owner or a Developer.')
+      end
+    end
+  end
+
+  private
+
+  def set_position
+    self.position = sprint.next_position_int
+    save
   end
 
 end

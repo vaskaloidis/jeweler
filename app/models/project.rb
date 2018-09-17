@@ -6,13 +6,14 @@ class Project < ApplicationRecord
   include Totalable
   include Maxable
 
-  after_save :build_sprints, if: ->(obj) { obj.sprint_total.present? || obj.sprint_total_changed? }
+  after_save :build_sprints, if: ->(obj) {obj.sprint_total.present? || obj.sprint_total_changed?}
 
   belongs_to :current_task, class_name: 'Task', foreign_key: 'task_id', inverse_of: 'project', optional: true
   belongs_to :owner, class_name: 'User', foreign_key: 'user_id', inverse_of: 'owner_projects', required: true, dependent: :destroy
-
+  has_many :project_developers, dependent: :destroy
+  has_many :developers, through: :project_developers, source: :user, dependent: :destroy
   has_many :project_customers, dependent: :destroy
-  has_many :customers, through: :project_customers, source: :user
+  has_many :customers, through: :project_customers, source: :user, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :sprints, dependent: :destroy
   # has_many :tasks, dependent: :destroy
@@ -23,6 +24,7 @@ class Project < ApplicationRecord
   mount_uploader :image, AvatarUploader
 
   # TODO: Evaluate if we really need all these
+  accepts_nested_attributes_for :developers
   accepts_nested_attributes_for :customers
   accepts_nested_attributes_for :owner
   accepts_nested_attributes_for :sprints
@@ -35,6 +37,13 @@ class Project < ApplicationRecord
   validates :sprint_current, presence: true
   validates :name, presence: true
   validates :github_url, presence: true, uniqueness: true
+  # validate :validate_sprint_count TODO: Enable validate_sprint_count validation and write model unit tests.
+
+  def validate_sprint_count
+    if sprint_current > sprint_total
+      errors.add(:sprint_current, 'Current-Sprint must be less than or equal to Total-Sprint.')
+    end
+  end
 
   # TODO: Scrap this
   def create_event(event_type, message)
@@ -53,6 +62,16 @@ class Project < ApplicationRecord
   def owner?(user = nil)
     return (owner == User.current_user) if user.nil?
     owner == user
+  end
+
+  def add_developer(user)
+    project_developers.create(user: user)
+    reload
+  end
+
+  def add_customer(user)
+    project_customers.create(user: user)
+    reload
   end
 
   def customer?(user)
@@ -94,15 +113,6 @@ class Project < ApplicationRecord
       true if x.payment_due
     end
     false
-  end
-
-  # TODO: Scrap this if we can, this is crap
-  def non_customers
-    nc = []
-    User.all do |u|
-      nc << u unless customer?(current_user)
-    end
-    nc
   end
 
   def github_installed?

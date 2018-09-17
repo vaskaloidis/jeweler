@@ -18,12 +18,15 @@ class SprintsController < ApplicationController
   def edit; end
 
   def update
+    @sprint.update(sprint_id_params)
     respond_to do |format|
       format.js
-      if @sprint.update(sprint_id_params)
+      if @sprint.valid?
+        Rails.logger.info('Sprint updated Succesfully!')
         format.html {redirect_to @sprint, notice: 'Sprint was successfully updated.'}
         format.json {render :show, status: :ok, location: @sprint}
       else
+        Rails.logger.info("Sprint updated Failed. Errors: #{@sprint.errors.full_messages.count} + #{@sprint.errors.full_messages.first}")
         @sprint.errors.full_messages.map {|e| @errors << 'Error Closing Sprint: ' + e}
         format.html {render :edit}
         format.json {render json: @sprint.errors, status: :unprocessable_entity}

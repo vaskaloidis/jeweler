@@ -1,21 +1,16 @@
 <% if task.sprint.project.owner?(user) %>
+		
   <span id="task_<%= task.id.to_s %>" class="task-actions">
-
     <%= link_to 'View',
                 task_path(task), remote: true,
                 class: 'btn btn-sm btn-primary' %>
 
     <% if task.sprint.open? %>
-
       <% unless task.current? %>
         <%= link_to 'Current Task',
                     set_current_task_path(task.id), remote: true,
                     class: 'btn btn-sm btn-primary' %>
       <% end %>
-
-      <%= link_to 'Complete',
-                  complete_task_path(task.id), remote: true,
-                  class: 'btn btn-sm btn-primary' %>
 
       <% if task.complete %>
         <%= link_to 'Incomplete',
@@ -35,11 +30,10 @@
                   remote: true, method: :delete,
                   data: {confirm: "Are you sure?"},
                   class: 'btn btn-sm btn-primary' %>
-
-      <% else %>
-        <span style="display:inline;font-size:1em; padding:5px;" class="alert alert-success">
-          Open Sprint to Modify
-        </span>
+    <% else %>
+      <span style="display:inline;font-size:1em; padding:5px;" class="alert alert-success">
+        Open Sprint to Modify
+      </span>
     <% end %>
 
   </span>

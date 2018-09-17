@@ -2,54 +2,46 @@
 
 class InvitationsController < ApplicationController
   before_action :set_invitation, only: %i[destroy accept decline]
+  respond_to :js, only: [:create, :destroy]
 
   def create
     @email = params[:email]
     @project = Project.find(params[:project_id])
+    @user_type = params[:user_type]
 
     # Check if User is already a member of this project
-    if @project.customer? @email
-      @already_customer = true
+    if @project.customers.include? @email
+      @errors << "#{@email} is already a project customer"
+    elsif @project.developers.include? @email
+      @errors << "#{@email} is already a project developer"
+    elsif @project.owner.email == @email
+      @errors << 'You cannot invite the project Owner'
     else
-      @already_customer = false
       # Check if Invitation exists already
       if @project.invitations.where(email: @email).empty?
-        @invitation_exists = false
 
-        @invitation = @project.invitations.create(email: @email)
+        @invitation = @project.invitations.create(email: @email, user_type: @user_type)
+        @errors << 'Error creating invitation' if @invitation.invalid?
 
         if User.account_exists? @email
-          # TODO: Implement Mailer with delayed job
-          UserInviteMailer.with(email: @email, project: @project.id).invite_user.deliver_now
-          @user_invited = true
+          if @user_type == 'customer'
+            UserInviteMailer.with(email: @email, project: @project.id).invite_customer.deliver_now
+          else
+            UserInviteMailer.with(email: @email, project: @project.id).invite_developer.deliver_now
+          end
+          @notifications << "#{@email} was sent an invitation to join this project."
         else
-          @user_invited = false
+          @notifications << "#{@email} was sent an invitation to join Jeweler + this project."
+          UserInviteMailer.with(email: @email, project: @project.id).invite_user.deliver_now
         end
-        @project.invitations.reload
       else
-        @invitation_exists = true
-      end
-    end
-
-    respond_to do |format|
-      format.js
-      if @invitation.valid?
-        format.json { render :show, status: :created, location: @project_customer }
-      else
-        format.json { render json: @project_customer.errors, status: :unprocessable_entity }
+        @errors << "#{@email} is already invited to the project"
       end
     end
   end
 
   def accept
-    pc = @project.customers.create(@user)
-
-    if pc.valid?
-      @invitation.destroy
-    else
-      @errors << 'Invitation Accept Error: Valid Project Customer could not be created.'
-    end
-
+    @invitation.accept!
     respond_to do |format|
       format.html { redirect_to root_path, notice: 'You have joined the project ' + @project.name }
     end
@@ -57,20 +49,16 @@ class InvitationsController < ApplicationController
 
   # TODO: This is the same as destroy, can we remove it or one or make it an alias
   def decline
-    destroy = @invitation.destroy
+    destroy = @invitation.decline!
     @errors << 'Decline Invitation Error: destroying invitation.' unless destroy
     respond_to do |format|
-      format.html { redirect_to root_path, notice: 'You have declined the project invitation.' }
+      format.html {redirect_to root_path, notice: 'You have declined the project invitation.'}
     end
   end
 
   def destroy
     destroy = @invitation.destroy
     @errors << 'Error destroying invitation.' unless destroy
-    respond_to do |format|
-      format.json { head :no_content }
-      format.js
-    end
   end
 
   private

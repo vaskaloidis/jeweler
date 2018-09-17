@@ -13,6 +13,9 @@ module JewlerCRM
   class Application < Rails::Application
     config.load_defaults 5.1 # TODO: Update this with Rails version once we update to 5.2
 
+    # Load modules in sub-folders for Service Objects
+    # config.autoload_paths += Dir[Rails.root.join('app', 'models', '{*/}')]
+
     config.generators do |g|
       g.factory_bot dir: 'test/factories'
       # g.test_framework :rspec, :fixture => true

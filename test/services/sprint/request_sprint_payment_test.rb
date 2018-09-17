@@ -1,10 +1,10 @@
 require 'test_helper'
 
-class SprintServicesTest < ActionDispatch::IntegrationTest
+class RequestSprintPaymentTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @project = create(:project)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users)
     @owner = @project.owner
     @customer = @project.customers.first
   end

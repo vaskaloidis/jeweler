@@ -8,7 +8,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   # Setup runs before EVERY test
   setup do
     # @owner = create(:owner)
-    @project = create(:project)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users)
     @owner = @project.owner
     @customer = @project.project_customers.first.user
   end

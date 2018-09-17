@@ -1,8 +1,5 @@
-class FullSchema < ActiveRecord::Migration[5.2]
+class FullSchemaVersion4 < ActiveRecord::Migration[5.2]
   def change
-
-    # These are extensions that must be enabled in order to support this database
-    enable_extension "plpgsql"
 
     create_table "discussions", force: :cascade do |t|
       t.bigint "note_id"
@@ -17,6 +14,7 @@ class FullSchema < ActiveRecord::Migration[5.2]
     create_table "invitations", force: :cascade do |t|
       t.string "email"
       t.bigint "project_id"
+      t.integer "user_type", default: 0
       t.datetime "created_at", null: false
       t.datetime "updated_at", null: false
       t.index ["project_id"], name: "index_invitations_on_project_id"
@@ -61,6 +59,15 @@ class FullSchema < ActiveRecord::Migration[5.2]
       t.boolean "v1_tour", default: false
       t.index ["project_id"], name: "index_project_customers_on_project_id"
       t.index ["user_id"], name: "index_project_customers_on_user_id"
+    end
+
+    create_table "project_developers", force: :cascade do |t|
+      t.bigint "project_id"
+      t.bigint "user_id"
+      t.datetime "created_at", null: false
+      t.datetime "updated_at", null: false
+      t.index ["project_id"], name: "index_project_developers_on_project_id"
+      t.index ["user_id"], name: "index_project_developers_on_user_id"
     end
 
     create_table "projects", force: :cascade do |t|
@@ -113,6 +120,10 @@ class FullSchema < ActiveRecord::Migration[5.2]
       t.decimal "planned_hours", default: "0.0"
       t.integer "position"
       t.boolean "deleted", default: false
+      t.bigint "assigned_to_id"
+      t.bigint "created_by_id"
+      t.index ["assigned_to_id"], name: "index_tasks_on_assigned_to_id"
+      t.index ["created_by_id"], name: "index_tasks_on_created_by_id"
       t.index ["position"], name: "index_tasks_on_position"
       t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
     end
@@ -162,6 +173,11 @@ class FullSchema < ActiveRecord::Migration[5.2]
     add_foreign_key "notes", "sprints"
     add_foreign_key "notes", "tasks"
     add_foreign_key "notes", "users"
-
+    add_foreign_key "project_customers", "projects"
+    add_foreign_key "project_customers", "users"
+    add_foreign_key "project_developers", "projects"
+    add_foreign_key "project_developers", "users"
+    add_foreign_key "tasks", "users", column: "assigned_to_id"
+    add_foreign_key "tasks", "users", column: "created_by_id"
   end
 end

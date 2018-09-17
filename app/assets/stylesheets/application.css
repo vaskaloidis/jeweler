@@ -12,6 +12,12 @@
  *
  */
 
+.user-role {
+    margin-top:5px;
+    display: block;
+    font-size: 15px;
+    text-align: center;
+}
 
 .alert-danger > a {
   /*color: white;*/

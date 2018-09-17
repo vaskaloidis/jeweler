@@ -35,6 +35,7 @@ class ApplicationController < ActionController::Base
   def prepare_errors
     @errors = []
     @fatals = []
+    @notifications = []
   end
 
   def log_errors

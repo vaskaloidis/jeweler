@@ -1,6 +1,26 @@
 Rails.application.routes.draw do
 
-  # Ajax TODO: Convert any 'Inline' Actions to use Stock Controller Actions
+  shallow do
+    resources :sprints do
+      resources :tasks
+    end
+    resources :notes do
+      resources :discussions
+    end
+    resources :projects do
+      resources :notes
+      resources :sprints
+      resources :project_developers, only: %i[leave remove] #TODO: Remove or fix
+      resources :project_customers, only: %i[leave remove] #TODO: Remove or fix
+      resources :payments
+      resources :invitations, only: %i[accept decline create]
+    end
+  end
+  resources :invitations
+  resources :tasks
+  resources :charges
+
+  # Shared TODO: Convert any 'Inline' Actions to use its 'Stock' Controller Actions
   match '/new_charge_modal', to: 'charges#generate_modal', via: [:post], as: 'generate_charge_modal'
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
 
@@ -13,9 +33,12 @@ Rails.application.routes.draw do
   get '/invitation/:id/decline', to: 'invitations#decline', as: 'decline_invitation'
   delete 'invitation/:id/destroy', to: 'invitations#destroy', as: 'destroy_invitation'
 
-  # Customers
-  get '/project/:project_id/leave/:user_id', to: 'project_customers#leave', as: 'leave_project'
-  delete '/project/:project_id/remove/:user_id', to: 'project_customers#remove', as: 'remove_customer'
+  # Project Users: Customers and Developers
+  get '/project/:id/users', to: 'projects#users', as: 'project_users'
+  get '/developer_leave/:project_id/', to: 'project_developers#leave', as: 'developer_leave_project'
+  delete '/project/:project_id/remove_developer/:user_id', to: 'project_developers#remove', as: 'remove_project_developer'
+  get '/customer_leave/:project_id/', to: 'project_customers#leave', as: 'customer_leave_project'
+  delete '/project/:project_id/remove_customer/:user_id', to: 'project_customers#remove', as: 'remove_project_customer'
 
   # Invoices
   get '/invoice/:sprint_id/generate/:estimate', to: 'invoices#generate', as: 'generate_invoice'
@@ -53,25 +76,6 @@ Rails.application.routes.draw do
   post '/github_hook', to: 'github#hook', as: 'execute_github_webhook'
   get '/github_authorize', to: 'github#authorize_account', as: 'authorize_github'
   get '/github_install_webhook/:project_id', to: 'github#install_webhook', as: 'install_github_webhook'
-
-  shallow do
-    resources :sprints do
-      resources :tasks
-    end
-    resources :notes do
-      resources :discussions
-    end
-    resources :projects do
-      resources :notes
-      resources :sprints
-      resources :project_customers
-      resources :payments
-      resources :invitations
-    end
-  end
-
-  resources :tasks
-  resources :charges
 
   # Devise
   devise_for :users, :controllers => {:omniauth_callbacks => "omniauth_callbacks"}
