@@ -23,21 +23,10 @@ class UserTest < ActiveSupport::TestCase
     assert_equal expected, user.full_name
   end
 
-  test 'is_god' do
-    user = create(:user, email: 'vas.kaloidis@gmail.com')
-    assert_equal true, user.is_god?
-  end
-
   test 'first_last_name_email' do
     user = create(:user, first_name: 'firstname', last_name: 'lastname', email: 'firstname_lastname_email@example.com')
     expected = 'firstname lastname - firstname_lastname_email@example.com'
     assert_equal expected, user.first_last_name_email
-  end
-
-  test 'god' do
-    user = create(:user, email: 'vas.kaloidis@gmail.com')
-    expected = user.email
-    assert_equal expected, User.god.email
   end
 
   test 'github_installed? false' do
