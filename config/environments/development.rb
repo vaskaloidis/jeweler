@@ -1,6 +1,13 @@
 Rails.application.configure do
-  config.log_level = :debug
+  # config.log_level = :debug
+  Bullet.enable = false
+  Bullet.alert = false
+  Bullet.bullet_logger = true
+  Bullet.console = true
   Bullet.rails_logger = true
+  Bullet.add_footer = true
+  Bullet.stacktrace_includes = [ 'jeweler-utils', 'your_middleware' ]
+  # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware' ]
 
   # Assets
   # config.less.paths << "#{Rails.root}/app/assets/stylesheets"
@@ -13,12 +20,9 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
   # config.less.paths << "#{Rails.root}/app/assets/css/less"
 
-  # config.gem "jammit"
-
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3001 }
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -49,7 +53,7 @@ Rails.application.configure do
   # config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 

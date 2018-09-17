@@ -9,7 +9,7 @@
         <ul class="settings_sprint_balance list-group list-group-minimal">
           <h2>Sprint Balances</h2>
           <% unless project.sprints.empty? %>
-            <% project.sprints.includes(:project).order('sprint::integer ASC').each do |sprint| %>
+            <% project.sprints.includes(:project).each do |sprint| %>
               <% if sprint.balance < 0 %>
                 <li class="list-group-item">
                       <span>Sprint <%= sprint.sprint.to_s %>
@@ -53,7 +53,7 @@
                 <% if project.owner?(current_user) %>
                   <% payment_request_btn = '<span style="" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>' %>
                   <%= link_to payment_request_btn.html_safe,
-                              cancel_request_payment_path(sprint.id),
+                              cancel_payment_request_path(sprint.id),
                               remote: true %>
                 <% end %>
               </div>

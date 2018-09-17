@@ -95,11 +95,9 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
-        <% @project.sprints.order('sprint ASC').each_with_index do |sprint, count| %>
+        <% @project.sprints.where("sprint > ?", @project.sprint_current).each do |sprint| %>
           <div id="sprint_<%= sprint.sprint.to_s %>_panel">
-            <% if count > @project.current_sprint.sprint %>
-              <%= render 'sprints/slider', sprint: sprint %>
-            <% end %>
+            <%= render 'sprints/slider', sprint: sprint %>
           </div>
         <% end %>
       </div>
@@ -109,16 +107,14 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    Completed Sprints
+    Previous Sprints
   </div>
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-12">
-        <% @project.sprints.order('sprint ASC').each_with_index do |sprint, count| %>
+        <% @project.sprints.where("sprint < ?", @project.sprint_current).each do |sprint| %>
           <div id="sprint_<%= sprint.sprint.to_s %>_panel">
-            <% if count < @project.current_sprint.sprint %>
-              <%= render 'sprints/slider', sprint: sprint %>
-            <% end %>
+            <%= render 'sprints/slider', sprint: sprint %>
           </div>
         <% end %>
       </div>

@@ -1,6 +1,7 @@
 class NotesController < ApplicationController
-  before_action :set_project, only: [:index]
-  before_action :set_note, only: [:edit, :update, :destroy]
+  before_action :set_project, only: %i[index]
+  before_action :set_note, only: %i[edit update destroy]
+  respond_to :js, only: %i[note_query new edit new_modal new]
 
   def note_query
     @project = Project.find(params[:project_id])
@@ -19,6 +20,8 @@ class NotesController < ApplicationController
     if @note_type == 'all'
       @notes = @sprint.order('created_at DESC').all
     else
+      # TODO: Place a factory here, or some other pattern. But not this.
+      #  This is what nightmares are made of
       case @note_type
         when 'commit'
           @notes = @sprint.where(note_type: :commit).order('created_at DESC').all
@@ -42,9 +45,6 @@ class NotesController < ApplicationController
     end
 
     @query = @note_type
-    respond_to do |format|
-      format.js
-    end
   end
 
   def new
@@ -60,10 +60,6 @@ class NotesController < ApplicationController
     unless @note.project.current_task.nil?
       @note.task = @note.project.current_task
     end
-
-    respond_to do |format|
-      format.js
-    end
   end
 
   # GET /notes/1/edit
@@ -73,9 +69,13 @@ class NotesController < ApplicationController
   # POST /notes.json
   def create
     @note = Note.new(note_params)
+
+    logger.info(note_params.inspect)
+    logger.info(@note.inspect)
+
     @note.author = current_user
 
-    project = @note.project
+    project = Project.find(@note.project_id)
     unless project.current_sprint.nil?
       @note.sprint = project.current_sprint
     end
@@ -97,14 +97,12 @@ class NotesController < ApplicationController
     end
 
     respond_to do |format|
+      format.js
       if @note.save
-        @note.reload
         format.json {render :show, status: :created, location: @note}
-        format.js
       else
         logger.error("Error Creating Note: " + @note.errors.full_messages.first)
         format.json {render json: @note.errors, status: :unprocessable_entity}
-        format.js
       end
     end
   end
@@ -114,26 +112,16 @@ class NotesController < ApplicationController
     @note.note_type = 'note'
     @note.project = Project.find(params[:project_id])
     @note.author = current_user
-
-
-    respond_to do |format|
-      format.js
-    end
   end
 
   def update
-    if @note.invalid?
-      logger.error("Note not updated successfully")
-      log.error(@note.errors)
-    end
-
     respond_to do |format|
+      format.js
       if @note.update(note_params)
         format.json {render :show, status: :ok, location: @note}
-        format.js
       else
+        @note.errors.full_messages.map{ |e| @errors << e }
         format.json {render json: @note.errors, status: :unprocessable_entity}
-        format.js
       end
     end
   end
@@ -157,6 +145,6 @@ class NotesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def note_params
-    params.require(:note).permit(:content, :note_type, :content, :git_commit_id, :project_id, :discussion_id, :author_id)
+    params.require(:note).permit(:content, :note_type, :git_commit_id, :project_id, :author_id)
   end
 end

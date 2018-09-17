@@ -1,0 +1,2 @@
+$('#conversation_messages_target_<%= @note.id.to_s %>').html('<%= j render 'discussions/conversation_messages', discussions: @discussions %>');
+$('#conversation_form_target_<%= @note.id.to_s %>').html('<%= j render 'discussions/conversation_create_message_form', note: @note, user: @user %>');

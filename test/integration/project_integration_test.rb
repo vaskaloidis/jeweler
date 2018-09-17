@@ -3,7 +3,7 @@ require 'test_helper'
 class ProjectIntegrationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test "project is created" do
+  test "project gets created" do
     @user = create(:user)
     sign_in @user
 
@@ -12,7 +12,7 @@ class ProjectIntegrationTest < ActionDispatch::IntegrationTest
 
     new_project = attributes_for(:new_project)
     assert_difference('Project.count') do
-      post projects_url, params: {project: new_project}
+      post projects_url, params: { project: new_project }
     end
 
     project = Project.last
@@ -42,7 +42,7 @@ class ProjectIntegrationTest < ActionDispatch::IntegrationTest
 
   test 'should update project' do
     # @user = create(:owner)
-    @project = create(:project)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users)
     @user = @project.owner
     sign_in @user
 

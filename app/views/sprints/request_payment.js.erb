@@ -1,0 +1,13 @@
+<% if @errors.empty? %>
+  <%= render 'renderers/re-render_sprint_panel', sprint: @sprint %>
+  <%= render 'renderers/re-render_notifications', project:@sprint.project %>
+  <%#= render 'payments/re-render_payments_panel', project: @sprint.project, user: @user %>
+  <%= render 'notes/re-render_timeline', notes: @sprint.project.sprint_notes, project: @sprint.project %>
+
+  <% invoice = Invoice.new(sprint: @sprint, estimate: false, goal: 'send') %>
+
+  $("#modal_target").html("<%= j render 'invoices/select_customer', invoice: invoice %>");
+  <%= render 'renderers/render_modal', title: 'Invoice' %>
+<% else %>
+  <% render 'common/print_errors', errors: @errors %>
+<% end %>

@@ -2,12 +2,19 @@ class Sprint < ApplicationRecord
   include Totalable
   include Averageable
   include Maxable
+
   default_scope {order('sprint ASC')}
+
   belongs_to :project
   has_many :tasks, dependent: :destroy
   has_many :payments, dependent: :nullify
-  has_many :notes, -> {order 'created_at DESC'}, dependent: :destroy
+  has_many :notes, dependent: :destroy
+
   accepts_nested_attributes_for :project
+  accepts_nested_attributes_for :tasks
+  accepts_nested_attributes_for :payments
+  accepts_nested_attributes_for :notes
+
   validates :sprint, presence: true
 
   def closed?
@@ -60,9 +67,11 @@ class Sprint < ApplicationRecord
     true
   end
 
-  def only_planned?
+  # Returns true if all Sprint Tasks have NOT yet reported Hours,
+  # False if any Sprint Tasks have reported actual Hours
+  def estimate?
     tasks.each do |task|
-      false if task.hours != 0
+      return false if task.hours != 0
     end
     true
   end

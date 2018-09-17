@@ -1,119 +1,50 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Project Users
-  </div>
-  <div class="panel-body">
-    <h2>Project Owner</h2>
-    <table class="table table-hover members-table middle-align">
-      <thead>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>E-Mail</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td class="user-image hidden-xs hidden-sm">
-          <% if project.owner.image.url.nil? %>
-            <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
-          <% else %>
-            <img src="<%= image_path project.owner.image.url %>" class="img-circle" alt="user-pic"/>
-          <% end %>
-        </td>
-        <td class="user-name">
-          <span class="name"><%= project.owner.first_name %> <%= project.owner.last_name %></span>
-          <span><%= project.owner.company %></span>
-        </td>
-        <td class="">
-          <span class="email"><%= project.owner.email %></span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-    <br>
-
-    <h2>Project Customers</h2>
-
-    <table class="table table-hover members-table middle-align">
-      <thead>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>E-Mail</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% project.customers.each do |u| %>
-        <tr>
-          <td class="user-image hidden-xs hidden-sm">
-            <% if u.image.url.nil? %>
-              <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
-            <% else %>
-              <img src="<%= image_path u.image.url %>" class="img-circle" alt="user-pic"/>
-            <% end %>
-          </td>
-          <td class="user-name">
-            <span class="name"><%= u.first_name %> <%= u.last_name %></span>
-            <% unless u.company.nil? %>
-              <span><%= u.company %></span>
-            <% end %>
-          </td>
-          <td class="hidden-xs hidden-sm">
-            <span class="email"><%= u.email %></span>
-          </td>
-          <td class="action-links">
-            <% if project.owner?(current_user) %>
-              <%= link_to remove_customer_path(project.id, u.id), method: :delete, data: {confirm: 'Delete Customer?'}, remote: true do %>
-                <i class="linecons-trash"></i> Delete Customer
-              <% end %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-
-    <br>
-
-    <h2>Invitations
-    </h2>
-
-    <table class="table table-hover members-table middle-align">
-      <thead>
-      <tr>
-        <th>E-Mail</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% project.invitations.each do |invitation| %>
-        <tr>
-          <td class="user-id">
-            <%= invitation.email %>
-          </td>
-          <td class="action-links">
-              <%= link_to_if project.owner?, invitation.id, method: :delete, data: {confirm: 'Delete Invitation?'} do %>
-                <i class="linecons-trash"></i> Delete Invitation
-              <% end %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-
-    <div class="row">
-      <div class="col-med-6 col-sm-12">
-        <% if project.owner?(current_user) %>
-          <h2>Invite User</h2>
-          <%= render 'project_customers/form', project: project %>
+<table class="table table-hover members-table middle-align">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <th>E-Mail</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% project.customers.each do |u| %>
+    <tr>
+      <td class="user-image hidden-xs hidden-sm">
+        <% if u.image.url.nil? %>
+          <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
+        <% else %>
+          <img src="<%= image_path u.image.url %>" class="img-circle" alt="user-pic"/>
         <% end %>
+      </td>
+      <td class="user-name">
+        <span class="name"><%= u.first_name %> <%= u.last_name %></span>
+        <% unless u.company.nil? %>
+          <span><%= u.company %></span>
+        <% end %>
+      </td>
+      <td class="hidden-xs hidden-sm">
+        <span class="email"><%= u.email %></span>
+      </td>
+      <td class="action-links">
+        <% if project.owner?(current_user) %>
+          <%= link_to remove_project_customer_path(project.id, u.id), remote: true, method: :delete, data: {confirm: 'Delete Customer?'} do %>
+            <i class="linecons-trash"></i> Delete Customer
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
 
-      </div>
+<br>
 
-    </div>
-
+<div class="row">
+  <div class="col-med-6 col-sm-12">
+    <% if project.owner?(current_user) %>
+      <h2>Invite Customer</h2>
+      <%= render 'project_customers/form', project: project %>
+    <% end %>
   </div>
 </div>

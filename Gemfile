@@ -40,8 +40,6 @@ gem 'yaml_db'
 gem 'yui-compressor'
 # Move this to Dev group after initial seeding
 gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
-
-# Refactoring / Service Objects / Patterns
 gem 'rails-patterns'
 # gem 'business_process'
 gem 'virtus'
@@ -53,6 +51,9 @@ gem 'virtus'
 # Memory Testing
 # gem 'skylight'
 
+# gem 'jeweler-utils', path: '../jeweler-utils'
+gem 'jeweler-utils', git: 'https://github.com/vaskaloidis/jeweler-utils.git'
+
 group :production do
   # gem 'memcache', '~> 1.5', '>= 1.5.1' #TODO: Why is Memcache gem disabled in Prod? We eventually want this.
   gem 'foreman'
@@ -60,16 +61,23 @@ group :production do
   gem 'uglifier', '>= 1.3.0'
 end
 group :test do
+  gem 'climate_control'
+  gem 'minitest-spec-rails'
+  gem 'mocha'
+  # gem 'minitest-rspec_mocks'
   gem 'minitest-around'
   gem 'capybara'
   gem 'chromedriver-helper'
+  gem 'poltergeist'
   gem 'database_cleaner'
   gem 'minitest-reporters'
+  gem "minitest"
   gem 'selenium-webdriver'
   gem 'shoulda', '~> 3.5'
   gem 'shoulda-matchers', '~> 2.0'
   gem 'simplecov'
   gem 'simplecov-console'
+  gem 'webmock'
 end
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -80,19 +88,22 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'launchy'
   gem 'rubocop', '~> 0.56.0', require: false
+  gem 'rubycritic', require: false
+  gem 'bullet'
 end
 group :development do
-  gem 'guard'
-  gem 'guard-minitest'
+  # gem 'guard'
+  # gem 'guard-minitest'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'bundler-audit' # TODO: Security Audit Gems
+  gem 'bundler-audit' # TODO: Use security Audit Gems
   gem 'pry-rails'
+  # gem 'pry'
+  # gem 'pry-debugger'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0' # Add to page: <%= console %>
   # Memory
-  gem 'bullet'
   gem 'rack-mini-profiler'
   # gem 'memory_profiler'
   # gem 'flamegraph'

@@ -1,5 +1,18 @@
-ActiveRecord::Schema.define(version: 2018_05_04_164900) do
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
+#
+# It's strongly recommended that you check this file into your version control system.
 
+ActiveRecord::Schema.define(version: 2018_09_11_212101) do
+
+  # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "discussions", force: :cascade do |t|
@@ -15,37 +28,10 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
   create_table "invitations", force: :cascade do |t|
     t.string "email"
     t.bigint "project_id"
+    t.integer "user_type", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_invitations_on_project_id"
-  end
-
-  create_table "tasks", force: :cascade do |t|
-    t.text "description"
-    t.decimal "hours", default: "0.0"
-    t.decimal "rate", default: "0.0"
-    t.string "item_type"
-    t.boolean "complete", default: false
-    t.bigint "sprint_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.decimal "planned_hours", default: "0.0"
-    t.integer "position", null: false
-    t.boolean "deleted", default: false
-    t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
-    t.index ["position"], name: "index_tasks_on_position"
-  end
-
-  create_table "sprints", force: :cascade do |t|
-    t.date "payment_due_date"
-    t.boolean "payment_due", default: false
-    t.text "description"
-    t.bigint "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "open", default: false
-    t.integer "sprint"
-    t.index ["project_id"], name: "index_sprints_on_project_id"
   end
 
   create_table "notes", force: :cascade do |t|
@@ -62,9 +48,9 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
     t.bigint "task_id"
     t.string "commit_diff_path"
     t.integer "event_type"
+    t.index ["project_id"], name: "index_notes_on_project_id"
     t.index ["sprint_id"], name: "index_notes_on_sprint_id"
     t.index ["task_id"], name: "index_notes_on_task_id"
-    t.index ["project_id"], name: "index_notes_on_project_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
@@ -87,6 +73,15 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
     t.boolean "v1_tour", default: false
     t.index ["project_id"], name: "index_project_customers_on_project_id"
     t.index ["user_id"], name: "index_project_customers_on_user_id"
+  end
+
+  create_table "project_developers", force: :cascade do |t|
+    t.bigint "project_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_developers_on_project_id"
+    t.index ["user_id"], name: "index_project_developers_on_user_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -113,6 +108,38 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
     t.index ["github_url"], name: "index_projects_on_github_url", unique: true
     t.index ["task_id"], name: "index_projects_on_task_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
+  create_table "sprints", force: :cascade do |t|
+    t.date "payment_due_date"
+    t.boolean "payment_due", default: false
+    t.text "description"
+    t.bigint "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "open", default: false
+    t.integer "sprint", null: false
+    t.index ["project_id"], name: "index_sprints_on_project_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.text "description"
+    t.decimal "hours", default: "0.0"
+    t.decimal "rate", default: "0.0"
+    t.string "item_type"
+    t.boolean "complete", default: false
+    t.bigint "sprint_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "planned_hours", default: "0.0"
+    t.integer "position"
+    t.boolean "deleted", default: false
+    t.bigint "assigned_to_id"
+    t.bigint "created_by_id"
+    t.index ["assigned_to_id"], name: "index_tasks_on_assigned_to_id"
+    t.index ["created_by_id"], name: "index_tasks_on_created_by_id"
+    t.index ["position"], name: "index_tasks_on_position"
+    t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -156,8 +183,14 @@ ActiveRecord::Schema.define(version: 2018_05_04_164900) do
   add_foreign_key "discussions", "notes"
   add_foreign_key "discussions", "users"
   add_foreign_key "invitations", "projects"
-  add_foreign_key "notes", "tasks"
-  add_foreign_key "notes", "sprints"
   add_foreign_key "notes", "projects"
+  add_foreign_key "notes", "sprints"
+  add_foreign_key "notes", "tasks"
   add_foreign_key "notes", "users"
+  add_foreign_key "project_customers", "projects"
+  add_foreign_key "project_customers", "users"
+  add_foreign_key "project_developers", "projects"
+  add_foreign_key "project_developers", "users"
+  add_foreign_key "tasks", "users", column: "assigned_to_id"
+  add_foreign_key "tasks", "users", column: "created_by_id"
 end

@@ -32,7 +32,7 @@
             <p class="user-title">Project Owner</p>
 
             <div class="user-links">
-              <!-- TODO: Place a PM project owner button here (when we write messaging feature eventually) -->
+              <%# TODO: Place a PM project owner button here (when we write messaging feature eventually)  %>
             </div>
 
           </div>
@@ -144,7 +144,7 @@
                     <% if project.owner?(user) %>
                       <% payment_request_btn = '<span style="color:white" class="pull-right"><small><i class="fas fa-ban"></i> Cancel</small></span>' %>
                       <%= link_to payment_request_btn.html_safe,
-                                  cancel_request_payment_path(sprint.id),
+                                  cancel_payment_request_path(sprint.id),
                                   remote: true %>
                     <% end %>
                   </div>

@@ -1,4 +1,4 @@
-<%= form_with model: task, class: 'form-inline', remote: true do |f| %>
+<%= form_with model:task, class: 'form-inline', remote: true do |f| %>
   <div id="task-form-row" class="row">
     <div class="col-xs-12 col-sm-1">
     </div>
@@ -36,6 +36,7 @@
     <div class="col-xs-12 col-sm-2">
       <%#= f.hidden_field :id, value: task.id %>
       <%= f.hidden_field :sprint_id, value: task.sprint.id %>
+	    <%= f.hidden_field :created_by_id, value: current_user.id %>
       <div class="btn-group">
         <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save"></i></button>
         <% unless task.id.nil? %>

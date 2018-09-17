@@ -4,7 +4,7 @@
       <%= render 'discussions/conversation_messages', discussions: discussions %>
     </ul>
     <div id="conversation_form_target_<%= note.id.to_s %>">
-      <%= render 'discussions/conversation_create_message_form', note: note, user: user %>
+      <%= render 'discussions/conversation_create_message_form', note: note %>
     </div>
   </div>
 </div>

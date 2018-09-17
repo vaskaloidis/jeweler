@@ -1,31 +1,51 @@
 Rails.application.routes.draw do
 
-  # Ajax TODO: Convert any 'Inline' Actions to use Stock Controller Actions
-  get '/install_github_webhook/:project_id', to: 'webhook#install_webhook', as: 'install_github_webhook'
+  shallow do
+    resources :sprints do
+      resources :tasks
+    end
+    resources :notes do
+      resources :discussions
+    end
+    resources :projects do
+      resources :notes
+      resources :sprints
+      resources :project_developers, only: %i[leave remove] #TODO: Remove or fix
+      resources :project_customers, only: %i[leave remove] #TODO: Remove or fix
+      resources :payments
+      resources :invitations, only: %i[accept decline create]
+    end
+  end
+  resources :invitations
+  resources :tasks
+  resources :charges
+
+  # Shared TODO: Convert any 'Inline' Actions to use its 'Stock' Controller Actions
   match '/new_charge_modal', to: 'charges#generate_modal', via: [:post], as: 'generate_charge_modal'
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
 
   # Payments
-  get '/pay/:project_id', to: 'payments#unauthenticated_payment', as: 'pay'
-  get '/request_payment/:sprint_id', to: 'projects#request_payment', as: 'request_payment'
-  get '/cancel_payment_request/:sprint_id', to: 'projects#cancel_request_payment', as: 'cancel_request_payment'
-  # match '/make_payment', to: 'sprints#make_payment', via: [:post], as: 'make_payment'
+  get '/pay/:project_id', to: 'payments#unauthenticated_payment', as: 'customer_project_payment'
+  get '/pay/sprint/:sprint_id', to: 'sprints#make_payment', via: [:post], as: 'customer_sprint_payment'
 
   # Invitations
   get '/invitation/:id/accept', to: 'invitations#accept', as: 'accept_invitation'
   get '/invitation/:id/decline', to: 'invitations#decline', as: 'decline_invitation'
   delete 'invitation/:id/destroy', to: 'invitations#destroy', as: 'destroy_invitation'
 
-  # Customers API Calls (TODO: re-implement these eventually)
-  get '/project/:project_id/leave/:user_id', to: 'project_customers#leave', as: 'leave_project'
-  delete '/project/:project_id/remove/:user_id', to: 'project_customers#remove', as: 'remove_customer'
+  # Project Users: Customers and Developers
+  get '/project/:id/users', to: 'projects#users', as: 'project_users'
+  get '/developer_leave/:project_id/', to: 'project_developers#leave', as: 'developer_leave_project'
+  delete '/project/:project_id/remove_developer/:user_id', to: 'project_developers#remove', as: 'remove_project_developer'
+  get '/customer_leave/:project_id/', to: 'project_customers#leave', as: 'customer_leave_project'
+  delete '/project/:project_id/remove_customer/:user_id', to: 'project_customers#remove', as: 'remove_project_customer'
 
   # Invoices
-  get '/print_invoice/:sprint_id/:estimate', to: 'invoices#print_invoice', as: 'print_invoice'
-  get '/generate_invoice/:sprint_id/:estimate', to: 'invoices#generate_invoice', as: 'generate_invoice'
-  match '/invoices', to: 'invoices#send_invoice', via: [:post], as: 'send_invoice'
-  match '/invoices', to: 'invoices#review_customer_invoice', via: [:post], as: 'review_customer_invoice'
-  get '/generate_customer_invoice/:sprint_id/:estimate', to: 'invoices#generate_customer_invoice', as: 'generate_customer_invoice'
+  get '/invoice/:sprint_id/generate/:estimate', to: 'invoices#generate', as: 'generate_invoice'
+  get '/invoice/:sprint_id/select_customer/:estimate/:goal', to: 'invoices#select_customer', as: 'select_invoice_customer'
+  post '/invoice/review', to: 'invoices#review', as: 'review_customer_invoice'
+  post '/invoice/print', to: 'invoices#print', as: 'print_invoice'
+  # post '/invoice/send', to: 'invoices#send', as: 'send_invoice'
 
   # Sprints
   get '/sprint/:id/edit_description', to: 'sprints#edit_description', as: 'edit_sprint_description'
@@ -33,12 +53,14 @@ Rails.application.routes.draw do
   get '/sprint/:id/current', to: 'sprints#set_current', as: 'set_current_sprint'
   get '/sprint/:id/open', to: 'sprints#open', as: 'open_sprint'
   get '/sprint/:id/close', to: 'sprints#close', as: 'close_sprint'
+  get '/sprint/:id/request_payment', to: 'sprints#request_payment', as: 'request_payment'
+  get '/sprint/:id/cancel_payment_request', to: 'sprints#cancel_payment_request', as: 'cancel_payment_request'
 
   # Tasks
+  get '/task/:id/current' => 'tasks#set_current', as: 'set_current_task'
   get '/task/:id/complete' => 'tasks#complete', as: 'complete_task'
   get '/task/:id/uncomplete' => 'tasks#uncomplete', as: 'uncomplete_task'
   get '/task/cancel/:sprint_id' => 'tasks#cancel', as: 'cancel_task_update'
-  get '/task/current/:id' => 'tasks#set_current', as: 'set_current_task'
 
   # Notes
   get '/notes/timeline_query/:project_id/:sprint_query/:note_type', to: 'notes#note_query', as: 'note_query'
@@ -46,40 +68,14 @@ Rails.application.routes.draw do
   get '/notes/create_note_modal/:project_id', to: 'notes#new_modal', as: 'create_note_modal'
 
   # Discussions
-  match '/create_chat_message', to: 'discussions#create_chat_message_inline', via: [:post], as: 'create_chat_message_inline'
-  get '/fetch_discussion/:note_id' => 'discussions#fetch_discussion', as: 'fetch_discussion'
-
-  get '/authorize_github', to: 'webhook#authorize_account', as: 'authorize_github'
+  post '/discussions/create_message', to: 'discussions#create_message', as: 'create_discussion_message'
+  get '/discussions/fetch/:note_id', to: 'discussions#fetch', as: 'fetch_discussion'
 
   # Github Webhooks
-  get '/oath', to: 'webhook#save_oath', as: 'oath_save'
-  post '/hook', to: 'webhook#hook', as: 'webhook_execute'
-
-  # Scaffolds
-  resources :project_customers
-  resources :notes
-  resources :discussions
-  resources :invitations
-  resources :payments
-  resources :tasks
-  resources :sprints do
-    resources :tasks
-  end
-  resources :projects do
-    resources :notes do
-      resources :discussions
-    end
-    resources :sprints do
-      resources :tasks do
-      end
-    end
-    resources :project_customers
-    resources :payments
-    resources :invitations
-  end
-
-  # Stripe
-  resources :charges
+  get '/github_oauth', to: 'github#save_oauth', as: 'github_oauth_save'
+  post '/github_hook', to: 'github#hook', as: 'execute_github_webhook'
+  get '/github_authorize', to: 'github#authorize_account', as: 'authorize_github'
+  get '/github_install_webhook/:project_id', to: 'github#install_webhook', as: 'install_github_webhook'
 
   # Devise
   devise_for :users, :controllers => {:omniauth_callbacks => "omniauth_callbacks"}

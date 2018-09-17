@@ -4,7 +4,5 @@ $("#tasks_<%= @task.sprint.id.to_s %>_hidden_row").hide('slide')
 <% if @errors.empty? %>
   toastr.success('Task Created Successfully');
 <% else %>
-  <% @errors.each do |error| %>
-    toastr.error('Error creating Task: <%=  error %>');
-  <% end %>
+  <% j render 'common/print_errors', errors: @errors %>
 <% end %>

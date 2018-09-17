@@ -2,8 +2,9 @@
 
 class ApplicationController < ActionController::Base
   before_action :prepare_errors
-  after_action :log_errors
+  # after_action :log_errors
   after_action :generate_events
+  # after_action :print_errors
   before_action :load_dependencies
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_current_user
@@ -29,15 +30,33 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Arrays to capture any Errors (display to user)
+  # or Fatal issues which we log (and sometimes display to user)
   def prepare_errors
     @errors = []
+    @fatals = []
+    @notifications = []
   end
 
   def log_errors
-    return if @errors.empty?
-    @errors.each do |e|
+    # TODO: Move this to an ENV Setting
+    only_log_fatal = true
+
+    unless only_log_fatal
+      unless @errors.empty?
+        @errors.each do |e|
+          logger.error 'Error: ' + e
+        end
+      end
+    end
+    return if @fatals.empty?
+    @fatals.each do |f|
       logger.error 'TasksController Error: ' + e
     end
+  end
+
+  def print_errors
+    j render 'common/print_errors', errors: @errors
   end
 
   def set_current_user
@@ -52,17 +71,6 @@ class ApplicationController < ActionController::Base
 
   def load_dependencies
     require 'dotenv/load' unless Rails.env.production?
-
-    # Libs
-    require Rails.root.join('lib', 'Array.rb')
-    require Rails.root.join('lib', 'Float.rb')
-    require Rails.root.join('lib', 'Double.rb')
-    require Rails.root.join('lib', 'BigDecimal.rb')
-    require Rails.root.join('lib', 'Decimal.rb')
-    require Rails.root.join('lib', 'String.rb')
-    require Rails.root.join('lib', 'Integer.rb')
-    require Rails.root.join('lib', 'NilClass.rb')
-
   end
 
   def configure_permitted_parameters

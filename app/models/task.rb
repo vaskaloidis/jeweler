@@ -1,9 +1,12 @@
 class Task < ApplicationRecord
-  belongs_to :sprint
-
+  after_create :set_position
+  belongs_to :sprint, required: true
   has_one :project, class_name: 'Project', inverse_of: 'current_task', dependent: :nullify
   has_many :notes, dependent: :nullify
+  belongs_to :assigned_to, class_name: 'User', optional: true
+  belongs_to :created_by, class_name: 'User'
 
+  default_scope {where(deleted: false)}
   scope :incomplete_tasks, -> {where(complete: false, deleted: false)}
   scope :completed_tasks, -> {where(complete: true, deleted: false)}
 
@@ -11,58 +14,65 @@ class Task < ApplicationRecord
   accepts_nested_attributes_for :sprint
   accepts_nested_attributes_for :project
 
-  validates :planned_hours, numericality: { message: 'Must be a number.' }, allow_nil: true
-  validates :hours, numericality: { message: 'Must be a number.' }, allow_nil: true
-  validates :description, presence: { message: 'Cannot be empty.' }
-  validates :rate, presence: {message: 'must cannot me empty.'}, numericality: { message: 'must be a number.' }
+  validates :planned_hours, numericality: {message: 'Must be a number.'}, allow_nil: true
+  validates :hours, numericality: {message: 'Must be a number.'}, allow_nil: true
+  validates :description, presence: {message: 'Cannot be empty.'}
+  validates :rate, presence: {message: 'must cannot me empty.'}, numericality: {message: 'must be a number.'}
+  validate :validate_created_by
+  validate :validate_assigned_to
 
-  def set_next_position
-    self.position = self.sprint.next_position_int
+  def code
+    raise StandardError.new('task.letter is nil') if letter.nil?
+    result = '#task' + sprint.sprint.to_s + letter.to_s
+    Rails.logger.info 'Task_ID: ' + result.to_s
+    return result
   end
-  def task_id
-    'task' + self.sprint.sprint.to_s + self.letter
-  end
+
   def letter
-    ApplicationHelper.alphabet.at(self.position)
+    ApplicationHelper.alphabet.at(position)
   end
-
-  # def hours
-  #   h = self.hours
-  #   return ApplicationHelper.prettify(h)
-  # end
-  #
-  # def planned_hours
-  #   ph = self.planned_hours
-  #   return ApplicationHelper.prettify(ph)
-  # end
 
   def cost
-    if self.hours.nil?
-      return 0.00
-    else
-      return self.rate * self.hours
-    end
+    0.00 if hours.nil?
+    rate * hours
   end
 
   def planned_cost
-    if self.planned_hours.nil?
-      return 0.00
-    else
-      return self.rate * self.planned_hours
-    end
+    0.00 if planned_hours.nil?
+    rate * planned_hours
   end
 
   def current?
-    task = self.sprint.project.current_task
-    unless task.nil?
-      if task == self
-        return true
-      else
-        return false
-      end
+    current_task = sprint.project.current_task
+    return false if current_task.nil?
+    current_task == self
+  end
+
+  def validate_created_by
+    project = sprint.project
+    if created_by.nil?
+      errors.add(:created_by, 'cannot be nil.')
     else
-      return false
+      unless created_by.id == project.owner.id || project.developers.include?(created_by)
+        errors.add(:created_by, 'must be the Project Owner or a Developer.')
+      end
     end
+  end
+
+  def validate_assigned_to
+    project = sprint.project
+    unless assigned_to.nil?
+      unless assigned_to.id == project.owner.id || project.developers.include?(assigned_to)
+        errors.add(:assigned_to, 'must be the Project Owner or a Developer.')
+      end
+    end
+  end
+
+  private
+
+  def set_position
+    self.position = sprint.next_position_int
+    save
   end
 
 end

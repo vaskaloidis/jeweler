@@ -1,0 +1,52 @@
+<% if project.developers.empty? %>
+  (None)
+<% else %>
+  <table class="table table-hover members-table middle-align">
+    <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>E-Mail</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% project.developers.each do |u| %>
+      <tr>
+        <td class="user-image hidden-xs hidden-sm">
+          <% if u.image.url.nil? %>
+            <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
+          <% else %>
+            <img src="<%= image_path u.image.url %>" class="img-circle" alt="user-pic"/>
+          <% end %>
+        </td>
+        <td class="user-name">
+          <span class="name"><%= u.first_name %> <%= u.last_name %></span>
+          <% unless u.company.nil? %>
+            <span><%= u.company %></span>
+          <% end %>
+        </td>
+        <td class="hidden-xs hidden-sm">
+          <span class="email"><%= u.email %></span>
+        </td>
+        <td class="action-links">
+          <% if project.owner?(current_user) %>
+            <%= link_to remove_project_developer_path(project.id, u.id), remote:true, method: :delete, data: {confirm: 'Delete Developer?'}, remote: true do %>
+              <i class="linecons-trash"></i> Delete Developer
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+<br>
+<div class="row">
+  <div class="col-med-6 col-sm-12">
+    <% if project.owner?(current_user) %>
+      <h2>Invite Developer</h2>
+      <%= render 'project_developers/form', project: project %>
+    <% end %>
+  </div>
+</div>

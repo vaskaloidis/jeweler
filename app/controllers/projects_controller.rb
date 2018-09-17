@@ -1,47 +1,13 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy]
+  before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy, :users]
   # before_action :verify_sprints_exist, only: [:show, :edit, :update, :create]
   before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
-  respond_to :html, :js, only: [:request_payment]
+  respond_to :html, :js, only: [:request_payment, :users]
+
+  def users; end
 
   def commit_codes_modal
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def request_payment
-    @sprint = Sprint.find(params[:sprint_id])
-    if @sprint.cost > 0
-      @sprint.payment_due = true
-      @sprint.save
-
-      @user = current_user
-
-      @project = @sprint.project
-
-      if @sprint.valid?
-        Note.create_payment_request(@sprint, current_user)
-      end
-    end
-
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  def cancel_request_payment
-    @sprint = Sprint.find(params[:sprint_id])
-    @sprint.payment_due = false
-    @sprint.save
-
-    @user = current_user
-
-    Note.create_event(@sprint.project, 'payment_request_cancelled', 'Sprint ' +
-        @sprint.sprint.to_s + ' Payment Request Canceled')
-
     respond_to do |format|
       format.js
     end
@@ -52,36 +18,37 @@ class ProjectsController < ApplicationController
   def index
     @owner_projects = current_user.owner_projects
     @customer_projects = current_user.customer_projects
+    @developer_projects = current_user.developer_projects
   end
 
   # GET /projects/1
   # GET /projects/1.json
   def show
-    # require 'redcarpet'
+    # TODO: Move this to the GitHub Class, use Gem. This is garbage. Terrible. Digusting.
+    readme_feature = false
+    if readme_feature
+      gh_url = if @project.github_url.ends_with? '/'
+                 @project.github_url + 'master/README.md'
+               else
+                 @project.github_url + '/master/README.md'
+               end
 
-    gh_url = if @project.github_url.ends_with? '/'
-               @project.github_url + 'master/README.md'
-             else
-               @project.github_url + '/master/README.md'
-             end
-
-    gh_url.sub! 'github.com', 'raw.githubusercontent.com'
-
-    begin
-      readme_raw = Net::HTTP.get(URI.parse(gh_url))
-
-      if readme_raw == 'Not Found'
+      gh_url.sub! 'github.com', 'raw.githubusercontent.com'
+      begin
+        readme_raw = Net::HTTP.get(URI.parse(gh_url))
+        if readme_raw == 'Not Found'
+          @github_readme_parsed = 'README file could not be loaded.<br> GitHub README file: ' + gh_url
+        else
+          redcarpet = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
+          @github_readme_parsed = redcarpet.render(readme_raw)
+        end
+      rescue => ex
+        logger.error ex.message
         @github_readme_parsed = 'README file could not be loaded.<br>
                                GitHub README file: ' + gh_url
-      else
-        redcarpet = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
-        @github_readme_parsed = redcarpet.render(readme_raw)
       end
-
-    rescue => ex
-      logger.error ex.message
-      @github_readme_parsed = 'README file could not be loaded.<br>
-                               GitHub README file: ' + gh_url
+    else
+      @github_readme_parsed = ''
     end
 
     @notes = @project.notes.where(note_type: [:note, :commit, :project_update]).order('created_at DESC').all
@@ -93,24 +60,18 @@ class ProjectsController < ApplicationController
   end
 
   # GET /projects/1/edit
-  def edit
+  def edit;
   end
 
   # POST /projects
   # POST /projects.json
   def create
     @project = current_user.owner_projects.create(project_params)
-    # @project = Project.new(project_params)
-    # @project.owner = current_user
-
-
     respond_to do |format|
       if @project.save
-
         if @project.valid?
           sync_github(@project, current_user)
         end
-
         format.html {redirect_to @project, notice: 'Project was successfully created.'}
         format.json {render :show, status: :created, location: @project}
       else
@@ -211,8 +172,8 @@ class ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(:name, :language, :image, :sprint_total,
                                     :sprint_current, :description, :github_url,
-                                    :heroku_token, :github_branch, :github_secondary_branch,
+                                    :heroku_token, :github_branch,
                                     :readme_file, :readme_remote, :stage_website_url, :demo_url,
-                                    :prod_url, :complete, :task_id)
+                                    :prod_url, :complete, :task_id, :google_analytics_tracking_code)
   end
 end

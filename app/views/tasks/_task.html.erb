@@ -1,8 +1,14 @@
 <div>
-  <span class="alert alert-success task-id"><%= task.task_id %></span><br>
-  <span><strong>Rate: </strong><%= task.rate.sprint_rate %></span><br>
-  <span><strong>Estimate: </strong><%= task.planned_hours.hours %></span><br>
-  <span><strong>Hours: </strong><%= task.hours.hours %></span><br>
-  <span><strong>Cost: </strong><%= task.cost.money %></span><br>
-  <span><strong>Task: </strong><%= task.description %></span><br>
+  <span class="alert alert-success task-id"><%= task.code %></span><br>
+  <span><strong>Rate: </strong><%= task.rate.rate %></span><br>
+  <span><strong>Estimate: </strong><%= task.try(:planned_hours).hours %></span><br>
+  <span><strong>Hours: </strong><%= task.try(:hours).hours %></span><br>
+  <span><strong>Cost: </strong><%= task.try(:cost).money %></span><br>
+  <span><strong>Task: </strong><%= task.try(:description) %></span><br>
+  <span><strong>Created By: </strong><%= task.try(:created_by).try(:full_name) %></span><br>
+  <span><strong>Assigned To: </strong><%= task.try(:assigned_to).try(:full_name) %></span><br>
 </div>
+
+<hr>
+
+<h3>Events</h3>

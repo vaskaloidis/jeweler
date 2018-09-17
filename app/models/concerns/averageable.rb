@@ -10,7 +10,7 @@ module Averageable
     if tasks.empty? || tasks.average(:hours).nil?
       0
     else
-      tasks.average(:hours).round(precision, :banker)
+      tasks.average(:hours).round(precision)
     end
   end
 
@@ -18,7 +18,7 @@ module Averageable
     if tasks.empty? || tasks.average(:planned_hours).nil?
       0
     else
-      tasks.average(:planned_hours).round(precision, :banker)
+      tasks.average(:planned_hours).round(precision)
     end
   end
 
@@ -26,7 +26,7 @@ module Averageable
     if payments.empty? || ayments.average(:amount).nil?
       0
     else
-      payments.average(:amount).round(precision, :banker)
+      payments.average(:amount).round(precision)
     end
   end
 
@@ -37,7 +37,7 @@ module Averageable
       sprints.each do |sprint|
         sum += sprint.hours
       end
-      (sum / sprints.count).round(precision, :banker)
+      (sum / sprints.count).round(precision)
     else
       raise NoMethodError 'You can only get the average of sprints from a Project (it needs to have sprints)'
     end

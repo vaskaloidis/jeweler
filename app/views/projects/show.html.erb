@@ -19,7 +19,7 @@
                 <%= render 'sprints/meter', project: @project %>
               </div>
               <div id="home_timeline_container" class="col-xs-12 col-md-8 pull-right">
-                <%= render 'notes/notes', notes: @project.sprint_notes, project:@project %>
+                <%= render 'notes/notes', notes: @project.sprint_notes, project: @project %>
               </div>
             </div>
 
@@ -46,8 +46,14 @@
           </div>
           <div class="panel-body">
             <% unless @project.owner?(current_user) %>
-              <%= link_to leave_project_path(@project.id, current_user) do %>
-                <i class="linecons-trash"></i> Leave Project
+              <% if current_user.role(@project) == :customer %>
+                <%= link_to customer_leave_project_path(@project.id) do %>
+                  <i class="linecons-trash"></i> Leave Project
+                <% end %>
+              <% else %>
+                <%= link_to developer_leave_project_path(@project.id) do %>
+                  <i class="linecons-trash"></i> Leave Project
+                <% end %>
               <% end %>
             <% end %>
           </div>

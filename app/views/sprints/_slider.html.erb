@@ -24,8 +24,8 @@
         <% else %>
           <div class="label label-danger">Sprint Closed</div>
         <% end %>
-        <% if sprint.payment != 0 %>
-          <div class="label label-success"><strong>Payment: </strong> <%= payment_total.money %></div>
+        <% unless sprint.payment.zero? %>
+          <div class="label label-success"><strong>Payment: </strong> <%= sprint.payment.money %></div>
         <% end %>
         <div class="label label-info"><Strong>Cost: </Strong> <%= sprint.cost.money %></div>
         <div class="label label-default"><Strong>Projected: </Strong> <%= sprint.planned_hours.hours %></div>
@@ -50,13 +50,13 @@
             </button>
             <ul class="dropdown-menu dropdown-white" role="menu">
               <li><%= link_to 'Generate Estimate', generate_invoice_path(sprint.id, 'true'), remote: true %></li>
-              <% unless sprint.only_planned? %>
+              <% unless sprint.estimate? %>
                 <li><%= link_to 'Generate Invoice', generate_invoice_path(sprint.id, 'false'), remote: true %></li>
               <% end %>
               <li>
                 <% if sprint.payment_due? %>
                   <%= link_to 'Payment Requested'.html_safe,
-                              cancel_request_payment_path(sprint.id),
+                              cancel_payment_request_path(sprint.id),
                               class: 'payment-requested-btn',
                               remote: true %>
                 <% else %>
@@ -95,7 +95,7 @@
             <th>Task</th>
             <th>Rate</th>
             <th>Estimated Hours</th>
-            <% unless sprint.only_planned? %>
+            <% unless sprint.estimate? %>
               <td>Hours</td>
               <td>Cost</td>
             <% else %>
@@ -107,9 +107,9 @@
           <% sprint.tasks.each do |task| %>
             <tr>
               <td><%= task.description %></td>
-              <td><%= task.rate.sprint_rate %></td>
+              <td><%= task.rate.rate %></td>
               <td><%= task.planned_hours.hours %></td>
-              <% unless sprint.only_planned? %>
+              <% unless sprint.estimate? %>
                 <td><%= task.hours.hours %></td>
                 <td><%= task.cost.money %></td>
               <% else %>
@@ -120,8 +120,8 @@
           <tr>
             <th></th>
             <th><strong>Total:</strong></th>
-            <th><%= sprint.planned_hours.sprint_rate %></th>
-            <% unless sprint.only_planned? %>
+            <th><%= sprint.planned_hours.rate %></th>
+            <% unless sprint.estimate? %>
               <th><%= sprint.hours.hours %></th>
               <th><%= sprint.cost.money %></th>
             <% else %>
