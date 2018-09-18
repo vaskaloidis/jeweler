@@ -45,7 +45,7 @@ Rails.application.routes.draw do
   get '/invoice/:sprint_id/select_customer/:estimate/:goal', to: 'invoices#select_customer', as: 'select_invoice_customer'
   post '/invoice/review', to: 'invoices#review', as: 'review_customer_invoice'
   post '/invoice/print', to: 'invoices#print', as: 'print_invoice'
-  # post '/invoice/send', to: 'invoices#send', as: 'send_invoice'
+  post '/invoice/send', to: 'invoices#send_invoice', as: 'send_invoice'
 
   # Sprints
   get '/sprint/:id/edit_description', to: 'sprints#edit_description', as: 'edit_sprint_description'

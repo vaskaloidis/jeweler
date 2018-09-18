@@ -15,30 +15,36 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
     sign_in @project.owner
   end
 
-  test "should generate invoice" do
+  test 'should generate invoice' do
     get generate_invoice_url(@sprint, 'false'), xhr: true
     assert_response :success
   end
 
-  test "should generate estimate" do
+  test 'generate estimate' do
     get generate_invoice_url(@sprint, 'true'), xhr: true
     assert_response :success
   end
 
-  test "should review customer invoice" do
-    skip 'not finished yet'
-    post review_customer_invoice_url, params: {invoice: {}}, xhr: true
+  test 'review invoice' do
+    customer = create(:user)
+    @project.add_customer(customer)
+    invoice_params = { sprint: @project.current_sprint.id, estimate: 'false', invoice_note: '(Optional) Invoice Note', customer_email: 'Customer Email', user: customer.id }
+    service = mock('ServiceObject')
+    service.stubs(:result).returns(Invoice.new(invoice_params))
+    service.stubs(:errors).returns([])
+    ReviewInvoice.stubs(:call).returns(service)
+    post review_customer_invoice_url, params: {invoice:  invoice_params }, xhr: true
     assert_response :success
   end
 
-  test "should print invoice" do
-    skip 'feature not finished yet'
+  test 'print invoice' do
+    skip 'incomplete'
     post print_invoice_url, params: {invoice: {}}, xhr: true
     assert_response :success
   end
 
-  test "should send invoice" do
-    skip 'not finished yet'
+  test 'send invoice' do
+    skip 'incomplete'
     post send_invoice_url, params: {invoice: {}}, xhr: true
     assert_response :success
   end

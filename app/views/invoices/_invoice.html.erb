@@ -75,15 +75,15 @@
   <!-- Client and Payment Details -->
   <div class="invoice-details">
     <% if invoice.sprint.payment_due %>
-      <% if invoice.payment_request_amount %>
+      <% if invoice.request_amount %>
         <div class="alert alert-success">
           <i class="fa-dollar-sign pull-right"></i>
-          A payment of <%= invoice.payment_request_amount.money %> has been requested
+          A payment of <%= invoice.request_amount.money %> has been requested
         </div>
       <% else %>
         <div class="alert alert-success">
           <i class="fa-dollar-sign pull-right"></i>
-          Payment Requested
+          Sprint <%= invoice.sprint.sprint %> Payment Requested
         </div>
       <% end %>
     <% end %>
@@ -126,7 +126,7 @@
         <% unless invoice.estimate %>
           <li><strong>Reported Hours: </strong><%= invoice.sprint.hours.to_s %> hrs.</li>
         <% end %>
-        <% if invoice.invoice_note %>
+        <% unless !invoice.invoice_note || invoice.invoice_note.empty? %>
           <li><strong>Note: </strong><%= invoice.invoice_note %></li>
         <% end %>
       </ul>
@@ -162,7 +162,7 @@
             <i class="fas fa-check fa-1x"></i>
           <% end %>
         </td>
-        <td><span class="alert alert-success task-id">#task<%= task.code %></span><%= task.description %></td>
+        <td><span class="alert alert-success task-id"><%= task.code %></span><%= task.description %></td>
         <td class="text-center">$<%= task.rate.to_s %>/hr.</td>
         <% if invoice.estimate %>
           <td class="text-center hidden-xs"><%= task.planned_hours.to_s %> hrs.</td>

@@ -1,4 +1,7 @@
-<%= form_for invoice, url: review_customer_invoice_path, class: 'form-horizontal' do |i| %>
+<% Rails.logger.debug("Invoice Form: " + invoice.inspect.to_s) %>
+<%= form_for invoice, url: review_customer_invoice_path, remote: true, class: 'form-horizontal' do |i| %>
+  <%= i.hidden_field :estimate %>
+  <%= i.hidden_field :sprint_id, value: invoice.sprint.id %>
   <div class='row'>
     <div class='col-xs-12 col-sm-4'>
       <div class='form-field' style='color: black'>
@@ -21,8 +24,6 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-3">
-      <%= i.hidden_field :estimate %>
-      <%= i.hidden_field :sprint %>
       <%= i.submit 'Generate', :class => 'btn-sm btn-success form-control' %><br>
     </div>
   </div>
@@ -44,7 +45,7 @@
     <% end %>
     <div class='col-xs-12 col-sm-2'>
       <% if invoice.sprint.payment_due %>
-        <span class="label label-default">Payment Requested</span>
+        <span class="label label-default not-bold one-em">Sprint <%= invoice.sprint.sprint %> Payment Requested</span>
       <% else %>
         <%= link_to 'Request Payment',
                     request_payment_path(invoice.sprint.id),
