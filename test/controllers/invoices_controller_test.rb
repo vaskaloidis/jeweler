@@ -28,7 +28,7 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
   test 'review invoice' do
     customer = create(:user)
     @project.add_customer(customer)
-    invoice_params = { sprint: @project.current_sprint.id, estimate: 'false', invoice_note: '(Optional) Invoice Note', customer_email: 'Customer Email', user: customer.id }
+    invoice_params = { sprint_id: @project.current_sprint.id, estimate: 'false', invoice_note: '(Optional) Invoice Note', user: customer.id }
     service = mock('ServiceObject')
     service.stubs(:result).returns(Invoice.new(invoice_params))
     service.stubs(:errors).returns([])
@@ -37,15 +37,19 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'print invoice' do
-    skip 'incomplete'
-    post print_invoice_url, params: {invoice: {}}, xhr: true
+  test 'send invoice' do
+    customer = create(:user)
+    @project.add_customer(customer)
+    invoice_params = { sprint_id: @project.current_sprint.id, estimate: 'false', invoice_note: '(Optional) Invoice Note', user: customer.id }
+    post send_invoice_url, params: {invoice:  invoice_params }, xhr: true
     assert_response :success
   end
 
-  test 'send invoice' do
-    skip 'incomplete'
-    post send_invoice_url, params: {invoice: {}}, xhr: true
+  test 'print invoice' do
+    customer = create(:user)
+    @project.add_customer(customer)
+    invoice_params = { sprint_id: @project.current_sprint.id, estimate: 'false', invoice_note: '(Optional) Invoice Note', user: customer.id }
+    post print_invoice_url, params: {invoice:  invoice_params }, xhr: true
     assert_response :success
   end
 

@@ -18,20 +18,17 @@ class ReviewInvoice < Jeweler::Service
     invoice.sprint = Sprint.find(params[:sprint_id])
     invoice.estimate = params[:estimate]
     # binding.pry
-    if params[:customer_email] == 'Customer Email' || params[:customer_email].empty?
-      if params[:user].nil? or params[:user] == ''
-        errors << 'A customer was not selected'
-      else
-        user = User.find(params[:user])
-        invoice.user = user
-      end
-    else
-      # Custom Email (Text-Field)
+    if (params[:customer_email] == 'Customer Email' || params[:customer_email].empty? || !params[:customer_email]) && params[:user]
+      user = User.find(params[:user])
+      invoice.user = user
+    elsif (params[:user].nil? || params[:user].empty? || !params[:user]) && params[:customer_email]
       invoice.invitation = true
       invoice.customer_email = params[:customer_email]
+    else
+      errors << 'A customer was not selected'
     end
 
-    unless params[:invoice_note] == '(Optional) Invoice Note' || params[:invoice_note].empty?
+    unless params[:invoice_note] == '(Optional) Invoice Note' || params[:invoice_note].empty? || params[:invoice_note].nil?
       invoice.invoice_note = params[:invoice_note]
     end
 

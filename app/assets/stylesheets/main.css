@@ -140,7 +140,12 @@ footer.main-footer {
     content: ' (Open)';
 }
 
-.payment-request-btn:hover:after {
+.payment-request-btn span {
+    display: block;
+}
+
+.payment-request-btn:hover span {
+    display: none;
 }
 
 .payment-requested-btn:hover:after {

@@ -1,6 +1,6 @@
 <div class="well">
-  <% if invitation %>
-    <% if estimate %>
+  <% if invoice.invitation %>
+    <% if invoice.estimate %>
       <strong>Estimate Sent!</strong>
       <h6>Project estimate and Jeweler project invitation sent.</h6>
     <% else %>
@@ -8,7 +8,7 @@
       <h6>Project invoice and Jeweler project invitation sent.</h6>
     <% end %>
   <% else %>
-    <% if estimate %>
+    <% if invoice.estimate %>
       <strong>Estimate Sent!</strong>
       <h6>Estimate sent.</h6>
     <% else %>
@@ -16,27 +16,17 @@
       <h6>Invoice Sent</h6>
     <% end %>
   <% end %>
-  <% if payment_request_amount %>
+  <% if invoice.request_amount %>
     <p>
-      <strong>Payment Request Amount: </strong><%= payment_request_amount.money %>
+      <strong>Payment Request Amount: </strong><%= invoice.request_amount.money %>
     </p>
   <% end %>
-  <% if invoice_note %>
+  <% if invoice.invoice_note %>
     <p>
-      <strong>Invoice Note: </strong><%= invoice_note %>
+      <strong>Invoice Note: </strong><%= invoice.invoice_note %>
     </p>
   <% end %>
   <a href="#" onclick="$('#modal').modal('hide')" class="btn btn-success">Close</a>
 </div>
 
-<%= render 'sprints/generate_printable_invoice',
-           invoice: invoice,
-           estimate: estimate,
-           display_send_btn: false,
-           display_pay_btn: true,
-           display_print_btn: false,
-           customer: @customer,
-           customer_email: @customer_email,
-           payment_request_amount: @request_amount,
-           invoice_note: @invoice_note
-%>
+<%= render 'invoices/generate_printable', invoice: invoice, display_send_btn: false, display_pay_btn: true, display_print_btn: false %>

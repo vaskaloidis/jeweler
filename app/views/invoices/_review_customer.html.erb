@@ -1,6 +1,6 @@
 <div class="well review-invoice-well">
   <strong>Review Invoice</strong>
-  <% if invoice.invitation %>
+  <% if invoice.invitation && invoice.customer_email %>
     <% if invoice.estimate %>
       <p>Send estimate to <%= invoice.customer_email %>? <br>
         A Jeweler account does not exist for this user, so we will invite him to join Jeweler first, while his project
@@ -10,42 +10,51 @@
         A Jeweler account does not exist for this user, so we will invite him to join Jeweler first, while his project
         invitation waits pending his approval.</p>
     <% end %>
-  <% else %>
+  <% elsif invoice.user %>
     <% if invoice.estimate %>
       <p>Send estimate to <%= invoice.user.email %>?</p>
     <% else %>
       <p>Send invoice to <%= invoice.user.email %>?</p>
     <% end %>
   <% end %>
+
   <% if invoice.request_amount %>
     <p>
       <strong>Payment Request Amount: </strong><%= invoice.request_amount.money %>
     </p>
   <% end %>
+
   <% unless !invoice.invoice_note || invoice.invoice_note.empty? %>
     <p>
       <strong>Invoice Note: </strong><%= invoice.invoice_note %>
     </p>
   <% end %>
   <%= form_for invoice, as: :invoice, url: send_invoice_path, method: :post, remote: true, html: {class: 'pull-left form-inline'} do |send| %>
-    <%= send.hidden_field :user %>
-    <%= send.hidden_field :customer_email %>
-    <%= send.hidden_field :sprint_id, %>
+    <%= send.hidden_field :sprint_id, value: invoice.sprint.id %>
+    <% if invoice.user %>
+      <%= send.hidden_field :user_id, value: invoice.user.id %>
+    <% elsif invoice.customer_email %>
+      <%= send.hidden_field :customer_email %>
+    <% end %>
     <%= send.hidden_field :estimate %>
     <%= send.hidden_field :invitation %>
     <%= send.hidden_field :invoice_note %>
-    <%= send.hidden_field :payment_request_amount %>
+    <%= send.hidden_field :request_amount %>
     <%= send.submit 'Send', class: 'btn btn-success' %>
   <% end %>
 
-  <%= form_for invoice, as: :invoice, url: print_invoice_path, method: :post, remote: true, html: {class: 'margin-left-20 pull-left form-inline'} do |print| %>
-    <%= print.hidden_field :user %>
-    <%= print.hidden_field :customer_email %>
-    <%= print.hidden_field :sprint_id, %>
+  <%# local: true, %>
+  <%= form_for invoice, as: :invoice, url: print_invoice_path, method: :post, html: {class: 'margin-left-20 pull-left form-inline'} do |print| %>
+    <%= print.hidden_field :sprint_id, value: invoice.sprint.id %>
+    <% if invoice.user %>
+      <%= print.hidden_field :user_id, value: invoice.user.id %>
+    <% elsif invoice.customer_email %>
+      <%= print.hidden_field :customer_email %>
+    <% end %>
     <%= print.hidden_field :estimate %>
     <%= print.hidden_field :invitation %>
     <%= print.hidden_field :invoice_note %>
-    <%= print.hidden_field :payment_request_amount %>
+    <%= print.hidden_field :request_amount %>
     <%= print.submit 'Print', class: 'btn btn-primary' %>
   <% end %>
 </div>
