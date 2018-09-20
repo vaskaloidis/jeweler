@@ -5,6 +5,8 @@ Rails.application.configure do
     Bullet.raise = true # raise an error if n+1 query occurs
   end
 
+  WebMock.allow_net_connect!
+
   config.log_level = :info
 
   # Settings specified here will take precedence over those in config/application.rb.

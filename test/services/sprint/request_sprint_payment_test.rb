@@ -9,7 +9,7 @@ class RequestSprintPaymentTest < ActionDispatch::IntegrationTest
     @customer = @project.customers.first
   end
 
-  test 'customer request sprint payment service' do
+  test 'payment request' do
     sign_in @customer
     sprint = create(:sprint_with_reported_hours, payment_due: false)
     service_object = RequestSprintPayment.call(sprint, @customer)
@@ -18,16 +18,24 @@ class RequestSprintPaymentTest < ActionDispatch::IntegrationTest
     assert sprint.payment_due
   end
 
-  test 'can not request payment without reported sprint hours' do
-    skip 'Error message is not coming back preventing the payment request'
+  test 'payment already requested error' do
+    sign_in @customer
+    sprint = create(:sprint_with_reported_hours, payment_due: true)
+    service = RequestSprintPayment.call(sprint, @customer)
+    assert_equal 1, service.errors.count
+    assert_includes service.errors, 'Payment already Requested.'
+    assert service.payment_due
+  end
+
+  test 'no hours reported error' do
     sign_in @owner
     sprint = create(:sprint, payment_due: false)
     assert_equal 0, sprint.hours
-    service_object = RequestSprintPayment.call(sprint, @owner)
-    puts service_object.inspect
-    sprint = service_object.result
+    service = RequestSprintPayment.call(sprint, @owner)
+    puts service.inspect
+    sprint = service.result
     assert_equal 1, sprint.errors.count
-    assert service_object.errors.must_include 'You must report hours to request payment'
+    assert_includes service.errors, 'You must report hours to request payment'
     refute sprint.payment_due
   end
 
