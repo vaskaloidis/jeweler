@@ -26,6 +26,11 @@ class TasksTest < ApplicationSystemTestCase
   end
 
   test 'complete a task' do
+    visit('/')
+    page.should have_content('ms6')
+  end
+
+  test 'complete a task' do
     sprint = @project.current_sprint
     task = Task.create(sprint: sprint, description: 'task description', rate: 25, planned_hours: 10, hours: 15, created_by: @owner, complete: false)
     visit project_url(@project)

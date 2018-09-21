@@ -32,7 +32,7 @@ namespace :jeweler do
     JewelerRakeCommands.clear_logs
     # JewelerRakeCommands.factory_bot_tests
     JewelerRakeCommands.default_tests
-    # JewelerRakeCommands.system_tests
+    JewelerRakeCommands.system_tests
   end
 
   desc 'Run Default Minitest Tests Verbose w/ Backtrace'
