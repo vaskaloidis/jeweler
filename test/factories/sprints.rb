@@ -17,6 +17,7 @@ FactoryBot.define do
       end
     end
 
+    # TODO: Clean this up or remove it. Make it a trait maybe?
     factory :sprint_with_reported_hours do
       after(:create) do |sprint, evaluator|
         create_list(:task, 5, sprint: sprint, hours: Random.rand(1...20))

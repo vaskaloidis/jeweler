@@ -55,15 +55,17 @@
               <% end %>
               <li>
                 <% if sprint.payment_due? %>
-                  <%= link_to 'Payment Requested'.html_safe,
-                              cancel_payment_request_path(sprint.id),
+                  <%= link_to cancel_payment_request_path(sprint.id),
                               class: 'payment-requested-btn',
-                              remote: true %>
+                              remote: true do %>
+                    <span>Payment Requested</span>
+                  <% end %>
                 <% else %>
-                  <%= link_to 'Request Pay'.html_safe,
-                              request_payment_path(sprint.id),
+                  <%= link_to request_payment_path(sprint.id),
                               class: 'payment-request-btn',
-                              remote: true %>
+                              remote: true do %>
+                    Request Payment
+                  <% end %>
                 <% end %>
               </li>
               <li>
@@ -167,7 +169,7 @@
             </div>
           <% end %>
           <div class="row">
-            <% if 1 == 2 #TODO: Finish getting commits without Tasks %>
+            <% if 1 == 2 #TODO: Finish getting commits without Tasks  %>
               <% sprint.notes.commits.where("id not in (select task_id from notes)").each do |commit| %>
                 <div class="row">
                   <%= truncate(commit.git_commit_id, length: 10) %> <%= truncate(commit.content.html_safe, length: 100) %>

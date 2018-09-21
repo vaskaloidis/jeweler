@@ -22,6 +22,8 @@ class GitHubOauth
 
   def install_webhook!
     github_api.repos.hooks.create(user, repo, new_hook)
+  rescue Github::Error::NotFound
+    @errors << 'Github-Repo is invalid. Please change in Project Settings.' if defined? @errors
   end
 
   def webhook_installed?
@@ -33,6 +35,9 @@ class GitHubOauth
       end
       false
     end
+  rescue Github::Error::NotFound
+    @errors << 'Github-Repo is invalid. Please change in Project Settings.' if defined? @errors
+    false
   end
 
   private

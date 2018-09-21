@@ -9,6 +9,7 @@
       <% unless task.current? %>
         <%= link_to 'Current Task',
                     set_current_task_path(task.id), remote: true,
+                    id: "current_task_btn_#{task.id}",
                     class: 'btn btn-sm btn-primary' %>
       <% end %>
 

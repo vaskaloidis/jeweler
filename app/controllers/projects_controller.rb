@@ -1,7 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy, :users]
   # before_action :verify_sprints_exist, only: [:show, :edit, :update, :create]
-  before_action :authenticate_user!
   before_action :verify_owner, only: [:edit, :update, :destroy]
   respond_to :html, :js, only: [:request_payment, :users]
 

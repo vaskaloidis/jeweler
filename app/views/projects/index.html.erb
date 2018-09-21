@@ -1,6 +1,35 @@
 <h1>Welcome <%= current_user.first_name %> <%= current_user.last_name %>.</h1>
 
-<% unless current_user.customer_projects.empty? %>
+<% unless current_user.invitations.empty? %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Invitations
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="list-group">
+            <% current_user.invitations.each do |invitation| %>
+              <div class="list-group-item">
+                <h4 class="list-group-item-heading"><%= invitation.project.name %></h4>
+                <p class="list-group-item-text">
+                <p><%= invitation.project.description %></p>
+
+                <p>
+                  <%= link_to 'Accept', accept_invitation_path(invitation.id), class: 'btn btn-success' %>
+                  <%= link_to 'Decline', decline_invitation_path(invitation.id), class: 'btn btn-danger' %>
+                </p>
+                </p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% unless current_user.owner_projects.empty? %>
   <% total_payment = 0.0 %>
   <% cost = 0.0 %>
   <% total_hours = 0.0 %>
@@ -59,35 +88,6 @@
       <div class="row">
         <% #TODO:Move these calculations for a current_user owner's overall projects to User Model %>
         <%= render 'widgets/home_widgets', cost: cost, total_payment: total_payment, total_balance: total_balance, total_hours: total_hours %>
-      </div>
-    </div>
-  </div>
-<% end %>
-
-<% unless current_user.invitations.empty? %>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      Invitations
-    </div>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="list-group">
-            <% current_user.invitations.each do |invitation| %>
-              <div class="list-group-item">
-                <h4 class="list-group-item-heading"><%= invitation.project.name %></h4>
-                <p class="list-group-item-text">
-                <p><%= invitation.project.description %></p>
-
-                <p>
-                  <%= link_to 'Accept', accept_invitation_path(invitation.id), class: 'btn btn-success' %>
-                  <%= link_to 'Decline', decline_invitation_path(invitation.id), class: 'btn btn-danger' %>
-                </p>
-                </p>
-              </div>
-            <% end %>
-          </div>
-        </div>
       </div>
     </div>
   </div>

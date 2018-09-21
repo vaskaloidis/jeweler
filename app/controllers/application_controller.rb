@@ -9,8 +9,14 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_current_user
   before_action :configure_permitted_parameters, if: :devise_controller?
-
+  # rescue_from Github::Error::NotFound, with: :github_error_not_found
   protected
+
+  def github_error_not_found
+    if defined? @errors
+        @errors << 'Project GitHub URL is invalid'
+    end
+  end
 
   def generate_events
     if @errors.empty?

@@ -140,12 +140,18 @@ footer.main-footer {
     content: ' (Open)';
 }
 
-.payment-request-btn:hover:after {
+.payment-requested-btn span {
+    display: block;
+}
+
+.payment-requested-btn:hover span {
+    display: none;
 }
 
 .payment-requested-btn:hover:after {
-    content: ' (Cancel)';
+    content: ' (Cancel Payment Request)';
 }
+
 .btn.btn-gray {
     color: #333 !important;
 }
