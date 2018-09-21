@@ -38,7 +38,7 @@ class Project < ApplicationRecord
   validates :name, presence: true
   validates :github_url, presence: true, uniqueness: true
   # validate :validate_sprint_count TODO: Enable validate_sprint_count validation and write model unit tests.
-
+  validate :github_url_valid
   def validate_sprint_count
     if sprint_current > sprint_total
       errors.add(:sprint_current, 'Current-Sprint must be less than or equal to Total-Sprint.')
@@ -120,6 +120,9 @@ class Project < ApplicationRecord
   end
 
   private
+
+  def github_url_valid
+  end
 
   def build_sprints
     # TODO: Test to Verify this is not making an extra useless Sprint, and its making enough
