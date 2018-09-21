@@ -12,6 +12,22 @@
  *
  */
 
+.margin-left-20 {
+    margin-left: 20px;
+}
+
+.review-invoice-well {
+    min-height: 150px !important;
+}
+
+.one-em {
+    font-size: 1em !important;
+}
+
+.not-bold {
+    font-weight: normal !important;
+}
+
 .user-role {
     margin-top:5px;
     display: block;

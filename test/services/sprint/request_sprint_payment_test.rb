@@ -4,31 +4,43 @@ class RequestSprintPaymentTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @project = create(:project, :seed_tasks_notes, :seed_project_users)
-    @owner = @project.owner
-    @customer = @project.customers.first
+    @owner = create(:user)
+    @customer = create(:user)
+    @project = create(:project, owner: @owner)
+    @project.add_customer(@customer)
   end
 
-  test 'customer request sprint payment service' do
-    sign_in @customer
-    sprint = create(:sprint_with_reported_hours, payment_due: false)
-    service_object = RequestSprintPayment.call(sprint, @customer)
-    sprint = service_object.result
-    assert service_object.errors.empty?
-    assert sprint.payment_due
-  end
-
-  test 'can not request payment without reported sprint hours' do
-    skip 'Error message is not coming back preventing the payment request'
+  test 'payment request succeeds' do
     sign_in @owner
-    sprint = create(:sprint, payment_due: false)
+    sprint = @project.current_sprint
+    sprint.update(payment_due: false)
+    create_list(:task, 5, sprint: sprint, created_by: @owner, hours: 4)
+    service = RequestSprintPayment.call(sprint, @customer)
+    assert service.errors.empty?
+    assert service.result.payment_due
+  end
+
+  test 'payment already requested error' do
+    sign_in @owner
+    sprint = @project.current_sprint
+    sprint.update(payment_due: true)
+    create_list(:task, 5, sprint: sprint, created_by: @owner, hours: 4)
+    service = RequestSprintPayment.call(sprint, @owner)
+    assert_equal 1, service.errors.count
+    assert_includes service.errors, 'Payment already Requested.'
+    assert service.result.payment_due
+  end
+
+  test 'no hours reported error' do
+    sign_in @owner
+    sprint = @project.current_sprint
+    sprint.update(payment_due: false)
+    create_list(:task, 5, sprint: sprint, created_by: @owner, hours: 0, planned_hours: 2)
     assert_equal 0, sprint.hours
-    service_object = RequestSprintPayment.call(sprint, @owner)
-    puts service_object.inspect
-    sprint = service_object.result
-    assert_equal 1, sprint.errors.count
-    assert service_object.errors.must_include 'You must report hours to request payment'
-    refute sprint.payment_due
+    service = RequestSprintPayment.call(sprint, @owner)
+    assert_equal 1, service.errors.count
+    assert_includes service.errors, 'You must report hours to request payment.'
+    refute service.result.payment_due
   end
 
 end

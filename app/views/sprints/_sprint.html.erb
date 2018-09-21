@@ -63,15 +63,17 @@
 
         <% if sprint.project.owner?(current_user) %>
           <% if sprint.payment_due? %>
-            <%= link_to 'Payment Requested'.html_safe,
-                        cancel_payment_request_path(sprint.id),
+            <%= link_to cancel_payment_request_path(sprint.id),
                         class: 'btn btn-sm btn-warning payment-requested-btn',
-                        remote: true %>
+                        remote: true do %>
+              <span>Payment Requested</span>
+            <% end %>
           <% else %>
-            <%= link_to 'Request Pay'.html_safe,
-                        request_payment_path(sprint.id),
+            <%= link_to request_payment_path(sprint.id),
                         class: 'btn btn-sm btn-success payment-request-btn',
-                        remote: true %>
+                        remote: true do %>
+              Request Payment
+            <% end %>
           <% end %>
         <% end %>
       </div>

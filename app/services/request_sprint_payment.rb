@@ -9,9 +9,9 @@ class RequestSprintPayment < Jeweler::Service
 
   def call
     if sprint.hours.zero?
-      @errors << 'You must report hours to request payment.'
+      errors << 'You must report hours to request payment.'
     elsif sprint.payment_due
-      @errors << 'Payment already Requested.'
+      errors << 'Payment already Requested.'
     else
       sprint.update(payment_due: true)
       if sprint.valid?

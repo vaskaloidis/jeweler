@@ -38,7 +38,7 @@
       <%= f.hidden_field :sprint_id, value: task.sprint.id %>
 	    <%= f.hidden_field :created_by_id, value: current_user.id %>
       <div class="btn-group">
-        <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save"></i></button>
+        <button type="submit" id="create_task_btn" class="btn btn-sm btn-success"><i class="fas fa-save"></i></button>
         <% unless task.id.nil? %>
           <%= link_to '<i style="padding-right: 4px;" class="fas fa-trash-alt"></i>'.html_safe,
                       task_path(task.id), method: :delete, data: {confirm: "Are you sure?"}, remote: true,

@@ -15,31 +15,53 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
     sign_in @project.owner
   end
 
-  test "should generate invoice" do
+  test 'should generate invoice' do
     get generate_invoice_url(@sprint, 'false'), xhr: true
     assert_response :success
   end
 
-  test "should generate estimate" do
+  test 'generate estimate' do
     get generate_invoice_url(@sprint, 'true'), xhr: true
     assert_response :success
   end
 
-  test "should review customer invoice" do
-    skip 'not finished yet'
-    post review_customer_invoice_url, params: {invoice: {}}, xhr: true
+  test 'review estimate for project-customer' do
+    customer = create(:user)
+    @project.add_customer(customer)
+    invoice_params = { estimate: 'true', sprint_id: @project.current_sprint.id, user_id: customer.id, customer_email: 'Customer Email', invoice_note: '(Optional) Invoice Note', request_amount: '(Optional) Request Amount' }
+    post review_customer_invoice_url, params: { invoice: invoice_params }, xhr: true
     assert_response :success
   end
 
-  test "should print invoice" do
-    skip 'feature not finished yet'
-    post print_invoice_url, params: {invoice: {}}, xhr: true
+  test 'review invoice for non-user email' do
+    customer = create(:user)
+    @project.add_customer(customer)
+    invoice_params = { estimate: 'false', sprint_id: @project.current_sprint.id, customer_email: 'somebodysemail@gmail.com', invoice_note: '(Optional) Invoice Note', request_amount: '(Optional) Request Amount' }
+    post review_customer_invoice_url, params: { invoice: invoice_params }, xhr: true
     assert_response :success
   end
 
-  test "should send invoice" do
-    skip 'not finished yet'
-    post send_invoice_url, params: {invoice: {}}, xhr: true
+  test 'send estimate to non-user email' do
+    customer = create(:user)
+    @project.add_customer(customer)
+    invoice_params = { estimate: 'true', sprint_id: @project.current_sprint.id, customer_email: 'somebody@gmail.com', invoice_note: '(Optional) Invoice Note', request_amount: '(Optional) Request Amount' }
+    post send_invoice_url, params: {invoice:  invoice_params }, xhr: true
+    assert_response :success
+  end
+
+  test 'send invoice to project-customer' do
+    customer = create(:user)
+    @project.add_customer(customer)
+    invoice_params = { estimate: 'false', sprint_id: @project.current_sprint.id, user_id: customer.id, invoice_note: '(Optional) Invoice Note', request_amount: '(Optional) Request Amount' }
+    post send_invoice_url, params: {invoice:  invoice_params }, xhr: true
+    assert_response :success
+  end
+
+  test 'print invoice for customer' do
+    customer = create(:user)
+    @project.add_customer(customer)
+    invoice_params = { estimate: 'false', sprint_id: @project.current_sprint.id, customer_email: '', user_id: customer.id, invoice_note: '(Optional) Invoice Note', request_amount: '(Optional) Request Amount' }
+    post print_invoice_url, params: {invoice:  invoice_params }, xhr: true
     assert_response :success
   end
 
