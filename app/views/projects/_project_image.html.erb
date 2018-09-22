@@ -21,7 +21,7 @@
   <!--<span class="user-title"><%#= project.language %> </span>-->
   <span id="language_icon" class="user-title">
     <%= ApplicationHelper.build_language_icon(project.language).html_safe %>
-    <a href="<%= project.github_url %>">
+    <a href="<%= project.github.github_url %>">
         <%= ApplicationHelper.build_language_icon('github').html_safe %>
     </a>
     <% unless project.heroku_token.nil? %>

@@ -36,10 +36,15 @@
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <div class="form-group">
-            <%= form.label :github_url, class: 'control-label' %>
-            <%= form.text_field :github_url, class: 'form-control' %>
-          </div>
+          <% if current_user.github_connected? %>
+            <div class="form-group">
+              <%= form.label :github_repo, class: 'control-label' %>
+              <%= form.select(:github_repo, current_user.github.repo_select) %>
+              <%#= form.text_field :github_repo, class: 'form-control' %>
+            </div>
+          <% else %>
+            <%= render 'github/auth_notification' %>
+          <% end %>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">

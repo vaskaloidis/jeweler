@@ -83,14 +83,16 @@ class User < ApplicationRecord
     Thread.current[:current_user]
   end
 
-  # end
-
   def self.god
     User.where(email: 'vas.kaloidis@gmail.com').first
   end
 
-  def github_installed?
+  def github_connected?
     !oauth.nil? && !oauth.empty?
+  end
+
+  def github
+    GitHubUser.new(self)
   end
 
 end

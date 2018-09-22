@@ -10,7 +10,7 @@ FactoryBot.define do
     # sprint_total { phases }
     # sprint_current { Random.rand(phases) }
     description {Faker::ChuckNorris.fact}
-    github_url {Faker::Omniauth.github[:info][:urls][:GitHub] + name}
+    github_repo {12345}
     stage_website_url {Faker::Internet.domain_name}
     demo_url {Faker::Internet.domain_name}
     prod_url {Faker::Internet.domain_name}
@@ -51,7 +51,7 @@ FactoryBot.define do
       end
     end
     factory :project_with_github_test_repo do
-      github_url {'https://github.com/vaskaloidis/jeweler_test_repo'}
+      github_repo {12345}
     end
     factory :project_with_current_task do
       after(:create) do |project, evaluator|
@@ -71,7 +71,7 @@ FactoryBot.define do
     # sprint_total { phases }
     # sprint_current { Random.rand(phases) }
     description {Faker::ChuckNorris.fact}
-    github_url {Faker::Omniauth.github[:info][:urls][:GitHub] + name}
+    github_repo {12345}
     stage_website_url {Faker::Internet.domain_name}
     demo_url {Faker::Internet.domain_name}
     prod_url{ Faker::Internet.domain_name}
@@ -85,7 +85,7 @@ FactoryBot.define do
     sprint_total '10'
     sprint_current '1'
     description 'new project desc'
-    github_url 'http://github.com/user/project'
+    github_repo {12345}
     stage_website_url 'project stage url'
     demo_url 'project demo url'
     prod_url 'project prod url'
@@ -98,7 +98,7 @@ FactoryBot.define do
     sprint_total '12'
     sprint_current '2'
     description 'update project desc'
-    github_url 'http://github.com/update-user/project'
+    github_repo {12345}
     stage_website_url 'project update stage url'
     demo_url 'project update demo url'
     prod_url 'project update prod url'

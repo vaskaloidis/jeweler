@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_11_212101) do
+ActiveRecord::Schema.define(version: 2018_09_22_124334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 2018_09_11_212101) do
     t.datetime "updated_at", null: false
     t.index ["note_id"], name: "index_discussions_on_note_id"
     t.index ["user_id"], name: "index_discussions_on_user_id"
+  end
+
+  create_table "git_hub_repos", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "git_hub_users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "invitations", force: :cascade do |t|
@@ -88,7 +98,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_212101) do
     t.string "name", null: false
     t.string "language"
     t.text "description"
-    t.string "github_url"
+    t.string "string"
     t.string "readme_file", default: "README.md"
     t.boolean "readme_remote", default: false
     t.string "stage_website_url"
@@ -105,7 +115,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_212101) do
     t.integer "sprint_current"
     t.string "heroku_token"
     t.string "google_analytics_tracking_code"
-    t.index ["github_url"], name: "index_projects_on_github_url", unique: true
+    t.integer "github_repo"
     t.index ["task_id"], name: "index_projects_on_task_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end

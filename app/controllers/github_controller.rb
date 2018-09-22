@@ -162,7 +162,7 @@ class GithubController < ApplicationController
         repo_url   = repository["html_url"]
         logger.debug("Repository URL: " + repo_url)
 
-        @project = Project.where(github_url: repo_url).first
+        @project = Project.where(github_repo: repository).first # Verify repository from payload is repo-id
         logger.debug("Project Name: " + @project.name)
 
         note               = Note.new

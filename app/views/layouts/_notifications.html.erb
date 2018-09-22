@@ -35,17 +35,10 @@
     </div>
   <% end %>
 
-  <% gho = GitHubOauth.new(project) %>
-  <% if !project.github_installed? %>
-    <div class="alert alert-danger">
-      <i class="fab fa-2x fa-github pull-right"></i>
-      Please Connect Jewler with GitHub, <%= link_to 'Here', authorize_github_path %>
-    </div>
-  <% elsif !gho.webhook_installed? %>
-    <div class="alert alert-danger">
-      <i class="fab fa-2x fa-github pull-right"></i>
-      Install GitHub Webhook for Commit Events <%= link_to 'Here', install_github_webhook_path(project.id), remote: true %>.
-    </div>
+  <% unless project.github_repo.nil? %>
+    <% unless project.github.webhook_installed? %>
+      <%= render 'github/webhook_notification', project: project %>
+    <% end %>
   <% end %>
 
 <% elsif project.customer?(current_user) %>

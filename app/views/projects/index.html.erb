@@ -1,3 +1,6 @@
+<% if current_user.oauth.nil? %>
+<%= render 'github/auth_notification' %>
+<% end %>
 <h1>Welcome <%= current_user.first_name %> <%= current_user.last_name %>.</h1>
 
 <% unless current_user.invitations.empty? %>

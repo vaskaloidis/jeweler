@@ -29,19 +29,19 @@ class UserTest < ActiveSupport::TestCase
     assert_equal expected, user.first_last_name_email
   end
 
-  test 'github_installed? false' do
+  test 'github_connected? false' do
     user = create(:user, oauth: nil)
-    assert_equal false, user.github_installed?
+    refute user.github_connected?
   end
 
-  test 'github_installed? false' do
+  test 'github_connected? false' do
     user = create(:user, oauth: '')
-    assert_equal false, user.github_installed?
+    refute user.github_connected
   end
 
-  test 'github_installed? true' do
+  test 'github_connected? true' do
     user = create(:user, oauth: 'github_oauth_123')
-    assert_equal true, user.github_installed?
+    assert_equal true, user.github_connected
   end
 
   test 'invitations' do

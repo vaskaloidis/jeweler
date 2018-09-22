@@ -23,32 +23,8 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    # TODO: Move this to the GitHub Class, use Gem. This is garbage. Terrible. Digusting.
-    readme_feature = false
-    if readme_feature
-      gh_url = if @project.github_url.ends_with? '/'
-                 @project.github_url + 'master/README.md'
-               else
-                 @project.github_url + '/master/README.md'
-               end
-
-      gh_url.sub! 'github.com', 'raw.githubusercontent.com'
-      begin
-        readme_raw = Net::HTTP.get(URI.parse(gh_url))
-        if readme_raw == 'Not Found'
-          @github_readme_parsed = 'README file could not be loaded.<br> GitHub README file: ' + gh_url
-        else
-          redcarpet = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
-          @github_readme_parsed = redcarpet.render(readme_raw)
-        end
-      rescue => ex
-        logger.error ex.message
-        @github_readme_parsed = 'README file could not be loaded.<br>
-                               GitHub README file: ' + gh_url
-      end
-    else
-      @github_readme_parsed = ''
-    end
+    # redcarpet = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
+    # @github_readme_parsed = redcarpet.render(readme_raw)
 
     @notes = @project.notes.where(note_type: [:note, :commit, :project_update]).order('created_at DESC').all
   end
@@ -170,7 +146,7 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:name, :language, :image, :sprint_total,
-                                    :sprint_current, :description, :github_url,
+                                    :sprint_current, :description, :github_repo,
                                     :heroku_token, :github_branch,
                                     :readme_file, :readme_remote, :stage_website_url, :demo_url,
                                     :prod_url, :complete, :task_id, :google_analytics_tracking_code)

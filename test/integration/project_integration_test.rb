@@ -21,7 +21,7 @@ class ProjectIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal(project.name, new_project[:name])
     assert_equal(project.description, new_project[:description])
     assert_equal(project.language, new_project[:language])
-    assert_equal(project.github_url, new_project[:github_url])
+    assert_equal(project.github_repo, new_project[:github_repo])
 
     project.sprints.each_with_index do |sprint, index|
       assert_equal sprint.sprint, (index + 1)

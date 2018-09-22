@@ -99,8 +99,8 @@ class ProjectTest < ActiveSupport::TestCase
     installed_project = create(:project, :seed_tasks_notes, :seed_project_users, owner: installed_user)
     not_installed_user = create(:user)
     not_installed_project = create(:project, :seed_tasks_notes, :seed_project_users, owner: not_installed_user)
-    assert installed_project.github_installed?
-    refute not_installed_project.github_installed?
+    assert installed_project.github.installed
+    refute not_installed_project.github.installed
   end
 
 # Skipped

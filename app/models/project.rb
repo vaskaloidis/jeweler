@@ -23,7 +23,6 @@ class Project < ApplicationRecord
 
   mount_uploader :image, AvatarUploader
 
-  # TODO: Evaluate if we really need all these
   accepts_nested_attributes_for :developers
   accepts_nested_attributes_for :customers
   accepts_nested_attributes_for :owner
@@ -36,16 +35,12 @@ class Project < ApplicationRecord
   validates :sprint_total, presence: true
   validates :sprint_current, presence: true
   validates :name, presence: true
-  validates :github_url, presence: true, uniqueness: true
-  # validate :validate_sprint_count TODO: Enable validate_sprint_count validation and write model unit tests.
-  validate :github_url_valid
-  def validate_sprint_count
-    if sprint_current > sprint_total
-      errors.add(:sprint_current, 'Current-Sprint must be less than or equal to Total-Sprint.')
-    end
+  validate :validate_sprint_count
+
+  def github
+    GitHubRepo.new(self)
   end
 
-  # TODO: Scrap this
   def create_event(event_type, message)
     Note.create_event(self, event_type, message)
   end
@@ -115,13 +110,12 @@ class Project < ApplicationRecord
     false
   end
 
-  def github_installed?
-    owner.github_installed?
-  end
-
   private
 
-  def github_url_valid
+  def validate_sprint_count
+    if sprint_current > sprint_total
+      errors.add(:sprint_current, 'Current-Sprint must be less than or equal to Total-Sprint.')
+    end
   end
 
   def build_sprints
