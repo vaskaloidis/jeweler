@@ -5,48 +5,71 @@ class GitHubRepo < GitHubUser
     super(@project.owner)
   end
 
-  def github_url
-    return false unless installed?
-    "https://github.com/#{user}/#{repo}"
+  def url
+    return false unless available?
+    "https://github.com/#{username}/#{repository_name}"
   end
 
-  def repo
-    @repo ||= github_repo(@project.github_repo).name
+  def repository_name
+    @repository_name ||= repository.name
   end
 
   def install_webhook!
-    api.repos.hooks.create(user, repo, new_hook)
+    @api.repos.hooks.create(user, repo, new_hook)
   end
 
   def webhook_installed?
-    @webhook_installed ||= begin
-      return false unless installed? && !repo.nil?
-      hooks.each do |hook|
-        return true if our_hook?(hook)
+    begin
+      @webhook_installed ||= begin
+        return false unless available?
+        webhooks.each do |hook|
+          return true if our_webhook?(hook)
+        end
+        false
       end
-      false
+    rescue Github::Error::NotFound
+      Rails.logger.error 'Invalid GitHub Repo in webhook_installed?'
+      return false
     end
-  rescue Github::Error::NotFound
-    logger.error 'Invalid GitHub Repo in webhook_installed?'
-    false
+  end
+
+  def available?
+    repo_configured? && installed?
+  end
+
+  def repo_configured?
+    !@project.github_repo.nil?
+  end
+
+  def repo_valid?(id = nil)
+    id = @project.github_repo if id.nil?
+    repository_ids.include? id
   end
 
   private
 
-  def github_repo(id)
-    @github_repo ||= api.repos.get_by_id(id)
+  def repository_ids
+    @repository_ids ||= repositories.collect {|r| r.id}
   end
 
-  def hooks
-    @hooks ||= api.repos.hooks.all(user, repo)
+  def repository_id
+    @repository_id ||= @project.github_repo
   end
 
-  def our_hook?(hook)
-    hook.config.url == ENV['GITHUB_HOOK_URL'] && hook.config.content_type == 'json'
+  def repository
+    @repository ||= api.repos.get_by_id(repository_id)
   end
 
-  def new_hook
-    @new_hook ||= {
+  def webhooks
+    @webhooks ||= api.repos.hooks.all(username, repository_name)
+  end
+
+  def our_webhook?(webhook)
+    (webhook.config.url == ENV['GITHUB_HOOK_URL']) && (webhook.config.content_type == 'json')
+  end
+
+  def new_webhook
+    @new_webhook ||= {
         name: "web",
         active: true,
         config: {

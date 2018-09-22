@@ -1,0 +1,18 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Project Settings
+  </div>
+  <div class="panel-body">
+    <% unless @project.owner?(current_user) %>
+      <% if current_user.role(@project) == :customer %>
+        <%= link_to customer_leave_project_path(@project.id) do %>
+          <i class="linecons-trash"></i> Leave Project
+        <% end %>
+      <% else %>
+        <%= link_to developer_leave_project_path(@project.id) do %>
+          <i class="linecons-trash"></i> Leave Project
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

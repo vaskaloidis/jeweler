@@ -8,16 +8,16 @@ class GitHubUser
     @owner.github_connected?
   end
 
-  def user
-    @user ||= api.users.get
+  def username
+    @username ||= api.users.get
   end
 
-  def repos
-    @repos ||= api.repos.list
+  def repositories
+    @repositories ||= api.repos.list
   end
 
-  def repo_select
-    @repo_names ||= repos.collect{ |r| [r.name, r.id]}
+  def user_repos_select
+    @user_repos_select ||= user_repos.collect{ |r| [r.name, r.id]}
   end
 
   def api

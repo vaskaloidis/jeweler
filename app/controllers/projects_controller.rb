@@ -1,8 +1,11 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:verify_owner, :show, :edit, :update, :destroy, :users]
   # before_action :verify_sprints_exist, only: [:show, :edit, :update, :create]
-  before_action :verify_owner, only: [:edit, :update, :destroy]
   respond_to :html, :js, only: [:request_payment, :users]
+  respond_to :html, only: [:settings]
+  def settings
+
+  end
 
   def users; end
 
@@ -105,43 +108,6 @@ class ProjectsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_project
     @project = Project.find(params[:id])
-  end
-
-
-  def sync_github(project, user)
-    return unless false # TODO: Add a setting to enable / disable Github_Sync
-    return unless project.owner?(user) and !project.owner.oauth.nil?
-    begin
-      github = Github.new oauth: project.owner.oauth
-      logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
-      logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
-      repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
-      repos.each do |commit|
-        next unless Note.where(project: project, git_commit_id: sha).empty?
-        sha = commit.sha
-        note = Note.new
-        note.author = project.owner
-        note.note_type = 'commit'
-        note.git_commit_id = sha
-        note.sync = true
-        note.project = project
-        note.content = commit.commit.message.to_s + ' - ' + commit.commit.author.name.to_s
-
-        unless project.current_sprint.nil?
-          note.sprint = project.current_sprint
-        end
-        unless project.current_task.nil?
-          note.task = project.current_task
-        end
-
-        note.created_at = commit.commit.committer.date
-        note.save
-        puts 'Note Created for Commit Sync, SHA: ' + commit.sha
-      end
-    rescue Exception
-      logger.error("Error syncing Github Repo")
-      logger.error
-    end
   end
 
   def project_params
