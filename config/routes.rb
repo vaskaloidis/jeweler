@@ -73,7 +73,7 @@ Rails.application.routes.draw do
 
   # Github Webhooks
   get '/github/oauth', to: 'github#save_oauth', as: 'github_oauth_save'
-  post '/github/hook', to: 'github#hook', as: 'execute_github_webhook'
+  post '/github/hook/push', to: 'github#hook', as: 'github_push_hook'
   get '/github/authorize', to: 'github#authorize_account', as: 'authorize_github'
   get '/github/install_webhook/:project_id', to: 'github#install_webhook', as: 'install_github_webhook'
   get '/github/sync_commits/project/:project_id/sync_commits', to: 'github#sync_commits', as: 'sync_github_commits'

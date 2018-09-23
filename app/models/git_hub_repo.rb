@@ -73,7 +73,7 @@ class GitHubRepo < GitHubUser
         name: "web",
         active: true,
         config: {
-            url: ENV['GITHUB_HOOK_URL'],
+            url: ENV['GITHUB_PUSH_HOOK_URL'],
             content_type: "json"
         }
     }
