@@ -15,35 +15,32 @@ class GitHubRepo < GitHubUser
   end
 
   def install_webhook!
-    @api.repos.hooks.create(user, repo, new_hook)
+    unless webhook_installed?
+      @api.repos.hooks.create(username, repository_name, new_hook)
+      @project.update(github_webhook_installed: true)
+    end
   end
 
   def webhook_installed?
-    begin
-      @webhook_installed ||= begin
-        return false unless available?
-        webhooks.each do |hook|
-          return true if our_webhook?(hook)
-        end
-        false
+    @webhook_installed ||= begin
+      return false unless available?
+      webhooks.each do |hook|
+        return true if our_webhook?(hook)
       end
-    rescue Github::Error::NotFound
-      Rails.logger.error 'Invalid GitHub Repo in webhook_installed?'
-      return false
+      false
     end
   end
 
   def available?
-    repo_configured? && installed?
+    project_configured? && user_installed?
   end
 
-  def repo_configured?
+  def project_configured?
     !@project.github_repo.nil?
   end
 
-  def repo_valid?(id = nil)
-    id = @project.github_repo if id.nil?
-    repository_ids.include? id
+  def valid_repo?
+    repository_ids.include? @project.github_repo
   end
 
   private
@@ -65,7 +62,7 @@ class GitHubRepo < GitHubUser
   end
 
   def our_webhook?(webhook)
-    (webhook.config.url == ENV['GITHUB_HOOK_URL']) && (webhook.config.content_type == 'json')
+    (webhook.config.url == ENV['GITHUB_PUSH_HOOK']) && (webhook.config.content_type == 'json')
   end
 
   def new_webhook
@@ -73,7 +70,7 @@ class GitHubRepo < GitHubUser
         name: "web",
         active: true,
         config: {
-            url: ENV['GITHUB_PUSH_HOOK_URL'],
+            url: ENV['GITHUB_PUSH_HOOK'],
             content_type: "json"
         }
     }

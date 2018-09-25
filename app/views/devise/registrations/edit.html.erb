@@ -15,9 +15,26 @@
             <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
           </div>
 
-          <div class="form-group">
-            <%= f.label :image, 'User Image', class: 'control-label' %>
-            <%= f.file_field :image, multiple: false %>
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-group">
+                <%= f.label :image, 'User Image', class: 'control-label' %>
+                <%= f.file_field :image, multiple: false %>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <% if resource.oauth.nil? %>
+                <%= render 'github/auth_notification', project: @project %>
+              <% else %>
+                <div>
+                  <%= ApplicationHelper.build_language_icon('github').html_safe %><br>
+                  <span>GitHub Connected. <%= link_to disconnect_github_path, method: :delete, data: {confirm: 'Are you sure you want to disconnect from GitHub?'} do %>
+                    <small>Disconnect</small>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
           </div>
 
           <div class="form-group">
@@ -64,7 +81,8 @@
           </div>
 
           <div class="form-group">
-            <%= f.label :current_password %> <i>(we need your current password to confirm any of the above changes)</i><br/>
+            <%= f.label :current_password %>
+            <i>(we need your current password to confirm any of the above changes)</i><br/>
             <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
           </div>
           <div class="form-group">

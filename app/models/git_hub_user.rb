@@ -2,9 +2,10 @@ class GitHubUser
 
   def initialize(owner)
     @owner = owner
+    api
   end
 
-  def installed?
+  def user_installed?
     @owner.github_connected?
   end
 
@@ -16,12 +17,12 @@ class GitHubUser
     @repositories ||= api.repos.list
   end
 
-  def user_repos_select
-    @user_repos_select ||= user_repos.collect{ |r| [r.name, r.id]}
-  end
+  protected
 
   def api
-    @api ||= Github.new oauth_token: @owner.oauth
+    @api ||= begin
+      Github.new oauth_token: @owner.oauth
+    end
   end
 
 end

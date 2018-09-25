@@ -1,4 +1,9 @@
 module ApplicationHelper
+
+  def contact_support(msg)
+    msg + ' Contact Jeweler Support if the problem persists.'
+  end
+
   def self.alphabet
     ("a".."z").to_a
   end

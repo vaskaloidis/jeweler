@@ -39,7 +39,6 @@
       <li>
         <a href="<%= project_path(@project) %>">
           <i class="fas fa-home"></i>
-<!--          <span class="title"><%##= truncate(@project.name, :length => 15) %></span>-->
         </a>
       </li>
       <li>
@@ -52,24 +51,11 @@
           <i class="fas fa-user"></i>
         </a>
       </li>
-      <% if false %>
-        <% unless @project.owner?(current_user) %>
-          <% if controller_name == 'projects' and action_name == 'show' %>
-            <li>
-              <a href="#" id="payment_nav_button" data-animate="true">
-                <% payments_btn = '<i class="fas fa-money-bill-alt"></i> Payment Requests' %>
-                <% payment_requests = @project.payment_requests %>
-                <% unless payment_requests.empty? %>
-                  <% payments_btn = payments_btn + ' <span class="badge badge-secondary pull-right">' + payment_requests.count.to_s + '</span>' %>
-                <% end %>
-                <%= payments_btn.html_safe %>
-                <%#= link_to payments_btn.html_safe, display_payments_panel_path(@project.id), id: 'payment_nav_button', remote:
-            true %>
-              </a>
-            </li>
-          <% end %>
-        <% end %>
-      <% end %>
+      <li>
+        <a href="<%= project_settings_path(@project) %>">
+          <i class="fas fa-wrench"></i>
+        </a>
+      </li>
       <li>
         <%= link_to '<i class="fas fa-money-bill-alt"></i>'.html_safe, project_payments_path(@project.id) %>
       </li>
@@ -78,18 +64,6 @@
   </ul>
 
   <ul class="user-info-menu right-links list-inline list-unstyled">
-
-    <!--<li class="search-form">&lt;!&ndash; You can add "always-visible" to show make the search input visible &ndash;&gt;-->
-
-    <!--<form name="userinfo_search_form" method="get" action="extra-search.html">-->
-    <!--<input type="text" name="s" class="form-control search-field" placeholder="Type to search..."/>-->
-
-    <!--<button type="submit" class="btn btn-link">-->
-    <!--<i class="linecons-search"></i>-->
-    <!--</button>-->
-    <!--</form>-->
-
-    <!--</li>-->
 
     <% if ApplicationHelper.display_project_nav?(@project, controller_name, action_name) %>
       <% if defined? @project %>

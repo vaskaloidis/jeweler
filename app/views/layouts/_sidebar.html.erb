@@ -140,7 +140,7 @@
               </li>
               <% unless @project.owner?(current_user) %>
                 <li>
-                  <a href="#settings" data-toggle="tab" data-animate="true">
+                  <a href="<%= project_settings_path(@project) %>" data-toggle="tab" data-animate="true">
                     <i class="fas fa-cogs"></i>
                     <span class="title">Settings</span>
                   </a>

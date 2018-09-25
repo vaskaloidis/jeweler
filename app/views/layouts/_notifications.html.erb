@@ -35,10 +35,8 @@
     </div>
   <% end %>
 
-  <% unless project.github_repo.nil? %>
-    <% unless project.github.webhook_installed? %>
-      <%= render 'github/webhook_notification', project: project %>
-    <% end %>
+  <% if project.github.available? && !project.github_webhook_installed_cache %>
+    <%= render 'github/webhook_notification', project: project %>
   <% end %>
 
 <% elsif project.customer?(current_user) %>

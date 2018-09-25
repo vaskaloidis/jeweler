@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   resources :tasks
   resources :charges
 
+  # Projects
+  get '/:id/settings', to: 'projects#settings', as: 'project_settings'
+
   # Shared TODO: Convert any 'Inline' Actions to use its 'Stock' Controller Actions
   match '/new_charge_modal', to: 'charges#generate_modal', via: [:post], as: 'generate_charge_modal'
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
@@ -72,11 +75,12 @@ Rails.application.routes.draw do
   get '/discussions/fetch/:note_id', to: 'discussions#fetch', as: 'fetch_discussion'
 
   # Github Webhooks
-  get '/github/oauth', to: 'github#save_oauth', as: 'github_oauth_save'
+  get '/github/oauth/(:project_id)', to: 'github#save_oauth', as: 'github_oauth_save'
+  get '/github/authorize/(:project_id)', to: 'github#authorize_account', as: 'authorize_github'
   post '/github/hook/push', to: 'github#hook', as: 'github_push_hook'
-  get '/github/authorize', to: 'github#authorize_account', as: 'authorize_github'
   get '/github/install_webhook/:project_id', to: 'github#install_webhook', as: 'install_github_webhook'
   get '/github/sync_commits/project/:project_id/sync_commits', to: 'github#sync_commits', as: 'sync_github_commits'
+  delete '/github/disconnect', to: 'github#delete_oauth', as: 'disconnect_github'
 
   # Devise
   devise_for :users, :controllers => {:omniauth_callbacks => "omniauth_callbacks"}
