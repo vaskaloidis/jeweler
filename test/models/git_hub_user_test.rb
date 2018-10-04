@@ -57,7 +57,7 @@ class GitHubUserTest < ActiveSupport::TestCase
 
   test '#install!' do
     owner = create :user, github_oauth: nil
-    new_token 'new-token-ght1234'
+    new_token = 'new-token-ght1234'
 
     owner.reload
     gho = GitHubUser.new(owner)
@@ -82,18 +82,19 @@ class GitHubUserTest < ActiveSupport::TestCase
 
       @installed_user.reload
       gho = GitHubUser.new(@installed_userv)
-      gho.uninstall!(new_token)
+      gho.uninstall!
       @installed_user.reload
-
-      @installed_user owner.github_oauth
+      assert_nil @installed_user.github_oauth
     end
 
   end
 
-  test '#valid_token? is false' do
-    GitHubApp.stubs(new: stub('app', valid_token?: false))
-    gho = GitHubUser.new(@owner)
-    refute gho.valid_token?
+  test '#api' do
+    api = create :github_api
+    GitHubApp.stubs(new: api)
+
+    ghu = GitHubUser.new(@owner)
+    assert_equal api, ghu.api
   end
 
   test '#api' do
