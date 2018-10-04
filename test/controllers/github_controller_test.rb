@@ -5,7 +5,7 @@ class GithubControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     # @owner = create(:owner)
-    @current_user = create :user, oauth: nil
+    @current_user = create :user, github_oauth: nil
     sign_in @current_user
   end
 
@@ -16,7 +16,7 @@ class GithubControllerTest < ActionDispatch::IntegrationTest
       GitHubApp.stubs(:new).returns(@api)
     end
     it 'does not authorize users with GitHub already connected' do
-      mock_user = stub('mock-user', oauth: 'oauth-code-123')
+      mock_user = stub('mock-user', github_oauth: 'oauth-code-123')
       User.stubs(:find).returns(mock_user)
       @api.expects(:authorization_url).returns(@auth_url)
 
@@ -46,7 +46,7 @@ class GithubControllerTest < ActionDispatch::IntegrationTest
       get github_oauth_save_url
 
       @current_user.reload
-      assert_equal @token, @current_user.oauth
+      assert_equal @token, @current_user.github_oauth
       assert_redirected_to root_path
       flash[:notice].must_equal 'GitHub Account Successfully Authenticated!'
     end

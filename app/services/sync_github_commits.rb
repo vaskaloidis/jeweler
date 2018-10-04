@@ -14,12 +14,12 @@ class SyncGithubCommits < Jeweler::Service
 
   def sync_github(project, user)
     return unless false # TODO: Add a setting to enable / disable Github_Sync
-    return unless project.owner?(user) and !project.owner.oauth.nil?
+    return unless project.owner?(user) and !project.owner.github_oauth.nil?
     begin
       github = Github.new oauth: project.owner.oauth
-      logger.debug('GitHub User: ' + ApplicationHelper.github_user(project))
-      logger.debug('GitHub Repo: ' + ApplicationHelper.github_repo(project))
-      repos = github.repos.commits.all ApplicationHelper.github_user(project), ApplicationHelper.github_repo(project)
+      logger.debug('GitHub User: ' + project.github.username)
+      logger.debug('GitHub Repo: ' + project.github.repo_name)
+      repos = github.repos.commits.all project.github.username, project.github.repo_name
       repos.each do |commit|
         next unless Note.where(project: project, git_commit_id: sha).empty?
         sha = commit.sha

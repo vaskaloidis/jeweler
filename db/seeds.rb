@@ -2,6 +2,8 @@
 
 # Seeds
 require 'faker'
+require '../app/helpers/projects_helper'
+include ProjectsHelper
 
 # Clear Table Data
 User.delete_all
@@ -102,7 +104,7 @@ d2.save
 p = Project.new
 p.name = 'Blue Helmet Software Website'
 p.owner = u
-p.language = 'Ruby on Rails'
+p.language = ProjectHelper.languages.index('rails')
 p.demo_url = 'http://bluehelmet.herokuapp.com'
 p.prod_url = 'http://bluehelmet.herokuapp.com'
 p.description = 'A website for the Blue Helmet Software Company, written in Ruby on Rails, hosted on Heroku'

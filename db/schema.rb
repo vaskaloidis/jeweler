@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_24_040839) do
+ActiveRecord::Schema.define(version: 2018_09_28_165136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,7 +96,6 @@ ActiveRecord::Schema.define(version: 2018_09_24_040839) do
 
   create_table "projects", force: :cascade do |t|
     t.string "name", null: false
-    t.string "language"
     t.text "description"
     t.string "string"
     t.string "readme_file", default: "README.md"
@@ -115,8 +114,9 @@ ActiveRecord::Schema.define(version: 2018_09_24_040839) do
     t.integer "sprint_current"
     t.string "heroku_token"
     t.string "google_analytics_tracking_code"
-    t.integer "github_repo"
-    t.boolean "github_webhook_installed_cache", default: false
+    t.integer "github_repo_id"
+    t.integer "github_webhook_id"
+    t.integer "language"
     t.index ["task_id"], name: "index_projects_on_task_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
@@ -180,7 +180,7 @@ ActiveRecord::Schema.define(version: 2018_09_24_040839) do
     t.string "tagline"
     t.string "image"
     t.string "company", default: ""
-    t.string "oauth"
+    t.string "github_oauth"
     t.string "stripe_account_id"
     t.string "stripe_type"
     t.string "stripe_token"

@@ -26,8 +26,7 @@ class GitHubAppTest < ActiveSupport::TestCase
 
       @api_result.expects(:authorize_url).once.with(scope: @scope).returns(@auth_url)
 
-      github = GitHubApp.new
-      assert_equal github.authorization_url, @auth_url
+      assert_equal GitHubApp.authorization_url, @auth_url
     end
   end
 
@@ -39,8 +38,7 @@ class GitHubAppTest < ActiveSupport::TestCase
       token_response = mock('token_response', token: token)
       @api_result.expects(:get_token).once.with(auth_code).returns(token_response)
 
-      github = GitHubApp.new
-      assert_equal github.authorization_token(auth_code), token
+      assert_equal GitHubApp.authorization_token(auth_code), token
     end
   end
 end

@@ -13,13 +13,6 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal true, project.owner?(owner)
   end
 
-  test 'current_sprint=' do
-    project = create(:project, sprint_total: 8, sprint_current: 3)
-    new_sprint = project.get_sprint(4)
-    project.current_sprint = new_sprint
-    assert_equal 4, project.sprint_current
-  end
-
   test 'payment_requests' do
     skip 'not finished yet'
   end
@@ -29,17 +22,21 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test 'add_developer' do
-    dev = create(:user)
+    dev1 = create(:user)
+    dev2 = create(:user)
     project = create(:project, :seed_owner)
-    project.add_developer(dev)
-    assert_includes project.developers, dev
+    project.add_developer(dev1).add_developer(dev2)
+    assert_includes project.developers, dev1
+    assert_includes project.developers, dev2
   end
 
   test 'add_customer' do
-    customer = create(:user)
+    customer1 = create(:user)
+    customer2 = create(:user)
     project = create(:project)
-    project.add_customer(customer)
-    assert_includes project.customers, customer
+    project.add_customer(customer1).add_customer(customer2)
+    assert_includes project.customers, customer2
+    assert_includes project.customers, customer1
   end
 
   test 'customer?' do
@@ -50,24 +47,6 @@ class ProjectTest < ActiveSupport::TestCase
     project.add_developer(developer)
     assert_equal true, project.customer?(customer)
     assert_equal false, project.customer?(developer)
-  end
-
-  # TODO: Remove
-  test 'factory generates relationships correctly' do
-    project = create :project, :seed_tasks_notes
-    assert project and project.valid?
-
-    sprints = project.sprints
-    assert sprints and sprints.first.valid?
-    refute project.sprints.empty?
-
-    tasks = sprints.first.tasks
-    assert tasks and tasks.first.valid?
-    refute tasks.empty?
-
-    assert_equal project.sprint_total, 5 # Default 5 total sprints
-    assert_equal project.tasks.count, 10 # 2 Task per Sprint
-    assert_equal project.notes.count, 10 # 2 Note per Sprint
   end
 
   test 'after_save build_sprints callback' do
@@ -85,7 +64,6 @@ class ProjectTest < ActiveSupport::TestCase
     end
   end
 
-# TODO: Remove
   test 'only finds active tasks' do
     project = create(:project_only)
     create_list(:task, 3, sprint: project.current_sprint, deleted: false)
@@ -94,16 +72,13 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal project.tasks.count, 3
   end
 
-  test 'github_installed?' do
-    installed_user = create(:user, oauth: '1245')
-    installed_project = create(:project, :seed_tasks_notes, :seed_project_users, owner: installed_user)
-    not_installed_user = create(:user)
-    not_installed_project = create(:project, :seed_tasks_notes, :seed_project_users, owner: not_installed_user)
-    assert installed_project.github.installed
-    refute not_installed_project.github.installed
+  test '#github returns new GitHubRepo object' do
+    ghr = mock('GitHubRepo')
+    GitHubRepo.stubs(:new).returns(ghr)
+    owner = create(:user)
+    project = create(:project, owner: owner)
+    assert_equal ghr, project.github
   end
-
-# Skipped
 
   test 'get_sprint' do
     skip 'not sure how to test yet'
@@ -112,6 +87,25 @@ class ProjectTest < ActiveSupport::TestCase
 
   test 'sprint_notes' do
     skip 'not sure how to test yet'
+  end
+
+  test 'current_sprint=' do
+    project = create(:project, sprint_total: 8, sprint_current: 3)
+    new_sprint = project.get_sprint(4)
+    project.current_sprint = new_sprint
+    assert_equal 4, project.sprint_current
+  end
+
+  test 'users' do
+    owner = create :user
+    customer1 = create :user
+    customer2 = create :user
+    developer1 = create :user
+    project = create :project, owner: owner
+    project.add_customer(customer1).add_customer(customer2).add_developer(developer1)
+    assert_includes project.customers, customer1
+    assert_includes project.customers, customer2
+    assert_includes project.developers, developer1
   end
 
 end

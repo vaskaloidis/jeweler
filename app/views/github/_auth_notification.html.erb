@@ -1,8 +1,4 @@
 <div class="alert alert-danger">
   <i class="fab fa-2x fa-github pull-right"></i>
-  <% if defined? project %>
-    To connect your GitHub repo, authenticate Jeweler with GitHub, <%= link_to 'Here', authorize_github_path(project) %>
-  <% else %>
-    To connect your GitHub repo, authenticate Jeweler with GitHub, <%= link_to 'Here', authorize_github_path %>
-  <% end %>
+  To connect your GitHub repo, authenticate Jeweler with GitHub, <%= link_to 'Here', authorize_github_path %>
 </div>

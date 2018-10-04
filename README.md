@@ -25,11 +25,12 @@ Using Jeweler, devs can make sure to get paid on-time. It allows devs to always 
 * In Jeweler Stakeholders can view the contents of Git Commits, GitHub Issues, GitHub Activity
 
 ### Servers
-- [http://jeweler-staging.bluehelmet.software](http://jeweler-staging.bluehelmet.software)
+- [http://jeweler-staging.bluehelmet.software](http://jeweler-staging.jewelercrm.software)
 - [http://jeweler.bluehelmet.software](http://jeweler.bluehelmet.software)
 
 ## Developers
 
+### Setup
 To setup the database schema and migrations run
 
 ```bash 
@@ -45,6 +46,25 @@ For verbose testing
 (Fix for Minitest CLI Options bug for running `rake test -vb`)
 ```bash
 rake test TESTOPTS='-vb'
+```
+
+### View Helpers
+
+`@nfatals = Array.new` is defined in `ApplicationController` in a `before_action` hook.
+`@errors = Array.new` is defined in `ApplicationController` in a `before_action` hook.
+`@notifications = Array.new` is defined in `ApplicationController` in a `before_action` hook.
+
+Easily print Errors and Success Messages
+
+```
+    # Iterates over @errors and prints them with toastr
+    <% j render 'common/print_errors', errors: @errors %>
+    
+    # common/toastr/all takes any combination of the following
+    <% j render 'common/toastr/all', errors: @errors %> # General Errors
+    <% j render 'common/toastr/all', warnings: @warnings %> # Warnings
+    <% j render 'common/toastr/all', successes: @notifications %> # Multiple Success Messages
+    <% j render 'common/toastr/all', success: @notification %> # Single Success Message
 ```
 
 

@@ -17,6 +17,10 @@ class Sprint < ApplicationRecord
 
   validates :sprint, presence: true
 
+  def request_payment!
+    update!(payment_due: true) unless payment_due?
+  end
+
   def closed?
     false if open
   end

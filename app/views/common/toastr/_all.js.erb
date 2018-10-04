@@ -1,3 +1,19 @@
+<%
+unless defined? errors
+  errors = []
+end
+
+unless defined? warnings
+  warnings = []
+end
+
+if defined? success
+  successes = [success]
+elsif !defined? successes
+  successes = []
+end
+%>
+
 <%= render 'common/toastr/errors', messages: errors %>
 <%= render 'common/toastr/warnings', messages: warnings %>
 <%= render 'common/toastr/successes', messages: successes %>

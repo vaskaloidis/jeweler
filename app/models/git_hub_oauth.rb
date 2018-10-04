@@ -1,0 +1,2 @@
+class GitHubOauth < ApplicationRecord
+end

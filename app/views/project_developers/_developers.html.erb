@@ -31,7 +31,7 @@
         </td>
         <td class="action-links">
           <% if project.owner?(current_user) %>
-            <%= link_to remove_project_developer_path(project.id, u.id), remote:true, method: :delete, data: {confirm: 'Delete Developer?'}, remote: true do %>
+            <%= link_to remove_project_developer_path(project.id, u.id), method: :delete, data: {confirm: 'Delete Developer?'}, remote: true do %>
               <i class="linecons-trash"></i> Delete Developer
             <% end %>
           <% end %>

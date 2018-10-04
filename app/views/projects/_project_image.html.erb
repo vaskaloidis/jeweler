@@ -14,20 +14,20 @@
     <%= project.name %>
   </span>
   <span class="user-role">
-    <%= current_user.role(project).to_s.titleize %>
+    <%= current_user.role(project).name %>
     <span class="user-status is-online"></span>
   </span>
 
   <!--<span class="user-title"><%#= project.language %> </span>-->
   <span id="language_icon" class="user-title">
-    <%= ApplicationHelper.build_language_icon(project.language).html_safe %>
-    <% if project.github.available? %>
+    <%= language_icon(project.language).html_safe %>
+    <% if project.github.configured? %>
       <a href="<%= project.github.url %>">
-        <%= ApplicationHelper.build_language_icon('github').html_safe %>
+        <%= language_icon('github').html_safe %>
       </a>
     <% end %>
     <% unless project.heroku_token.nil? %>
-      <%= ApplicationHelper.build_language_icon('heroku').html_safe %>
+      <%= language_icon('heroku').html_safe %>
     <% end %>
   </span>
 

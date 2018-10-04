@@ -23,16 +23,10 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6">
-              <% if resource.oauth.nil? %>
-                <%= render 'github/auth_notification', project: @project %>
+              <% if resource.github_oauth.nil? %>
+                <%= render 'github/auth_notification' %>
               <% else %>
-                <div>
-                  <%= ApplicationHelper.build_language_icon('github').html_safe %><br>
-                  <span>GitHub Connected. <%= link_to disconnect_github_path, method: :delete, data: {confirm: 'Are you sure you want to disconnect from GitHub?'} do %>
-                    <small>Disconnect</small>
-                    <% end %>
-                  </span>
-                </div>
+                <%= render 'github/disconnect', user: current_user %>
               <% end %>
             </div>
           </div>

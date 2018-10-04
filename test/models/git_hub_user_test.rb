@@ -3,57 +3,91 @@ require 'test_helper'
 class GitHubUserTest < ActiveSupport::TestCase
 
   before(:each) do
-    @repo = 12345
+    @repo_id = 12345
     @user = 'example-user'
     @oauth_token = 'oauth-token-123'
-
     @hook_url = 'http://example.com/hook'
-
-    @owner = create(:user, oauth: @oauth_token)
-    @project = create(:project, :seed_tasks_notes, :seed_project_users, github_repo: @repo, owner: @owner)
-    # @project_owner = mock('owner')
-    # @project_owner.stubs(oauth: @oauth_token)
-    # @project.stubs(owner: @project_owner)
-    @api = mock('api')
-    @api.stubs(users: stub('get', get: @user))
-    Github.stubs(new: @api)
-    GitHubApp.stubs(new: stub('app', valid_token?: true))
+    @owner = create(:user, github_oauth: @oauth_token)
+    @project = create(:project, :seed_tasks_notes, :seed_project_users, github_repo_id: @repo_id, owner: @owner)
+    GitHubApp.stubs(valid_auth?: true)
   end
 
-  test '#new' do
+  test '#user_configured? returns true' do
     gho = GitHubUser.new(@owner)
-    gho.project.must_equal @project
+    assert gho.user_configured?
   end
 
-  test 'installed? returns true' do
-    gho = GitHubUser.new(@owner)
-    assert gho.installed?
-  end
-
-  test 'installed? returns false' do
-    @project.stubs(owner: stub('owner', oauth: nil))
-    gho = GitHubUser.new(@owner)
-    refute gho.installed?
+  test '#user_configured? returns false' do
+    user = mock('user').stubs(github_oauth: nil)
+    gho = GitHubUser.new(user)
+    refute gho.user_configured?
   end
 
   test '#username' do
-    username = 'github_username'
-    @api.stubs(users: stub('users', get: username))
+    username = 'vaskaloidis'
+    api = build(:github_api, github_username: username)
+    Github.stubs(:new).returns(api)
+
     gho = GitHubUser.new(@owner)
     gho.username.must_equal username
   end
 
+  test '#avatar' do
+    avatar_url = 'www.github.com/example/avatar.jpg'
+    api = build(:github_api, avatar_url: avatar_url)
+    Github.stubs(:new).returns(api)
+
+    gho = GitHubUser.new(@owner)
+    gho.avatar.must_equal avatar_url
+  end
+
   test '#repositories' do
-    repo_list = [mock('repo'), mock('repo'), mock('repo')]
-    @api.stubs(repos: stub('repo-list', list: repo_list))
+    # repo_list2 = [mock('repo'), mock('repo'), mock('repo')]
+    repo_list = ['repo1', 'repo2', 'repo3']
+    api = build(:github_api, repositories: 'vaskaloidis')
+    Github.stubs(:new).returns(api)
+
     gho = GitHubUser.new(@owner)
     assert_equal repo_list, gho.repositories
   end
 
-  test '#valid_token? is true' do
-    GitHubApp.stubs(new: stub('app', valid_token?: true))
-    gho = GitHubUser.new(@owner)
-    assert gho.valid_token?
+  test '#install_webhooks!' do
+    skip 'incomplete test'
+  end
+
+  test '#install!' do
+    owner = create :user, github_oauth: nil
+    new_token 'new-token-ght1234'
+
+    owner.reload
+    gho = GitHubUser.new(owner)
+    gho.install!(new_token)
+    assert_equal new_token, owner.github_oauth
+  end
+
+  context '#uninstall!' do
+    setup do
+      @github = mock('github')
+      @github.stubs(:uninstall!)
+      @installed_project = stub('project', github: @github)
+      @projects = [@installed_project, @installed_project, @installed_project]
+      @installed_user = create :user, github_oauth: 'github-token-123'
+      @installed_user.stubs(:owner_projects).returns(@projects)
+      GitHubApp.stubs(:delete_auth!)
+    end
+
+    test '#uninstall!' do
+      # @github.expects(:uninstall!)
+      # GitHubApp.expects(:delete_auth!) #.with(token)
+
+      @installed_user.reload
+      gho = GitHubUser.new(@installed_userv)
+      gho.uninstall!(new_token)
+      @installed_user.reload
+
+      @installed_user owner.github_oauth
+    end
+
   end
 
   test '#valid_token? is false' do

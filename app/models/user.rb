@@ -25,20 +25,9 @@ class User < ApplicationRecord
          :lockable, :confirmable, :omniauthable
 
   # @param [Project] project
-  # @return [String] role
+  # @return [Role] role
   def role(project)
-    # Role::OWNER
-    Rails.logger.info project.owner
-    if project.owner == self
-      result = :owner
-    elsif project.customers.include? self
-      result =:customer
-    elsif project.developers.include? self
-      result = :developer
-    else
-      result = false
-    end
-    result
+    Role.new(project: project, user: self)
   end
 
   # @param [String] email
@@ -74,25 +63,22 @@ class User < ApplicationRecord
     Invitation.where(email: email).all
   end
 
+  def github
+    GitHubUser.new(self)
+  end
+
   # class << self
+  def self.god
+    User.where(email: 'vas.kaloidis@gmail.com').first
+  end
+
+  # TODO: Verify if User.current_user is smart to do
   def self.current_user=(user)
     Thread.current[:current_user] = user
   end
 
   def self.current_user
     Thread.current[:current_user]
-  end
-
-  def self.god
-    User.where(email: 'vas.kaloidis@gmail.com').first
-  end
-
-  def github_connected?
-    !oauth.nil? && !oauth.empty?
-  end
-
-  def github
-    GitHubUser.new(self)
   end
 
 end

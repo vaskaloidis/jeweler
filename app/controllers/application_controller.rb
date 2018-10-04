@@ -9,16 +9,17 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
   after_action :generate_events
   rescue_from Github::Error::GithubError, with: :github_error
+  rescue_from Github::Error::Unauthorized, with: :github_error
 
   protected
 
   # Github::Error::ClientError # Issue with client
   # Github::Error::ServiceError # Service Errors (IE: 404)
-  # Github::Error::Unauthorized # Oauth expired
+  # Github::Error::Unauthorized # github_oauth expired
   def github_error(error)
     @errors << "GitHub encountered an error: Contact support if error persists. Error: #{error.message}" if defined? @errors
     if error.is_a? Github::Error::Unauthorized
-      current_user.update!(oauth: nil)
+      # current_user.update!(github_oauth: nil)
       log_error "Oauth Token Expired: #{error.message}"
       redirect_to project_settings_path, error: contact_support('There was a problem with the GitHub Authentication. You must re-authenticate GitHub.')
     elsif error.is_a? Github::Error::ServiceError

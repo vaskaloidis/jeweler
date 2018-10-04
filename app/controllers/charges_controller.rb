@@ -14,7 +14,7 @@ class ChargesController < ApplicationController
     @sprint = Sprint.find(params[:sprint_id])
 
 
-    if ApplicationHelper.is_number?(params[:charge_amount]) and ApplicationHelper.is_number?(params[:sprint_id])
+    if (params[:charge_amount].number?)
       unless @owner.stripe_account_id.nil?
         if params[:payment_note] != 'Payment Note'
           @payment_note = params[:payment_note]
@@ -26,8 +26,8 @@ class ChargesController < ApplicationController
         logger.error('Stripe account not connected for owner ' + @owner.email + ' and customer ' + @customer.email)
       end
     else
-      @error_msgs << 'Error processing payment. Sprint or Payment amount was not not a number ro not selected.'
-      logger.error('Payment Sprint ID was not a number' + @owner.email + ' and customer ' + @customer.email)
+      @error_msgs << 'Error processing payment. Payment amount was not not a number or not selected.'
+      logger.error('Payment Amount was not a number' + @owner.email + ' and customer ' + @customer.email)
     end
 
     respond_to do |format|
@@ -49,7 +49,7 @@ class ChargesController < ApplicationController
     @sprint = Sprint.find(params[:sprint_id])
 
 
-    if ApplicationHelper.is_number?(params[:charge_amount]) and ApplicationHelper.is_number?(params[:sprint_id])
+    if params[:charge_amount].number? && params[:sprint_id].number?
       unless @owner.stripe_account_id.nil?
         if params[:payment_note] != 'Payment Note'
           @payment_note = params[:payment_note]

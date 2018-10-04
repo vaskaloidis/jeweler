@@ -1,79 +1,48 @@
 class GitHubRepo < GitHubUser
+  attr_reader :project, :user
 
   def initialize(project)
     @project = project
-    super(@project.owner)
+    @user = @project.owner
+    super(@user)
   end
 
   def url
-    return false unless available?
-    "https://github.com/#{username}/#{repository_name}"
-  end
-
-  def repository_name
-    @repository_name ||= repository.name
-  end
-
-  def install_webhook!
-    unless webhook_installed?
-      @api.repos.hooks.create(username, repository_name, new_hook)
-      @project.update(github_webhook_installed: true)
+    @url ||= begin
+      return false unless configured?
+      "https://github.com/#{username}/#{name}"
     end
   end
 
-  def webhook_installed?
-    @webhook_installed ||= begin
-      return false unless available?
-      webhooks.each do |hook|
-        return true if our_webhook?(hook)
-      end
-      false
-    end
+  def name
+    @name ||= repository.name
   end
 
-  def available?
-    project_configured? && user_installed?
+  def configured?
+    @configured ||= project_configured? && user_configured?
   end
 
   def project_configured?
-    !@project.github_repo.nil?
+    @project_configured ||= !project.github_repo_id.nil?
   end
 
-  def valid_repo?
-    repository_ids.include? @project.github_repo
+  def webhook
+    @webhook ||= GitHubWebhook.new(self)
   end
 
-  private
-
-  def repository_ids
-    @repository_ids ||= repositories.collect {|r| r.id}
+  def uninstall!
+    webhook.uninstall!
+    project.update!(github_repo_id: nil) if project_configured?
   end
 
-  def repository_id
-    @repository_id ||= @project.github_repo
+  protected
+
+  def id
+    @id ||= project.github_repo_id
   end
 
   def repository
-    @repository ||= api.repos.get_by_id(repository_id)
-  end
-
-  def webhooks
-    @webhooks ||= api.repos.hooks.all(username, repository_name)
-  end
-
-  def our_webhook?(webhook)
-    (webhook.config.url == ENV['GITHUB_PUSH_HOOK']) && (webhook.config.content_type == 'json')
-  end
-
-  def new_webhook
-    @new_webhook ||= {
-        name: "web",
-        active: true,
-        config: {
-            url: ENV['GITHUB_PUSH_HOOK'],
-            content_type: "json"
-        }
-    }
+    @repository ||= api.repos.get_by_id(id)
   end
 
 end

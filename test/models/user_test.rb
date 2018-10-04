@@ -29,21 +29,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal expected, user.first_last_name_email
   end
 
-  test 'github_connected? false' do
-    user = create(:user, oauth: nil)
-    refute user.github_connected?
-  end
-
-  test 'github_connected? false' do
-    user = create(:user, oauth: '')
-    refute user.github_connected
-  end
-
-  test 'github_connected? true' do
-    user = create(:user, oauth: 'github_oauth_123')
-    assert_equal true, user.github_connected
-  end
-
   test 'invitations' do
     user = create(:user)
     project1 = create(:project)
@@ -62,20 +47,17 @@ class UserTest < ActiveSupport::TestCase
     assert_equal User.account_exists?('account_does_not_exist@example.com'), false
   end
 
-  test 'returns the correct roles' do
+  test '#role(project) returns the correct role symbols' do
     owner = create :user
     customer = create :user
     developer = create :user
     project = create :project, owner: owner
-    project.project_developers.create(user: developer)
-    project.project_customers.create(user: customer)
+    project.add_developer(developer)
+    project.add_customer(customer)
 
-    assert_includes(project.developers, developer)
-    assert_includes(project.customers, customer)
-    assert_equal project.owner, owner
-
-    assert_equal :customer, customer.role(project)
-    assert_equal :developer, developer.role(project)
+    assert_equal :customer, customer.role(project).role
+    assert_equal :developer, developer.role(project).role
+    assert_equal :owner, owner.role(project).role
   end
 
   test 'valid users' do
@@ -83,10 +65,26 @@ class UserTest < ActiveSupport::TestCase
     assert create(:valid_user).valid?
   end
 
-  test 'github_installed? method' do
-    installed_user = create(:user, oauth: '1245')
-    not_installed_user = create(:user)
-    assert installed_user.github_installed?
-    refute not_installed_user.github_installed?
+  test '#github returns new GitHubUser object' do
+    ghu = mock('GitHubUser')
+    GitHubUser.stubs(:new).returns(ghu)
+    user = create(:user, github_oauth: '1245')
+    assert_equal ghu, user.github
   end
+
+  test 'github_connected? false' do
+    user = create(:user, github_oauth: '')
+    refute user.github.user_configured?
+  end
+
+  test 'github_connected? false' do
+    user = create(:user, github_oauth: nil)
+    refute user.github.user_configured?
+  end
+
+  test 'github_connected? true' do
+    user = create(:user, github_oauth: 'github_oauth_123')
+    assert_equal true, user.github.user_configured?
+  end
+
 end

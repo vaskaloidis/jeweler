@@ -127,7 +127,7 @@ class PushWebhook < Jeweler::Service
         repo_url   = repository["html_url"]
         logger.debug("Repository URL: " + repo_url)
 
-        @project = Project.where(github_repo: repository_id).first # Verify repository from payload is repo-id
+        @project = Project.where(github_repo_id: repository_id).first # Verify repository from payload is repo-id
         logger.debug("Project Name: " + @project.name)
 
         note               = Note.new

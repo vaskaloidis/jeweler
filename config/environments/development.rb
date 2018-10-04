@@ -2,11 +2,11 @@ Rails.application.configure do
   # config.log_level = :debug
   Bullet.enable = false
   Bullet.alert = false
-  Bullet.bullet_logger = true
-  Bullet.console = true
-  Bullet.rails_logger = true
-  Bullet.add_footer = true
-  Bullet.stacktrace_includes = [ 'jeweler-utils', 'your_middleware' ]
+  Bullet.bullet_logger = false
+  Bullet.console = false
+  Bullet.rails_logger = false
+  Bullet.add_footer = false
+  # Bullet.stacktrace_includes = [ 'jeweler-utils', 'your_middleware' ]
   # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware' ]
 
   # Assets
