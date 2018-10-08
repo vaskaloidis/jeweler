@@ -2,8 +2,8 @@
 
 # Seeds
 require 'faker'
-require '../app/helpers/projects_helper'
-include ProjectsHelper
+# require '../app/helpers/projects_helper'
+# include ProjectsHelper
 
 # Clear Table Data
 User.delete_all
@@ -104,7 +104,7 @@ d2.save
 p = Project.new
 p.name = 'Blue Helmet Software Website'
 p.owner = u
-p.language = ProjectHelper.languages.index('rails')
+p.language = 5
 p.demo_url = 'http://bluehelmet.herokuapp.com'
 p.prod_url = 'http://bluehelmet.herokuapp.com'
 p.description = 'A website for the Blue Helmet Software Company, written in Ruby on Rails, hosted on Heroku'
@@ -155,7 +155,7 @@ end
 # Customer Projects
 p = Project.new
 p.name = Faker::Company.buzzword
-p.language = Faker::ProgrammingLanguage.name
+p.language = 3
 p.demo_url = Faker::Internet.url
 p.prod_url = Faker::Internet.url
 p.description = Faker::Company.catch_phrase
@@ -179,7 +179,7 @@ pc.save
 
 p = Project.new
 p.name = Faker::Company.buzzword
-p.language = Faker::ProgrammingLanguage.name
+p.language = 2
 p.demo_url = Faker::Internet.url
 p.prod_url = Faker::Internet.url
 p.description = Faker::Company.catch_phrase
@@ -203,7 +203,7 @@ pc.save
 
 p = Project.new
 p.name = Faker::Company.buzzword
-p.language = Faker::ProgrammingLanguage.name
+p.language = 4
 p.demo_url = Faker::Internet.url
 p.prod_url = Faker::Internet.url
 p.description = Faker::Company.catch_phrase
