@@ -5,6 +5,15 @@ namespace :jeweler do
   include JewelerRakeCommands
   task default: [:test]
 
+  desc 'Uninstall All GitHub Webhooks'
+  task purge_hooks: :environment do
+    Project.each do |project|
+        if project.github.webhook.installed?
+          project.github.webhook.uninstall!
+        end
+    end
+  end
+
   desc 'Test current feature'
   task feature_test: :environment do
     JewelerRakeCommands.clear_logs

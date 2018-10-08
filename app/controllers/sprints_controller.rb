@@ -34,11 +34,9 @@ class SprintsController < ApplicationController
     end
   end
 
-  def edit_description;
-  end
+  def edit_description; end
 
-  def render_panel;
-  end
+  def render_panel;  end
 
   def set_current
     @old_sprint = @project.current_sprint
@@ -56,8 +54,6 @@ class SprintsController < ApplicationController
     @service_object = RequestSprintPayment.call(@sprint, current_user)
     @sprint = @service_object.result
     @errors = @service_object.errors
-    logger.info(@service_object.inspect)
-    logger.info(@service_object.errors.inspect)
   end
 
   def cancel_payment_request

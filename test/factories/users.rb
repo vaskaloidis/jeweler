@@ -12,6 +12,7 @@ FactoryBot.define do
     password {Faker::Internet.password}
     password_confirmation { password.to_s }
     confirmed_at {Time.now}
+    github_oauth { nil }
 
     factory :valid_user, class: 'User' do
       company {Faker::Company.name}

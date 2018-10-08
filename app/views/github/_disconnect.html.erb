@@ -1,0 +1,8 @@
+<div class="alert alert-success">
+  <i class="fab fa-2x fa-github pull-right"></i>
+  GitHub Connected.<br>
+  <%= render 'github/user_info', user: user %>
+  <%= link_to disconnect_github_path, method: :delete, data: {confirm: 'Are you sure you want to disconnect from GitHub?'} do %>
+    <small>Disconnect?</small>
+  <% end %>
+</div>

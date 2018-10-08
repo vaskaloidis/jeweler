@@ -8,22 +8,21 @@ class Project < ApplicationRecord
 
   after_save :build_sprints, if: ->(obj) {obj.sprint_total.present? || obj.sprint_total_changed?}
 
-  belongs_to :current_task, class_name: 'Task', foreign_key: 'task_id', inverse_of: 'project', optional: true
-  belongs_to :owner, class_name: 'User', foreign_key: 'user_id', inverse_of: 'owner_projects', required: true, dependent: :destroy
+  belongs_to :current_task, class_name: 'Task', foreign_key: 'task_id', inverse_of: 'project', optional: true, dependent: :delete
+  belongs_to :owner, class_name: 'User', foreign_key: 'user_id', inverse_of: 'owner_projects', required: true, dependent: :delete
   has_many :project_developers, dependent: :destroy
-  has_many :developers, through: :project_developers, source: :user, dependent: :destroy
+  has_many :developers, through: :project_developers, source: :user, dependent: :nullify
   has_many :project_customers, dependent: :destroy
-  has_many :customers, through: :project_customers, source: :user, dependent: :destroy
+  has_many :customers, through: :project_customers, source: :user, dependent: :nullify
   has_many :notes, dependent: :destroy
   has_many :sprints, dependent: :destroy
   # has_many :tasks, dependent: :destroy
-  has_many :tasks, through: :sprints, source: :tasks
+  has_many :tasks, through: :sprints
   has_many :payments, through: :sprints
   has_many :invitations, dependent: :destroy
 
   mount_uploader :image, AvatarUploader
 
-  # TODO: Evaluate if we really need all these
   accepts_nested_attributes_for :developers
   accepts_nested_attributes_for :customers
   accepts_nested_attributes_for :owner
@@ -33,19 +32,16 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :notes
   accepts_nested_attributes_for :invitations
 
+  validates :owner, presence: true
   validates :sprint_total, presence: true
   validates :sprint_current, presence: true
   validates :name, presence: true
-  validates :github_url, presence: true, uniqueness: true
-  # validate :validate_sprint_count TODO: Enable validate_sprint_count validation and write model unit tests.
-  validate :github_url_valid
-  def validate_sprint_count
-    if sprint_current > sprint_total
-      errors.add(:sprint_current, 'Current-Sprint must be less than or equal to Total-Sprint.')
-    end
+  validate :validate_sprint_count
+
+  def github
+    GitHubRepo.new(self)
   end
 
-  # TODO: Scrap this
   def create_event(event_type, message)
     Note.create_event(self, event_type, message)
   end
@@ -65,13 +61,15 @@ class Project < ApplicationRecord
   end
 
   def add_developer(user)
-    project_developers.create(user: user)
+    project_developers.create!(user: user)
     reload
+    self
   end
 
   def add_customer(user)
-    project_customers.create(user: user)
+    project_customers.create!(user: user)
     reload
+    self
   end
 
   def customer?(user)
@@ -84,56 +82,66 @@ class Project < ApplicationRecord
     end
   end
 
-  def get_sprint(number)
+  def role(user)
+    Role.new(project: self, user: user)
+  end
+
+  def sprint(number)
     sprints.where(sprint: number).first
+  end
+
+  # TODO: Remove this in a seperate commit
+  # to prevent un-reversable issues
+  def get_sprint(number)
+    sprint(number)
   end
 
   def current_sprint
     get_sprint(sprint_current)
   end
 
-  def current_sprint=(sprint)
-    self.sprint_current = sprint.sprint
-    unless sprint.open?
-      sprint.open = true
-      sprint.save
-      sprint.reload
-    end
-    save
-    reload
-    logger.error('Error changing current sprint on project ID: ' + id.to_s) unless valid?
-  end
-
   def payment_requests
-    sprints.where(payment_due: true)
+    sprints.where(payment_due: true).all
   end
 
   def payment_requested?
-    sprints.each do |x|
-      true if x.payment_due
-    end
-    false
+    sprints.any? { |s| s.payment_due? }
   end
 
-  def github_installed?
-    owner.github_installed?
+  def users
+    @users ||= begin
+      total = []
+      total << owner
+      total.concat customers
+      total.concat developers
+      total
+    end
+  end
+
+  def current_sprint=(sprint)
+    self.sprint_current = sprint.sprint
+    sprint.update!(open: true) unless sprint.open?
   end
 
   private
 
-  def github_url_valid
+  def validate_sprint_count
+    if sprint_current > sprint_total
+      errors.add(:sprint_current, 'Current-Sprint must be less than or equal to Total-Sprint.')
+    end
+    unless sprint_current.positive?
+      errors.add(:sprint_current, 'Current-Sprint must be a positive number.')
+    end
+    unless sprint_total.positive?
+      errors.add(:sprint_total, 'Total-Sprints must be a positive number.')
+    end
   end
 
   def build_sprints
-    # TODO: Test to Verify this is not making an extra useless Sprint, and its making enough
-    # total = self.sprint_total + 1
     (1..sprint_total).each do |sprint|
       next unless get_sprint(sprint).nil?
-      s = Sprint.new
-      s.project = self
-      s.sprint = sprint
-      s.open = sprint_current == sprint
-      s.save
+      sprints.create!(sprint: sprint, open: (sprint_current == sprint))
     end
   end
+
 end

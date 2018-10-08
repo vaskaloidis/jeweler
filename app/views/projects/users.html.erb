@@ -1,3 +1,7 @@
-<div id="users_container">
-  <%= render 'projects/project_users', project: @project %>
-</div>
+<%= row do %>
+  <%= column8 do %>
+    <%= div 'users_container' do %>
+      <%= render 'projects/project_users', project: @project %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -38,11 +38,11 @@ gem 'therubyracer' # Ruby
 gem 'time_for_a_boolean', '~> 0.2.0'
 gem 'yaml_db'
 gem 'yui-compressor'
-# Move this to Dev group after initial seeding
-gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
+gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master' # TODO: Get rid of this
 gem 'rails-patterns'
 # gem 'business_process'
 gem 'virtus'
+gem 'bh', '~> 1.3'
 
 # TODO: Get Bootsnap working again (crashing)
 # gem 'bootsnap', '>= 1.1.0', require: false
@@ -80,7 +80,7 @@ group :test do
   gem 'webmock'
 end
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Usage: place'byebug' anywhere for console
   gem 'capybara-email'
   gem 'coveralls', require: false
   gem 'dotenv-rails'

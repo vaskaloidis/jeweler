@@ -1,15 +1,56 @@
-<%#TODO: Convert these to toastr, and make the toastr sticky %>
-<% if notice %>
-  <script>
-      toastr.success('<%= notice %>');
-  </script>
-<% end %>
-<% if alert %>
-  <script>
-      toastr.success('<%= alert %>');
-  </script>
+<script>
+    flash_toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-bottom-full-width",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "10000",
+        "hideDuration": "1000",
+        "timeOut": "20000",
+        "extendedTimeOut": "6000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
+
+<% if ENV['TOASTR_FLASH_NOTIFICATIONS'] %>
+  <% if notice %>
+    <script>
+        toastr.success('<%= notice %>', 'Notice', flash_toastr);
+    </script>
+  <% end %>
+  <% if alert %>
+    <script>
+        toastr.success('<%= alert %>', 'Error', flash_toastr);
+    </script>
+  <% end %>
 <% end %>
 
-
-<!--<div class="top-notifications">-->
-<!--</div>-->
+<div class="top-notifications">
+  <% if defined? notice %>
+    <% if notice %>
+      <div class="alert alert-success">
+        <%= notice %>
+      </div>
+    <% end %>
+  <% end %>
+  <% if defined? warning %>
+    <% if warning %>
+      <div class="alert alert-warning">
+        <%= warning %>
+      </div>
+    <% end %>
+  <% end %>
+  <% if defined? alert %>
+    <% if alert %>
+      <div class="alert alert-danger">
+        <%= alert %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

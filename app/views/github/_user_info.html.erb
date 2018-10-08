@@ -1,0 +1,5 @@
+<div>
+  <%= image_tag user.github.avatar, size: 40 %><br>
+  <code><%= user.github.username %></code>
+  <small><%= link_to 'Review Access', GitHubApp.review_url %></small>
+</div>

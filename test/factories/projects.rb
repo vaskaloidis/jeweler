@@ -3,18 +3,19 @@ FactoryBot.define do
     transient do
       phases 5
     end
-    name Faker::App.name
-    language Faker::ProgrammingLanguage.name
-    sprint_total {'5'}
-    sprint_current {'1'}
+    name { 'Project Application Name' }
+    language { 5 }
+    sprint_total { 5 }
+    sprint_current { 1 }
     # sprint_total { phases }
     # sprint_current { Random.rand(phases) }
-    description {Faker::ChuckNorris.fact}
-    github_url {Faker::Omniauth.github[:info][:urls][:GitHub] + name}
-    stage_website_url {Faker::Internet.domain_name}
-    demo_url {Faker::Internet.domain_name}
-    prod_url {Faker::Internet.domain_name}
-    complete {false}
+    description { 'Project Description' }
+    github_repo_id { nil }
+    github_webhook_id { nil }
+    stage_website_url { 'http://staging.website.com/example' }
+    demo_url { 'http://demo.website.com/example' }
+    prod_url { 'http://website.com' }
+    complete { false }
     association :owner, factory: :owner
     # heroku_token Faker::Omniauth.github['uid']
     # google_analytics_tracking_code Faker::Omniauth.google[:credentials][:token]
@@ -51,7 +52,7 @@ FactoryBot.define do
       end
     end
     factory :project_with_github_test_repo do
-      github_url {'https://github.com/vaskaloidis/jeweler_test_repo'}
+      github_repo_id {12345}
     end
     factory :project_with_current_task do
       after(:create) do |project, evaluator|
@@ -60,48 +61,46 @@ FactoryBot.define do
     end
   end
 
+  # TODO: Remove these 3 factories, instead convert to small traits
   factory :project_only, class: 'Project' do
     transient do
       phases 5
     end
-    name {Faker::App.name}
-    language {Faker::ProgrammingLanguage.name}
-    sprint_total {'5'}
-    sprint_current {'1'}
-    # sprint_total { phases }
-    # sprint_current { Random.rand(phases) }
-    description {Faker::ChuckNorris.fact}
-    github_url {Faker::Omniauth.github[:info][:urls][:GitHub] + name}
-    stage_website_url {Faker::Internet.domain_name}
-    demo_url {Faker::Internet.domain_name}
-    prod_url{ Faker::Internet.domain_name}
-    complete {false}
+    name { 'Project Name' }
+    language 2
+    sprint_total { 5 }
+    sprint_current { 1 }
+    description { 'Project Description' }
+    github_repo_id { nil }
+    github_webhook_id { nil }
+    stage_website_url { 'http://www.staging.example.com' }
+    demo_url { 'http://demo.www.example.com' }
+    prod_url { 'http://www.example.com' }
+    complete { false }
     association :owner, factory: :owner
   end
 
   factory :new_project, class: 'Project' do
-    name 'new project name'
-    language 'rails'
-    sprint_total '10'
-    sprint_current '1'
-    description 'new project desc'
-    github_url 'http://github.com/user/project'
-    stage_website_url 'project stage url'
-    demo_url 'project demo url'
-    prod_url 'project prod url'
+    name { 'new project name' }
+    language { 2 }
+    sprint_total { 10 }
+    sprint_current { 1 }
+    description { 'new project desc' }
+    stage_website_url { 'project stage url' }
+    demo_url { 'project demo url' }
+    prod_url { 'project prod url' }
     owner
   end
 
   factory :update_project, class: 'Project' do
-    name 'update project name'
-    language 'java'
-    sprint_total '12'
-    sprint_current '2'
-    description 'update project desc'
-    github_url 'http://github.com/update-user/project'
-    stage_website_url 'project update stage url'
-    demo_url 'project update demo url'
-    prod_url 'project update prod url'
+    name { 'update project name' }
+    language { 3 }
+    sprint_total { 12 }
+    sprint_current { 2 }
+    description { 'update project desc' }
+    stage_website_url { 'project update stage url' }
+    demo_url { 'project update demo url' }
+    prod_url { 'project update prod url' }
     owner
   end
 

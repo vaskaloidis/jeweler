@@ -12,6 +12,15 @@
  *
  */
 
+.user_github_auth_icon {
+    width: 100px !important;
+}
+
+.user_github_auth_icon > i.devicon {
+    width: 50px;
+    height: auto;
+}
+
 .margin-left-20 {
     margin-left: 20px;
 }

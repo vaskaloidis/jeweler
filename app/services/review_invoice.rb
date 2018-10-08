@@ -47,7 +47,7 @@ class ReviewInvoice < Jeweler::Service
 
     unless params[:request_amount].nil?
       unless params[:request_amount] == 0.00 || params[:request_amount] == '(Optional) Request Amount' || params[:request_amount] == ''
-        if ApplicationHelper.is_number? params[:request_amount]
+        if params[:request_amount].number?
           invoice.request_amount = params[:request_amount]
         else
           errors << 'Payment request amount must be a number.'

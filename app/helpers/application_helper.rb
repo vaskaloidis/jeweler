@@ -1,22 +1,74 @@
 module ApplicationHelper
-  def self.alphabet
-    ("a".."z").to_a
+  include ActionView::Helpers::TagHelper
+
+  def div(element_name, &block)
+    tag.div class: element_name, id: element_name, &block
+  end
+
+  def row(&block)
+    tag.div class: 'row', &block
+    # tag.send(:div,class: 'row', &block)
+  end
+
+  def panel(&block)
+    tag.div class: 'panel panel-default', &block
+  end
+
+  def panel_heading(&block)
+    tag.div class: 'panel-heading', &block
+  end
+
+  def panel_body(&block)
+    tag.div class: 'panel-body', &block
+  end
+
+  def column2(&block)
+    tag.div class: 'col-xs-12 col-sm-2', &block
+  end
+
+  def column3(&block)
+    tag.div class: 'col-xs-12 col-sm-3', &block
+  end
+
+  def column4(&block)
+    tag.div class: 'col-xs-12 col-sm-4', &block
+  end
+
+  def column_half(&block)
+    tag.div class: 'col-xs-12 col-sm-6', &block
+  end
+
+  def column8(&block)
+    tag.div class: 'col-xs-12 col-sm-8', &block
+  end
+
+  def column10(&block)
+    tag.div class: 'col-xs-12 col-sm-10', &block
+  end
+
+  def column(&block)
+    tag.div class: 'col-xs-12', &block
+  end
+
+  def contact_support(msg = '')
+    Rails.logger.error(msg)
+    "#{msg} Contact Jeweler Support if the problem persists."
   end
 
   def self.name_pretty(pretty_name)
-    return pretty_name.titleize
+    pretty_name.titleize
   end
 
   def self.name_pretty2(pretty_name)
     pretty_name.gsub! '_', ' '
     pretty_name.capitalize!
-    return pretty_name
+    pretty_name
   end
 
   def self.uglify(ugly_name)
     ugly_name.gsub! ' ', '_'
     ugly_name.downcase
-    return ugly_name
+    ugly_name
   end
 
   def self.note_event_action(note)
@@ -68,35 +120,35 @@ module ApplicationHelper
   def self.note_icon_header_section(note_type)
     case note_type
     when 'project_update'
-      return '<div class="cbp_tmicon timeline-bg-warning">
+      '<div class="cbp_tmicon timeline-bg-warning">
                   <i class="far fa-clock"></i>
                 </div>'
     when 'event'
-      return '<div class="cbp_tmicon timeline-bg-info">
+      '<div class="cbp_tmicon timeline-bg-info">
               <i class="far fa-clock"></i>
             </div>'
     when 'note'
-      return '<div class="cbp_tmicon timeline-bg-success">
+      '<div class="cbp_tmicon timeline-bg-success">
                   <i class="fas fa-sticky-note"></i>
                 </div>'
     when 'demo'
-      return '<div class="cbp_tmicon timeline-bg-red">
+      '<div class="cbp_tmicon timeline-bg-red">
                   <i class="fa-binoculars"></i>
                 </div>'
     when 'payment'
-      return ' <div class="cbp_tmicon timeline-bg-success">
+      ' <div class="cbp_tmicon timeline-bg-success">
                   <i class="fas fa-dollar-sign"></i>
                 </div>'
     when 'payment_request'
-      return '<div class="cbp_tmicon timeline-bg-success">
+      '<div class="cbp_tmicon timeline-bg-success">
                   <i style="color:white !important" class="fas fa-hand-holding-usd white-icon"></i>
                 </div>'
     when 'commit'
-      return '<div class="cbp_tmicon timeline-bg-danger">
+      '<div class="cbp_tmicon timeline-bg-danger">
                   <i class="fas fa-code-branch"></i>
                 </div>'
     else
-      return '<div class="cbp_tmicon timeline-bg-success">
+      '<div class="cbp_tmicon timeline-bg-success">
                   <i class="fas fa-sticky-note"></i>
                 </div>'
     end
@@ -105,42 +157,42 @@ module ApplicationHelper
   def self.note_icon_color(note_type)
     case note_type
     when 'project_update'
-      return 'warning'
+      'warning'
     when 'event'
-      return 'info'
+      'info'
     when 'note'
-      return 'success'
+      'success'
     when 'demo'
-      return 'danger'
+      'danger'
     when 'payment'
-      return 'success'
+      'success'
     when 'payment_request'
-      return 'success'
+      'success'
     when 'commit'
-      return 'danger'
+      'danger'
     else
-      return 'success'
+      'success'
     end
   end
 
   def self.note_icon(note_type)
     case note_type
     when 'project_update'
-      return '<i class="far fa-clock"></i>'
+      '<i class="far fa-clock"></i>'
     when 'event'
-      return '<i class="far fa-clock"></i>'
+      '<i class="far fa-clock"></i>'
     when 'note'
-      return '<i class="fas fa-sticky-note"></i>'
+      '<i class="fas fa-sticky-note"></i>'
     when 'demo'
-      return '<i class="fa-binoculars"></i>'
+      '<i class="fa-binoculars"></i>'
     when 'payment'
-      return '<i class="fas fa-dollar-sign"></i>'
+      '<i class="fas fa-dollar-sign"></i>'
     when 'payment_request'
-      return '<i style="color:white !important" class="fas fa-hand-holding-usd white-icon"></i>'
+      '<i style="color:white !important" class="fas fa-hand-holding-usd white-icon"></i>'
     when 'commit'
-      return '<i class="fas fa-code-branch"></i>'
+      '<i class="fas fa-code-branch"></i>'
     else
-      return '<i class="fas fa-sticky-note"></i>'
+      '<i class="fas fa-sticky-note"></i>'
     end
 
   end
@@ -160,313 +212,19 @@ module ApplicationHelper
   end
 
   def self.alphabet
-    ("a".."zz").to_a
+    ('a'..'zz').to_a
   end
 
   def self.display_project_nav?(project, controller_name, action_name)
-    return false unless defined? project
-
+    return false if !defined? project || project.nil?
+    project_child = (controller_name.split('_').first == 'project')
     case controller_name
-    when 'projects'
-      return true if %w[show edit].include?(action_name)
-    when 'sprints' then
-      return true
-    when 'payments' then
-      return true if action_name == 'index'
-    when 'project_customers' then
-      return true
+    when 'projects' then return true if %w[show edit settings users].include?(action_name)
+    when 'sprints' then return true
+    when 'payments' then return true if action_name == 'index'
+    when project_child then return true
     end
     false
-  end
-
-  def self.is_number?(number)
-    if Float(number)
-      return true
-    elsif BigDecimal(number)
-      return true
-    elsif Integer(number)
-      return true
-    else
-      return false
-    end
-
-  rescue
-    return false
-
-  end
-
-  def self.prettify(number)
-    # to_i == number ? to_i : number
-
-    if number == number.to_i
-      return number.to_i
-    else
-      return number
-    end
-
-  end
-
-# Devicon Icons & Form Helper
-#
-# TODO: Move these to another helper, and
-#       figure out why it was not working
-#       in another helper last time
-
-  def self.build_languages_dropdown(selected)
-    cat = self.dropdown_categories
-    string = "<select class='form-control' name='project[language]' id='project_language' >"
-    cat.each do |c|
-      if c == selected
-        string = string + "<option selected value='" + c + "'>" + self.category_pretty(c) + "</option>"
-      else
-        string = string + "<option value='" + c + "'>" + self.category_pretty(c) + "</option>"
-      end
-    end
-    string = string + "</select>"
-    return string
-  end
-
-  def self.build_language_icon(category)
-    devicon = ''
-    case category.downcase
-    when "heroku"
-      devicon = 'devicon-heroku-plain-wordmark colored'
-    when "go"
-      devicon = 'devicon-go-line colored'
-    when "github"
-      devicon = 'devicon-github-plain-wordmark colored'
-    when "docker"
-      devicon = 'devicon-docker-plain-wordmark colored'
-    when "css"
-      devicon = 'devicon-css3-plain colored'
-    when "apache"
-      devicon = 'devicon-apache-plain-wordmark colored'
-    when "html"
-      devicon = 'devicon-html5-plain-wordmark colored'
-    when "bootstrap"
-      devicon = 'devicon-bootstrap-plain-wordmark colored'
-    when "java ee"
-    when "javafx"
-    when "java"
-      devicon = 'devicon-java-plain-wordmark colored'
-    when "jquery"
-      devicon = 'devicon-jquery-plain-wordmark colored'
-    when "mips"
-    when "c++"
-      devicon = 'devicon-cplusplus-plain colored'
-    when "laravel"
-      devicon = 'devicon-laravel-plain-wordmark colored'
-    when "linux"
-      devicon = 'devicon-linux-plain colored'
-    when "opengl"
-    when "sml"
-    when "javascript"
-      devicon = 'devicon-javascript-plain colored'
-    when "mongo db"
-      devicon = 'devicon-mongodb-plain-wordmark colored'
-    when "c"
-      devicon = 'devicon-c-line-wordmark colored'
-    when "yacc"
-    when "circuit"
-    when "php"
-      devicon = 'devicon-php-plain colored'
-    when "mysql"
-      devicon = 'devicon-mysql-plain-wordmark colored'
-    when "node js"
-      devicon = 'devicon-nodejs-plain colored'
-    when "photoshop"
-      devicon = 'devicon-photoshop-line colored'
-    when "rails"
-      devicon = 'devicon-rails-plain-wordmark colored'
-    when "postgres"
-      devicon = 'devicon-postgresql-plain-wordmark colored'
-    when "ruby"
-      devicon = 'devicon-ruby-plain-wordmark colored'
-    when "redis"
-      devicon = 'devicon-redis-plain-wordmark colored'
-    when "mac osx"
-      devicon = 'devicon-apple-original colored'
-    when "sass"
-      devicon = 'devicon-sass-original colored'
-    when "ubuntu"
-      devicon = 'devicon-ubuntu-plain-wordmark colored'
-    when "bower"
-      devicon = 'devicon-bower-plain-wordmark colored'
-    when "wordpress"
-      devicon = 'devicon-Bluehelmet-plain-wordmark colored'
-    when "css"
-      # devicon = 'devicon-css3-plain-wordmark colored'
-    when "hosted"
-      devicon = 'devicon-docker-plain-wordmark colored'
-    when "python"
-      devicon = 'devicon-python-plain-wordmark colored'
-    when "maven"
-    when "maven mojo"
-    when "composer"
-    when "mips"
-    when "gulp"
-      devicon = 'devicon-gulp-plain colored'
-    when "grunt"
-      devicon = 'devicon-grunt-line-wordmark colored'
-    when "phpstorm"
-      devicon = 'devicon-phpstorm-plain-wordmark colored'
-    when "react"
-      devicon = 'devicon-react-original-wordmark colored'
-    when "swift"
-      devicon = 'devicon-swift-plain-wordmark colored'
-    when "wordpress"
-      devicon = 'devicon-wordpress-plain-wordmark colored'
-    when "tomcat"
-      devicon = 'devicon-tomcat-line-wordmark colored'
-    when "redis"
-      devicon = 'devicon-redis-plain-wordmark colored'
-    when "travis"
-      devicon = 'devicon-travis-plain-wordmark colored'
-    end
-
-    if !devicon.empty?
-      return '<i class="devicon ' + devicon + '"></i>'.html_safe
-    else
-      return ''
-    end
-  end
-
-  def self.category_pretty(category)
-    pretty = Hash.new
-    pretty["java ee"] = "Java EE"
-    pretty["javafx"] = "Java FX"
-    pretty["jquery"] = "JQuery"
-    pretty["mips"] = "MIPS"
-    pretty["c++"] = "C++"
-    pretty["opengl"] = "OpenGL"
-    pretty["sml"] = "SML"
-    pretty["mongo db"] = "Mongo DB"
-    pretty["yacc"] = "YACC"
-    pretty["php"] = "PHP"
-    pretty["mysql"] = "MySQL"
-    pretty["node js"] = "Node JS"
-    pretty["rails"] = "Ruby on Rails"
-    pretty["mac osx"] = "Mac OSX"
-    pretty["sass"] = "SASS"
-    pretty["css"] = "CSS"
-    pretty["maven mojo"] = "Maven MOJO"
-    pretty["phpstorm"] = "PhpStorm"
-
-    if pretty.has_key?(category)
-      return pretty.fetch(category)
-    else
-      return category.capitalize
-    end
-
-  end
-
-  def self.dropdown_categories
-    cat = Array.new
-    cat.push("go")
-    cat.push("docker")
-    cat.push("css")
-    cat.push("apache")
-    cat.push("html")
-    cat.push("bootstrap")
-    cat.push("java ee")
-    cat.push("javafx")
-    cat.push("java")
-    cat.push("jquery")
-    cat.push("mips")
-    cat.push("c++")
-    cat.push("laravel")
-    cat.push("linux")
-    cat.push("opengl")
-    cat.push("sml")
-    cat.push("javascript")
-    cat.push("mongo db")
-    cat.push("c")
-    cat.push("yacc")
-    cat.push("circuit")
-    cat.push("php")
-    cat.push("mysql")
-    cat.push("node js")
-    cat.push("photoshop")
-    cat.push("rails")
-    cat.push("postgres")
-    cat.push("ruby")
-    cat.push("redis")
-    cat.push("mac osx")
-    cat.push("sass")
-    cat.push("ubuntu")
-    cat.push("bower")
-    cat.push("wordpress")
-    cat.push("css")
-    cat.push("python")
-    cat.push("maven")
-    cat.push("maven mojo")
-    cat.push("composer")
-    cat.push("mips")
-    cat.push("gulp")
-    cat.push("grunt")
-    cat.push("phpstorm")
-    cat.push("react")
-    cat.push("swift")
-    cat.push("wordpress")
-    cat.push("tomcat")
-    cat.push("travis")
-    return cat
-  end
-
-  def self.categories
-    cat = Array.new
-    cat.push("heroku")
-    cat.push("go")
-    cat.push("github")
-    cat.push("docker")
-    cat.push("css")
-    cat.push("apache")
-    cat.push("html")
-    cat.push("bootstrap")
-    cat.push("java ee")
-    cat.push("javafx")
-    cat.push("java")
-    cat.push("jquery")
-    cat.push("mips")
-    cat.push("c++")
-    cat.push("laravel")
-    cat.push("linux")
-    cat.push("opengl")
-    cat.push("sml")
-    cat.push("javascript")
-    cat.push("mongo db")
-    cat.push("c")
-    cat.push("yacc")
-    cat.push("circuit")
-    cat.push("php")
-    cat.push("mysql")
-    cat.push("node js")
-    cat.push("photoshop")
-    cat.push("rails")
-    cat.push("postgres")
-    cat.push("ruby")
-    cat.push("redis")
-    cat.push("mac osx")
-    cat.push("sass")
-    cat.push("ubuntu")
-    cat.push("bower")
-    cat.push("wordpress")
-    cat.push("css")
-    cat.push("hosted")
-    cat.push("python")
-    cat.push("maven")
-    cat.push("maven mojo")
-    cat.push("composer")
-    cat.push("mips")
-    cat.push("gulp")
-    cat.push("grunt")
-    cat.push("phpstorm")
-    cat.push("react")
-    cat.push("swift")
-    cat.push("wordpress")
-    cat.push("tomcat")
-    cat.push("travis")
-    return cat
   end
 
 end

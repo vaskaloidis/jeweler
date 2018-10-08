@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  # TODO: Clean these up. Remove routes that do not exist. Consolidate ones that do
   shallow do
     resources :sprints do
       resources :tasks
@@ -10,8 +11,8 @@ Rails.application.routes.draw do
     resources :projects do
       resources :notes
       resources :sprints
-      resources :project_developers, only: %i[leave remove] #TODO: Remove or fix
-      resources :project_customers, only: %i[leave remove] #TODO: Remove or fix
+      resources :project_developers, only: %i[leave remove]
+      resources :project_customers, only: %i[leave remove]
       resources :payments
       resources :invitations, only: %i[accept decline create]
     end
@@ -20,7 +21,10 @@ Rails.application.routes.draw do
   resources :tasks
   resources :charges
 
-  # Shared TODO: Convert any 'Inline' Actions to use its 'Stock' Controller Actions
+  # Projects
+  get '/:id/settings', to: 'projects#settings', as: 'project_settings'
+
+  # Modals
   match '/new_charge_modal', to: 'charges#generate_modal', via: [:post], as: 'generate_charge_modal'
   get '/commit_codes_modal', to: 'projects#commit_codes_modal', as: 'commit_codes'
 
@@ -33,7 +37,7 @@ Rails.application.routes.draw do
   get '/invitation/:id/decline', to: 'invitations#decline', as: 'decline_invitation'
   delete 'invitation/:id/destroy', to: 'invitations#destroy', as: 'destroy_invitation'
 
-  # Project Users: Customers and Developers
+  # Project-Users: Project-Customers + Project-Developers
   get '/project/:id/users', to: 'projects#users', as: 'project_users'
   get '/developer_leave/:project_id/', to: 'project_developers#leave', as: 'developer_leave_project'
   delete '/project/:project_id/remove_developer/:user_id', to: 'project_developers#remove', as: 'remove_project_developer'
@@ -71,14 +75,18 @@ Rails.application.routes.draw do
   post '/discussions/create_message', to: 'discussions#create_message', as: 'create_discussion_message'
   get '/discussions/fetch/:note_id', to: 'discussions#fetch', as: 'fetch_discussion'
 
-  # Github Webhooks
-  get '/github_oauth', to: 'github#save_oauth', as: 'github_oauth_save'
-  post '/github_hook', to: 'github#hook', as: 'execute_github_webhook'
-  get '/github_authorize', to: 'github#authorize_account', as: 'authorize_github'
-  get '/github_install_webhook/:project_id', to: 'github#install_webhook', as: 'install_github_webhook'
+  # Github-Webhooks
+  get '/github/oauth/save', to: 'github#save_oauth', as: 'github_oauth_save'
+  get '/github/oauth/authorize', to: 'github#authorize_account', as: 'authorize_github'
+  post '/github/hook/push', to: 'github#hook', as: 'github_push_hook'
+  get '/github/hook/install/:project_id', to: 'github#install_webhook', as: 'install_github_webhook'
+  delete '/github/hook/uninstall/:project_id', to: 'github#uninstall_webhook', as: 'uninstall_github_webhook'
+  get '/github/commits/project/:project_id/sync', to: 'github#sync_commits', as: 'sync_github_commits'
+  delete '/github/disconnect', to: 'github#delete_oauth', as: 'disconnect_github'
 
-  # Devise
+  # Devise-Omniauth: Stripe
   devise_for :users, :controllers => {:omniauth_callbacks => "omniauth_callbacks"}
+  delete '/stripe/disconnect', to: 'omniauth_callbacks_controller#stripe_disconnect', as: 'disconnect_stripe'
 
   # Home Pages
   unauthenticated do

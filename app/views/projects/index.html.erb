@@ -14,7 +14,6 @@
                 <h4 class="list-group-item-heading"><%= invitation.project.name %></h4>
                 <p class="list-group-item-text">
                 <p><%= invitation.project.description %></p>
-
                 <p>
                   <%= link_to 'Accept', accept_invitation_path(invitation.id), class: 'btn btn-success' %>
                   <%= link_to 'Decline', decline_invitation_path(invitation.id), class: 'btn btn-danger' %>

@@ -1,63 +1,91 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Project Owner
-  </div>
-  <div class="panel-body">
-    <table class="table table-hover members-table middle-align">
-      <thead>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>E-Mail</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td class="user-image hidden-xs hidden-sm">
-          <% if project.owner.image.url.nil? %>
-            <img src="<%= image_path 'user-1.png' %>" class="img-circle" alt="user-pic"/>
-          <% else %>
-            <img src="<%= image_path project.owner.image.url %>" class="img-circle" alt="user-pic"/>
-          <% end %>
-        </td>
-        <td class="user-name">
-          <span class="name"><%= project.owner.first_name %> <%= project.owner.last_name %></span>
-          <span><%= project.owner.company %></span>
-        </td>
-        <td class="">
-          <span class="email"><%= project.owner.email %></span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<%= row do %>
+  <%= column3 do %>
+    <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="<%= project.users.count %>" data-suffix=" users" data-duration="2">
+      <div class="xe-icon">
+        <i class="linecons-user"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">99.9%</strong>
+        <span>Server uptime</span>
+      </div>
+    </div>
+  <% end %>
+  <%= column3 do %>
+    <div class="xe-widget xe-counter xe-counter-blue" data-count=".num" data-from="0" data-to="<%= project.users.count %>" data-suffix=" users" data-duration="2">
+      <div class="xe-icon">
+        <i class="linecons-user"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">99.9%</strong>
+        <span>Server uptime</span>
+      </div>
+    </div>
+  <% end %>
+  <%= column3 do %>
+    <div class="xe-widget xe-counter xe-counter-blue" data-count=".num" data-from="0" data-to="<%= project.users.count %>" data-suffix=" users" data-duration="2">
+      <div class="xe-icon">
+        <i class="linecons-user"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">99.9%</strong>
+        <span>Server uptime</span>
+      </div>
+    </div>
+  <% end %>
+  <%= column3 do %>
+    <div class="xe-widget xe-counter xe-counter-blue" data-count=".num" data-from="0" data-to="<%= project.users.count %>" data-suffix=" users" data-duration="2">
+      <div class="xe-icon">
+        <i class="linecons-user"></i>
+      </div>
+      <div class="xe-label">
+        <strong class="num">99.9%</strong>
+        <span>Server uptime</span>
+      </div>
+    </div>
+  <% end %>
+<% end %>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Invitations
-  </div>
-  <div class="panel-body">
-    <% unless project.invitations.empty? %>
-      <%= render 'invitations/invitations', project: project %>
+<%= row do %>
+  <%= column_half do %>
+    <%= render 'projects/owner', project: project %>
+  <% end %>
+
+  <%= column_half do %>
+    <%= panel do %>
+      <%= panel_heading do %> Invitations
+      <% end %>
+      <%= panel_body do %>
+        <% unless project.invitations.empty? %>
+          <%= render 'invitations/invitations', project: project %>
+        <% end %>
+      <% end %>
     <% end %>
-  </div>
-</div>
+  <% end %>
+<% end %>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Project Developers
-  </div>
-  <div class="panel-body">
-    <%= render 'project_developers/developers', project: project %>
-  </div>
-</div>
+<%= row do %>
+  <%= column_half do %>
+    <%= panel do %>
+      <%= panel_heading do %>
+        Project Developers
+      <% end %>
+      <%= panel_body do %>
+        <%= render 'project_developers/developers', project: project %>
+      <% end %>
+    <% end %>
+  <% end %>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Project Customers
-  </div>
-  <div class="panel-body">
-    <%= render 'project_customers/customers', project: project %>
-  </div>
-</div>
+  <%= column_half do %>
+    <%= panel do %>
+      <%= panel_heading do %>
+        Project Customers
+      <% end %>
+      <%= panel_body do %>
+        <%= render 'project_customers/customers', project: project %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+
+

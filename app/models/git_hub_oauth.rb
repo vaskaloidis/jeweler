@@ -1,70 +1,46 @@
-# Interact with GitHub API using generated user Oauth
 class GitHubOauth
-  attr_accessor :project
+  attr_reader :token
 
-  def initialize(selected_project)
-    @project = selected_project
+  def initialize(token)
+    @token = token
   end
 
-  def user
-    @user ||= begin
-      uri = URI(project.github_url)
-      uri.path.split('/').second
-    end
+  def repos
+    @repos ||= github_api.repos.list user: username
   end
 
-  def repo
-    @repo ||= begin
-      uri = URI(project.github_url)
-      uri.path.split('/').third
-    end
+  def username
+    @username ||= user_data.login
   end
 
-  def install_webhook!
-    github_api.repos.hooks.create(user, repo, new_hook)
-  rescue Github::Error::NotFound
-    @errors << 'Github-Repo is invalid. Please change in Project Settings.' if defined? @errors
+  def avatar
+    @avatar ||= user_data.avatar_url
   end
 
-  def webhook_installed?
-    @webhook_installed ||= begin
-      return false unless project.github_installed?
-      # TODO: Make this loop a one-liner later
-      hooks.each do |hook|
-        return true if our_hook?(hook)
-      end
-      false
-    end
-  rescue Github::Error::NotFound
-    @errors << 'Github-Repo is invalid. Please change in Project Settings.' if defined? @errors
-    false
+  def repository(id)
+    @repository ||= api.repos.get_by_id(id)
+  end
+
+  def delete_hook(name, id)
+    api.repos.hooks.delete username, name, id
+  end
+
+  def all_hooks(name)
+    api.repos.hooks.all(username, name)
+  end
+
+  def create_hook(name, new_webhook)
+    api.repos.hooks.create(username, name, new_webhook)
   end
 
   private
 
+  def user_data
+    @user_data ||= github_api.users.get
+  end
+
   def github_api
-    @github_api ||= Github.new oauth_token: project.owner.oauth
-  end
-
-  def hooks
-    @hooks ||= github_api.repos.hooks.all(user, repo)
-  end
-
-  def our_hook?(hook)
-    hook.config.url == ENV['GITHUB_HOOK_URL'] && hook.config.content_type == 'json'
-  end
-
-  def new_hook
-    @new_hook ||= {
-        name: "web",
-        active: true,
-        config: {
-            url: ENV['GITHUB_HOOK_URL'],
-            content_type: "json"
-        }
-    }
+    @github_api ||= Github.new oauth_token: @token
   end
 
 end
-
-

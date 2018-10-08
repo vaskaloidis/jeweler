@@ -36,17 +36,21 @@
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <div class="form-group">
-            <%= form.label :github_url, class: 'control-label' %>
-            <%= form.text_field :github_url, class: 'form-control' %>
-          </div>
+          <% if current_user.github.user_configured? %>
+            <div class="form-group">
+              <%= form.label :github_repo_id, class: 'control-label' %>
+              <%= form.select(:github_repo_id, repos_select(current_user.github.repositories), { include_blank: true}) %>
+            </div>
+          <% else %>
+            <%= render 'github/auth_notification' %>
+          <% end %>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <%#= form.label :language, class: 'control-label' %>
             <%#= form.text_field :language, class: 'form-control' %>
             <label class="control-label" for="project_language">Language</label>
-            <%= ApplicationHelper.build_languages_dropdown(project.language).html_safe %>
+            <%= form.select(:language, language_select, { include_blank: true}) %>
           </div>
         </div>
       </div>

@@ -35,32 +35,25 @@
     </div>
   <% end %>
 
-  <% gho = GitHubOauth.new(project) %>
-  <% if !project.github_installed? %>
-    <div class="alert alert-danger">
-      <i class="fab fa-2x fa-github pull-right"></i>
-      Please Connect Jewler with GitHub, <%= link_to 'Here', authorize_github_path %>
-    </div>
-  <% elsif !gho.webhook_installed? %>
-    <div class="alert alert-danger">
-      <i class="fab fa-2x fa-github pull-right"></i>
-      Install GitHub Webhook for Commit Events <%= link_to 'Here', install_github_webhook_path(project.id), remote: true %>.
-    </div>
+  <% if project.github.configured? %>
+    <% unless project.github.webhook.installed? %>
+    <%= render 'github/webhook_install_notification', project: project %>
   <% end %>
+<% end %>
 
 <% elsif project.customer?(current_user) %>
 
-  <button type="button" class="btn btn-success btn-block text-left">
-    Project Member <i class="fa-check pull-right"></i>
-  </button>
+<button type="button" class="btn btn-success btn-block text-left">
+  Project Member <i class="fa-check pull-right"></i>
+</button>
 
-  <% unless project.payment_requests.empty? %>
-    <% project.payment_requests.each do |sprint| %>
-      <div class="alert alert-danger">
-        Payment Requested For Sprint <%= sprint.sprint.to_s %>
-        . <%= link_to '<strong>Make Payment</strong>'.html_safe, project_payments_path(sprint.project) %>
-      </div>
-    <% end %>
+<% unless project.payment_requests.empty? %>
+  <% project.payment_requests.each do |sprint| %>
+    <div class="alert alert-danger">
+      Payment Requested For Sprint <%= sprint.sprint.to_s %>
+      . <%= link_to '<strong>Make Payment</strong>'.html_safe, project_payments_path(sprint.project) %>
+    </div>
   <% end %>
+<% end %>
 
 <% end %>

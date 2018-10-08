@@ -3,19 +3,30 @@
 class ApplicationController < ActionController::Base
   before_action :prepare_errors
   # after_action :log_errors
-  after_action :generate_events
   # after_action :print_errors
   before_action :load_dependencies
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_current_user
-  before_action :configure_permitted_parameters, if: :devise_controller?
-  # rescue_from Github::Error::NotFound, with: :github_error_not_found
+  after_action :generate_events
+  rescue_from Github::Error::GithubError, with: :github_error
+  rescue_from Github::Error::Unauthorized, with: :github_error
+
   protected
 
-  def github_error_not_found
-    if defined? @errors
-        @errors << 'Project GitHub URL is invalid'
+  # Github::Error::ClientError # Issue with client
+  # Github::Error::ServiceError # Service Errors (IE: 404)
+  # Github::Error::Unauthorized # github_oauth expired
+  def github_error(error)
+    @errors << "GitHub encountered an error: Contact support if error persists. Error: #{error.message}" if defined? @errors
+    if error.is_a? Github::Error::Unauthorized
+      # current_user.update!(github_oauth: nil)
+      log_error "Oauth Token Expired: #{error.message}"
+      redirect_to project_settings_path, error: contact_support('There was a problem with the GitHub Authentication. You must re-authenticate GitHub.')
+    elsif error.is_a? Github::Error::ServiceError
+      log_error "GitHub ServiceError: #{error.message}"
+      redirect_to project_settings_path, error: contact_support('There was a problem with the GitHub Connection.')
     end
+
   end
 
   def generate_events
@@ -76,6 +87,7 @@ class ApplicationController < ActionController::Base
   end
 
   def load_dependencies
+    # TODO: Move this require just above where we need it
     require 'dotenv/load' unless Rails.env.production?
   end
 
@@ -83,4 +95,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[image first_name last_name company location website_url tagline])
     devise_parameter_sanitizer.permit(:account_update, keys: %i[image first_name last_name company location website_url tagline])
   end
+
+  def log_error(msg)
+    logger.error msg
+    Rollbar.error msg
+  end
+
 end
