@@ -9,57 +9,51 @@ class GithubControllerTest < ActionDispatch::IntegrationTest
     sign_in @current_user
   end
 
-  describe '#authorize_account' do
-    before do
-      @auth_url = 'http://github.com/authorization/'
-      @api = mock('api').stubs(:authorization_url)
-      GitHubApp.stubs(:new).returns(@api)
-    end
-    it 'does not authorize users with GitHub already connected' do
-      mock_user = stub('mock-user', github_oauth: 'oauth-code-123')
-      User.stubs(:find).returns(mock_user)
-      @api.expects(:authorization_url).returns(@auth_url)
-
-      get authorize_github_url
-
-      assert_redirected_to root_path
-      flash[:notice].must_equal 'GitHub is already installed'
-    end
-    it 'forwards users to GitHub auth who dont have it already connected' do
-      @api.expects(:authorization_url).returns(@auth_url)
-
-      get authorize_github_url
-
-      assert_redirected_to @auth_url
-    end
+  test '#authorize_account' do
+    @auth_url = 'http://github.com/authorization/'
+    GitHubApp.stubs(:authorization_url).returns(@auth_url)
+    get authorize_github_url
+    assert_redirected_to @auth_url
   end
 
-  describe '#save_oauth' do
+  test 'delete_oauth' do
+    github = mock('github')
+    github.stubs(:uninstall!)
+    github.expects(:uninstall!)
+    user = mock('user')
+    user.stubs(:github).returns(github)
+    User.stubs(:find).returns(user)
+    delete disconnect_github_url
+    assert_redirected_to edit_user_registration_path
+    assert_equal 'GitHub Disconnected. Webhooks Uninstalled.', flash[:notice]
+  end
+
+  describe 'stubs authorization_token' do
     before do
       @token = 'token-123'
-      @api = mock('api').stubs(:authorization_token)
-      GitHubApp.stubs(:new).returns(@api)
+      GitHubApp.stubs(:authorization_token).returns(@token)
     end
-    it 'should save GitHub user Oauth Token' do
-      @api.expects(:authorization_token).once.returns(@token)
-
+    test '#save_oauth' do
       get github_oauth_save_url
 
       @current_user.reload
       assert_equal @token, @current_user.github_oauth
       assert_redirected_to root_path
-      flash[:notice].must_equal 'GitHub Account Successfully Authenticated!'
+      assert_equal 'GitHub Successfully Authenticated. Webhooks installed.', flash[:notice]
     end
   end
 
-  describe '#install_webhook' do
+  describe ' stubs webhook.install' do
     before do
-      @stub = mock('api').stubs(:install_webhook!)
-      GitHubOauth.stubs(:new).returns(@stub)
+      @webhook = mock('webhook')
+      @webhook.stubs(:install!)
+      @repo = mock('api')
+      @repo.stubs(:webhook).returns(@webhook)
+      GitHubRepo.stubs(:new).returns(@repo)
     end
-    it 'installs the webhook' do
-      @stub.expects(:install_webhook!).once
-      project = create(:project_with_github_test_repo)
+    test '#install_webhook' do
+      @webhook.expects(:install!).once
+      project = create(:project, github_repo_id: 1234, github_webhook_id: nil)
 
       get install_github_webhook_url(project), xhr: true
 
@@ -68,10 +62,32 @@ class GithubControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  describe ' stubs webhook.uninstall' do
+    before do
+      @webhook = mock('webhook')
+      @webhook.stubs(:uninstall!)
+      @repo = mock('api')
+      @repo.stubs(:webhook).returns(@webhook)
+      GitHubRepo.stubs(:new).returns(@repo)
+    end
+    test '#uninstall_webhook' do
+      @webhook.expects(:uninstall!).once
+      project = create(:project, github_repo_id: 1234, github_webhook_id: 1234)
+
+      delete uninstall_github_webhook_url(project), xhr: true
+
+      assert_equal 'text/javascript', @response.content_type
+      assert_response :success
+    end
+  end
+
+  test '#sync_commits' do
+    skip 'feature not complete'
+  end
 
   describe '#hook' do
     it 'executes the webhook' do
-      skip 'test not written yet'
+      skip 'feature not complete'
       payload_mock = Json.new
       # payload = JSON.parse(request.body.read)
       # commits = payload["commits"]

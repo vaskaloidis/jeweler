@@ -3,7 +3,6 @@ class GithubController < ApplicationController
   respond_to :json, :html
 
   def authorize_account
-    id = current_user.id
     redirect_to GitHubApp.authorization_url
   end
 

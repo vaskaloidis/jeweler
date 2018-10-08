@@ -4,7 +4,6 @@ class GitHubApp
   # scopes: read:repo_hook write:repo_hook
   # Future scopes: write:discussion
   SCOPE = 'repo admin:repo_hook read:user'.freeze
-  SCOPE2 = 'user, repo'.freeze
 
   def self.authorization_url
     api.authorize_url(scope: SCOPE)
