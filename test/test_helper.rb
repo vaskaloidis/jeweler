@@ -68,8 +68,8 @@ class ActiveSupport::TestCase
     ClimateControl.modify({ GITHUB_CLIENT_ID: client_id, GITHUB_CLIENT_SECRET: client_secret }, &block)
   end
 
-  def github_oauth_env(hook_url, &block)
-    ClimateControl.modify({ GITHUB_HOOK_URL: hook_url }, &block)
+  def github_push_hook_env(hook_url, &block)
+    ClimateControl.modify({ GITHUB_PUSH_HOOK: hook_url }, &block)
   end
 
 end

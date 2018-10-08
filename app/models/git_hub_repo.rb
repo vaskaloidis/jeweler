@@ -7,17 +7,6 @@ class GitHubRepo < GitHubUser
     super(@user)
   end
 
-  def url
-    @url ||= begin
-      return false unless configured?
-      "https://github.com/#{username}/#{name}"
-    end
-  end
-
-  def name
-    @name ||= repository.name
-  end
-
   def configured?
     @configured ||= project_configured? && user_configured?
   end
@@ -26,12 +15,23 @@ class GitHubRepo < GitHubUser
     @project_configured ||= !project.github_repo_id.nil?
   end
 
+  def name
+    @name ||= repository.name
+  end
+
+  def url
+    @url ||= begin
+      return false unless configured?
+      "https://github.com/#{username}/#{name}"
+    end
+  end
+
   def webhook
     @webhook ||= GitHubWebhook.new(self)
   end
 
   def uninstall!
-    webhook.uninstall!
+    webhook.uninstall! if webhook.installed?
     project.update!(github_repo_id: nil) if project_configured?
   end
 
@@ -42,7 +42,7 @@ class GitHubRepo < GitHubUser
   end
 
   def repository
-    @repository ||= api.repos.get_by_id(id)
+    @repository ||= api.repository(id)
   end
 
 end

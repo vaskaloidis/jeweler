@@ -4,12 +4,8 @@ class GitHubUser
   include ApplicationHelper
   include Github::Error
 
-  attr_reader :unauthorized_error, :general_error
-
   def initialize(owner)
     @owner = owner
-    @unauthorized_error = contact_support('There was a problem with the GitHub Authentication. You must re-authenticate GitHub.')
-    @general_error = contact_support('There was a problem with the GitHub Connection.')
   end
 
   def user_configured?
@@ -17,23 +13,22 @@ class GitHubUser
   end
 
   def username
-    @username ||= user_data.login
+    @username ||= api.username
   end
 
   def avatar
-    @avatar ||= user_data.avatar_url
+    @avatar ||= api.avatar
   end
 
   def repositories
     @repositories ||= begin
-      api.repos.list user: username
-    rescue Github::Error::GithubError => error # Think about removing this
+      api.repos
+    rescue Github::Error::GithubError => error
       log_error(error)
       return false
     end
   end
 
-  # TODO: Check if used anywhere / needed then delete
   def valid?
     return true if repositories
     false
@@ -58,10 +53,8 @@ class GitHubUser
   end
 
   def api
-    @api ||= begin
-      auth_valid?
-      Github.new oauth_token: token
-    end
+    auth_valid?
+    GitHubOauth.new(token)
   end
 
   def log_error(error)
@@ -91,8 +84,12 @@ class GitHubUser
     @owner.github_oauth
   end
 
-  def user_data
-    @user_data ||= api.users.get
+  def unauthorized_error
+    contact_support('There was a problem with the GitHub Authentication. You must re-authenticate GitHub.')
+  end
+
+  def general_error
+    contact_support('There was a problem with the GitHub Connection.')
   end
 
 end
