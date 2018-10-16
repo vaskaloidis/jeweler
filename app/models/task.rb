@@ -2,22 +2,23 @@ class Task < ApplicationRecord
   after_create :set_position
   belongs_to :sprint, required: true
   has_one :project, class_name: 'Project', inverse_of: 'current_task', dependent: :nullify
-  has_many :notes, dependent: :nullify
+  has_many :events, as: :eventable, dependent: :nullify
   belongs_to :assigned_to, class_name: 'User', optional: true
   belongs_to :created_by, class_name: 'User'
 
   default_scope {where(deleted: false)}
-  scope :incomplete_tasks, -> {where(complete: false, deleted: false)}
-  scope :completed_tasks, -> {where(complete: true, deleted: false)}
+  scope :incomplete_tasks, -> { where(complete: false, deleted: false) }
+  scope :completed_tasks, -> { where(complete: true, deleted: false) }
 
-  accepts_nested_attributes_for :notes
+
+  accepts_nested_attributes_for :events
   accepts_nested_attributes_for :sprint
   accepts_nested_attributes_for :project
 
-  validates :planned_hours, numericality: {message: 'Must be a number.'}, allow_nil: true
-  validates :hours, numericality: {message: 'Must be a number.'}, allow_nil: true
-  validates :description, presence: {message: 'Cannot be empty.'}
-  validates :rate, presence: {message: 'must cannot me empty.'}, numericality: {message: 'must be a number.'}
+  validates :planned_hours, numericality: {message: 'Must be a number.' }, allow_nil: true
+  validates :hours, numericality: {message: 'Must be a number.' }, allow_nil: true
+  validates :description, presence: {message: 'Cannot be empty.' }
+  validates :rate, presence: {message: 'must cannot me empty.' }, numericality: {message: 'must be a number.' }
   validate :validate_created_by
   validate :validate_assigned_to
 

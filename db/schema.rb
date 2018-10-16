@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_28_165136) do
+ActiveRecord::Schema.define(version: 2018_10_10_203409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "commits", force: :cascade do |t|
+    t.boolean "sync"
+    t.string "git_commit_id"
+    t.string "git_diff"
+    t.bigint "user_id"
+    t.bigint "sprint_id"
+    t.bigint "task_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sprint_id"], name: "index_commits_on_sprint_id"
+    t.index ["task_id"], name: "index_commits_on_task_id"
+    t.index ["user_id"], name: "index_commits_on_user_id"
+  end
 
   create_table "discussions", force: :cascade do |t|
     t.bigint "note_id"
@@ -25,14 +39,21 @@ ActiveRecord::Schema.define(version: 2018_09_28_165136) do
     t.index ["user_id"], name: "index_discussions_on_user_id"
   end
 
-  create_table "git_hub_repos", force: :cascade do |t|
+  create_table "events", force: :cascade do |t|
+    t.bigint "project_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "git_hub_users", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "image"
+    t.bigint "sprint_id"
+    t.integer "subject", default: 1
+    t.string "eventable_type"
+    t.bigint "eventable_id"
+    t.string "details"
+    t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
+    t.index ["project_id"], name: "index_events_on_project_id"
+    t.index ["sprint_id"], name: "index_events_on_sprint_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "invitations", force: :cascade do |t|
@@ -47,20 +68,12 @@ ActiveRecord::Schema.define(version: 2018_09_28_165136) do
   create_table "notes", force: :cascade do |t|
     t.text "content"
     t.integer "note_type", default: 1
-    t.string "git_commit_id"
-    t.bigint "project_id"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image"
-    t.boolean "sync", default: false
     t.bigint "sprint_id"
-    t.bigint "task_id"
-    t.string "commit_diff_path"
-    t.integer "event_type"
-    t.index ["project_id"], name: "index_notes_on_project_id"
     t.index ["sprint_id"], name: "index_notes_on_sprint_id"
-    t.index ["task_id"], name: "index_notes_on_task_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
@@ -191,12 +204,16 @@ ActiveRecord::Schema.define(version: 2018_09_28_165136) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "commits", "sprints"
+  add_foreign_key "commits", "tasks"
+  add_foreign_key "commits", "users"
   add_foreign_key "discussions", "notes"
   add_foreign_key "discussions", "users"
+  add_foreign_key "events", "projects"
+  add_foreign_key "events", "sprints"
+  add_foreign_key "events", "users"
   add_foreign_key "invitations", "projects"
-  add_foreign_key "notes", "projects"
   add_foreign_key "notes", "sprints"
-  add_foreign_key "notes", "tasks"
   add_foreign_key "notes", "users"
   add_foreign_key "project_customers", "projects"
   add_foreign_key "project_customers", "users"
