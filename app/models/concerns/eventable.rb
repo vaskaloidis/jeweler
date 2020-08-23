@@ -6,6 +6,8 @@ module Eventable
 
     accepts_nested_attributes_for :events
   end
+  #
+
 
 
 end

@@ -4,7 +4,8 @@ class Payment < ApplicationRecord
   has_one :project, through: :sprint
   belongs_to :sprint
   belongs_to :user
-  has_many :events, as: :eventable, dependent: :destroy
+    include Eventable
+  # has_many :events, as: :eventable, dependent: :destroy
 
   accepts_nested_attributes_for :events
   accepts_nested_attributes_for :sprint

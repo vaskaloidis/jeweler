@@ -16,15 +16,16 @@ require 'faker'
 #TODO: Faker has to get removed from here once we find out where its being used
 # require 'capybara/email'
 
-formatters = []
-formatters << SimpleCov::Formatter::HTMLFormatter
-formatters << SimpleCov::Formatter::Console
-SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
+# formatters = []
+# formatters << SimpleCov::Formatter::HTMLFormatter
+# formatters << SimpleCov::Formatter::Console
+# SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
 
-unless try(ENV['LOCAL_DEVELOPMENT'])
-  require 'coveralls'
-  Coveralls.wear!
-end
+# TODO: Enable coveralls
+# unless try(ENV['LOCAL_DEVELOPMENT'])
+#   require 'coveralls'
+#   Coveralls.wear!
+# end
 
 require 'minitest/reporters'
 # https://github.com/kern/minitest-reporters/issues/230

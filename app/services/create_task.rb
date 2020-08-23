@@ -2,44 +2,43 @@
 
 # Creates a Task from the supplied params, then
 #  sets that task as Current-Task if appropriate.
+
 class CreateTask < Jeweler::Service
-  def initialize(task_params)
-    @task = Task.new(task_params)
-  end
+	include EventHelper
 
-  def call
-    task.save
-    if task.valid?
-      @result_message = 'Task created Succesfully'
-      set_current_task
-      create_note
-    else
-      task.errors.full_messages.map {|e| errors << 'Error Creating task: ' + e}
-    end
-    task
-  end
+	def initialize(task_params)
+		@task = Task.new(task_params)
+	end
 
-  private
+	def call
+		task.save
+		if task.valid?
+			@result_message = 'Task created Succesfully'
+			set_current_task
+			create_event(current_user.id, @task, :task_created, @sprint.id)
+		else
+			task.errors.full_messages.map { |e| errors << 'Error Creating task: ' + e }
+		end
+		task
+	end
 
-  attr_reader :task
+	private
 
-  def create_note
-    sprint = Sprint.find(task.sprint.id)
-    Note.create_event(sprint.project, 'task_created', 'Task Created: ' + task.description)
-  end
+	attr_reader :task
 
-  # Set Current task if no other tasks, and is first Sprint task created,
-  #  and is it's Sprint current?
-  def set_current_task
-    if task.sprint.tasks.empty? && task.sprint.project.current_task.nil? && task.sprint.current?
-      project = task.sprint.project
-      project.current_task = task
-      project.save
-      if project.invalid?
-        errors << 'Error while setting this as the current-task'
-        Rails.logger.fatal('CreateTask S.O. - Error setting select_next_task')
-      end
-      task.sprint.project.reload
-    end
-  end
+
+	# Set Current task if no other tasks, and is first Sprint task created,
+	#  and is it's Sprint current?
+	def set_current_task
+		if task.sprint.tasks.empty? && task.sprint.project.current_task.nil? && task.sprint.current?
+			project              = task.sprint.project
+			project.current_task = task
+			project.save
+			if project.invalid?
+				errors << 'Error while setting this as the current-task'
+				Rails.logger.fatal('CreateTask S.O. - Error setting select_next_task')
+			end
+			task.sprint.project.reload
+		end
+	end
 end

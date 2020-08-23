@@ -1,5 +1,7 @@
 class Invitation < ApplicationRecord
+	# TODO: See if we can just do this
   include Eventable
+  # has_many :events, as: :eventable, dependent: :destroy
 
   enum user_type: %i[customer developer]
 

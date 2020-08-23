@@ -47,6 +47,8 @@ class SprintsController < ApplicationController
     @sprint.reload
     @old_sprint.reload
     Note.create_event(@project, 'current_sprint_changed', 'Current Sprint Changed From ' + @old_sprint.sprint.to_s + ' to ' + @sprint.sprint.to_s) if @project.valid?
+    Event.create_event(current_user, @project.id, @sprint, :curent_sprint_changed, @sprint.id)
+
     @current_sprint = @project.sprint_current
   end
 

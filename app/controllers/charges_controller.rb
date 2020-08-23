@@ -1,4 +1,5 @@
 class ChargesController < ApplicationController
+  include EventHelper
   before_action :require_stripe
 
   def generate_modal
@@ -111,7 +112,9 @@ class ChargesController < ApplicationController
             }
         )
         if charge.valid?
-          Note.create_payment(@payment.sprint, current_user, @payment.amount) # TODO: Add an image or object to this note (not just a sentence)
+          # create_event(current_user.id, @payment, :task_created, @sprint.id)
+          # Note.create_payment(@payment.sprint, current_user, @payment.amount) # TODO: Add an image or object to this note (not just a sentence)
+          Event.create_event(current_user, @payment, :payment_made, @sprint.id)
         else
           charge.errors.full_messages do |error|
             logger.error('Error creating Stripe Charge: ' + error)

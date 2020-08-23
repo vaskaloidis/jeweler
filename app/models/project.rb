@@ -14,12 +14,14 @@ class Project < ApplicationRecord
   has_many :developers, through: :project_developers, source: :user, dependent: :nullify
   has_many :project_customers, dependent: :destroy
   has_many :customers, through: :project_customers, source: :user, dependent: :nullify
-  has_many :events, as: :eventable, dependent: :destroy
+
+    include Eventable
+  # has_many :events, as: :eventable, dependent: :destroy
+
   has_many :notes, dependent: :destroy
   has_many :sprints, dependent: :destroy
-  # has_many :tasks, dependent: :destroy
-  has_many :tasks, through: :sprints
-  has_many :payments, through: :sprints
+  has_many :tasks, through: :sprints, dependent: :destroy
+  has_many :payments, through: :sprints, dependent: :nullify
   has_many :invitations, dependent: :destroy
 
   mount_uploader :image, AvatarUploader
@@ -50,10 +52,10 @@ class Project < ApplicationRecord
 
   def sprint_notes
     # raise NoMethodError # TODO: Scrap this, I freaking hate this
-    if current_sprint.notes.timeline.empty?
-      current_sprint.notes
+    if current_sprint.events.timeline.empty?
+      current_sprint.events
     else
-      current_sprint.notes.timeline
+      current_sprint.events.timeline
     end
   end
 

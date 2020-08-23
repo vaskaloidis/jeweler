@@ -40,15 +40,16 @@ FactoryBot.define do
       after(:create) do |project, evaluator|
         # TODO: Refactor - Iterate over Sprints here, creating tasks cleaner
         create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(1))
-        create_list(:note, 2, sprint: evaluator.get_sprint(1))
+        create_list(:note, 2, :owner_note, sprint: evaluator.get_sprint(1))
+        create_list(:note, 2, :developer_note, sprint: evaluator.get_sprint(1))
         create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(2))
-        create_list(:note, 2, sprint: evaluator.get_sprint(2))
+        create_list(:note, 2, :owner_note, sprint: evaluator.get_sprint(2))
         create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(3))
-        create_list(:note, 2, sprint: evaluator.get_sprint(3))
+        create_list(:note, 2, :owner_note, sprint: evaluator.get_sprint(3))
         create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(4))
-        create_list(:note, 2, sprint: evaluator.get_sprint(4))
+        create_list(:note, 2, :owner_note, sprint: evaluator.get_sprint(4))
         create_list(:task, 2, created_by: project.owner, sprint: evaluator.get_sprint(5))
-        create_list(:note, 2, sprint: evaluator.get_sprint(5))
+        create_list(:note, 2, :owner_note, sprint: evaluator.get_sprint(5))
       end
     end
     factory :project_with_github_test_repo do

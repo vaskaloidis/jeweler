@@ -5,11 +5,13 @@ class Note < ApplicationRecord
 
   default_scope { order('created_at DESC') }
 
-  has_many :events, as: :eventable, dependent: :destroy
+    include Eventable
+  # has_many :events, as: :eventable, dependent: :destroy
+
   has_many :discussions, dependent: :destroy
-  has_one :project
 
   belongs_to :user, class_name: 'User', foreign_key: 'user_id', inverse_of: 'notes', required: true
+  alias_attribute :author, :user
   belongs_to :sprint
   has_one :project, through: :sprint
   mount_uploader :image, AvatarUploader
