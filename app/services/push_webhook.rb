@@ -3,18 +3,16 @@
 #
 class PushWebhook < Jeweler::Service
   attr_reader :project
-
   def initialize(project)
     @project = project
   end
 
   # POST /github_hook
   # TODO: Move this to a delayed job
-  # TODO: Make this more modular
+  # TODO: Build a Service Object
   # Build a GitHubPushEvent Model
-
   def call
-    push
+
   end
 
   private

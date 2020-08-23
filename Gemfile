@@ -102,7 +102,7 @@ group :development do
   # gem 'pry-debugger'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'web-console', '>= 3.3.0'
+  gem 'web-console', '>= 3.3.0' # Add to page: <%= console %>
   # Memory
   gem 'rack-mini-profiler'
   # gem 'memory_profiler'

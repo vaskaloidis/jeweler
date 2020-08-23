@@ -1,4 +1,4 @@
-class FullSchemaVersion5 < ActiveRecord::Migration[5.2]
+class FullSchemaVersion4 < ActiveRecord::Migration[5.2]
   def change
 
     create_table "discussions", force: :cascade do |t|
@@ -20,46 +20,24 @@ class FullSchemaVersion5 < ActiveRecord::Migration[5.2]
       t.index ["project_id"], name: "index_invitations_on_project_id"
     end
 
-    create_table "events", force: :cascade do |t|
+    create_table "notes", force: :cascade do |t|
+      t.text "content"
+      t.integer "note_type", default: 1
+      t.string "git_commit_id"
       t.bigint "project_id"
       t.bigint "user_id"
       t.datetime "created_at", null: false
       t.datetime "updated_at", null: false
       t.string "image"
-      t.bigint "sprint_id"
-      t.integer "subject", default: 1
-      t.string "eventable_type"
-      t.bigint "eventable_id"
-      t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
-      t.index ["project_id"], name: "index_events_on_project_id"
-      t.index ["user_id"], name: "index_events_on_user_id"
-      t.index ["sprint_id"], name: "index_events_on_sprint_id"
-    end
-
-    create_table "notes", force: :cascade do |t|
-      t.text "content"
-      t.integer "note_type", default: 1
-      t.bigint "user_id"
-      t.datetime "created_at", null: false
-      t.datetime "updated_at", null: false
-      t.string "image"
-      t.bigint "sprint_id"
-      t.index ["user_id"], name: "index_notes_on_user_id"
-      t.index ["sprint_id"], name: "index_notes_on_sprint_id"
-    end
-
-    create_table "commits", force: :cascade do |t|
-      t.boolean "sync"
-      t.string "git_commit_id"
-      t.string "git_diff"
-      t.bigint "user_id"
+      t.boolean "sync", default: false
       t.bigint "sprint_id"
       t.bigint "task_id"
-      t.datetime "created_at", null: false
-      t.datetime "updated_at", null: false
-      t.index ["sprint_id"], name: "index_commits_on_sprint_id"
-      t.index ["task_id"], name: "index_commits_on_task_id"
-      t.index ["user_id"], name: "index_commits_on_user_id"
+      t.string "commit_diff_path"
+      t.integer "event_type"
+      t.index ["project_id"], name: "index_notes_on_project_id"
+      t.index ["sprint_id"], name: "index_notes_on_sprint_id"
+      t.index ["task_id"], name: "index_notes_on_task_id"
+      t.index ["user_id"], name: "index_notes_on_user_id"
     end
 
     create_table "payments", force: :cascade do |t|
@@ -94,8 +72,9 @@ class FullSchemaVersion5 < ActiveRecord::Migration[5.2]
 
     create_table "projects", force: :cascade do |t|
       t.string "name", null: false
+      t.string "language"
       t.text "description"
-      t.string "string"
+      t.string "github_url"
       t.string "readme_file", default: "README.md"
       t.boolean "readme_remote", default: false
       t.string "stage_website_url"
@@ -112,9 +91,7 @@ class FullSchemaVersion5 < ActiveRecord::Migration[5.2]
       t.integer "sprint_current"
       t.string "heroku_token"
       t.string "google_analytics_tracking_code"
-      t.integer "github_repo_id"
-      t.integer "github_webhook_id"
-      t.integer "language"
+      t.index ["github_url"], name: "index_projects_on_github_url", unique: true
       t.index ["task_id"], name: "index_projects_on_task_id"
       t.index ["user_id"], name: "index_projects_on_user_id"
     end
@@ -178,7 +155,7 @@ class FullSchemaVersion5 < ActiveRecord::Migration[5.2]
       t.string "tagline"
       t.string "image"
       t.string "company", default: ""
-      t.string "github_oauth"
+      t.string "oauth"
       t.string "stripe_account_id"
       t.string "stripe_type"
       t.string "stripe_token"
@@ -189,16 +166,12 @@ class FullSchemaVersion5 < ActiveRecord::Migration[5.2]
       t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
     end
 
-    add_foreign_key "commits", "sprints"
-    add_foreign_key "commits", "tasks"
-    add_foreign_key "commits", "users"
     add_foreign_key "discussions", "notes"
     add_foreign_key "discussions", "users"
     add_foreign_key "invitations", "projects"
-    add_foreign_key "events", "projects"
-    add_foreign_key "events", "sprints"
-    add_foreign_key "events", "users"
+    add_foreign_key "notes", "projects"
     add_foreign_key "notes", "sprints"
+    add_foreign_key "notes", "tasks"
     add_foreign_key "notes", "users"
     add_foreign_key "project_customers", "projects"
     add_foreign_key "project_customers", "users"
@@ -206,7 +179,5 @@ class FullSchemaVersion5 < ActiveRecord::Migration[5.2]
     add_foreign_key "project_developers", "users"
     add_foreign_key "tasks", "users", column: "assigned_to_id"
     add_foreign_key "tasks", "users", column: "created_by_id"
-
-
   end
 end

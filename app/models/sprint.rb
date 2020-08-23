@@ -8,14 +8,12 @@ class Sprint < ApplicationRecord
   belongs_to :project
   has_many :tasks, dependent: :destroy
   has_many :payments, dependent: :nullify
-  has_many :events, as: :eventable, dependent: :destroy
   has_many :notes, dependent: :destroy
 
   accepts_nested_attributes_for :project
   accepts_nested_attributes_for :tasks
   accepts_nested_attributes_for :payments
   accepts_nested_attributes_for :notes
-  accepts_nested_attributes_for :events
 
   validates :sprint, presence: true
 
