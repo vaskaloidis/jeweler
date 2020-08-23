@@ -14,6 +14,7 @@ class Project < ApplicationRecord
   has_many :developers, through: :project_developers, source: :user, dependent: :nullify
   has_many :project_customers, dependent: :destroy
   has_many :customers, through: :project_customers, source: :user, dependent: :nullify
+  has_many :events, as: :eventable, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :sprints, dependent: :destroy
   # has_many :tasks, dependent: :destroy
@@ -30,6 +31,7 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :current_task
   accepts_nested_attributes_for :tasks
   accepts_nested_attributes_for :notes
+  accepts_nested_attributes_for :events
   accepts_nested_attributes_for :invitations
 
   validates :owner, presence: true

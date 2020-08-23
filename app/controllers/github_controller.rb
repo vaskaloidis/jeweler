@@ -31,7 +31,7 @@ class GithubController < ApplicationController
     @project.github.webhook.uninstall!
   end
 
-  def hook
+  def push_hook
     @service = PushWebhook.call(@project)
     @errors = @service.errors
   end

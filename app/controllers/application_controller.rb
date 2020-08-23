@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   before_action :load_dependencies
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_current_user
-  after_action :generate_events
   rescue_from Github::Error::GithubError, with: :github_error
   rescue_from Github::Error::Unauthorized, with: :github_error
 
@@ -29,24 +28,6 @@ class ApplicationController < ActionController::Base
 
   end
 
-  def generate_events
-    if @errors.empty?
-
-      case controller_name
-      when 'invitations'
-        case action_name
-        when 'accept'
-          Note.create_event(@project, 'invitation_accepted', @email + ' Accepted Project Invitation')
-        when 'decline'
-          Note.create_event(@project, 'invitation_declined', @email + ' Declined Project Invitation')
-        when 'destroy'
-          Note.create_event(@project, 'invitation_deleted', @email + ' Invitation was deleted by Project Owner')
-        end
-      end
-
-    end
-  end
-
   # Arrays to capture any Errors (display to user)
   # or Fatal issues which we log (and sometimes display to user)
   def prepare_errors
@@ -56,8 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def log_errors
-    # TODO: Move this to an ENV Setting
-    only_log_fatal = true
+    only_log_fatal = true # TODO: Move this to an ENV Setting
 
     unless only_log_fatal
       unless @errors.empty?
@@ -98,7 +78,7 @@ class ApplicationController < ActionController::Base
 
   def log_error(msg)
     logger.error msg
-    Rollbar.error msg
+    Rollbar.error msg # TODO: Add an ENV config
   end
 
 end

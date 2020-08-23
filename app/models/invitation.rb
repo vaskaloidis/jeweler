@@ -1,7 +1,11 @@
 class Invitation < ApplicationRecord
-  enum user_type: [:customer, :developer]
+  include Eventable
+
+  enum user_type: %i[customer developer]
+
   belongs_to :project, required: true
   accepts_nested_attributes_for :project
+
   default_scope {order('created_at DESC')}
 
   def user

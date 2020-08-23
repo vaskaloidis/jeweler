@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :commits
   # TODO: Clean these up. Remove routes that do not exist. Consolidate ones that do
   shallow do
     resources :sprints do
@@ -78,7 +79,7 @@ Rails.application.routes.draw do
   # Github-Webhooks
   get '/github/oauth/save', to: 'github#save_oauth', as: 'github_oauth_save'
   get '/github/oauth/authorize', to: 'github#authorize_account', as: 'authorize_github'
-  post '/github/hook/push', to: 'github#hook', as: 'github_push_hook'
+  post '/github/hook/push', to: 'github#push_hook', as: 'github_push_hook'
   get '/github/hook/install/:project_id', to: 'github#install_webhook', as: 'install_github_webhook'
   delete '/github/hook/uninstall/:project_id', to: 'github#uninstall_webhook', as: 'uninstall_github_webhook'
   get '/github/commits/project/:project_id/sync', to: 'github#sync_commits', as: 'sync_github_commits'

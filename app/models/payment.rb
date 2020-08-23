@@ -1,9 +1,12 @@
 class Payment < ApplicationRecord
   enum payment_type: [ :venmo, :paypal, :credit_card, :jeweler, :bank_transfer, :check, :cash ]
 
+  has_one :project, through: :sprint
   belongs_to :sprint
   belongs_to :user
+  has_many :events, as: :eventable, dependent: :destroy
 
+  accepts_nested_attributes_for :events
   accepts_nested_attributes_for :sprint
   accepts_nested_attributes_for :user
 

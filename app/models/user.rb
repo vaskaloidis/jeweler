@@ -4,12 +4,13 @@ class User < ApplicationRecord
   has_many :customer_projects, source: :project, through: :project_customers, dependent: :destroy
   has_many :project_developers, dependent: :destroy
   has_many :developer_projects, source: :project, through: :project_developers, dependent: :destroy
-  has_many :notes, class_name: 'Note', inverse_of: 'author', dependent: :destroy
+  has_many :notes, class_name: 'Note', inverse_of: 'created_by', dependent: :destroy
+  has_many :events, class_name: 'Event', inverse_of: 'created_by', dependent: :destroy
   has_many :payments, dependent: :nullify
 
   # TODO: Fix these task relationships
-  # has_many :tasks, inverse_of: 'assigned_to', dependent: :nullify
-  # has_many :created_tasks, inverse_of: 'created_by', dependent: :nullify
+  # has_many :tasks_assigned, inverse_of: 'assigned_to', dependent: :nullify
+  # has_many :tasks_created, inverse_of: 'created_by', dependent: :nullify
 
   mount_uploader :image, AvatarUploader
 
