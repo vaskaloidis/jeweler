@@ -21,10 +21,10 @@ formatters << SimpleCov::Formatter::HTMLFormatter
 formatters << SimpleCov::Formatter::Console
 SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
 
-unless try(ENV['LOCAL_DEVELOPMENT'])
-  require 'coveralls'
-  Coveralls.wear!
-end
+# unless try(ENV['LOCAL_DEVELOPMENT'])
+#   require 'coveralls'
+#   Coveralls.wear!
+# end
 
 require 'minitest/reporters'
 # https://github.com/kern/minitest-reporters/issues/230

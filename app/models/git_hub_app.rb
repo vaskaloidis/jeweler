@@ -6,8 +6,8 @@ class GitHubApp
   SCOPE = 'repo admin:repo_hook read:user'.freeze
 
   def self.authorization_url
-    api.authorize_url(scope: SCOPE)
-  end
+    hook_url = ENV['HOOK_URL']
+    api.authorize_url(redirect_uri: "#{hook_url}", scope: SCOPE)  end
 
   def self.authorization_token(auth_code)
     api.get_token(auth_code).token

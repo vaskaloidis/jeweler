@@ -34,18 +34,20 @@ class GitHubWebhook
   end
 
   def new_webhook
+    app_url = ENV['APP_URL']
+    full_hook_url = "#{app_url}/github/oauth/save"
     @new_webhook ||= {
-        name: "web",
-        active: true,
-        config: {
-            url: ENV['GITHUB_PUSH_HOOK'],
-            content_type: "json"
-        }
+       name: "web",
+       active: true,
+       config: {
+          url: full_hook_url,
+          content_type: "json"
+       }
     }
   end
 
   def verify_env
-    raise 'GITHUB_PUSH_HOOK Environment Variable Not Configured' if ENV['GITHUB_PUSH_HOOK'].nil?
+    raise 'APP_URL Environment Variable Not Configured' if ENV['APP_URL'].nil?
   end
 
   def error(msg)
